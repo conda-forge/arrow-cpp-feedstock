@@ -1,5 +1,5 @@
-{% set version = "0.1.pre" %}
-{% set commit = "772800ace3706b8f169803b3ef8932e04ec54619" %}
+{% set version = "0.1.post" %}
+{% set commit = "446ec9bd628244bf675887f5a030d3a94c07645e" %}
 
 package:
   name: arrow-cpp
@@ -9,10 +9,10 @@ package:
 source:
   fn: {{ commit }}.tar.gz
   url: https://github.com/apache/arrow/archive/{{ commit }}.tar.gz
-  sha256: 01ff68b9ab2785cc2a465fedc62536faab4ff461b6d42b9b00df15bb2e41dfa5
+  sha256: 8f1be3e9094c2d0cbf22859709fd4e6b1659a8ea763c428ed5f4209ee1f22d9e
 
 build:
-  number: 3
+  number: 1
   skip: true  # [win]
 
 requirements:
@@ -24,8 +24,13 @@ requirements:
 
 test:
   commands:
+    - test -f $PREFIX/lib/libarrow.a  # [unix]
     - test -f $PREFIX/lib/libarrow.so  # [linux]
+    - test -f $PREFIX/lib/libarrow_io.so  # [linux]
+    - test -f $PREFIX/lib/libarrow_ipc.so  # [linux]
     - test -f $PREFIX/lib/libarrow.dylib  # [osx]
+    - test -f $PREFIX/lib/libarrow_io.dylib  # [osx]
+    - test -f $PREFIX/lib/libarrow_ipc.dylib  # [osx]
 
 about:
   home: http://github.com/apache/arrow
