@@ -12,13 +12,13 @@ source:
   sha256: 4e22ccf441237232fb19b64aeae442474d9a6a6173bec3d7f868e6ba00ae9660
 
 build:
-  number: 2
+  number: 3
   skip: true  # [win]
 
 requirements:
   build:
     - toolchain
-    - boost 1.61.*
+    - boost 1.62.*
     - flatbuffers
     - cmake
 
