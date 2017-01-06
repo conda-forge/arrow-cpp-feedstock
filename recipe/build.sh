@@ -17,6 +17,7 @@ cmake \
     -DARROW_BUILD_BENCHMARKS=off \
     -DARROW_BUILD_TESTS=off \
     -DARROW_HDFS=on \
+    -DARROW_JEMALLOC=on \
     ..
 
 make -j${CPU_COUNT}
