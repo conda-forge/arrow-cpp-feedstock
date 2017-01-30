@@ -1,5 +1,5 @@
 {% set version = "0.1.post" %}
-{% set commit = "61a54f8a619efc4fd256c446be29905d6484c5e9" %}
+{% set commit = "7ac320bde52ae47007dadac7398e22a203c6a48d" %}
 
 package:
   name: arrow-cpp
@@ -9,10 +9,10 @@ package:
 source:
   fn: {{ commit }}.tar.gz
   url: https://github.com/apache/arrow/archive/{{ commit }}.tar.gz
-  sha256: d07cdd9c04df9542a2fd9266009e3b1721bffb2fabce953adbcb2fcd8a11a320
+  sha256: 5c56af26b31c4054cdfe424e11e02055e42badb549d46eae0773aed35a1d9d84
 
 build:
-  number: 10
+  number: 11
   skip: true  # [win]
 
 requirements:
@@ -21,10 +21,10 @@ requirements:
     - boost 1.63.*
     - flatbuffers
     - cmake
-    - jemalloc
+    - jemalloc  # [unix]
 
   run:
-    - jemalloc
+    - jemalloc  # [unix]
 
 
 test:
