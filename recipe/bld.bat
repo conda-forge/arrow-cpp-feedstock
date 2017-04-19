@@ -1,5 +1,5 @@
 mkdir "%SRC_DIR%"\cpp\build
-pushd "%SRC_DIR%"\cpp
+pushd "%SRC_DIR%"\cpp\build
 
 cmake -G "Visual Studio 14 2015 Win64" ^
       -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
