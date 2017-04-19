@@ -1,5 +1,5 @@
-{% set version = "0.2.post" %}
-{% set commit = "f6924ad83bc95741f003830892ad4815ca3b70fd" %}
+{% set version = "0.3.pre" %}
+{% set commit = "a94c03a02f1da8fa61ac86ba2d6c5e91d29c5767" %}
 
 package:
   name: arrow-cpp
@@ -9,37 +9,45 @@ package:
 source:
   fn: {{ commit }}.tar.gz
   url: https://github.com/apache/arrow/archive/{{ commit }}.tar.gz
-  sha256: d78fcb18284ce043f3375096deaed83ff491c95237e9ba3ec5349a1c760fb14b
+  sha256: a854cd01ac34468d6b94917d1b0fa538ef9a5ba934f51ac71662bdfc0eafa1d0
 
 build:
   number: 0
-  skip: true  # [win]
+  skip: true  # [win32]
+  skip: true  # [win and py<35]
+  features:
+    - vc14  # [win and py>=35]
 
 requirements:
   build:
     - toolchain
     - boost 1.63.*
     - flatbuffers
+    - rapidjson
     - cmake
     - jemalloc  # [unix]
+    - python
+    - numpy x.x
 
   run:
     - jemalloc  # [unix]
-
+    - boost 1.63.*  # [win]
+    - python
+    - numpy x.x
+    - vc 14  # [win and py>=35]
 
 test:
   commands:
     - test -f $PREFIX/lib/libarrow.a  # [unix]
     - test -f $PREFIX/lib/libarrow.so  # [linux]
-    - test -f $PREFIX/lib/libarrow_io.a  # [unix]
-    - test -f $PREFIX/lib/libarrow_io.so  # [linux]
-    - test -f $PREFIX/lib/libarrow_ipc.a  # [unix]
-    - test -f $PREFIX/lib/libarrow_ipc.so  # [linux]
+    - test -f $PREFIX/lib/libarrow_python.so  # [linux]
     - test -f $PREFIX/lib/libarrow_jemalloc.so  # [linux]
     - test -f $PREFIX/lib/libarrow.dylib  # [osx]
-    - test -f $PREFIX/lib/libarrow_io.dylib  # [osx]
-    - test -f $PREFIX/lib/libarrow_ipc.dylib  # [osx]
+    - test -f $PREFIX/lib/libarrow_python.dylib  # [osx]
     - test -f $PREFIX/lib/libarrow_jemalloc.dylib  # [osx]
+    - if not exist %LIBRARY_INC%\\arrow\\api.h exit 1               # [win]
+    - if not exist %PREFIX%\\Library\\bin\\arrow.dll exit 1         # [win]
+    - if not exist %PREFIX%\\Library\\bin\\arrow_python.dll exit 1  # [win]
 
 about:
   home: http://github.com/apache/arrow
