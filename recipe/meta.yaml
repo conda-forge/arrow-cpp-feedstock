@@ -9,7 +9,7 @@ package:
 source:
   fn: {{ commit }}.tar.gz
   url: https://github.com/apache/arrow/archive/{{ commit }}.tar.gz
-  sha256: 94dc4142a4ac9dccf8f30b3dc7ab22b49140fb308512eb8bed71455fe5faaf08
+  sha256: fc285c4a54c82e84bfbf0a66a8cef0c3c9dcae3f2c12e591e723bad6b75b5bef
 
 build:
   number: 0
