@@ -1,5 +1,5 @@
 {% set version = "0.3.0.post" %}
-{% set commit = "37cdc6e99bd935c3ce23e840d6d5ba4e070bc3b6" %}
+{% set commit = "ff72951f0262ea230f7cfbb2f4c97ea7cf70845b" %}
 
 package:
   name: arrow-cpp
@@ -9,7 +9,7 @@ package:
 source:
   fn: {{ commit }}.tar.gz
   url: https://github.com/apache/arrow/archive/{{ commit }}.tar.gz
-  sha256: d0fa9754efa6a39dba625abfd2dd990cd4f34e37b6f8a1b270c25823bafe8c2d
+  sha256: 44eecc4ebd735d160aa1f6010416113d7dd0385312a5badfc105cf545241aa7a
 
 build:
   number: 2
