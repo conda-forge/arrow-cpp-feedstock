@@ -25,12 +25,12 @@ requirements:
     - flatbuffers
     - rapidjson
     - cmake
-    - jemalloc  # [unix]
+    - jemalloc 4.4.0  # [unix]
     - python
     - numpy x.x
 
   run:
-    - jemalloc  # [unix]
+    - jemalloc 4.4.0  # [unix]
     - boost 1.63.*  # [win]
     - python
     - numpy x.x
