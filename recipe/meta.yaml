@@ -12,7 +12,7 @@ source:
   sha256: c784da3f900174ea36983a190f369acb408919ff710a95365222ef35bfa58d08
 
 build:
-  number: 2
+  number: 3
   skip: true  # [win32]
   skip: true  # [win and py<35]
   features:
@@ -25,12 +25,12 @@ requirements:
     - flatbuffers
     - rapidjson
     - cmake
-    - jemalloc  # [unix]
+    - jemalloc 4.4.0  # [unix]
     - python
     - numpy x.x
 
   run:
-    - jemalloc  # [unix]
+    - jemalloc 4.4.0  # [unix]
     - boost 1.63.*  # [win]
     - python
     - numpy x.x
