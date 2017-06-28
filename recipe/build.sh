@@ -4,8 +4,7 @@ set -e
 set -x
 
 # Build dependencies
-export FLATBUFFERS_HOME=$PREFIX
-export RAPIDJSON_HOME=$PREFIX
+export ARROW_BUILD_TOOLCHAIN=$PREFIX
 
 cd cpp
 mkdir build-dir
@@ -19,8 +18,8 @@ cmake \
     -DARROW_BUILD_BENCHMARKS=off \
     -DARROW_BUILD_UTILITIES=off \
     -DARROW_BUILD_TESTS=off \
+    -DARROW_ZLIB_VENDORED=off \
     -DARROW_PYTHON=on \
-    -DARROW_JEMALLOC=on \
     ..
 
 make -j${CPU_COUNT}
