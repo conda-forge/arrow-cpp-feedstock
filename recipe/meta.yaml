@@ -1,5 +1,5 @@
 {% set version = "0.5.0.pre" %}
-{% set commit = "bddb2197df4e3cba4a27da27cd15917fe30d3d45" %}
+{% set commit = "5fbfd8e58392439c754cdf19f6f3b27b28303e0a" %}
 
 package:
   name: arrow-cpp
@@ -9,10 +9,10 @@ package:
 source:
   fn: {{ commit }}.tar.gz
   url: https://github.com/apache/arrow/archive/{{ commit }}.tar.gz
-  sha256: 029fd218c31f074ce64e46dcdbb7e7af38e86ba63c295eed69b43254fdae54f9
+  sha256: f2d087bd3914ee044f3e545577fb855cb9dbbf3517508e9adbc5854f1a799903
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win32]
   skip: true  # [win and py<35]
   features:
@@ -28,6 +28,8 @@ requirements:
     - zlib 1.2.*
     - snappy
     - brotli
+    - zstd
+    - lz4-c
     - jemalloc 4.4.0  # [unix]
     - python
     - numpy x.x
