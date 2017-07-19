@@ -12,7 +12,7 @@ source:
   sha256: d4602db68abd241ce6b8aec11a2d45b61ef05659d940c911382bc28462b38539
 
 build:
-  number: 3
+  number: 4
   skip: true  # [win32]
   skip: true  # [win and py<35]
   features:
