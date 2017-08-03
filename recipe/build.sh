@@ -18,6 +18,7 @@ cmake \
     -DARROW_BUILD_BENCHMARKS=off \
     -DARROW_BUILD_UTILITIES=off \
     -DARROW_BUILD_TESTS=off \
+    -DARROW_JEMALLOC=off \
     -DARROW_PYTHON=on \
     ..
 
