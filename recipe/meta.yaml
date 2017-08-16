@@ -1,5 +1,6 @@
-{% set version = "0.5.0" %}
-{% set commit = "3a84653a3aa00f36f6312a11e58d1daf41dedcee" %}
+{% set version = "0.6.0" %}
+{% set commit = "b17333482ea1da3728538bc912b1053ba70ed2e7" %}
+{% set checksum = "3975e483b9d156352b9c23d265354bfcf5d7bdddea6c7ee06e32eeea6b1f8997" %}
 
 package:
   name: arrow-cpp
@@ -9,10 +10,10 @@ package:
 source:
   fn: {{ commit }}.tar.gz
   url: https://github.com/apache/arrow/archive/{{ commit }}.tar.gz
-  sha256: 3bf6bb99860bb60677f53b5f36aa7b8bb7f4ef330932f9a8fa66e777401e844b
+  sha256: {{ checksum }}
 
 build:
-  number: 2
+  number: 0
   skip: true  # [win32]
   skip: true  # [win and py<35]
   features:
@@ -35,7 +36,6 @@ requirements:
     - numpy x.x
 
   run:
-    - jemalloc 4.4.0  # [unix]
     - python
     - numpy x.x
     - vc 14  # [win and py>=35]
@@ -46,8 +46,10 @@ test:
     - test -f $PREFIX/lib/libarrow.a  # [unix]
     - test -f $PREFIX/lib/libarrow.so  # [linux]
     - test -f $PREFIX/lib/libarrow_python.so  # [linux]
+    - test -f $PREFIX/lib/libplasma.so  # [linux]
     - test -f $PREFIX/lib/libarrow.dylib  # [osx]
     - test -f $PREFIX/lib/libarrow_python.dylib  # [osx]
+    - test -f $PREFIX/lib/libplasma.dylib  # [osx]
     - if not exist %LIBRARY_INC%\\arrow\\api.h exit 1               # [win]
     - if not exist %PREFIX%\\Library\\bin\\arrow.dll exit 1         # [win]
     - if not exist %PREFIX%\\Library\\bin\\arrow_python.dll exit 1  # [win]
