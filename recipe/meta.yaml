@@ -13,7 +13,7 @@ source:
   sha256: {{ checksum }}
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win32]
   skip: true  # [win and py<35]
   features:
@@ -23,7 +23,7 @@ requirements:
   build:
     - toolchain
     - cmake
-    - boost-cpp 1.63.*
+    - boost-cpp 1.64.*
     - flatbuffers
     - rapidjson
     - zlib 1.2.*
