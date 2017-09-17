@@ -1,6 +1,6 @@
-{% set version = "0.6.0" %}
-{% set commit = "b17333482ea1da3728538bc912b1053ba70ed2e7" %}
-{% set checksum = "3975e483b9d156352b9c23d265354bfcf5d7bdddea6c7ee06e32eeea6b1f8997" %}
+{% set version = "0.7.0" %}
+{% set commit = "97f9029ce835dfc2655ca91b9820a2e6aed89107" %}
+{% set checksum = "1b2c063900a4e29f6284be6c61b02402058390964a3c8b98330fe74c303b194d" %}
 
 package:
   name: arrow-cpp
