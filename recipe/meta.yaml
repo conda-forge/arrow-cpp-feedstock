@@ -13,7 +13,7 @@ source:
   sha256: {{ checksum }}
 
 build:
-  number: 1
+  number: 2
   skip: true  # [win32]
   skip: true  # [win and py<35]
   features:
@@ -33,11 +33,13 @@ requirements:
     - lz4-c
     - jemalloc 4.4.0  # [unix]
     - python
-    - numpy x.x
+    - numpy 1.10.*  # [not (win and py>=36)]
+    - numpy 1.12.*  # [win and py>=36]
 
   run:
     - python
-    - numpy x.x
+    - numpy >=1.10  # [not (win and py>=36)]
+    - numpy >=1.12  # [win and py>=36]
     - vc 14  # [win and py>=35]
     - snappy  # [win and py>=35]
 
