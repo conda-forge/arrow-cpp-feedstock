@@ -1,6 +1,6 @@
-{% set version = "0.7.0" %}
-{% set commit = "97f9029ce835dfc2655ca91b9820a2e6aed89107" %}
-{% set checksum = "1b2c063900a4e29f6284be6c61b02402058390964a3c8b98330fe74c303b194d" %}
+{% set version = "0.7.1" %}
+{% set commit = "0e21f84c2fc26dba949a03ee7d7ebfade0a65b81" %}
+{% set checksum = "39734331cc2eb71f764ea40b814cc67b24bcb6bb6db0bcc6eba22a49969577f9" %}
 
 package:
   name: arrow-cpp
@@ -23,7 +23,7 @@ requirements:
   build:
     - toolchain
     - cmake
-    - boost-cpp 1.64.*
+    - boost-cpp 1.65.*
     - flatbuffers
     - rapidjson
     - zlib 1.2.*
