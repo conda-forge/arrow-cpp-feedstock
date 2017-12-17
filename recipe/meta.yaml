@@ -1,6 +1,6 @@
-{% set version = "0.7.1" %}
-{% set commit = "0e21f84c2fc26dba949a03ee7d7ebfade0a65b81" %}
-{% set checksum = "39734331cc2eb71f764ea40b814cc67b24bcb6bb6db0bcc6eba22a49969577f9" %}
+{% set version = "0.8.0" %}
+{% set commit = "1d689e5a3e417d3a4b3de16fea7a6fe195c8f8df" %}
+{% set checksum = "abd102b9be07b22e629cd6918ffde5e36ed17a54c127d218f6b57ff0ffce1c64" %}
 
 package:
   name: arrow-cpp
@@ -70,3 +70,4 @@ extra:
     - cpcloud
     - pcmoritz
     - robertnishihara
+    - siddharthteotia
