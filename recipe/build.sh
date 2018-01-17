@@ -20,6 +20,7 @@ cmake \
     -DARROW_BUILD_TESTS=OFF \
     -DARROW_JEMALLOC=OFF \
     -DARROW_PLASMA=ON \
+    -DARROW_ORC=ON \
     -DARROW_PYTHON=ON \
     ..
 
