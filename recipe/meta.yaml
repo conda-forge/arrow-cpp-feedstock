@@ -13,7 +13,7 @@ source:
   sha256: {{ checksum }}
 
 build:
-  number: 2
+  number: 3
   skip: true  # [win32]
   skip: true  # [win and py<35]
   features:
