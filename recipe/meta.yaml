@@ -23,7 +23,7 @@ requirements:
   build:
     - toolchain
     - cmake
-    - boost-cpp 1.65.*
+    - boost-cpp 1.66.0
     - flatbuffers
     - rapidjson
     - zlib 1.2.*
