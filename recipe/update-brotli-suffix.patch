@@ -1,0 +1,27 @@
+From 694a8f82ce0a53a8deb8502a12eb34e954735a43 Mon Sep 17 00:00:00 2001
+From: Max Risuhin <risuhin.max@gmail.com>
+Date: Fri, 9 Feb 2018 01:27:10 +0200
+Subject: [PATCH] Update brotli static suffix
+
+---
+ cpp/CMakeLists.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/cpp/CMakeLists.txt b/cpp/CMakeLists.txt
+index dd159ced..37c362c9 100644
+--- a/cpp/CMakeLists.txt
++++ b/cpp/CMakeLists.txt
+@@ -200,8 +200,8 @@ if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
+     ON)
+ 
+   if (MSVC)
+-    set(BROTLI_MSVC_STATIC_LIB_SUFFIX "_static" CACHE STRING
+-      "Brotli static lib suffix used on Windows with MSVC (default _static)")
++    set(BROTLI_MSVC_STATIC_LIB_SUFFIX "-static" CACHE STRING
++      "Brotli static lib suffix used on Windows with MSVC (default -static)")
+     set(SNAPPY_MSVC_STATIC_LIB_SUFFIX "_static" CACHE STRING
+       "Snappy static lib suffix used on Windows with MSVC (default is empty string)")
+     set(ZLIB_MSVC_STATIC_LIB_SUFFIX "libstatic" CACHE STRING
+-- 
+2.12.2.windows.2
+

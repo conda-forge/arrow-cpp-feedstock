@@ -1,0 +1,45 @@
+From 02f4c943386972e14b958f6bad5ff39af05ec60c Mon Sep 17 00:00:00 2001
+From: Max Risuhin <risuhin.max@gmail.com>
+Date: Fri, 9 Feb 2018 00:37:32 +0200
+Subject: [PATCH] ARROW-2109: [C++] Completely disable boost autolink on MSVC
+ build
+
+---
+ cpp/cmake_modules/ThirdpartyToolchain.cmake | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/cpp/cmake_modules/ThirdpartyToolchain.cmake b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+index b706aab4..6e62b1ff 100644
+--- a/cpp/cmake_modules/ThirdpartyToolchain.cmake
++++ b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+@@ -134,6 +134,7 @@ if (MSVC AND ARROW_USE_STATIC_CRT)
+   set(Boost_USE_STATIC_RUNTIME ON)
+ endif()
+ set(Boost_ADDITIONAL_VERSIONS
++  "1.66.0" "1.66"
+   "1.65.0" "1.65"
+   "1.64.0" "1.64"
+   "1.63.0" "1.63"
+@@ -190,14 +191,15 @@ if (ARROW_BOOST_VENDORED)
+   set(Boost_INCLUDE_DIRS "${BOOST_INCLUDE_DIR}")
+   add_dependencies(arrow_dependencies boost_ep)
+ else()
++  if (MSVC)
++    # disable autolinking in boost
++    add_definitions(-DBOOST_ALL_NO_LIB)
++  endif()
+   if (ARROW_BOOST_USE_SHARED)
+     # Find shared Boost libraries.
+     set(Boost_USE_STATIC_LIBS OFF)
+ 
+-    if(MSVC)
+-      # disable autolinking in boost
+-      add_definitions(-DBOOST_ALL_NO_LIB)
+-
++    if (MSVC)
+       # force all boost libraries to dynamic link
+       add_definitions(-DBOOST_ALL_DYN_LINK)
+     endif()
+-- 
+2.12.2.windows.2
+
