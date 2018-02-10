@@ -11,6 +11,11 @@ source:
   fn: {{ commit }}.tar.gz
   url: https://github.com/apache/arrow/archive/{{ commit }}.tar.gz
   sha256: {{ checksum }}
+  patches:
+    # Disables boost auto linkage on Windows. Resolved in v.0.9.0
+    - disable-boost-autolink.patch
+    # Update suffix for static brotli lib installed from conda-forge
+    - update-brotli-suffix.patch
 
 build:
   number: 3
