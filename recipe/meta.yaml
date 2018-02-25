@@ -45,7 +45,7 @@ requirements:
     - python
     - numpy >=1.10  # [not (win and py>=36)]
     - numpy >=1.12  # [win and py>=36]
-    - vc 14  # [win and py>=35]
+    - vc 14.*  # [win and py>=35]
     - snappy  # [win and py>=35]
 
 test:
