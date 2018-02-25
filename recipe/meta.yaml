@@ -18,7 +18,7 @@ source:
     - update-brotli-suffix.patch
 
 build:
-  number: 3
+  number: 4
   skip: true  # [win32]
   skip: true  # [win and py<35]
   features:
