@@ -10,7 +10,7 @@ cmake -G "%CMAKE_GENERATOR%" ^
       -DARROW_BUILD_UTILITIES:BOOL=OFF ^
       -DCMAKE_BUILD_TYPE=release ^
       -DARROW_PYTHON:BOOL=ON ^
-      -DARROW_ORC:BOOL=ON
+      -DARROW_ORC:BOOL=ON ^
       ..
 
 cmake --build . --target INSTALL --config Release
