@@ -12,8 +12,6 @@ source:
   url: https://github.com/apache/arrow/archive/{{ commit }}.tar.gz
   sha256: {{ checksum }}
   patches:
-    # Disables boost auto linkage on Windows. Resolved in v.0.9.0
-    - disable-boost-autolink.patch
     # Update suffix for static brotli lib installed from conda-forge
     - update-brotli-suffix.patch
 
@@ -42,6 +40,7 @@ requirements:
     - numpy 1.12.*  # [win and py>=36]
 
   run:
+    - boost-cpp 1.66.0
     - python
     - numpy >=1.10  # [not (win and py>=36)]
     - numpy >=1.12  # [win and py>=36]
