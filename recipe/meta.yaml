@@ -11,9 +11,6 @@ source:
   fn: {{ commit }}.tar.gz
   url: https://github.com/apache/arrow/archive/{{ commit }}.tar.gz
   sha256: {{ checksum }}
-  patches:
-    # Update suffix for static brotli lib installed from conda-forge
-    - update-brotli-suffix.patch
 
 build:
   number: 4
