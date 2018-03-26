@@ -13,11 +13,13 @@ source:
   sha256: {{ checksum }}
 
 build:
-  number: 4
+  number: 5
   skip: true  # [win32]
   skip: true  # [win and py<35]
   features:
     - vc14  # [win and py>=35]
+  patches:
+    - decimal-check-perf.patch
 
 requirements:
   build:
