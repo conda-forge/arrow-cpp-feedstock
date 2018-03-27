@@ -11,9 +11,11 @@ source:
   fn: {{ commit }}.tar.gz
   url: https://github.com/apache/arrow/archive/{{ commit }}.tar.gz
   sha256: {{ checksum }}
+  patches:
+    - decimal-check-perf.patch
 
 build:
-  number: 4
+  number: 5
   skip: true  # [win32]
   skip: true  # [win and py<35]
   features:
