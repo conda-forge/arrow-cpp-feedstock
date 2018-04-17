@@ -13,7 +13,7 @@ source:
   sha256: {{ checksum }}
 
 build:
-  number: 6
+  number: 7
   skip: true  # [win32]
   skip: true  # [win and py<35]
   features:
@@ -31,10 +31,10 @@ requirements:
     - brotli
     - zstd
     - lz4-c
-    - jemalloc 4.4.0  # [unix]
     - python
     - numpy 1.10.*  # [not (win and py>=36)]
     - numpy 1.12.*  # [win and py>=36]
+    - autoconf  # [unix]
 
   run:
     - boost-cpp 1.66.0
