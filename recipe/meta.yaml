@@ -21,6 +21,11 @@ requirements:
   build:
     - cmake
     - autoconf  # [unix]
+    - {{ pin_compatible('numpy') }}   # [not (win and py>=36)]
+    - {{ pin_compatible('numpy') }}   # [win and py>=36]
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+  host:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
@@ -39,8 +44,6 @@ requirements:
   run:
     - boost-cpp
     - python
-    - {{ pin_compatible('numpy') }}   # [not (win and py>=36)]
-    - {{ pin_compatible('numpy') }}   # [win and py>=36]
     - snappy  # [win and py>=35]
 
 test:
