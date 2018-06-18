@@ -1,0 +1,32 @@
+boost_cpp:
+- 1.66.0
+c_compiler:
+- toolchain_c
+cxx_compiler:
+- toolchain_cxx
+lz4_c:
+- 1.8.1
+numpy:
+- '1.9'
+pin_run_as_build:
+  boost-cpp:
+    max_pin: x.x.x
+  lz4-c:
+    max_pin: x.x.x
+  python:
+    min_pin: x.x
+    max_pin: x.x
+  snappy:
+    max_pin: x.x.x
+  zlib:
+    max_pin: x.x
+  zstd:
+    max_pin: x.x.x
+python:
+- '3.6'
+snappy:
+- 1.1.7
+zlib:
+- '1.2'
+zstd:
+- 1.3.3
