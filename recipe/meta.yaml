@@ -33,14 +33,14 @@ requirements:
     - zstd
     - lz4-c
     - python
-    - numpy         # [not (win and py>=36)]
-    - numpy         # [win and py>=36]
+    - numpy 1.10.*   # [not (win and py>=36)]
+    - numpy 1.12.*   # [win and py>=36]
 
   run:
     - boost-cpp
     - python
-    - {{ pin_compatible('numpy') }}   # [not (win and py>=36)]
-    - {{ pin_compatible('numpy') }}   # [win and py>=36]
+    - {{ pin_compatible('numpy', lower_bound='1.10') }}   # [not (win and py>=36)]
+    - {{ pin_compatible('numpy', lower_bound='1.12') }}   # [win and py>=36]
     - snappy  # [win and py>=35]
 
 test:
