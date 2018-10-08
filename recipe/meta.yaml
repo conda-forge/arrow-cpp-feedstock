@@ -1,13 +1,14 @@
 {% set version = "0.11.0" %}
-{% set checksum = "0ac629a7775d86108e403eb66d9f1a3d3bdd6b3a497a86228aa4e8143364b7cc" %}
+{% set filename = "apache-arrow-" + version + ".tar.gz" %}
+{% set checksum = "1838faa3775e082062ad832942ebc03aaf95386c0284288346ddae0632be855d" %}
 
 package:
   name: arrow-cpp
   version: {{ version }}
 
 source:
-  fn: apache-arrow-{{ version }}.tar.gz
-  url: https://github.com/apache/arrow/archive/apache-arrow-{{ version }}.tar.gz
+  fn: {{ filename }}
+  url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/{{ filename }}
   sha256: {{ checksum }}
 
 build:
