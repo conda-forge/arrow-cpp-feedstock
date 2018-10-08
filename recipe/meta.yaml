@@ -1,6 +1,6 @@
-{% set version = "0.10.0" %}
-{% set commit = "07f142df646c9070fc9c627004dfdc96914fe487" %}
-{% set checksum = "ec8494f1906a2919d1eaa9445c97f88eacd38695bfbc5ae5f44315bcbbd6e609" %}
+{% set version = "0.11.0" %}
+{% set commit = "98db7054ecf6c21d552ab4ac7a729f6c0c8f8c5f" %}
+{% set checksum = "0ac629a7775d86108e403eb66d9f1a3d3bdd6b3a497a86228aa4e8143364b7cc" %}
 
 package:
   name: arrow-cpp
@@ -26,36 +26,56 @@ requirements:
     - {{ compiler('cxx') }}
   host:
     - boost-cpp
+    - thrift-cpp >=0.11
+    - libprotobuf
     - flatbuffers
     - rapidjson
     - zlib
+    - glog
     - snappy
     - brotli
     - zstd
     - lz4-c
     - python
-    - numpy 1.10.*   # [not (win and py>=36)]
-    - numpy 1.12.*   # [win and py>=36]
+    - numpy 1.14.*
 
   run:
     - boost-cpp
     - python
-    - {{ pin_compatible('numpy', lower_bound='1.10') }}   # [not (win and py>=36)]
-    - {{ pin_compatible('numpy', lower_bound='1.12') }}   # [win and py>=36]
+    - {{ pin_compatible('numpy', lower_bound='1.14') }}
     - snappy  # [win and py>=35]
+    - zlib
 
 test:
   commands:
-    - test -f $PREFIX/lib/libarrow.a  # [unix]
-    - test -f $PREFIX/lib/libarrow.so  # [linux]
-    - test -f $PREFIX/lib/libarrow_python.so  # [linux]
-    - test -f $PREFIX/lib/libplasma.so  # [linux]
-    - test -f $PREFIX/lib/libarrow.dylib  # [osx]
+    # headers
+    - test -f $PREFIX/include/arrow/api.h              # [unix]
+    - test -f $PREFIX/include/plasma/client.h          # [unix]
+    - test -f $PREFIX/include/parquet/api/reader.h     # [unix]
+    - if not exist %LIBRARY_INC%\\arrow\\api.h exit 1            # [win]
+    - if not exist %LIBRARY_INC%\\parquet\\api\\reader.h exit 1  # [win]
+
+    # static
+    - test -f $PREFIX/lib/libarrow.a         # [unix]
+    - test -f $PREFIX/lib/libarrow_python.a  # [unix]
+    - test -f $PREFIX/lib/libparquet.a       # [unix]
+    - test -f $PREFIX/lib/libplasma.a        # [unix]
+    - if not exist %PREFIX%\\Library\\lib\\arrow_static.lib exit 1         # [win]
+    - if not exist %PREFIX%\\Library\\lib\\arrow_python_static.lib exit 1  # [win]
+    - if not exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1       # [win]
+
+    # shared
+    - test -f $PREFIX/lib/libarrow.so            # [linux]
+    - test -f $PREFIX/lib/libarrow_python.so     # [linux]
+    - test -f $PREFIX/lib/libparquet.so          # [linux]
+    - test -f $PREFIX/lib/libplasma.so           # [linux]
+    - test -f $PREFIX/lib/libarrow.dylib         # [osx]
     - test -f $PREFIX/lib/libarrow_python.dylib  # [osx]
-    - test -f $PREFIX/lib/libplasma.dylib  # [osx]
-    - if not exist %LIBRARY_INC%\\arrow\\api.h exit 1               # [win]
+    - test -f $PREFIX/lib/libparquet.dylib       # [osx]
+    - test -f $PREFIX/lib/libplasma.dylib        # [osx]
     - if not exist %PREFIX%\\Library\\bin\\arrow.dll exit 1         # [win]
     - if not exist %PREFIX%\\Library\\bin\\arrow_python.dll exit 1  # [win]
+    - if not exist %PREFIX%\\Library\\bin\\parquet.dll exit 1       # [win]
 
 about:
   home: http://github.com/apache/arrow
