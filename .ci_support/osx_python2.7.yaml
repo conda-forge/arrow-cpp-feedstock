@@ -4,8 +4,14 @@ boost_cpp:
 - 1.67.0
 c_compiler:
 - toolchain_c
+channel_sources:
+- conda-forge,defaults
+channel_targets:
+- conda-forge main
 cxx_compiler:
 - toolchain_cxx
+libprotobuf:
+- '3.5'
 lz4_c:
 - 1.8.1
 macos_machine:
@@ -15,6 +21,8 @@ macos_min_version:
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
+  libprotobuf:
+    max_pin: x.x
   lz4-c:
     max_pin: x.x.x
   python:
