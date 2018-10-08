@@ -1,5 +1,4 @@
 {% set version = "0.11.0" %}
-{% set commit = "98db7054ecf6c21d552ab4ac7a729f6c0c8f8c5f" %}
 {% set checksum = "0ac629a7775d86108e403eb66d9f1a3d3bdd6b3a497a86228aa4e8143364b7cc" %}
 
 package:
@@ -7,8 +6,8 @@ package:
   version: {{ version }}
 
 source:
-  fn: {{ commit }}.tar.gz
-  url: https://github.com/apache/arrow/archive/{{ commit }}.tar.gz
+  fn: apache-arrow-{{ version }}.tar.gz
+  url: https://github.com/apache/arrow/archive/apache-arrow-{{ version }}.tar.gz
   sha256: {{ checksum }}
 
 build:
