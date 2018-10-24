@@ -1,6 +1,6 @@
-{% set version = "0.11.0" %}
+{% set version = "0.11.1" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set checksum = "1838faa3775e082062ad832942ebc03aaf95386c0284288346ddae0632be855d" %}
+{% set checksum = "c524f3d47f0cdb7445c0326b20e79f60485e12daeb2adc8ad6a845ad6c19c1ac" %}
 
 package:
   name: arrow-cpp
