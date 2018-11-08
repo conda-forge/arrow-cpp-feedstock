@@ -1,0 +1,108 @@
+From 464b6b745f49e4c6bfbac98d3ffdce3adac3fec8 Mon Sep 17 00:00:00 2001
+From: "Korn, Uwe" <Uwe.Korn@blue-yonder.com>
+Date: Thu, 8 Nov 2018 17:24:22 +0100
+Subject: [PATCH] ARROW-3711: [C++] Don't pass CXX_FLAGS to C_FLAGS
+
+Author: Korn, Uwe <Uwe.Korn@blue-yonder.com>
+
+Closes #2912 from xhochy/ARROW-3711 and squashes the following commits:
+
+f83e1980 <Korn, Uwe> Fix comment
+8fdfc0c7 <Korn, Uwe> ARROW-3711:  Don't pass CXX_FLAGS to C_FLAGS
+---
+ cpp/CMakeLists.txt                    |  8 ++++++--
+ cpp/cmake_modules/SetupCxxFlags.cmake | 11 +++++++++++
+ 2 files changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/cpp/CMakeLists.txt b/cpp/CMakeLists.txt
+index 4448b989..b360acaf 100644
+--- a/cpp/CMakeLists.txt
++++ b/cpp/CMakeLists.txt
+@@ -345,6 +345,7 @@ endif()
+ 
+ if (ARROW_TENSORFLOW)
+   # TensorFlow uses the old GLIBCXX ABI, so we have to use it too
++  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
+ endif()
+ 
+@@ -389,8 +390,9 @@ include(ThirdpartyToolchain)
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_COMMON_FLAGS}")
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ARROW_CXXFLAGS}")
+ 
+-# For any C code, use the same flags.
+-set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS}")
++# For any C code, use the same flags. These flags don't contain
++# C++ specific flags.
++set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${ARROW_CXX_FLAGS} ${CXX_COMMON_FLAGS}")
+ 
+ # Remove --std=c++11 to avoid errors from C compilers
+ string(REPLACE "-std=c++11" "" CMAKE_C_FLAGS ${CMAKE_C_FLAGS})
+@@ -412,6 +414,7 @@ if ("${ARROW_GENERATE_COVERAGE}")
+     # This should be fixed in llvm 3.4 with http://llvm.org/viewvc/llvm-project?view=revision&revision=184666
+     message(SEND_ERROR "Cannot currently generate coverage with clang")
+   endif()
++  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage -DCOVERAGE_BUILD")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -DCOVERAGE_BUILD")
+ 
+   # For coverage to work properly, we need to use static linkage. Otherwise,
+@@ -423,6 +426,7 @@ if ("${ARROW_GENERATE_COVERAGE}")
+ endif()
+ 
+ # CMAKE_CXX_FLAGS now fully assembled
++message(STATUS "CMAKE_C_FLAGS: ${CMAKE_C_FLAGS}")
+ message(STATUS "CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
+ 
+ # set compile output directory
+diff --git a/cpp/cmake_modules/SetupCxxFlags.cmake b/cpp/cmake_modules/SetupCxxFlags.cmake
+index 7ebb0337..3c2804be 100644
+--- a/cpp/cmake_modules/SetupCxxFlags.cmake
++++ b/cpp/cmake_modules/SetupCxxFlags.cmake
+@@ -191,6 +191,7 @@ if ("${COMPILER_FAMILY}" STREQUAL "clang")
+   #
+   #   http://petereisentraut.blogspot.com/2011/05/ccache-and-clang.html
+   #   http://petereisentraut.blogspot.com/2011/09/ccache-and-clang-part-2.html
++  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Qunused-arguments")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Qunused-arguments")
+ 
+   # Avoid clang error when an unknown warning flag is passed
+@@ -324,11 +325,16 @@ endif()
+ #   Debug symbols are stripped for reduced binary size. Add
+ #   -DARROW_CXXFLAGS="-g" to add them
+ if (NOT MSVC)
++  set(C_FLAGS_DEBUG "-ggdb -O0")
++  set(C_FLAGS_FASTDEBUG "-ggdb -O1")
++  set(C_FLAGS_RELEASE "-O3 -DNDEBUG")
+   set(CXX_FLAGS_DEBUG "-ggdb -O0")
+   set(CXX_FLAGS_FASTDEBUG "-ggdb -O1")
+   set(CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+ endif()
+ 
++set(C_FLAGS_PROFILE_GEN "${CXX_FLAGS_RELEASE} -fprofile-generate")
++set(C_FLAGS_PROFILE_BUILD "${CXX_FLAGS_RELEASE} -fprofile-use")
+ set(CXX_FLAGS_PROFILE_GEN "${CXX_FLAGS_RELEASE} -fprofile-generate")
+ set(CXX_FLAGS_PROFILE_BUILD "${CXX_FLAGS_RELEASE} -fprofile-use")
+ 
+@@ -342,14 +348,19 @@ string (TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE)
+ # Set compile flags based on the build type.
+ message("Configured for ${CMAKE_BUILD_TYPE} build (set with cmake -DCMAKE_BUILD_TYPE={release,debug,...})")
+ if ("${CMAKE_BUILD_TYPE}" STREQUAL "DEBUG")
++  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_FLAGS_DEBUG}")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS_DEBUG}")
+ elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "FASTDEBUG")
++  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_FLAGS_FASTDEBUG}")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS_FASTDEBUG}")
+ elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "RELEASE")
++  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_FLAGS_RELEASE}")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS_RELEASE}")
+ elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "PROFILE_GEN")
++  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_FLAGS_PROFILE_GEN}")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS_PROFILE_GEN}")
+ elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "PROFILE_BUILD")
++  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_FLAGS_PROFILE_BUILD}")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS_PROFILE_BUILD}")
+ else()
+   message(FATAL_ERROR "Unknown build type: ${CMAKE_BUILD_TYPE}")
+-- 
+2.19.1
+
