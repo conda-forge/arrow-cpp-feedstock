@@ -10,6 +10,8 @@ source:
   fn: {{ filename }}
   url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/{{ filename }}
   sha256: {{ checksum }}
+  patches:
+    - 0001-ARROW-3711-C-Don-t-pass-CXX_FLAGS-to-C_FLAGS.patch
 
 build:
   number: 1000
