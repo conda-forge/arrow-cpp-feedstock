@@ -13,7 +13,7 @@ channel_targets:
 cxx_compiler:
 - toolchain_cxx
 libprotobuf:
-- '3.5'
+- '3.6'
 lz4_c:
 - 1.8.1
 macos_machine:

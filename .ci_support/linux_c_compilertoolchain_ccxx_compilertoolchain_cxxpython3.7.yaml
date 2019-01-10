@@ -13,7 +13,7 @@ cxx_compiler:
 docker_image:
 - condaforge/linux-anvil
 libprotobuf:
-- '3.5'
+- '3.6'
 lz4_c:
 - 1.8.1
 pin_run_as_build:
