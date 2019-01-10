@@ -14,7 +14,7 @@ source:
     - 0001-ARROW-3711-C-Don-t-pass-CXX_FLAGS-to-C_FLAGS.patch
 
 build:
-  number: 1001
+  number: 1002
   skip: true  # [win32]
   skip: true  # [win and py<35]
   features:
