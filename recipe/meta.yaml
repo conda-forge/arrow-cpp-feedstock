@@ -14,11 +14,13 @@ source:
     - 0001-ARROW-3711-C-Don-t-pass-CXX_FLAGS-to-C_FLAGS.patch
 
 build:
-  number: 1002
+  number: 1003
   skip: true  # [win32]
   skip: true  # [win and py<35]
   features:
     - vc14  # [win and py>=35]
+  run_exports:
+    - {{ pin_subpackage("arrow-cpp", max_pin="x.x") }}
 
 requirements:
   build:
