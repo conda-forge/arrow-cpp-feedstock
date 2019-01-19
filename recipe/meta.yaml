@@ -1,6 +1,6 @@
-{% set version = "0.11.1" %}
+{% set version = "0.12.0" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set checksum = "c524f3d47f0cdb7445c0326b20e79f60485e12daeb2adc8ad6a845ad6c19c1ac" %}
+{% set checksum = "34dae7e4dde9274e9a52610683e78a80f3ca312258ad9e9f2c0973cf44247a98" %}
 
 package:
   name: arrow-cpp
@@ -14,7 +14,7 @@ source:
     - 0001-ARROW-3711-C-Don-t-pass-CXX_FLAGS-to-C_FLAGS.patch
 
 build:
-  number: 1004
+  number: 0
   skip: true  # [win32]
   skip: true  # [win and py<35]
   features:
