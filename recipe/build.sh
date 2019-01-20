@@ -23,7 +23,7 @@ cmake \
     -DARROW_PYTHON=ON \
     -DARROW_PARQUET=ON \
     -DARROW_ORC=ON \
+    -GNinja \
     ..
 
-make -j${CPU_COUNT}
-make install
+ninja install
