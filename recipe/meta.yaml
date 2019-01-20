@@ -33,6 +33,7 @@ requirements:
     - thrift-cpp >=0.11
     - libprotobuf
     - flatbuffers
+    - double-conversion
     - rapidjson
     - zlib
     - glog
