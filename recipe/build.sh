@@ -25,6 +25,7 @@ cmake \
     -DARROW_ORC=ON \
     -DCMAKE_AR=${AR} \
     -DCMAKE_RANLIB=${RANLIB} \
+    -DPYTHON_EXECUTABLE="${PREFIX}/bin/python" \
     -GNinja \
     ..
 

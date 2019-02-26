@@ -10,15 +10,10 @@ source:
   fn: {{ filename }}
   url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/{{ filename }}
   sha256: {{ checksum }}
-  patches:
-    - no-explicit-X_OPEN_SOURCE.patch  # [osx]
 
 build:
   number: 0
-  skip: true  # [win32]
-  skip: true  # [win and py<35]
-  features:
-    - vc14  # [win and py>=35]
+  skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x") }}
 
