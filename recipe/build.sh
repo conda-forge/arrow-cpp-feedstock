@@ -3,12 +3,8 @@
 set -e
 set -x
 
-# Build dependencies
-export ARROW_BUILD_TOOLCHAIN=$PREFIX
-
-cd cpp
-mkdir build-dir
-cd build-dir
+mkdir cpp/build
+pushd cpp/build
 
 cmake \
     -DCMAKE_BUILD_TYPE=release \
@@ -34,3 +30,5 @@ cmake \
     ..
 
 ninja install
+
+popd
