@@ -4,14 +4,18 @@ boost_cpp:
 - 1.68.0
 c_compiler:
 - clang
+c_compiler_version:
+- '4'
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
 cxx_compiler:
 - clangxx
+cxx_compiler_version:
+- '4'
 libprotobuf:
-- '3.6'
+- '3.7'
 lz4_c:
 - 1.8.1
 macos_machine:

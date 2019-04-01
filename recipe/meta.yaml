@@ -1,6 +1,6 @@
-{% set version = "0.12.1" %}
+{% set version = "0.13.0" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set checksum = "e93e43343544e344bbc912b89da01d8abf66596f029d26b2b135b102a9e39895" %}
+{% set checksum = "ac2a77dd9168e9892e432c474611e86ded0be6dfe15f689c948751d37f81391a" %}
 
 package:
   name: arrow-cpp
@@ -26,27 +26,35 @@ requirements:
     - {{ compiler('cxx') }}
   host:
     - boost-cpp
-    - thrift-cpp >=0.11
-    - libprotobuf
-    - flatbuffers
+    - brotli
     - double-conversion
-    - rapidjson
-    - zlib
+    - flatbuffers
     - gflags
     - glog
-    - snappy
-    - brotli
-    - zstd
+    - libprotobuf
     - lz4-c
-    - python
     - numpy 1.14.*
+    - orc  # [unix]
+    - python
+    - rapidjson
+    - re2
+    - snappy
+    - thrift-cpp >=0.11
+    - zlib
+    - zstd
 
   run:
-    - boost-cpp
-    - python
     - {{ pin_compatible('numpy', lower_bound='1.14') }}
-    - snappy  # [win and py>=35]
+    - boost-cpp
+    - brotli
+    - gflags
+    - glog
+    - lz4-c
+    - python
+    - re2
+    - snappy
     - zlib
+    - zstd
 
 test:
   commands:
@@ -60,8 +68,8 @@ test:
     # static
     - test -f $PREFIX/lib/libarrow.a         # [unix]
     - test -f $PREFIX/lib/libarrow_python.a  # [unix]
-    - test -f $PREFIX/lib/libparquet.a       # [unix]
     - test -f $PREFIX/lib/libplasma.a        # [unix]
+    - test -f $PREFIX/lib/libparquet.a       # [unix]
     - if not exist %PREFIX%\\Library\\lib\\arrow_static.lib exit 1         # [win]
     - if not exist %PREFIX%\\Library\\lib\\arrow_python_static.lib exit 1  # [win]
     - if not exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1       # [win]
