@@ -34,6 +34,7 @@ requirements:
     - libprotobuf
     - clangdev 7.*
     - llvmdev 7.*
+    - libcxx 7.*  # [linux]
     - lz4-c
     - numpy 1.14.*
     - orc  # [unix]
