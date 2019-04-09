@@ -3,6 +3,8 @@
 set -e
 set -x
 
+export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
+
 mkdir cpp/build
 pushd cpp/build
 
