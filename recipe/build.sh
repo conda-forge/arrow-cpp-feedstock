@@ -3,7 +3,9 @@
 set -e
 set -x
 
-export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
+if [ "$(uname)" = "Linux" ] ; then
+  export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
+fi
 
 mkdir cpp/build
 pushd cpp/build
