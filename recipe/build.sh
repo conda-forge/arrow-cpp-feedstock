@@ -30,7 +30,7 @@ cmake \
     -DORC_HOME=$PREFIX \
     -DCMAKE_AR=${AR} \
     -DCMAKE_RANLIB=${RANLIB} \
-    -DPYTHON_EXECUTABLE="${PREFIX}/bin/python" \
+    -DPYTHON_EXECUTABLE="${PYTHON}" \
     -GNinja \
     ..
 
