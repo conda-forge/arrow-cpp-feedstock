@@ -32,8 +32,8 @@ requirements:
     - gflags
     - glog
     - libprotobuf
-    - clangdev 7.*
-    - llvmdev 7.*
+    - clangdev 8.*
+    - llvmdev 8.*
     - lz4-c
     - numpy 1.14.*
     - orc  # [unix]
