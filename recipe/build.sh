@@ -3,6 +3,10 @@
 set -e
 set -x
 
+if [ "$(uname)" = "Linux" ] ; then
+  export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
+fi
+
 mkdir cpp/build
 pushd cpp/build
 
@@ -13,6 +17,7 @@ cmake \
     -DARROW_DEPENDENCY_SOURCE=SYSTEM \
     -DARROW_PACKAGE_PREFIX=$PREFIX \
     -DARROW_BOOST_USE_SHARED=ON \
+    -DARROW_BUILD_STATIC=OFF \
     -DARROW_BUILD_BENCHMARKS=OFF \
     -DARROW_BUILD_UTILITIES=OFF \
     -DARROW_BUILD_TESTS=OFF \
@@ -25,7 +30,7 @@ cmake \
     -DORC_HOME=$PREFIX \
     -DCMAKE_AR=${AR} \
     -DCMAKE_RANLIB=${RANLIB} \
-    -DPYTHON_EXECUTABLE="${PREFIX}/bin/python" \
+    -DPYTHON_EXECUTABLE="${PYTHON}" \
     -GNinja \
     ..
 

@@ -12,7 +12,7 @@ source:
   sha256: {{ checksum }}
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x") }}
@@ -65,15 +65,6 @@ test:
     - if not exist %LIBRARY_INC%\\arrow\\api.h exit 1            # [win]
     - if not exist %LIBRARY_INC%\\parquet\\api\\reader.h exit 1  # [win]
 
-    # static
-    - test -f $PREFIX/lib/libarrow.a         # [unix]
-    - test -f $PREFIX/lib/libarrow_python.a  # [unix]
-    - test -f $PREFIX/lib/libplasma.a        # [unix]
-    - test -f $PREFIX/lib/libparquet.a       # [unix]
-    - if not exist %PREFIX%\\Library\\lib\\arrow_static.lib exit 1         # [win]
-    - if not exist %PREFIX%\\Library\\lib\\arrow_python_static.lib exit 1  # [win]
-    - if not exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1       # [win]
-
     # shared
     - test -f $PREFIX/lib/libarrow.so            # [linux]
     - test -f $PREFIX/lib/libarrow_python.so     # [linux]
@@ -86,6 +77,15 @@ test:
     - if not exist %PREFIX%\\Library\\bin\\arrow.dll exit 1         # [win]
     - if not exist %PREFIX%\\Library\\bin\\arrow_python.dll exit 1  # [win]
     - if not exist %PREFIX%\\Library\\bin\\parquet.dll exit 1       # [win]
+
+    # absence of static libraries
+    - test ! -f $PREFIX/lib/libarrow.a         # [unix]
+    - test ! -f $PREFIX/lib/libarrow_python.a  # [unix]
+    - test ! -f $PREFIX/lib/libplasma.a        # [unix]
+    - test ! -f $PREFIX/lib/libparquet.a       # [unix]
+    - if exist %PREFIX%\\Library\\lib\\arrow_static.lib exit 1         # [win]
+    - if exist %PREFIX%\\Library\\lib\\arrow_python_static.lib exit 1  # [win]
+    - if exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1       # [win]
 
 about:
   home: http://github.com/apache/arrow
