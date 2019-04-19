@@ -17,7 +17,7 @@ cxx_compiler_version:
 libprotobuf:
 - '3.7'
 lz4_c:
-- 1.8.1
+- 1.8.3
 macos_machine:
 - x86_64-apple-darwin13.4.0
 macos_min_version:
