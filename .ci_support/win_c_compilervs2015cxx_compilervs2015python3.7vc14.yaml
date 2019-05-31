@@ -1,7 +1,7 @@
 CMAKE_GENERATOR:
 - NMake Makefiles
 boost_cpp:
-- 1.68.0
+- 1.70.0
 c_compiler:
 - vs2015
 channel_sources:
