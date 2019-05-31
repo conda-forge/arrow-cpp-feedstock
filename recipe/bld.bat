@@ -15,6 +15,7 @@ cmake -G "%CMAKE_GENERATOR%" ^
       -DARROW_PARQUET:BOOL=ON ^
       -DARROW_GANDIVA:BOOL=OFF ^
       -DARROW_ORC:BOOL=ON ^
+      -DBoost_NO_BOOST_CMAKE=ON ^
       ..
 
 cmake --build . --target INSTALL --config Release
