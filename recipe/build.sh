@@ -31,6 +31,7 @@ cmake \
     -DCMAKE_AR=${AR} \
     -DCMAKE_RANLIB=${RANLIB} \
     -DPYTHON_EXECUTABLE="${PYTHON}" \
+    -DBoost_NO_BOOST_CMAKE=ON \
     -GNinja \
     ..
 
