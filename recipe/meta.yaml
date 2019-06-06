@@ -77,6 +77,8 @@ test:
     - if not exist %PREFIX%\\Library\\bin\\arrow.dll exit 1         # [win]
     - if not exist %PREFIX%\\Library\\bin\\arrow_python.dll exit 1  # [win]
     - if not exist %PREFIX%\\Library\\bin\\parquet.dll exit 1       # [win]
+    - conda inspect linkages -p $PREFIX $PKG_NAME        # [not win]
+    - conda inspect objects -p $PREFIX $PKG_NAME         # [osx]
 
     # absence of static libraries
     - test ! -f $PREFIX/lib/libarrow.a         # [unix]
