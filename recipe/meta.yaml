@@ -1,6 +1,6 @@
-{% set version = "0.13.0" %}
+{% set version = "0.14.0" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set checksum = "ac2a77dd9168e9892e432c474611e86ded0be6dfe15f689c948751d37f81391a" %}
+{% set checksum = "71e668e1901a06211d3f7ab6b6c7cb80ab1c81bb0d22885be42b74782e953470" %}
 
 package:
   name: arrow-cpp
@@ -12,7 +12,7 @@ source:
   sha256: {{ checksum }}
 
 build:
-  number: 7
+  number: 0
   skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x") }}
