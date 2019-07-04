@@ -67,7 +67,6 @@ requirements:
 
 test:
   commands:
-  commands:
     # headers
     - test -f $PREFIX/include/arrow/api.h              # [unix]
     - test -f $PREFIX/include/arrow/flight/types.h     # [unix]
@@ -108,6 +107,10 @@ test:
     - if exist %PREFIX%\\Library\\lib\\arrow_python_static.lib exit 1  # [win]
     - if exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1       # [win]
     - if exist %PREFIX%\\Library\\lib\\gandiva_static.lib exit 1       # [win]
+
+    # conda tools
+    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
+    - conda inspect objects -p $PREFIX $PKG_NAME   # [osx]
 
 about:
   home: http://github.com/apache/arrow
