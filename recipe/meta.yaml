@@ -12,7 +12,7 @@ source:
   sha256: {{ checksum }}
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x") }}
@@ -37,7 +37,8 @@ requirements:
     - clangdev 7.*
     - llvmdev 7.*
     - lz4-c
-    - numpy 1.14.*
+    - numpy 1.14.*  # [not (aarch64 or ppc64le)]
+    - numpy 1.16.*  # [aarch64 or ppc64le]
     - orc  # [unix]
     - python
     - rapidjson
@@ -49,7 +50,8 @@ requirements:
     - zstd
 
   run:
-    - {{ pin_compatible('numpy', lower_bound='1.14') }}
+    - {{ pin_compatible('numpy', lower_bound='1.14') }}  # [not (aarch64 or ppc64le)]
+    - {{ pin_compatible('numpy', lower_bound='1.16') }}  # [aarch64 or ppc64le]
     - boost-cpp
     - brotli
     - c-ares
