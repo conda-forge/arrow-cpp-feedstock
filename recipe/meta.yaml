@@ -12,7 +12,7 @@ source:
   sha256: {{ checksum }}
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x") }}
@@ -115,7 +115,11 @@ test:
 about:
   home: http://github.com/apache/arrow
   license: Apache 2.0
-  license_file: LICENSE.txt
+  license_file:
+    - LICENSE.txt
+    # TODO(kszucs): LLVM_LICENSE will be included in the next release,
+    # so remove it from 0.15 https://github.com/apache/arrow/pull/5250
+    - LLVM_LICENSE.txt
   summary: 'C++ libraries for Apache Arrow'
 
 extra:
