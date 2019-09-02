@@ -115,7 +115,9 @@ test:
 about:
   home: http://github.com/apache/arrow
   license: Apache 2.0
-  license_file: LICENSE.txt
+  license_file:
+    - LICENSE.txt
+    - LLVM_LICENSE.txt
   summary: 'C++ libraries for Apache Arrow'
 
 extra:
