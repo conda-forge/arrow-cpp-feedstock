@@ -117,6 +117,8 @@ about:
   license: Apache 2.0
   license_file:
     - LICENSE.txt
+    # TODO(kszucs): LLVM_LICENSE will be included in the next release,
+    # so remove it from 0.15 https://github.com/apache/arrow/pull/5250
     - LLVM_LICENSE.txt
   summary: 'C++ libraries for Apache Arrow'
 
