@@ -1,7 +1,7 @@
 mkdir "%SRC_DIR%"\cpp\build
 pushd "%SRC_DIR%"\cpp\build
 
-cmake -G "%CMAKE_GENERATOR%" ^
+cmake -G "NMake Makefiles" ^
       -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
       -DARROW_DEPENDENCY_SOURCE=SYSTEM ^
       -DARROW_PACKAGE_PREFIX="%LIBRARY_PREFIX%" ^
