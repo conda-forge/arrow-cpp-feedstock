@@ -1,7 +1,7 @@
 mkdir "%SRC_DIR%"\cpp\build
 pushd "%SRC_DIR%"\cpp\build
 
-cmake -G "NMake Makefiles" ^
+cmake -G "Ninja" ^
       -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
       -DARROW_DEPENDENCY_SOURCE=SYSTEM ^
       -DARROW_PACKAGE_PREFIX="%LIBRARY_PREFIX%" ^
@@ -20,6 +20,6 @@ cmake -G "NMake Makefiles" ^
       -DBoost_NO_BOOST_CMAKE=ON ^
       ..
 
-cmake --build . --target INSTALL --config Release
+cmake --build . --target install --config Release
 
 popd
