@@ -10,6 +10,8 @@ cxx_compiler:
 - vs2015
 glog:
 - 0.4.0
+grpc_cpp:
+- '1.23'
 libprotobuf:
 - '3.8'
 lz4_c:
@@ -17,6 +19,8 @@ lz4_c:
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
+  grpc-cpp:
+    max_pin: x.x
   libprotobuf:
     max_pin: x.x
   lz4-c:
