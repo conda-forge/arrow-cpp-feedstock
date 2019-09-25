@@ -17,6 +17,7 @@ cmake -G "Ninja" ^
       -DARROW_PARQUET:BOOL=ON ^
       -DARROW_GANDIVA:BOOL=ON ^
       -DARROW_ORC:BOOL=ON ^
+      -DARROW_WITH_BZ2:BOOL=ON ^
       -DBoost_NO_BOOST_CMAKE=ON ^
       ..
 
