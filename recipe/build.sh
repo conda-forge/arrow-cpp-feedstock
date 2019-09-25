@@ -33,6 +33,7 @@ cmake \
     -DARROW_PARQUET=ON \
     -DARROW_GANDIVA=ON \
     -DARROW_ORC=ON \
+    -DARROW_WITH_BZ2=ON \
     -DCMAKE_AR=${AR} \
     -DCMAKE_RANLIB=${RANLIB} \
     -GNinja \
