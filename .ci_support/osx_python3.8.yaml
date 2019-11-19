@@ -21,7 +21,7 @@ glog:
 grpc_cpp:
 - '1.25'
 libprotobuf:
-- '3.8'
+- '3.10'
 lz4_c:
 - 1.8.3
 macos_machine:
