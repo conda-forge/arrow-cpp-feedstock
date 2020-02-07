@@ -36,8 +36,6 @@ pin_run_as_build:
   python:
     min_pin: x.x
     max_pin: x.x
-  snappy:
-    max_pin: x.x.x
   zlib:
     max_pin: x.x
   zstd:
@@ -45,7 +43,7 @@ pin_run_as_build:
 python:
 - '3.8'
 snappy:
-- 1.1.7
+- '1'
 zlib:
 - '1.2'
 zstd:
