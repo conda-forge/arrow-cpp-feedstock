@@ -19,7 +19,7 @@ docker_image:
 glog:
 - 0.4.0
 grpc_cpp:
-- '1.25'
+- '1.72'
 libprotobuf:
 - '3.11'
 lz4_c:
