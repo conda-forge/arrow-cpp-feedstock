@@ -11,7 +11,7 @@ EXTRA_CMAKE_ARGS=""
 # Include g++'s system headers
 if [ "$(uname)" == "Linux" ]; then
   SYSTEM_INCLUDES=$(echo | ${CXX} -E -Wp,-v -xc++ - 2>&1 | grep '^ ' | awk '{print "-isystem;" substr($1, 1)}' | tr '\n' ';')
-  EXTRA_CMAKE_ARGS=" -DARROW_GANDIVA_PC_CXX_FLAGS=${SYSTEM_INCLUDES} -DCUDA_TOOLKIT_ROOT_DIR=${CUDA_HOME} -DCMAKE_LIBRARY_PATH=${CUDA_HOME}/lib64/stubs"
+  EXTRA_CMAKE_ARGS=" -DARROW_GANDIVA_PC_CXX_FLAGS=${SYSTEM_INCLUDES} -DARROW_CUDA=ON -DCUDA_TOOLKIT_ROOT_DIR=${CUDA_HOME} -DCMAKE_LIBRARY_PATH=${CUDA_HOME}/lib64/stubs"
 fi
 
 cmake \
@@ -44,7 +44,6 @@ cmake \
     -DARROW_HDFS=ON \
     -DARROW_ORC=ON \
     -DARROW_S3=ON \
-    -DARROW_CUDA=ON \
     -DCMAKE_AR=${AR} \
     -DCMAKE_RANLIB=${RANLIB} \
     -GNinja \
