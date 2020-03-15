@@ -12,7 +12,7 @@ source:
   sha256: {{ checksum }}
 
 build:
-  number: 1
+  number: 2
   skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
@@ -24,6 +24,7 @@ requirements:
     - ninja
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - {{ compiler("cuda") }}  # [linux]
   host:
     - aws-sdk-cpp
     - boost-cpp
@@ -83,6 +84,7 @@ test:
     - test -f $PREFIX/lib/libparquet.so          # [linux]
     - test -f $PREFIX/lib/libgandiva.so          # [linux]
     - test -f $PREFIX/lib/libplasma.so           # [linux]
+    - test -f $PREFIX/lib/libarrow_cuda.so       # [linux]
     - test -f $PREFIX/lib/libarrow.dylib          # [osx]
     - test -f $PREFIX/lib/libarrow_dataset.dylib  # [osx]
     - test -f $PREFIX/lib/libarrow_python.dylib   # [osx]
