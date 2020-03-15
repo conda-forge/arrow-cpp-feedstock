@@ -16,8 +16,6 @@ cxx_compiler:
 - clangxx
 cxx_compiler_version:
 - '9'
-docker_image:
-- condaforge/linux-anvil-cuda:10.1
 glog:
 - 0.4.0
 grpc_cpp:
