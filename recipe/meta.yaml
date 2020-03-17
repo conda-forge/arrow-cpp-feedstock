@@ -24,7 +24,7 @@ requirements:
     - ninja
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - {{ compiler("cuda") }}  # [linux]
+    - {{ compiler("cuda") }}  # [linux and cuda_compiler_version != 'None']
   host:
     - aws-sdk-cpp
     - boost-cpp
