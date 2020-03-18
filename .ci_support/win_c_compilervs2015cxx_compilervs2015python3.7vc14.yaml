@@ -3,23 +3,13 @@ boost_cpp:
 bzip2:
 - '1'
 c_compiler:
-- gcc
-c_compiler_version:
-- '7'
+- vs2015
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
-cuda_compiler:
-- nvcc
-cuda_compiler_version:
-- '10.0'
 cxx_compiler:
-- gxx
-cxx_compiler_version:
-- '7'
-docker_image:
-- condaforge/linux-anvil-cuda:10.0
+- vs2015
 glog:
 - 0.4.0
 grpc_cpp:
@@ -40,17 +30,23 @@ pin_run_as_build:
   python:
     min_pin: x.x
     max_pin: x.x
+  vc:
+    max_pin: x
   zlib:
     max_pin: x.x
   zstd:
     max_pin: x.x.x
 python:
-- 3.6.* *_cpython
+- '3.7'
 snappy:
 - '1'
+vc:
+- '14'
 zip_keys:
-- - cuda_compiler_version
-  - docker_image
+- - python
+  - vc
+  - c_compiler
+  - cxx_compiler
 zlib:
 - '1.2'
 zstd:
