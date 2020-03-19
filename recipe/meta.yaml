@@ -125,6 +125,13 @@ outputs:
         - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
         - conda inspect objects -p $PREFIX $PKG_NAME   # [osx]
 
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache 2.0
+      license_file:
+        - LICENSE.txt
+      summary: 'C++ libraries for Apache Arrow'
+
 about:
   home: http://github.com/apache/arrow
   license: Apache 2.0
