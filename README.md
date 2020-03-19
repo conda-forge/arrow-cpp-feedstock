@@ -1,5 +1,5 @@
-About arrow-cpp
-===============
+About arrow-cpp-ext
+===================
 
 Home: http://github.com/apache/arrow
 
@@ -29,13 +29,6 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>linux_cuda_compiler_version10.0python2.7.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=master&jobName=linux&configuration=linux_cuda_compiler_version10.0python2.7.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
               <td>linux_cuda_compiler_version10.0python3.6.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=master">
@@ -54,13 +47,6 @@ Current build status
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=master">
                   <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=master&jobName=linux&configuration=linux_cuda_compiler_version10.0python3.8.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_cuda_compiler_version10.1python2.7.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=master&jobName=linux&configuration=linux_cuda_compiler_version10.1python2.7.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
@@ -85,13 +71,6 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>linux_cuda_compiler_version10.2python2.7.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=master&jobName=linux&configuration=linux_cuda_compiler_version10.2python2.7.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
               <td>linux_cuda_compiler_version10.2python3.6.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=master">
@@ -110,13 +89,6 @@ Current build status
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=master">
                   <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=master&jobName=linux&configuration=linux_cuda_compiler_version10.2python3.8.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_cuda_compiler_version9.2python2.7.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=master&jobName=linux&configuration=linux_cuda_compiler_version9.2python2.7.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
@@ -141,13 +113,6 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>linux_cuda_compiler_versionNonepython2.7.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=master&jobName=linux&configuration=linux_cuda_compiler_versionNonepython2.7.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
               <td>linux_cuda_compiler_versionNonepython3.6.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=master">
@@ -166,13 +131,6 @@ Current build status
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=master">
                   <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=master&jobName=linux&configuration=linux_cuda_compiler_versionNonepython3.8.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_python2.7.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=master&jobName=osx&configuration=osx_python2.7.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
@@ -197,24 +155,24 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>win_c_compilervs2015cxx_compilervs2015python3.6.____cpythonvc14</td>
+              <td>win_python3.6.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=master&jobName=win&configuration=win_c_compilervs2015cxx_compilervs2015python3.6.____cpythonvc14" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=master&jobName=win&configuration=win_python3.6.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_c_compilervs2015cxx_compilervs2015python3.7.____cpythonvc14</td>
+              <td>win_python3.7.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=master&jobName=win&configuration=win_c_compilervs2015cxx_compilervs2015python3.7.____cpythonvc14" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=master&jobName=win&configuration=win_python3.7.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_c_compilervs2015cxx_compilervs2015python3.8.____cpythonvc14</td>
+              <td>win_python3.8.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=master&jobName=win&configuration=win_c_compilervs2015cxx_compilervs2015python3.8.____cpythonvc14" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=master&jobName=win&configuration=win_python3.8.____cpython" alt="variant">
                 </a>
               </td>
             </tr>
@@ -237,20 +195,21 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-arrow--cpp-green.svg)](https://anaconda.org/conda-forge/arrow-cpp) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/arrow-cpp.svg)](https://anaconda.org/conda-forge/arrow-cpp) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/arrow-cpp.svg)](https://anaconda.org/conda-forge/arrow-cpp) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/arrow-cpp.svg)](https://anaconda.org/conda-forge/arrow-cpp) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-arrow--cpp--cuda-green.svg)](https://anaconda.org/conda-forge/arrow-cpp-cuda) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/arrow-cpp-cuda.svg)](https://anaconda.org/conda-forge/arrow-cpp-cuda) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/arrow-cpp-cuda.svg)](https://anaconda.org/conda-forge/arrow-cpp-cuda) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/arrow-cpp-cuda.svg)](https://anaconda.org/conda-forge/arrow-cpp-cuda) |
 
-Installing arrow-cpp
-====================
+Installing arrow-cpp-ext
+========================
 
-Installing `arrow-cpp` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
+Installing `arrow-cpp-ext` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
 
 ```
 conda config --add channels conda-forge
 ```
 
-Once the `conda-forge` channel has been enabled, `arrow-cpp` can be installed with:
+Once the `conda-forge` channel has been enabled, `arrow-cpp, arrow-cpp-cuda` can be installed with:
 
 ```
-conda install arrow-cpp
+conda install arrow-cpp arrow-cpp-cuda
 ```
 
 It is possible to list all of the versions of `arrow-cpp` available on your platform with:
@@ -298,17 +257,17 @@ Terminology
                   produce the finished article (built conda distributions)
 
 
-Updating arrow-cpp-feedstock
-============================
+Updating arrow-cpp-ext-feedstock
+================================
 
-If you would like to improve the arrow-cpp recipe or build a new
+If you would like to improve the arrow-cpp-ext recipe or build a new
 package version, please fork this repository and submit a PR. Upon submission,
 your changes will be run on the appropriate platforms to give the reviewer an
 opportunity to confirm that the changes result in a successful build. Once
 merged, the recipe will be re-built and uploaded automatically to the
 `conda-forge` channel, whereupon the built conda packages will be available for
 everybody to install and use from the `conda-forge` channel.
-Note that all branches in the conda-forge/arrow-cpp-feedstock are
+Note that all branches in the conda-forge/arrow-cpp-ext-feedstock are
 immediately built and any created packages are uploaded, so PRs should be based
 on branches in forks and branches in the main repository should only be used to
 build distinct package versions.
