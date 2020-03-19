@@ -1,12 +1,11 @@
 {% set version = "0.16.0" %}
-{% set proc_version = "1.0.0" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
 {% set checksum = "261992de4029a1593195ff4000501503bd403146471b3168bd2cc414ad0fb7f5" %}
-{% set number = "3" %}
-{% set proc_type = "cpu" if cuda_compiler_version == "None" else "cuda" %}
+{% set number = "2" %}
+{% set cuda_ext = "" if cuda_compiler_version == "None" else "-cuda" %}
 
 package:
-  name: arrow-cpp-split
+  name: arrow-cpp-ext
 
 source:
   fn: {{ filename }}
@@ -14,27 +13,14 @@ source:
   sha256: {{ checksum }}
 
 build:
-  number: {{ number }}
   skip: true  # [win and vc<14]
   run_exports:
-    - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
+    - {{ pin_subpackage("arrow-cpp-cuda", max_pin="x.x.x") }}  # [linux and cuda_compiler_version != 'None']
+    - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}  # [cuda_compiler_version == 'None']
 
 outputs:
-  - name: arrow-cpp-proc
-    version: {{ proc_version }}
-    build:
-      number: 0
-      string: "{{ proc_type }}"
-    test:
-      commands:
-        - exit 0
-    about:
-      home: https://github.com/conda-forge/ucx-feedstock
-      license: BSD-3-Clause
-      license_family: BSD
-      summary: A meta-package to select CPU or CUDA Arrow build.
-
-  - name: arrow-cpp
+  - name: arrow-cpp{{ cuda_ext }}
+    script: build-arrow.sh
     version: {{ version }}
     build:
       number: {{ number }}
