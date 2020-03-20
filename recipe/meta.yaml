@@ -21,7 +21,10 @@ build:
 
 outputs:
   - name: arrow-cpp{{ cuda_ext }}
-    script: build-arrow.sh
+    script:
+      - build-arrow.sh  # [not win]
+      - bld.bat  # [win]
+
     version: {{ version }}
     build:
       number: {{ number }}
