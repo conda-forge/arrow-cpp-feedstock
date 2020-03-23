@@ -93,6 +93,7 @@ outputs:
         - zstd
       run_constrained:
         - arrow-cpp-build-ext * {{ build_ext }}
+        - cudatoolkit >=9.2
     test:
       commands:
         # headers
