@@ -1,21 +1,21 @@
+MACOSX_DEPLOYMENT_TARGET:
+- '10.9'
 boost_cpp:
 - '1.72'
 bzip2:
 - '1'
 c_compiler:
-- gcc
+- clang
 c_compiler_version:
-- '7'
+- '9'
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- gxx
+- clangxx
 cxx_compiler_version:
-- '7'
-docker_image:
-- condaforge/linux-anvil-comp7
+- '9'
 glog:
 - 0.4.0
 grpc_cpp:
@@ -24,6 +24,10 @@ libprotobuf:
 - '3.11'
 lz4_c:
 - 1.8.3
+macos_machine:
+- x86_64-apple-darwin13.4.0
+macos_min_version:
+- '10.9'
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
@@ -41,7 +45,7 @@ pin_run_as_build:
   zstd:
     max_pin: x.x.x
 python:
-- '3.8'
+- 3.8.* *_cpython
 snappy:
 - '1'
 zlib:
