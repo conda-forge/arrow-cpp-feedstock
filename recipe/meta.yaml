@@ -1,7 +1,7 @@
 {% set version = "0.16.0" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
 {% set checksum = "261992de4029a1593195ff4000501503bd403146471b3168bd2cc414ad0fb7f5" %}
-{% set number = "3" %}
+{% set number = "2" %}
 {% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '9.2' %}
 {% set build_ext_version = "1.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -42,8 +42,10 @@ outputs:
     version: {{ version }}
     build:
       number: {{ number }}
-      string: "{{ build_ext }}"
+      string: "py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ number }}_{{ build_ext }}"
       skip: true  # [(win and vc<14) or (linux and cuda_compiler_version is not undefined and cuda_compiler_version != '9.2' and cuda_compiler_version != 'None')]
+      ignore_run_exports:
+        - cudatoolkit
     requirements:
       build:
         - cmake
