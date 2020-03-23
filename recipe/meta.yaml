@@ -1,9 +1,10 @@
 {% set version = "0.16.0" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
 {% set checksum = "261992de4029a1593195ff4000501503bd403146471b3168bd2cc414ad0fb7f5" %}
-{% set number = "2" %}
+{% set number = "3" %}
 {% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '9.2' %}
-{% set cuda_ext = "-cuda" if cuda_enabled else "" %}
+{% set build_ext_version = "1.0.0" %}
+{% set build_ext = "cuda" if cuda_enabled else "cpu" %}
 
 package:
   name: arrow-cpp-ext
@@ -17,15 +18,31 @@ build:
   skip: true  # [(win and vc<14) or (linux and cuda_compiler_version is not undefined and cuda_compiler_version != '9.2' and cuda_compiler_version != 'None')]
   number: {{ number }}
   run_exports:
-    - {{ pin_subpackage("arrow-cpp" + cuda_ext, max_pin="x.x.x") }}
+    - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}  # is this correct and the correct place for it?
 
 outputs:
-  - name: arrow-cpp{{ cuda_ext }}
+  - name: arrow-cpp-build-ext
+    version: {{ build_ext_version }}
+    build:
+      number: 0
+      string: "{{ build_ext }}"
+    test:
+      commands:
+        - exit 0
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache 2.0
+      license_file:
+        - LICENSE.txt
+      summary: A meta-package to select CUDA build
+
+  - name: arrow-cpp
     script: build-arrow.sh  # [not win]
     script: bld.bat  # [win]
     version: {{ version }}
     build:
       number: {{ number }}
+      string: "{{ build_ext }}"
       skip: true  # [(win and vc<14) or (linux and cuda_compiler_version is not undefined and cuda_compiler_version != '9.2' and cuda_compiler_version != 'None')]
     requirements:
       build:
@@ -72,7 +89,8 @@ outputs:
         - snappy
         - zlib
         - zstd
-
+      run_constrained:
+        - arrow-cpp-build-ext * {{ build_ext }}
     test:
       commands:
         # headers

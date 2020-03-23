@@ -17,6 +17,8 @@ fi
 # Enable CUDA support
 if [ ! -z "${cuda_compiler_version+x}" && "${cuda_compiler_version}" != "None" ]; then
     EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=ON -DCUDA_TOOLKIT_ROOT_DIR=${CUDA_HOME} -DCMAKE_LIBRARY_PATH=${CUDA_HOME}/lib64/stubs"
+else
+    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=OFF"
 fi
 
 cmake \
