@@ -55,7 +55,7 @@ outputs:
         - ninja
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - {{ compiler("cuda") }}  # [linux and cuda_compiler_version is not undefined and cuda_compiler_version == '9.2']
+        #- {{ compiler("cuda") }}  # [linux and cuda_compiler_version is not undefined and cuda_compiler_version == '9.2']
       host:
         - aws-sdk-cpp
         - boost-cpp
