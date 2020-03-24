@@ -9,13 +9,21 @@ pushd cpp/build
 EXTRA_CMAKE_ARGS=""
 
 # Include g++'s system headers
-if [ "$(uname)" == "Linux" ]; then
+if [[ "$(uname)" == "Linux" ]]
+then
   SYSTEM_INCLUDES=$(echo | ${CXX} -E -Wp,-v -xc++ - 2>&1 | grep '^ ' | awk '{print "-isystem;" substr($1, 1)}' | tr '\n' ';')
   EXTRA_CMAKE_ARGS=" -DARROW_GANDIVA_PC_CXX_FLAGS=${SYSTEM_INCLUDES}"
 fi
 
 # Enable CUDA support
-if [ ! -z "${cuda_compiler_version+x}" && "${cuda_compiler_version}" != "None" ]; then
+if [[ ! -z "${cuda_compiler_version+x}" && "${cuda_compiler_version}" != "None" ]]
+then
+    if [[ -z "${CUDA_HOME+x}" ]]
+    then
+        echo "cuda_compiler_version=${cuda_compiler_version}"
+        echo "CUDA_HOME must be defined"
+        exit 1
+    fi
     EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=ON -DCUDA_TOOLKIT_ROOT_DIR=${CUDA_HOME} -DCMAKE_LIBRARY_PATH=${CUDA_HOME}/lib64/stubs"
 else
     EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=OFF"
