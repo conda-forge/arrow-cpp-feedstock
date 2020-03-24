@@ -38,16 +38,17 @@ outputs:
 
   - name: arrow-cpp
     script: build-arrow.sh  # [not win]
-    script: bld.bat  # [win]
+    script: bld.bat         # [win]
     version: {{ version }}
     build:
       number: {{ number }}
       string: "py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ number }}_{{ build_ext }}"
-      skip: true  # [(win and vc<14) or (linux and cuda_compiler_version is not undefined and cuda_compiler_version != '9.2' and cuda_compiler_version != 'None')]
+      skip: true  # [win and vc<14]
+      skip: true  # [linux and cuda_compiler_version is not undefined and cuda_compiler_version != '9.2' and cuda_compiler_version != 'None']
       ignore_run_exports:
         - cudatoolkit
       track_features:
-        - arrow-cuda              # [linux and cuda_compiler_version is not undefined and cuda_compiler_version == '9.2']
+        - arrow-cuda         # [linux and cuda_compiler_version is not undefined and cuda_compiler_version == '9.2']
     requirements:
       build:
         - cmake
@@ -55,7 +56,7 @@ outputs:
         - ninja
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        #- {{ compiler("cuda") }}  # [linux and cuda_compiler_version is not undefined and cuda_compiler_version == '9.2']
+        - {{ compiler("cuda") }}  # [linux and cuda_compiler_version is not undefined and cuda_compiler_version == '9.2']
       host:
         - aws-sdk-cpp
         - boost-cpp
