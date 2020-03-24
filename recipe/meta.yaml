@@ -47,7 +47,7 @@ outputs:
       ignore_run_exports:
         - cudatoolkit
       track_features:
-        - arrow-cuda              # [linux and cuda_enabled]
+        - arrow-cuda              # [linux and cuda_compiler_version is not undefined and cuda_compiler_version == '9.2']
     requirements:
       build:
         - cmake
@@ -55,7 +55,7 @@ outputs:
         - ninja
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - {{ compiler("cuda") }}  # [linux and cuda_enabled]
+        - {{ compiler("cuda") }}  # [linux and cuda_compiler_version is not undefined and cuda_compiler_version == '9.2']
       host:
         - aws-sdk-cpp
         - boost-cpp
@@ -116,8 +116,8 @@ outputs:
         - test -f $PREFIX/lib/libparquet.so          # [linux]
         - test -f $PREFIX/lib/libgandiva.so          # [linux]
         - test -f $PREFIX/lib/libplasma.so           # [linux]
-        - test -f $PREFIX/lib/libarrow_cuda.so       # [linux and cuda_enabled]
-        - test ! -f $PREFIX/lib/libarrow_cuda.so     # [linux and not cuda_enabled]
+        - test -f $PREFIX/lib/libarrow_cuda.so       # [linux and cuda_compiler_version is not undefined and cuda_compiler_version == '9.2']
+        - test ! -f $PREFIX/lib/libarrow_cuda.so     # [linux and not (cuda_compiler_version is not undefined and cuda_compiler_version == '9.2')]
         - test -f $PREFIX/lib/libarrow.dylib          # [osx]
         - test -f $PREFIX/lib/libarrow_dataset.dylib  # [osx]
         - test -f $PREFIX/lib/libarrow_python.dylib   # [osx]
