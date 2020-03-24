@@ -46,6 +46,8 @@ outputs:
       skip: true  # [(win and vc<14) or (linux and cuda_compiler_version is not undefined and cuda_compiler_version != '9.2' and cuda_compiler_version != 'None')]
       ignore_run_exports:
         - cudatoolkit
+      track_features:
+        - arrow-cuda              # [linux and cuda_enabled]
     requirements:
       build:
         - cmake
