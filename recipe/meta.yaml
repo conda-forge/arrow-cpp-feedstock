@@ -22,6 +22,7 @@ requirements:
     - cmake
     - autoconf  # [unix]
     - ninja
+    - make  # [unix]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
