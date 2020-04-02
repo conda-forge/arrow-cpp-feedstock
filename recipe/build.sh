@@ -8,6 +8,12 @@ pushd cpp/build
 
 EXTRA_CMAKE_ARGS=""
 
+if [ "$(uname -m)" = "ppc64le" ] || [ "$(uname -m)" = "aarch64" ]; then
+  ARROW_GANDIVA=OFF
+else
+  ARROW_GANDIVA=ON
+fi
+
 # Include g++'s system headers
 if [ "$(uname)" == "Linux" ]; then
   SYSTEM_INCLUDES=$(echo | ${CXX} -E -Wp,-v -xc++ - 2>&1 | grep '^ ' | awk '{print "-isystem;" substr($1, 1)}' | tr '\n' ';')
@@ -40,7 +46,7 @@ cmake \
     -DARROW_PLASMA=ON \
     -DARROW_PYTHON=ON \
     -DARROW_PARQUET=ON \
-    -DARROW_GANDIVA=ON \
+    -DARROW_GANDIVA=${ARROW_GANDIVA} \
     -DARROW_HDFS=ON \
     -DARROW_ORC=ON \
     -DARROW_S3=ON \

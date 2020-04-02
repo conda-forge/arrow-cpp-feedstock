@@ -34,8 +34,8 @@ requirements:
     - glog
     - grpc-cpp
     - libprotobuf
-    - clangdev 7.*
-    - llvmdev 7.*
+    - clangdev 7.*  # [not (aarch64 or ppc64le)]
+    - llvmdev 7.*   # [not (aarch64 or ppc64le)]
     - lz4-c
     - numpy 1.16.*
     - orc  # [unix]
@@ -69,7 +69,7 @@ test:
     - test -f $PREFIX/include/arrow/api.h              # [unix]
     - test -f $PREFIX/include/arrow/flight/types.h     # [unix]
     - test -f $PREFIX/include/plasma/client.h          # [unix]
-    - test -f $PREFIX/include/gandiva/engine.h         # [unix]
+    - test -f $PREFIX/include/gandiva/engine.h         # [unix and not (aarch64 or ppc64le)]
     - test -f $PREFIX/include/parquet/api/reader.h     # [unix]
     - if not exist %LIBRARY_INC%\\arrow\\api.h exit 1            # [win]
     - if not exist %LIBRARY_INC%\\gandiva\\engine.h exit 1       # [win]
@@ -81,7 +81,7 @@ test:
     - test -f $PREFIX/lib/libarrow_flight.so     # [linux]
     - test -f $PREFIX/lib/libarrow_python.so     # [linux]
     - test -f $PREFIX/lib/libparquet.so          # [linux]
-    - test -f $PREFIX/lib/libgandiva.so          # [linux]
+    - test -f $PREFIX/lib/libgandiva.so          # [linux and not (aarch64 or ppc64le)]
     - test -f $PREFIX/lib/libplasma.so           # [linux]
     - test -f $PREFIX/lib/libarrow.dylib          # [osx]
     - test -f $PREFIX/lib/libarrow_dataset.dylib  # [osx]
