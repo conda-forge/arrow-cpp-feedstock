@@ -38,7 +38,8 @@ requirements:
     - clangdev 7.*  # [not (aarch64 or ppc64le)]
     - llvmdev 7.*   # [not (aarch64 or ppc64le)]
     - lz4-c
-    - numpy 1.16.*
+    - numpy 1.16.*  # [python_impl == 'cpython']
+    - numpy 1.18.*  # [python_impl == 'pypy']
     - orc  # [unix]
     - python
     - rapidjson
@@ -49,7 +50,8 @@ requirements:
     - zstd
 
   run:
-    - {{ pin_compatible('numpy', lower_bound='1.16') }}
+    - {{ pin_compatible('numpy', lower_bound='1.16') }}  # [python_impl == 'cpython']
+    - {{ pin_compatible('numpy', lower_bound='1.18') }}  # [python_impl == 'pypy']
     - aws-sdk-cpp
     - boost-cpp
     - brotli
