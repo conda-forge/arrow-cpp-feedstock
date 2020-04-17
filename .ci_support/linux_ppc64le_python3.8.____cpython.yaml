@@ -5,21 +5,17 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '7'
+- '8'
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
-cuda_compiler:
-- nvcc
-cuda_compiler_version:
-- '9.2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '7'
+- '8'
 docker_image:
-- condaforge/linux-anvil-cuda:9.2
+- condaforge/linux-anvil-ppc64le
 glog:
 - 0.4.0
 grpc_cpp:
@@ -43,12 +39,9 @@ pin_run_as_build:
   zstd:
     max_pin: x.x.x
 python:
-- 3.6.* *_cpython
+- 3.8.* *_cpython
 snappy:
 - '1'
-zip_keys:
-- - cuda_compiler_version
-  - docker_image
 zlib:
 - '1.2'
 zstd:

@@ -1,3 +1,5 @@
+BUILD:
+- aarch64-conda_cos7-linux-gnu
 boost_cpp:
 - '1.72'
 bzip2:
@@ -6,20 +8,20 @@ c_compiler:
 - gcc
 c_compiler_version:
 - '7'
+cdt_arch:
+- aarch64
+cdt_name:
+- cos7
 channel_sources:
-- conda-forge,defaults
+- conda-forge
 channel_targets:
 - conda-forge main
-cuda_compiler:
-- nvcc
-cuda_compiler_version:
-- '9.2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
 - '7'
 docker_image:
-- condaforge/linux-anvil-cuda:9.2
+- condaforge/linux-anvil-aarch64
 glog:
 - 0.4.0
 grpc_cpp:
@@ -46,9 +48,6 @@ python:
 - 3.6.* *_cpython
 snappy:
 - '1'
-zip_keys:
-- - cuda_compiler_version
-  - docker_image
 zlib:
 - '1.2'
 zstd:

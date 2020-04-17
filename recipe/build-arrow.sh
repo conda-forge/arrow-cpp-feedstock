@@ -8,6 +8,12 @@ pushd cpp/build
 
 EXTRA_CMAKE_ARGS=""
 
+if [ "$(uname -m)" = "ppc64le" ] || [ "$(uname -m)" = "aarch64" ]; then
+  ARROW_GANDIVA=OFF
+else
+  ARROW_GANDIVA=ON
+fi
+
 # Include g++'s system headers
 if [[ "$(uname)" == "Linux" ]]
 then
@@ -61,7 +67,7 @@ cmake \
     -DARROW_PLASMA=ON \
     -DARROW_PYTHON=ON \
     -DARROW_PARQUET=ON \
-    -DARROW_GANDIVA=ON \
+    -DARROW_GANDIVA=${ARROW_GANDIVA} \
     -DARROW_HDFS=ON \
     -DARROW_ORC=ON \
     -DARROW_S3=ON \
@@ -70,6 +76,14 @@ cmake \
     -GNinja \
     ${EXTRA_CMAKE_ARGS} \
     ..
-ninja install
+if [ "$(uname -m)" = "ppc64le" ]; then
+    # Decrease parallelism a bit as we will otherwise get out-of-memory problems
+    echo "Using $(grep -c ^processor /proc/cpuinfo) CPUs"
+    CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
+    CPU_COUNT=$((CPU_COUNT / 4))
+    ninja install -j${CPU_COUNT}
+else
+    ninja install
+fi
 
 popd
