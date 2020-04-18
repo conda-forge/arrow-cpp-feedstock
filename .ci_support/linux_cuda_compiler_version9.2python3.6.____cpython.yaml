@@ -10,8 +10,6 @@ channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
-cuda_compiler:
-- nvcc
 cuda_compiler_version:
 - '9.2'
 cxx_compiler:
@@ -20,6 +18,8 @@ cxx_compiler_version:
 - '7'
 docker_image:
 - condaforge/linux-anvil-cuda:9.2
+gflags:
+- '2.2'
 glog:
 - 0.4.0
 grpc_cpp:

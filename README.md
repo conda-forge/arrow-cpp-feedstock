@@ -182,7 +182,7 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-arrow--cpp-green.svg)](https://anaconda.org/conda-forge/arrow-cpp) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/arrow-cpp.svg)](https://anaconda.org/conda-forge/arrow-cpp) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/arrow-cpp.svg)](https://anaconda.org/conda-forge/arrow-cpp) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/arrow-cpp.svg)](https://anaconda.org/conda-forge/arrow-cpp) |
-| [![Conda Recipe](https://img.shields.io/badge/recipe-arrow--cpp--build--ext-green.svg)](https://anaconda.org/conda-forge/arrow-cpp-build-ext) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/arrow-cpp-build-ext.svg)](https://anaconda.org/conda-forge/arrow-cpp-build-ext) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/arrow-cpp-build-ext.svg)](https://anaconda.org/conda-forge/arrow-cpp-build-ext) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/arrow-cpp-build-ext.svg)](https://anaconda.org/conda-forge/arrow-cpp-build-ext) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-arrow--cpp--proc-green.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/arrow-cpp-proc.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/arrow-cpp-proc.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/arrow-cpp-proc.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) |
 
 Installing arrow-cpp-ext
 ========================
@@ -193,10 +193,10 @@ Installing `arrow-cpp-ext` from the `conda-forge` channel can be achieved by add
 conda config --add channels conda-forge
 ```
 
-Once the `conda-forge` channel has been enabled, `arrow-cpp, arrow-cpp-build-ext` can be installed with:
+Once the `conda-forge` channel has been enabled, `arrow-cpp, arrow-cpp-proc` can be installed with:
 
 ```
-conda install arrow-cpp arrow-cpp-build-ext
+conda install arrow-cpp arrow-cpp-proc
 ```
 
 It is possible to list all of the versions of `arrow-cpp` available on your platform with:
@@ -275,6 +275,7 @@ Feedstock Maintainers
 * [@kszucs](https://github.com/kszucs/)
 * [@leifwalsh](https://github.com/leifwalsh/)
 * [@pcmoritz](https://github.com/pcmoritz/)
+* [@pearu](https://github.com/pearu/)
 * [@pitrou](https://github.com/pitrou/)
 * [@robertnishihara](https://github.com/robertnishihara/)
 * [@siddharthteotia](https://github.com/siddharthteotia/)
