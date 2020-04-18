@@ -121,7 +121,7 @@ outputs:
         - test -f $PREFIX/lib/libplasma.so           # [linux]
         {{ "- test %s -f $PREFIX/lib/libarrow_cuda.so" % (['!', ''][cuda_enabled]) }}                         # [linux]
         {{ "- test %s -f $PREFIX/lib/libarrow_cuda.dylib" % (['!', ''][cuda_enabled]) }}                      # [osx]
-        {{ "- if %s exist %%PREFIX%%\\Library\\bin\\arrow_cuda.dll exit 1" % (['not', ''][cuda_enabled]) }}   # [win]
+        {{ "- if %s exist %%PREFIX%%\\Library\\bin\\arrow_cuda.dll exit 1" % (['', 'not'][cuda_enabled]) }}   # [win]
         - test -f $PREFIX/lib/libarrow.dylib          # [osx]
         - test -f $PREFIX/lib/libarrow_dataset.dylib  # [osx]
         - test -f $PREFIX/lib/libarrow_python.dylib   # [osx]
