@@ -15,10 +15,11 @@ source:
   sha256: {{ checksum }}
 
 build:
-  skip: true  # [(win and vc<14) or (linux and cuda_compiler_version is not undefined and cuda_compiler_version != '9.2' and cuda_compiler_version != 'None')]
+  skip: true  # [win and vc<14]
+  skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
   number: {{ number }}
   run_exports:
-    - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}  # is this correct and the correct place for it?
+    - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 
 outputs:
   - name: arrow-cpp-proc
