@@ -16,6 +16,8 @@ cxx_compiler_version:
 - '7'
 docker_image:
 - condaforge/linux-anvil-comp7
+gflags:
+- '2.2'
 glog:
 - 0.4.0
 grpc_cpp:
