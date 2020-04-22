@@ -19,7 +19,7 @@ build:
 
 requirements:
   build:
-    - cmake
+    - cmake 3.16.*
     - autoconf  # [unix]
     - ninja
     - make  # [unix]
@@ -35,8 +35,8 @@ requirements:
     - glog
     - grpc-cpp
     - libprotobuf
-    - clangdev 7.*  # [not (aarch64 or ppc64le)]
-    - llvmdev 7.*   # [not (aarch64 or ppc64le)]
+    - clangdev 8.*  # [not (aarch64 or ppc64le)]
+    - llvmdev 8.*   # [not (aarch64 or ppc64le)]
     - lz4-c
     - numpy 1.16.*
     - orc  # [unix]
