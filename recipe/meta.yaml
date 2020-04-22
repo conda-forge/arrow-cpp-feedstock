@@ -35,8 +35,8 @@ requirements:
     - glog
     - grpc-cpp
     - libprotobuf
-    - clangdev 8.*  # [not (aarch64 or ppc64le)]
-    - llvmdev 8.*   # [not (aarch64 or ppc64le)]
+    - clangdev 8.*
+    - llvmdev 8.*
     - lz4-c
     - numpy 1.16.*
     - orc  # [unix]
