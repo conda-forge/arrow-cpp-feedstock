@@ -3,7 +3,7 @@ About arrow-cpp
 
 Home: http://github.com/apache/arrow
 
-Package license: Apache 2.0
+Package license: Apache-2.0
 
 Feedstock license: BSD 3-Clause
 
@@ -252,6 +252,7 @@ Feedstock Maintainers
 * [@kou](https://github.com/kou/)
 * [@kszucs](https://github.com/kszucs/)
 * [@leifwalsh](https://github.com/leifwalsh/)
+* [@nealrichardson](https://github.com/nealrichardson/)
 * [@pcmoritz](https://github.com/pcmoritz/)
 * [@pitrou](https://github.com/pitrou/)
 * [@robertnishihara](https://github.com/robertnishihara/)
