@@ -29,8 +29,11 @@ cmake -G "Ninja" ^
       -DARROW_ORC:BOOL=ON ^
       -DARROW_S3:BOOL=ON ^
       -DBoost_NO_BOOST_CMAKE=ON ^
+      -DCMAKE_UNITY_BUILD=ON ^
       ..
+if errorlevel 1 exit 1
 
 cmake --build . --target install --config Release
+if errorlevel 1 exit 1
 
 popd

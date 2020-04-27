@@ -1,6 +1,6 @@
-{% set version = "0.16.0" %}
+{% set version = "0.17.0" %}
 {% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set checksum = "261992de4029a1593195ff4000501503bd403146471b3168bd2cc414ad0fb7f5" %}
+{% set checksum = "2c46b4c3e1f88aad510214e633a6f4ce459708f3db78cd0daf549a135cbe8e6d" %}
 
 package:
   name: arrow-cpp
@@ -12,14 +12,14 @@ source:
   sha256: {{ checksum }}
 
 build:
-  number: 4
+  number: 0
   skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 
 requirements:
   build:
-    - cmake
+    - cmake 3.16.*
     - autoconf  # [unix]
     - ninja
     - make  # [unix]
@@ -35,8 +35,8 @@ requirements:
     - glog
     - grpc-cpp
     - libprotobuf
-    - clangdev 7.*  # [not (aarch64 or ppc64le)]
-    - llvmdev 7.*   # [not (aarch64 or ppc64le)]
+    - clangdev 8.*
+    - llvmdev 8.*
     - lz4-c
     - numpy 1.16.*
     - orc  # [unix]
@@ -121,7 +121,7 @@ about:
   license: Apache 2.0
   license_file:
     - LICENSE.txt
-  summary: 'C++ libraries for Apache Arrow'
+  summary: C++ libraries for Apache Arrow
 
 extra:
   recipe-maintainers:
