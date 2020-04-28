@@ -10,6 +10,10 @@ channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
+cuda_compiler:
+- nvcc
+cuda_compiler_version:
+- None
 cxx_compiler:
 - gxx
 cxx_compiler_version:
@@ -44,6 +48,9 @@ python:
 - 3.8.* *_cpython
 snappy:
 - '1'
+zip_keys:
+- - cuda_compiler_version
+  - docker_image
 zlib:
 - '1.2'
 zstd:
