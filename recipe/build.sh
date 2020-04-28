@@ -49,12 +49,15 @@ cmake \
     -GNinja \
     ${EXTRA_CMAKE_ARGS} \
     ..
+
 if [ "$(uname -m)" = "ppc64le" ]; then
     # Decrease parallelism a bit as we will otherwise get out-of-memory problems
     echo "Using $(grep -c ^processor /proc/cpuinfo) CPUs"
     CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
     CPU_COUNT=$((CPU_COUNT / 4))
-    ninja install -j${CPU_COUNT}
+#    ninja install -j${CPU_COUNT}
+    # This is only necessary on Travis
+    ninja install
 else
     ninja install
 fi
