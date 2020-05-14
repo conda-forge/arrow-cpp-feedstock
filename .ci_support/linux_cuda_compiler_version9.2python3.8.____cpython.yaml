@@ -10,12 +10,14 @@ channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
+cuda_compiler_version:
+- '9.2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
 - '7'
 docker_image:
-- condaforge/linux-anvil-comp7
+- condaforge/linux-anvil-cuda:9.2
 gflags:
 - '2.2'
 glog:
@@ -41,9 +43,12 @@ pin_run_as_build:
   zstd:
     max_pin: x.x.x
 python:
-- 3.7.* *_cpython
+- 3.8.* *_cpython
 snappy:
 - '1'
+zip_keys:
+- - cuda_compiler_version
+  - docker_image
 zlib:
 - '1.2'
 zstd:
