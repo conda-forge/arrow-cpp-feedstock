@@ -54,6 +54,7 @@ outputs:
         - make  # [unix]
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
+        - {{ compiler("cuda") }}  # [cuda_compiler_version is not undefined and cuda_compiler_version == '9.2']
       host:
         - aws-sdk-cpp
         - boost-cpp
