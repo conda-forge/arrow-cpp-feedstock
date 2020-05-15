@@ -76,9 +76,8 @@ if [ "$(uname -m)" = "ppc64le" ]; then
     echo "Using $(grep -c ^processor /proc/cpuinfo) CPUs"
     CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
     CPU_COUNT=$((CPU_COUNT / 4))
-#    ninja install -j${CPU_COUNT}
     # This is only necessary on Travis
-    ninja install
+    ninja install -j${CPU_COUNT}
 else
     ninja install
 fi
