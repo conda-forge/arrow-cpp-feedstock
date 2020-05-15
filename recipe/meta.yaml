@@ -36,7 +36,7 @@ outputs:
 
   - name: arrow-cpp
     script: build-arrow.sh  # [not win]
-    script: bld.bat         # [win]
+    script: bld-arrow.bat   # [win]
     version: {{ version }}
     build:
       number: {{ number }}
