@@ -15,7 +15,7 @@ gflags:
 glog:
 - 0.4.0
 grpc_cpp:
-- '1.28'
+- '1.29'
 libprotobuf:
 - '3.11'
 lz4_c:
