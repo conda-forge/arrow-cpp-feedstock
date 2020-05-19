@@ -1,5 +1,5 @@
 {% set version = "0.17.1" %}
-{% set number = "0" %}
+{% set number = "1" %}
 {% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '9.2' %}
 {% set build_ext_version = "1.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -22,7 +22,7 @@ outputs:
   - name: arrow-cpp-proc
     version: {{ build_ext_version }}
     build:
-      number: 1
+      number: 0
       string: "{{ build_ext }}"
     test:
       commands:
