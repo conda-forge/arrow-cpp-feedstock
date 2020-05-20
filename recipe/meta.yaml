@@ -165,8 +165,6 @@ outputs:
       number: {{ number }}
       string: "{{ build_string }}"
       skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
-      # Skip aarch64 as the build fails with: Unsupported arch flag: -march=.
-      skip: true  # [aarch64]
       track_features:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
