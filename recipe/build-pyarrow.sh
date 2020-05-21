@@ -32,6 +32,12 @@ else
     export PYARROW_WITH_CUDA=0
 fi
 
+# Resolve: Make Error at cmake_modules/SetupCxxFlags.cmake:338 (message): Unsupported arch flag: -march=.
+if [[ "$(uname -m)" = "aarch64" ]]
+then
+    export PYARROW_CMAKE_OPTIONS="-DARROW_ARMV8_ARCH"
+fi
+
 cd python
 
 $PYTHON setup.py \
