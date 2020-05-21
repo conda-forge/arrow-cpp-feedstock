@@ -35,7 +35,7 @@ fi
 # Resolve: Make Error at cmake_modules/SetupCxxFlags.cmake:338 (message): Unsupported arch flag: -march=.
 if [[ "$(uname -m)" = "aarch64" ]]
 then
-    export PYARROW_CMAKE_OPTIONS="-DARROW_ARMV8_ARCH"
+    export PYARROW_CMAKE_OPTIONS="-DARROW_ARMV8_ARCH=armv8-a"
 fi
 
 cd python
