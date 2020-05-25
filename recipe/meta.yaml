@@ -177,9 +177,9 @@ outputs:
         # pyarrow does not require nvcc but it needs to link against libraries in arrow-cpp=*=*cuda
         - {{ compiler("cuda") }}  # [cuda_compiler_version not in (undefined, "None")]
       host:
+        - arrow-cpp ={{ version }}=*{{ build_ext }}
         # directly pin boost-cpp as we also seem to directly include boost symbols
         # in the Python modules.
-        - arrow-cpp ={{ version }}=*{{ build_ext }}
         - boost-cpp
         - cython
         - numpy 1.16.*
