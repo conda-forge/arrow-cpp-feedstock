@@ -157,7 +157,7 @@ outputs:
         - if exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1        # [win]
         - if exist %PREFIX%\\Library\\lib\\gandiva_static.lib exit 1        # [win]
 
-  - name: pyarrow
+  - name: arrow-py
     script: build-pyarrow.sh  # [not win]
     script: bld-pyarrow.bat   # [win]
     version: {{ version }}
