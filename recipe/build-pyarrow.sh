@@ -10,12 +10,7 @@ export SETUPTOOLS_SCM_PRETEND_VERSION=$PKG_VERSION
 export PYARROW_BUILD_TYPE=release
 export PYARROW_WITH_DATASET=1
 export PYARROW_WITH_FLIGHT=1
-if [[ "$(uname -m)" = "ppc64le" || "$(uname -m)" = "aarch64" ]]
-then
-  export PYARROW_WITH_GANDIVA=0
-else
-  export PYARROW_WITH_GANDIVA=1
-fi
+export PYARROW_WITH_GANDIVA=1
 export PYARROW_WITH_HDFS=1
 export PYARROW_WITH_ORC=1
 export PYARROW_WITH_PARQUET=1

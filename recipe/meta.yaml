@@ -157,7 +157,7 @@ outputs:
         - if exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1        # [win]
         - if exist %PREFIX%\\Library\\lib\\gandiva_static.lib exit 1        # [win]
 
-  - name: arrow-py
+  - name: pyarrow
     script: build-pyarrow.sh  # [not win]
     script: bld-pyarrow.bat   # [win]
     version: {{ version }}
@@ -177,7 +177,7 @@ outputs:
         # pyarrow does not require nvcc but it needs to link against libraries in arrow-cpp=*=*cuda
         - {{ compiler("cuda") }}  # [cuda_compiler_version not in (undefined, "None")]
       host:
-        - arrow-cpp ={{ version }}=*{{ build_ext }}
+        - {{ pin_subpackage('arrow-cpp', exact=True) }}
         - boost-cpp
         - cython
         - numpy 1.16.*
@@ -186,9 +186,9 @@ outputs:
         - setuptools_scm
         - six
       run:
+        - {{ pin_subpackage('arrow-cpp', exact=True) }}
         - {{ pin_compatible('numpy', lower_bound='1.16') }}
         - boost-cpp
-        - arrow-cpp ={{ version }}=*{{ build_ext }}
         - glog
         - pandas
         # empty parquet-cpp metapackage, force old versions to be uninstalled
@@ -212,7 +212,7 @@ outputs:
         - pyarrow
         - pyarrow.dataset
         - pyarrow.flight
-        - pyarrow.gandiva  # [not (aarch64 or ppc64le)]
+        - pyarrow.gandiva
         - pyarrow.orc      # [unix]
         - pyarrow.parquet
         - pyarrow.plasma   # [unix]
