@@ -23,7 +23,7 @@ outputs:
   - name: arrow-cpp-proc
     version: {{ build_ext_version }}
     build:
-      number: 0
+      number: 1
       string: "{{ build_ext }}"
     test:
       commands:
