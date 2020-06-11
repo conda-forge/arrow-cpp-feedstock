@@ -1,5 +1,5 @@
 {% set version = "0.17.1" %}
-{% set number = "3" %}
+{% set number = "4" %}
 {% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '9.2' %}
 {% set build_ext_version = "1.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -165,6 +165,8 @@ outputs:
       number: {{ number }}
       string: "{{ build_string }}"
       skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
+      ignore_run_exports:
+        - cudatoolkit
       track_features:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
@@ -245,3 +247,4 @@ extra:
     - pitrou
     - pearu
     - nealrichardson
+    - jakirkham
