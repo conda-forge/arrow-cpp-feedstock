@@ -165,6 +165,8 @@ outputs:
       number: {{ number }}
       string: "{{ build_string }}"
       skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
+      ignore_run_exports:
+        - cudatoolkit
       track_features:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
