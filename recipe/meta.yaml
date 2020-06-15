@@ -1,5 +1,5 @@
 {% set version = "0.17.1" %}
-{% set number = "4" %}
+{% set number = "5" %}
 {% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '9.2' %}
 {% set build_ext_version = "1.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -92,7 +92,6 @@ outputs:
         - lz4-c
         - python
         - re2
-        - snappy
         - zlib
         - zstd
       run_constrained:
@@ -197,7 +196,6 @@ outputs:
         - parquet-cpp 1.5.1.*
         - python
         - six
-        - snappy
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
         - cudatoolkit >=9.2  # [cuda_compiler_version not in (undefined, "None")]
