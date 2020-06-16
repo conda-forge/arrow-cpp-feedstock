@@ -1,9 +1,10 @@
 {% set version = "0.17.1" %}
-{% set number = "5" %}
+{% set number = "6" %}
 {% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '9.2' %}
 {% set build_ext_version = "1.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
 {% set build_string = "py{}h{}_{}_{}".format(CONDA_PY, PKG_HASH, number, build_ext) %}
+{% set proc_build_number = "1" %}
 
 package:
   name: arrow-cpp-ext
@@ -23,7 +24,7 @@ outputs:
   - name: arrow-cpp-proc
     version: {{ build_ext_version }}
     build:
-      number: 1
+      number: {{ proc_build_number }}
       string: "{{ build_ext }}"
     test:
       commands:
