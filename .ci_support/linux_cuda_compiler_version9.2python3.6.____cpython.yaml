@@ -47,7 +47,7 @@ pin_run_as_build:
 python:
 - 3.6.* *_cpython
 re2:
-- 2020.06.01
+- 2020.07.01
 snappy:
 - '1'
 zip_keys:

@@ -2,6 +2,6 @@ __migrator:
   build_number: 1
   kind: version
   migration_number: 1
-grpc_cpp:
-- '1.30'
-migrator_ts: 1592892189.5770993
+migrator_ts: 1593612983.3371243
+re2:
+- 2020.07.01
