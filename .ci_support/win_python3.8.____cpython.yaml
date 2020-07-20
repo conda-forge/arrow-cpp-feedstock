@@ -32,8 +32,6 @@ pin_run_as_build:
     max_pin: x.x
   zlib:
     max_pin: x.x
-  zstd:
-    max_pin: x.x.x
 python:
 - 3.8.* *_cpython
 re2:
@@ -43,4 +41,4 @@ snappy:
 zlib:
 - '1.2'
 zstd:
-- 1.4.4
+- '1.4'
