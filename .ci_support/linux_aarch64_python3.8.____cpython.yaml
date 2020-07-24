@@ -32,6 +32,8 @@ libprotobuf:
 - '3.12'
 lz4_c:
 - 1.9.2
+numpy:
+- '1.16'
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
