@@ -71,6 +71,7 @@ outputs:
         - libprotobuf
         - clangdev 10
         - llvmdev 10
+        - libutf8proc
         - lz4-c
         - numpy
         - orc  # [unix]
