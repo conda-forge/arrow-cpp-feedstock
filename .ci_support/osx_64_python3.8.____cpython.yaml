@@ -1,5 +1,7 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
+boost_cpp:
+- '1.72'
 bzip2:
 - '1'
 c_compiler:
@@ -33,6 +35,8 @@ macos_min_version:
 numpy:
 - '1.16'
 pin_run_as_build:
+  boost-cpp:
+    max_pin: x.x.x
   bzip2:
     max_pin: x
   lz4-c:
