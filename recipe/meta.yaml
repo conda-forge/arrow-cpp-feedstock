@@ -1,5 +1,5 @@
 {% set version = "1.0.0" %}
-{% set number = "1" %}
+{% set number = "2" %}
 {% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '9.2' %}
 {% set build_ext_version = "1.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -48,6 +48,8 @@ outputs:
         - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
       ignore_run_exports:
         - cudatoolkit
+        # Gandiva only needs headers
+        - boost-cpp
       track_features:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
@@ -85,7 +87,6 @@ outputs:
       run:
         - {{ pin_compatible('numpy', lower_bound='1.16') }}
         - aws-sdk-cpp
-        - boost-cpp
         - brotli
         - c-ares
         - gflags
@@ -98,6 +99,7 @@ outputs:
         - zstd
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
+        - {{ pin_compatible('boost-cpp', max_pin='x.x') }}
         - cudatoolkit >=9.2  # [cuda_compiler_version not in (undefined, "None")]
 
     about:
@@ -181,7 +183,6 @@ outputs:
         - {{ compiler("cuda") }}  # [cuda_compiler_version not in (undefined, "None")]
       host:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
-        - boost-cpp
         - cython
         - numpy 1.16.*
         - python
@@ -191,7 +192,6 @@ outputs:
       run:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
         - {{ pin_compatible('numpy', lower_bound='1.16') }}
-        - boost-cpp
         - glog
         - pandas
         # empty parquet-cpp metapackage, force old versions to be uninstalled
