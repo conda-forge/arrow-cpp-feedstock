@@ -1,5 +1,5 @@
 {% set version = "1.0.0" %}
-{% set number = "1" %}
+{% set number = "2" %}
 {% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '9.2' %}
 {% set build_ext_version = "1.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -61,7 +61,6 @@ outputs:
         - {{ compiler("cuda") }}  # [cuda_compiler_version not in (undefined, "None")]
       host:
         - aws-sdk-cpp
-        - boost-cpp
         - brotli
         - bzip2
         - c-ares
@@ -85,7 +84,6 @@ outputs:
       run:
         - {{ pin_compatible('numpy', lower_bound='1.16') }}
         - aws-sdk-cpp
-        - boost-cpp
         - brotli
         - c-ares
         - gflags
@@ -181,7 +179,6 @@ outputs:
         - {{ compiler("cuda") }}  # [cuda_compiler_version not in (undefined, "None")]
       host:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
-        - boost-cpp
         - cython
         - numpy 1.16.*
         - python
@@ -191,7 +188,6 @@ outputs:
       run:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
         - {{ pin_compatible('numpy', lower_bound='1.16') }}
-        - boost-cpp
         - glog
         - pandas
         # empty parquet-cpp metapackage, force old versions to be uninstalled
