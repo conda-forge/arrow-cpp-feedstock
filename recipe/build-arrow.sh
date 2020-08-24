@@ -67,7 +67,7 @@ cmake \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
     -DCMAKE_RANLIB=${RANLIB} \
     -DLLVM_TOOLS_BINARY_DIR=$PREFIX/bin \
-    -DPYTHON_EXECUTABLE=${PYTHON} \
+    -DPython3_EXECUTABLE=${PYTHON} \
     -GNinja \
     ${EXTRA_CMAKE_ARGS} \
     ..
