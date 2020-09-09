@@ -55,6 +55,8 @@ target_platform:
 zip_keys:
 - - cuda_compiler_version
   - docker_image
+- - numpy
+  - python
 zlib:
 - '1.2'
 zstd:
