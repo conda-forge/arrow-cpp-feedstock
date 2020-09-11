@@ -87,8 +87,8 @@ outputs:
         - zlib
         - zstd
       run:
-        - {{ pin_compatible('numpy', lower_bound='1.16') }}
         - aws-sdk-cpp
+        - numpy
         - brotli
         - c-ares
         - gflags
@@ -186,16 +186,16 @@ outputs:
       host:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
         - cython
-        - numpy 1.16.*
+        - numpy
         - python
         - setuptools
         - setuptools_scm
         - six
       run:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
-        - {{ pin_compatible('numpy', lower_bound='1.16') }}
         # empty parquet-cpp metapackage, force old versions to be uninstalled
         - parquet-cpp 1.5.1.*
+        - numpy
         - python
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
