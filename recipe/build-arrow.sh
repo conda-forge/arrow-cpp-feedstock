@@ -34,6 +34,10 @@ else
     EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=OFF"
 fi
 
+if [[ $python_impl == "pypy" ]] ; then
+    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DPython3_FIND_IMPLEMENTATIONS=PyPy -DPython3_LIBRARY=$PREFIX/lib/libpypy3-c$SHLIB_EXT -DPython3_INCLUDE_DIR=$PREFIX/include"
+fi
+
 cmake \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
@@ -67,7 +71,7 @@ cmake \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
     -DCMAKE_RANLIB=${RANLIB} \
     -DLLVM_TOOLS_BINARY_DIR=$PREFIX/bin \
-    -DPython3_EXECUTABLE=${PYTHON} \
+    -DPython3_EXECUTABLE=$PREFIX/bin/python \
     -GNinja \
     ${EXTRA_CMAKE_ARGS} \
     ..

@@ -56,7 +56,7 @@ outputs:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
       build:
-        - cmake 3.16.*
+        - cmake
         - autoconf  # [unix]
         - ninja
         - make  # [unix]
@@ -176,7 +176,7 @@ outputs:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
       build:
-        - cmake 3.16.*
+        - cmake
         - ninja
         - make  # [unix]
         - {{ compiler('c') }}
