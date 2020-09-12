@@ -1,17 +1,25 @@
 boost_cpp:
-- '1.72'
+- 1.72.0
 bzip2:
 - '1'
 c_compiler:
-- vs2017
+- gcc
+c_compiler_version:
+- '7'
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
+cuda_compiler:
+- nvcc
 cuda_compiler_version:
-- None
+- '9.2'
 cxx_compiler:
-- vs2017
+- gxx
+cxx_compiler_version:
+- '7'
+docker_image:
+- condaforge/linux-anvil-cuda:9.2
 gflags:
 - '2.2'
 glog:
@@ -43,7 +51,10 @@ re2:
 snappy:
 - '1'
 target_platform:
-- win-64
+- linux-64
+zip_keys:
+- - cuda_compiler_version
+  - docker_image
 zlib:
 - '1.2'
 zstd:
