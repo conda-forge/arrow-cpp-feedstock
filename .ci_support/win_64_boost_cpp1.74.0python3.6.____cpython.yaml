@@ -2,16 +2,12 @@ boost_cpp:
 - 1.74.0
 bzip2:
 - '1'
-c_compiler:
-- vs2017
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
 cuda_compiler_version:
 - None
-cxx_compiler:
-- vs2017
 gflags:
 - '2.2'
 glog:
