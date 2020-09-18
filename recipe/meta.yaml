@@ -15,7 +15,7 @@ source:
     - python_executable.patch
 
 build:
-  number: 3
+  number: 4
   skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
@@ -98,7 +98,6 @@ outputs:
         - zstd
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
-        - {{ pin_compatible('boost-cpp', max_pin='x.x') }}
         - cudatoolkit >=9.2  # [cuda_compiler_version not in (undefined, "None")]
 
     about:
