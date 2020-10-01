@@ -16,7 +16,7 @@ source:
     - 2d3046f2eefd0e79819e15286b17c89b1ec1c8e2.patch
 
 build:
-  number: 10
+  number: 11
   skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
