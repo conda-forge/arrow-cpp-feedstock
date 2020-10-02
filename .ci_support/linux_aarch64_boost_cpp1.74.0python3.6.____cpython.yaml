@@ -39,7 +39,7 @@ lz4_c:
 numpy:
 - '1.16'
 orc:
-- 1.6.4
+- 1.6.5
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
