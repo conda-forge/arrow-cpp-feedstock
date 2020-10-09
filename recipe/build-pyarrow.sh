@@ -16,6 +16,7 @@ export PYARROW_WITH_ORC=1
 export PYARROW_WITH_PARQUET=1
 export PYARROW_WITH_PLASMA=1
 export PYARROW_WITH_S3=1
+export PYARROW_CMAKE_GENERATOR=Ninja
 BUILD_EXT_FLAGS=""
 
 # Enable CUDA support
@@ -38,3 +39,7 @@ $PYTHON setup.py \
         build_ext \
         install --single-version-externally-managed \
                 --record=record.txt
+
+if [[ "$PKG_NAME" == "pyarrow" ]]; then
+    rm -r ${SP_DIR}/pyarrow/tests
+fi

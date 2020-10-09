@@ -5,11 +5,9 @@ Home: http://github.com/apache/arrow
 
 Package license: Apache-2.0
 
-Feedstock license: BSD-3-Clause
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/arrow-cpp-feedstock/blob/master/LICENSE.txt)
 
 Summary: C++ libraries for Apache Arrow
-
-
 
 Current build status
 ====================
@@ -261,6 +259,7 @@ Current release info
 | [![Conda Recipe](https://img.shields.io/badge/recipe-arrow--cpp-green.svg)](https://anaconda.org/conda-forge/arrow-cpp) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/arrow-cpp.svg)](https://anaconda.org/conda-forge/arrow-cpp) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/arrow-cpp.svg)](https://anaconda.org/conda-forge/arrow-cpp) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/arrow-cpp.svg)](https://anaconda.org/conda-forge/arrow-cpp) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-arrow--cpp--proc-green.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/arrow-cpp-proc.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/arrow-cpp-proc.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/arrow-cpp-proc.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-pyarrow-green.svg)](https://anaconda.org/conda-forge/pyarrow) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pyarrow.svg)](https://anaconda.org/conda-forge/pyarrow) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/pyarrow.svg)](https://anaconda.org/conda-forge/pyarrow) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/pyarrow.svg)](https://anaconda.org/conda-forge/pyarrow) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-pyarrow--tests-green.svg)](https://anaconda.org/conda-forge/pyarrow-tests) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pyarrow-tests.svg)](https://anaconda.org/conda-forge/pyarrow-tests) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/pyarrow-tests.svg)](https://anaconda.org/conda-forge/pyarrow-tests) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/pyarrow-tests.svg)](https://anaconda.org/conda-forge/pyarrow-tests) |
 
 Installing arrow-cpp-ext
 ========================
@@ -271,10 +270,10 @@ Installing `arrow-cpp-ext` from the `conda-forge` channel can be achieved by add
 conda config --add channels conda-forge
 ```
 
-Once the `conda-forge` channel has been enabled, `arrow-cpp, arrow-cpp-proc, pyarrow` can be installed with:
+Once the `conda-forge` channel has been enabled, `arrow-cpp, arrow-cpp-proc, pyarrow, pyarrow-tests` can be installed with:
 
 ```
-conda install arrow-cpp arrow-cpp-proc pyarrow
+conda install arrow-cpp arrow-cpp-proc pyarrow pyarrow-tests
 ```
 
 It is possible to list all of the versions of `arrow-cpp` available on your platform with:
