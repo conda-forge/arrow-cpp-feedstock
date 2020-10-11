@@ -49,7 +49,7 @@ pin_run_as_build:
   zlib:
     max_pin: x.x
 python:
-- 3.6.* *_cpython
+- 3.7.* *_cpython
 re2:
 - 2020.10.01
 snappy:
@@ -57,6 +57,8 @@ snappy:
 target_platform:
 - linux-64
 zip_keys:
+- - c_compiler_version
+  - cxx_compiler_version
 - - cuda_compiler_version
   - docker_image
 zlib:

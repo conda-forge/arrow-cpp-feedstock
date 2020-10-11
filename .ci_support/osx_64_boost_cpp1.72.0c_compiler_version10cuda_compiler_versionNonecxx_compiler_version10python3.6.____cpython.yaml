@@ -3,7 +3,7 @@ MACOSX_DEPLOYMENT_TARGET:
 aws_sdk_cpp:
 - 1.8.59
 boost_cpp:
-- 1.74.0
+- 1.72.0
 bzip2:
 - '1'
 c_compiler:
@@ -56,6 +56,9 @@ snappy:
 - '1'
 target_platform:
 - osx-64
+zip_keys:
+- - c_compiler_version
+  - cxx_compiler_version
 zlib:
 - '1.2'
 zstd:
