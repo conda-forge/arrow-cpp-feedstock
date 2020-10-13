@@ -14,6 +14,7 @@ source:
   patches:
     - python_executable.patch
     - 2d3046f2eefd0e79819e15286b17c89b1ec1c8e2.patch
+    - 0001-ARROW-10252-Python-Add-option-to-skip-inclusion-of-A.patch
 
 build:
   number: 13

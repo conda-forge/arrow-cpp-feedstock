@@ -1,0 +1,76 @@
+From 24dca89942249c42cbd765fc73545b597e9f3548 Mon Sep 17 00:00:00 2001
+From: "Uwe L. Korn" <uwelk@xhochy.com>
+Date: Fri, 9 Oct 2020 20:50:56 +0200
+Subject: [PATCH] ARROW-10252: [Python] Add option to skip inclusion of Arrow
+ headers in Python installation
+
+---
+ .../conda-recipes/arrow-cpp/build-pyarrow.sh    |  2 ++
+ python/setup.py                                 | 17 +++++++++++------
+ 2 files changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/dev/tasks/conda-recipes/arrow-cpp/build-pyarrow.sh b/dev/tasks/conda-recipes/arrow-cpp/build-pyarrow.sh
+index 318eff580..18a65fccd 100755
+--- a/dev/tasks/conda-recipes/arrow-cpp/build-pyarrow.sh
++++ b/dev/tasks/conda-recipes/arrow-cpp/build-pyarrow.sh
+@@ -8,6 +8,7 @@ export ARROW_HOME=$PREFIX
+ export PARQUET_HOME=$PREFIX
+ export SETUPTOOLS_SCM_PRETEND_VERSION=$PKG_VERSION
+ export PYARROW_BUILD_TYPE=release
++export PYARROW_BUNDLE_ARROW_CPP_HEADERS=0
+ export PYARROW_WITH_DATASET=1
+ export PYARROW_WITH_FLIGHT=1
+ export PYARROW_WITH_GANDIVA=1
+@@ -16,6 +17,7 @@ export PYARROW_WITH_ORC=1
+ export PYARROW_WITH_PARQUET=1
+ export PYARROW_WITH_PLASMA=1
+ export PYARROW_WITH_S3=1
++export PYARROW_CMAKE_GENERATOR=Ninja
+ BUILD_EXT_FLAGS=""
+ 
+ # Enable CUDA support
+diff --git a/python/setup.py b/python/setup.py
+index c29631c51..50d1ced9f 100755
+--- a/python/setup.py
++++ b/python/setup.py
+@@ -121,7 +121,9 @@ class build_ext(_build_ext):
+                       'bundle generated Cython C++ code '
+                       '(used for code coverage)'),
+                      ('bundle-arrow-cpp', None,
+-                      'bundle the Arrow C++ libraries')] +
++                      'bundle the Arrow C++ libraries'),
++                     ('bundle-arrow-cpp-headers', None,
++                      'bundle the Arrow C++ headers')] +
+                     _build_ext.user_options)
+ 
+     def initialize_options(self):
+@@ -175,6 +177,8 @@ class build_ext(_build_ext):
+             os.environ.get('PYARROW_BUNDLE_CYTHON_CPP', '0'))
+         self.bundle_boost = strtobool(
+             os.environ.get('PYARROW_BUNDLE_BOOST', '0'))
++        self.bundle_arrow_cpp_headers = strtobool(
++            os.environ.get('PYARROW_BUNDLE_ARROW_CPP_HEADERS', '1'))
+ 
+     CYTHON_MODULE_NAMES = [
+         'lib',
+@@ -303,11 +307,12 @@ class build_ext(_build_ext):
+             else:
+                 build_prefix = self.build_type
+ 
+-            print('Bundling includes: ' + pjoin(build_prefix, 'include'))
+-            if os.path.exists(pjoin(build_lib, 'pyarrow', 'include')):
+-                shutil.rmtree(pjoin(build_lib, 'pyarrow', 'include'))
+-            shutil.move(pjoin(build_prefix, 'include'),
+-                        pjoin(build_lib, 'pyarrow'))
++            if self.bundle_arrow_cpp or self.bundle_arrow_cpp_headers:
++                print('Bundling includes: ' + pjoin(build_prefix, 'include'))
++                if os.path.exists(pjoin(build_lib, 'pyarrow', 'include')):
++                    shutil.rmtree(pjoin(build_lib, 'pyarrow', 'include'))
++                shutil.move(pjoin(build_prefix, 'include'),
++                            pjoin(build_lib, 'pyarrow'))
+ 
+             # Move the built C-extension to the place expected by the Python
+             # build
+-- 
+2.24.3 (Apple Git-128)
+

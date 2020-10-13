@@ -1,3 +1,5 @@
+BUILD:
+- aarch64-conda_cos7-linux-gnu
 aws_sdk_cpp:
 - 1.8.59
 boost_cpp:
@@ -8,20 +10,22 @@ c_compiler:
 - gcc
 c_compiler_version:
 - '7'
+cdt_arch:
+- aarch64
+cdt_name:
+- cos7
 channel_sources:
-- conda-forge,defaults
+- conda-forge
 channel_targets:
 - conda-forge main
-cuda_compiler:
-- nvcc
 cuda_compiler_version:
-- '9.2'
+- None
 cxx_compiler:
 - gxx
 cxx_compiler_version:
 - '7'
 docker_image:
-- condaforge/linux-anvil-cuda:9.2
+- condaforge/linux-anvil-aarch64
 gflags:
 - '2.2'
 glog:
@@ -55,10 +59,10 @@ re2:
 snappy:
 - '1'
 target_platform:
-- linux-64
+- linux-aarch64
 zip_keys:
-- - cuda_compiler_version
-  - docker_image
+- - c_compiler_version
+  - cxx_compiler_version
 zlib:
 - '1.2'
 zstd:
