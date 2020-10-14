@@ -1,25 +1,31 @@
-MACOSX_DEPLOYMENT_TARGET:
-- '10.9'
+BUILD:
+- aarch64-conda_cos7-linux-gnu
 aws_sdk_cpp:
-- 1.8.59
+- 1.8.63
 boost_cpp:
 - 1.74.0
 bzip2:
 - '1'
 c_compiler:
-- clang
+- gcc
 c_compiler_version:
-- '10'
+- '7'
+cdt_arch:
+- aarch64
+cdt_name:
+- cos7
 channel_sources:
-- conda-forge,defaults
+- conda-forge
 channel_targets:
 - conda-forge main
 cuda_compiler_version:
 - None
 cxx_compiler:
-- clangxx
+- gxx
 cxx_compiler_version:
-- '10'
+- '7'
+docker_image:
+- condaforge/linux-anvil-aarch64
 gflags:
 - '2.2'
 glog:
@@ -30,8 +36,6 @@ libprotobuf:
 - '3.13'
 lz4_c:
 - 1.9.2
-macos_machine:
-- x86_64-apple-darwin13.4.0
 numpy:
 - '1.16'
 orc:
@@ -55,10 +59,12 @@ re2:
 snappy:
 - '1'
 target_platform:
-- osx-64
+- linux-aarch64
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
+- - numpy
+  - python
 zlib:
 - '1.2'
 zstd:

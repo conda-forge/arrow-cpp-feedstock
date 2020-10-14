@@ -1,5 +1,5 @@
 aws_sdk_cpp:
-- 1.8.59
+- 1.8.63
 boost_cpp:
 - 1.74.0
 bzip2:
@@ -15,13 +15,13 @@ channel_targets:
 cuda_compiler:
 - nvcc
 cuda_compiler_version:
-- '9.2'
+- None
 cxx_compiler:
 - gxx
 cxx_compiler_version:
 - '7'
 docker_image:
-- condaforge/linux-anvil-cuda:9.2
+- condaforge/linux-anvil-comp7
 gflags:
 - '2.2'
 glog:
@@ -61,6 +61,8 @@ zip_keys:
   - cxx_compiler_version
 - - cuda_compiler_version
   - docker_image
+- - numpy
+  - python
 zlib:
 - '1.2'
 zstd:

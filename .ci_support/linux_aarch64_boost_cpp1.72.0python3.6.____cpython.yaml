@@ -1,7 +1,7 @@
 BUILD:
 - aarch64-conda_cos7-linux-gnu
 aws_sdk_cpp:
-- 1.8.59
+- 1.8.63
 boost_cpp:
 - 1.72.0
 bzip2:
@@ -63,6 +63,8 @@ target_platform:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
+- - numpy
+  - python
 zlib:
 - '1.2'
 zstd:

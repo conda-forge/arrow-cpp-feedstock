@@ -1,6 +1,6 @@
 ---
 kind: pipeline
-name: linux_aarch64_boost_cpp1.72.0c_comp_hcf6bdaa8ca
+name: linux_aarch64_boost_cpp1.72.0python_h79d5be9ae1
 
 platform:
   os: linux
@@ -10,7 +10,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_boost_cpp1.72.0c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7python3.6.____cpython
+    CONFIG: linux_aarch64_boost_cpp1.72.0python3.6.____cpython
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
@@ -31,7 +31,7 @@ steps:
 
 ---
 kind: pipeline
-name: linux_aarch64_boost_cpp1.72.0c_comp_he74e85453c
+name: linux_aarch64_boost_cpp1.72.0python_hd2db8c3788
 
 platform:
   os: linux
@@ -41,7 +41,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_boost_cpp1.72.0c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7python3.7.____cpython
+    CONFIG: linux_aarch64_boost_cpp1.72.0python3.7.____cpython
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
@@ -62,7 +62,7 @@ steps:
 
 ---
 kind: pipeline
-name: linux_aarch64_boost_cpp1.72.0c_comp_hefdcc52728
+name: linux_aarch64_boost_cpp1.72.0python_h1225844172
 
 platform:
   os: linux
@@ -72,7 +72,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_boost_cpp1.72.0c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7python3.8.____cpython
+    CONFIG: linux_aarch64_boost_cpp1.72.0python3.8.____cpython
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
@@ -93,7 +93,7 @@ steps:
 
 ---
 kind: pipeline
-name: linux_aarch64_boost_cpp1.74.0c_comp_ha35bb0d3c0
+name: linux_aarch64_boost_cpp1.74.0python_hc26c0839c2
 
 platform:
   os: linux
@@ -103,7 +103,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_boost_cpp1.74.0c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7python3.6.____cpython
+    CONFIG: linux_aarch64_boost_cpp1.74.0python3.6.____cpython
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
@@ -124,7 +124,7 @@ steps:
 
 ---
 kind: pipeline
-name: linux_aarch64_boost_cpp1.74.0c_comp_h1cd76ff27e
+name: linux_aarch64_boost_cpp1.74.0python_h048c62e970
 
 platform:
   os: linux
@@ -134,7 +134,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_boost_cpp1.74.0c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7python3.7.____cpython
+    CONFIG: linux_aarch64_boost_cpp1.74.0python3.7.____cpython
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
@@ -155,7 +155,7 @@ steps:
 
 ---
 kind: pipeline
-name: linux_aarch64_boost_cpp1.74.0c_comp_h8d1d68fbb2
+name: linux_aarch64_boost_cpp1.74.0python_h51903e5c6b
 
 platform:
   os: linux
@@ -165,7 +165,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_boost_cpp1.74.0c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7python3.8.____cpython
+    CONFIG: linux_aarch64_boost_cpp1.74.0python3.8.____cpython
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
