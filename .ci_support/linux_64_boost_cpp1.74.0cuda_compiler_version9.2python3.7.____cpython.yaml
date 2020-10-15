@@ -1,7 +1,7 @@
 aws_sdk_cpp:
-- 1.8.59
+- 1.8.63
 boost_cpp:
-- 1.72.0
+- 1.74.0
 bzip2:
 - '1'
 c_compiler:
@@ -15,13 +15,13 @@ channel_targets:
 cuda_compiler:
 - nvcc
 cuda_compiler_version:
-- None
+- '9.2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
 - '7'
 docker_image:
-- condaforge/linux-anvil-comp7
+- condaforge/linux-anvil-cuda:9.2
 gflags:
 - '2.2'
 glog:
@@ -49,7 +49,7 @@ pin_run_as_build:
   zlib:
     max_pin: x.x
 python:
-- 3.8.* *_cpython
+- 3.7.* *_cpython
 re2:
 - 2020.10.01
 snappy:
@@ -61,6 +61,8 @@ zip_keys:
   - cxx_compiler_version
 - - cuda_compiler_version
   - docker_image
+- - numpy
+  - python
 zlib:
 - '1.2'
 zstd:
