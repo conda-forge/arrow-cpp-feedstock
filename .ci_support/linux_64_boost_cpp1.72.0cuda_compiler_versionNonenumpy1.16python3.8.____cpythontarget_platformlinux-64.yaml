@@ -1,7 +1,7 @@
 aws_sdk_cpp:
 - 1.8.63
 boost_cpp:
-- 1.74.0
+- 1.72.0
 bzip2:
 - '1'
 c_compiler:
@@ -61,8 +61,7 @@ target_platform:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-- - cdt_name
-  - cuda_compiler_version
+- - cuda_compiler_version
   - docker_image
 - - numpy
   - python
