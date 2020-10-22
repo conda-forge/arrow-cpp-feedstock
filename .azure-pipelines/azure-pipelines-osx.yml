@@ -8,29 +8,35 @@ jobs:
     vmImage: macOS-10.15
   strategy:
     matrix:
-      osx_64_boost_cpp1.72.0numpy1.16python3.6.____cpython:
-        CONFIG: osx_64_boost_cpp1.72.0numpy1.16python3.6.____cpython
+      osx_64_boost_cpp1.72.0numpy1.16python3.6.____cpythontarget_platformosx-64:
+        CONFIG: osx_64_boost_cpp1.72.0numpy1.16python3.6.____cpythontarget_platformosx-64
         UPLOAD_PACKAGES: 'True'
-      osx_64_boost_cpp1.72.0numpy1.16python3.7.____cpython:
-        CONFIG: osx_64_boost_cpp1.72.0numpy1.16python3.7.____cpython
+      osx_64_boost_cpp1.72.0numpy1.16python3.7.____cpythontarget_platformosx-64:
+        CONFIG: osx_64_boost_cpp1.72.0numpy1.16python3.7.____cpythontarget_platformosx-64
         UPLOAD_PACKAGES: 'True'
-      osx_64_boost_cpp1.72.0numpy1.16python3.8.____cpython:
-        CONFIG: osx_64_boost_cpp1.72.0numpy1.16python3.8.____cpython
+      osx_64_boost_cpp1.72.0numpy1.16python3.8.____cpythontarget_platformosx-64:
+        CONFIG: osx_64_boost_cpp1.72.0numpy1.16python3.8.____cpythontarget_platformosx-64
         UPLOAD_PACKAGES: 'True'
-      osx_64_boost_cpp1.72.0numpy1.19python3.9.____cpython:
-        CONFIG: osx_64_boost_cpp1.72.0numpy1.19python3.9.____cpython
+      osx_64_boost_cpp1.72.0numpy1.19python3.9.____cpythontarget_platformosx-64:
+        CONFIG: osx_64_boost_cpp1.72.0numpy1.19python3.9.____cpythontarget_platformosx-64
         UPLOAD_PACKAGES: 'True'
-      osx_64_boost_cpp1.74.0numpy1.16python3.6.____cpython:
-        CONFIG: osx_64_boost_cpp1.74.0numpy1.16python3.6.____cpython
+      osx_64_boost_cpp1.74.0numpy1.16python3.6.____cpythontarget_platformosx-64:
+        CONFIG: osx_64_boost_cpp1.74.0numpy1.16python3.6.____cpythontarget_platformosx-64
         UPLOAD_PACKAGES: 'True'
-      osx_64_boost_cpp1.74.0numpy1.16python3.7.____cpython:
-        CONFIG: osx_64_boost_cpp1.74.0numpy1.16python3.7.____cpython
+      osx_64_boost_cpp1.74.0numpy1.16python3.7.____cpythontarget_platformosx-64:
+        CONFIG: osx_64_boost_cpp1.74.0numpy1.16python3.7.____cpythontarget_platformosx-64
         UPLOAD_PACKAGES: 'True'
-      osx_64_boost_cpp1.74.0numpy1.16python3.8.____cpython:
-        CONFIG: osx_64_boost_cpp1.74.0numpy1.16python3.8.____cpython
+      osx_64_boost_cpp1.74.0numpy1.16python3.8.____cpythontarget_platformosx-64:
+        CONFIG: osx_64_boost_cpp1.74.0numpy1.16python3.8.____cpythontarget_platformosx-64
         UPLOAD_PACKAGES: 'True'
-      osx_64_boost_cpp1.74.0numpy1.19python3.9.____cpython:
-        CONFIG: osx_64_boost_cpp1.74.0numpy1.19python3.9.____cpython
+      osx_64_boost_cpp1.74.0numpy1.19python3.9.____cpythontarget_platformosx-64:
+        CONFIG: osx_64_boost_cpp1.74.0numpy1.19python3.9.____cpythontarget_platformosx-64
+        UPLOAD_PACKAGES: 'True'
+      osx_arm64_python3.8.____cpythontarget_platformosx-arm64:
+        CONFIG: osx_arm64_python3.8.____cpythontarget_platformosx-arm64
+        UPLOAD_PACKAGES: 'True'
+      osx_arm64_python3.9.____cpythontarget_platformosx-arm64:
+        CONFIG: osx_arm64_python3.9.____cpythontarget_platformosx-arm64
         UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 360
 
