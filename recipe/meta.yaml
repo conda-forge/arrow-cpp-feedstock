@@ -11,9 +11,11 @@ package:
 source:
   url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
   sha256: be0342cc847bb340d86aeaef43596a0b6c1dbf1ede9c789a503d939e01c71fbe
+  patches:
+    - 8458.patch
 
 build:
-  number: 2
+  number: 3
   skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
