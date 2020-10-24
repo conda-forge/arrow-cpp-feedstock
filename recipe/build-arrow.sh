@@ -75,7 +75,7 @@ cmake \
 
 # Decrease parallelism a bit as we will otherwise get out-of-memory problems
 # This is only necessary on Travis
-if [ "${TRAVIS}" = "true" ]; then
+if [ "${CI}" = "travis" ]; then
 # if [ "$(uname -m)" = "ppc64le" ]; then
     echo "Using $(grep -c ^processor /proc/cpuinfo) CPUs"
     CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
