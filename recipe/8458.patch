@@ -1,0 +1,88 @@
+From 89c3cd22e30ae7909f02583cac1966bf698380ab Mon Sep 17 00:00:00 2001
+From: "Uwe L. Korn" <uwelk@xhochy.com>
+Date: Tue, 13 Oct 2020 21:58:43 +0200
+Subject: [PATCH] =?UTF-8?q?ARROW-10302:=20[Python]=C2=A0Don't=20double-pac?=
+ =?UTF-8?q?kage=20plasma-store-server?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ dev/tasks/conda-recipes/arrow-cpp/build-pyarrow.sh | 1 +
+ dev/tasks/conda-recipes/arrow-cpp/meta.yaml        | 1 +
+ python/pyarrow/plasma.py                           | 4 ++++
+ python/setup.py                                    | 8 ++++++--
+ 4 files changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/dev/tasks/conda-recipes/arrow-cpp/build-pyarrow.sh b/dev/tasks/conda-recipes/arrow-cpp/build-pyarrow.sh
+index 18a65fccd0a..d0fb55de580 100755
+--- a/dev/tasks/conda-recipes/arrow-cpp/build-pyarrow.sh
++++ b/dev/tasks/conda-recipes/arrow-cpp/build-pyarrow.sh
+@@ -9,6 +9,7 @@ export PARQUET_HOME=$PREFIX
+ export SETUPTOOLS_SCM_PRETEND_VERSION=$PKG_VERSION
+ export PYARROW_BUILD_TYPE=release
+ export PYARROW_BUNDLE_ARROW_CPP_HEADERS=0
++export PYARROW_BUNDLE_PLASMA_EXECUTABLE=0
+ export PYARROW_WITH_DATASET=1
+ export PYARROW_WITH_FLIGHT=1
+ export PYARROW_WITH_GANDIVA=1
+diff --git a/dev/tasks/conda-recipes/arrow-cpp/meta.yaml b/dev/tasks/conda-recipes/arrow-cpp/meta.yaml
+index da6d872ee05..b5a2bec769a 100644
+--- a/dev/tasks/conda-recipes/arrow-cpp/meta.yaml
++++ b/dev/tasks/conda-recipes/arrow-cpp/meta.yaml
+@@ -217,6 +217,7 @@ outputs:
+         # CUDA device is not available, for instance, when building from CI.
+         - pyarrow.cuda     # [cuda_compiler_version not in (undefined, "None")]
+       commands:
++        - test ! -f ${SP_DIR}/pyarrow/plasma-store-server       # [unix]
+         - test ! -f ${SP_DIR}/pyarrow/tests/test_array.py       # [unix]
+         - if exist %SP_DIR%/pyarrow/tests/test_array.py exit 1  # [win]
+   - name: pyarrow-tests
+diff --git a/python/pyarrow/plasma.py b/python/pyarrow/plasma.py
+index a4bf79bb42b..239d29094e6 100644
+--- a/python/pyarrow/plasma.py
++++ b/python/pyarrow/plasma.py
+@@ -106,6 +106,10 @@ def start_plasma_store(plasma_store_memory,
+         plasma_store_name = os.path.join(tmpdir, 'plasma.sock')
+         plasma_store_executable = os.path.join(
+             pa.__path__[0], "plasma-store-server")
++        if not os.path.exists(plasma_store_executable):
++            # Fallback to sys.prefix/bin/ (conda)
++            plasma_store_executable = os.path.join(
++                sys.prefix, "bin", "plasma-store-server")
+         command = [plasma_store_executable,
+                    "-s", plasma_store_name,
+                    "-m", str(plasma_store_memory)]
+diff --git a/python/setup.py b/python/setup.py
+index b96afd3dcb8..d803f7684d5 100755
+--- a/python/setup.py
++++ b/python/setup.py
+@@ -123,7 +123,9 @@ def run(self):
+                      ('bundle-arrow-cpp', None,
+                       'bundle the Arrow C++ libraries'),
+                      ('bundle-arrow-cpp-headers', None,
+-                      'bundle the Arrow C++ headers')] +
++                      'bundle the Arrow C++ headers'),
++                     ('bundle-plasma-executable', None,
++                      'bundle the plasma-store-server executable')] +
+                     _build_ext.user_options)
+ 
+     def initialize_options(self):
+@@ -179,6 +181,8 @@ def initialize_options(self):
+             os.environ.get('PYARROW_BUNDLE_BOOST', '0'))
+         self.bundle_arrow_cpp_headers = strtobool(
+             os.environ.get('PYARROW_BUNDLE_ARROW_CPP_HEADERS', '1'))
++        self.bundle_plasma_executable = strtobool(
++            os.environ.get('PYARROW_BUNDLE_PLASMA_EXECUTABLE', '1'))
+ 
+     CYTHON_MODULE_NAMES = [
+         'lib',
+@@ -350,7 +354,7 @@ def append_cmake_bool(value, varname):
+             if self.bundle_arrow_cpp:
+                 self._bundle_arrow_cpp(build_prefix, build_lib)
+ 
+-            if self.with_plasma:
++            if self.with_plasma and self.bundle_plasma_executable:
+                 # Move the plasma store
+                 source = os.path.join(self.build_type, "plasma-store-server")
+                 target = os.path.join(build_lib,

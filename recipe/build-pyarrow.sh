@@ -41,6 +41,15 @@ fi
 
 cd python
 
+# Decrease parallelism to avoid out-of-memory problems
+# This is only necessary on Travis
+if [ "${CI}" = "travis" ]; then
+    echo "Using $(grep -c ^processor /proc/cpuinfo) CPUs"
+    CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
+    CPU_COUNT=$((CPU_COUNT / 4))
+    export CMAKE_BUILD_PARALLEL_LEVEL=${CPU_COUNT}
+fi
+
 $PYTHON setup.py \
         build_ext \
         install --single-version-externally-managed \
