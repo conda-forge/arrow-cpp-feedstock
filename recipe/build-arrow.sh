@@ -82,7 +82,9 @@ cmake \
     ..
 
 ninja jemalloc_ep-prefix/src/jemalloc_ep-stamp/jemalloc_ep-patch
-cp $BUILD_PREFIX/share/libtool/build-aux/config.* jemalloc_ep-prefix/src/jemalloc_ep/build-aux/
+if [[ "${target_platform}" == "osx-arm64" ]]; then
+    cp $BUILD_PREFIX/share/libtool/build-aux/config.* jemalloc_ep-prefix/src/jemalloc_ep/build-aux/
+fi
 
 # Decrease parallelism a bit as we will otherwise get out-of-memory problems
 # This is only necessary on Travis
