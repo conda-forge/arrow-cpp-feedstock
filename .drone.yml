@@ -1,6 +1,6 @@
 ---
 kind: pipeline
-name: linux_aarch64_boost_cpp1.72.0numpy1_hac8feab8aa
+name: linux_aarch64_boost_cpp1.72.0numpy1_h85e7a55c70
 
 platform:
   os: linux
@@ -10,7 +10,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_boost_cpp1.72.0numpy1.16python3.6.____cpythontarget_platformlinux-aarch64
+    CONFIG: linux_aarch64_boost_cpp1.72.0numpy1.16python3.6.____cpython
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
@@ -31,7 +31,7 @@ steps:
 
 ---
 kind: pipeline
-name: linux_aarch64_boost_cpp1.72.0numpy1_hb60902da25
+name: linux_aarch64_boost_cpp1.72.0numpy1_h0794197333
 
 platform:
   os: linux
@@ -41,7 +41,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_boost_cpp1.72.0numpy1.16python3.7.____cpythontarget_platformlinux-aarch64
+    CONFIG: linux_aarch64_boost_cpp1.72.0numpy1.16python3.7.____cpython
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
@@ -62,7 +62,7 @@ steps:
 
 ---
 kind: pipeline
-name: linux_aarch64_boost_cpp1.72.0numpy1_ha23bff49f7
+name: linux_aarch64_boost_cpp1.72.0numpy1_h9597aab73d
 
 platform:
   os: linux
@@ -72,7 +72,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_boost_cpp1.72.0numpy1.16python3.8.____cpythontarget_platformlinux-aarch64
+    CONFIG: linux_aarch64_boost_cpp1.72.0numpy1.16python3.8.____cpython
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
@@ -93,7 +93,7 @@ steps:
 
 ---
 kind: pipeline
-name: linux_aarch64_boost_cpp1.72.0numpy1_h33f7b0f853
+name: linux_aarch64_boost_cpp1.72.0numpy1_hdd303b2497
 
 platform:
   os: linux
@@ -103,7 +103,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_boost_cpp1.72.0numpy1.19python3.9.____cpythontarget_platformlinux-aarch64
+    CONFIG: linux_aarch64_boost_cpp1.72.0numpy1.19python3.9.____cpython
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
@@ -124,7 +124,7 @@ steps:
 
 ---
 kind: pipeline
-name: linux_aarch64_boost_cpp1.74.0numpy1_hcba0fbb82e
+name: linux_aarch64_boost_cpp1.74.0numpy1_he95a5da2b0
 
 platform:
   os: linux
@@ -134,7 +134,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_boost_cpp1.74.0numpy1.16python3.6.____cpythontarget_platformlinux-aarch64
+    CONFIG: linux_aarch64_boost_cpp1.74.0numpy1.16python3.6.____cpython
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
@@ -155,7 +155,7 @@ steps:
 
 ---
 kind: pipeline
-name: linux_aarch64_boost_cpp1.74.0numpy1_hdb86c649e4
+name: linux_aarch64_boost_cpp1.74.0numpy1_h5223f3efa2
 
 platform:
   os: linux
@@ -165,7 +165,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_boost_cpp1.74.0numpy1.16python3.7.____cpythontarget_platformlinux-aarch64
+    CONFIG: linux_aarch64_boost_cpp1.74.0numpy1.16python3.7.____cpython
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
@@ -186,7 +186,7 @@ steps:
 
 ---
 kind: pipeline
-name: linux_aarch64_boost_cpp1.74.0numpy1_h069ea7b3cf
+name: linux_aarch64_boost_cpp1.74.0numpy1_hc2eb0713fc
 
 platform:
   os: linux
@@ -196,7 +196,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_boost_cpp1.74.0numpy1.16python3.8.____cpythontarget_platformlinux-aarch64
+    CONFIG: linux_aarch64_boost_cpp1.74.0numpy1.16python3.8.____cpython
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
@@ -217,7 +217,7 @@ steps:
 
 ---
 kind: pipeline
-name: linux_aarch64_boost_cpp1.74.0numpy1_h5da158a2dc
+name: linux_aarch64_boost_cpp1.74.0numpy1_hd05ac0dece
 
 platform:
   os: linux
@@ -227,7 +227,7 @@ steps:
 - name: Install and build
   image: condaforge/linux-anvil-aarch64
   environment:
-    CONFIG: linux_aarch64_boost_cpp1.74.0numpy1.19python3.9.____cpythontarget_platformlinux-aarch64
+    CONFIG: linux_aarch64_boost_cpp1.74.0numpy1.19python3.9.____cpython
     UPLOAD_PACKAGES: True
     PLATFORM: linux-aarch64
     BINSTAR_TOKEN:
