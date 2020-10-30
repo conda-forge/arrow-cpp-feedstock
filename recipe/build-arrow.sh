@@ -34,6 +34,14 @@ else
     EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=OFF"
 fi
 
+if [[ "${target_platform}" == "osx-arm64" ]]; then
+    # We need llvm 11+ support in Arrow for this
+    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_GANDIVA=OFF"
+    sed -i "s;\${GRPC_CPP_PLUGIN};${BUILD_PREFIX}/bin/grpc_cpp_plugin;g" ../src/arrow/flight/CMakeLists.txt
+else
+    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_GANDIVA=ON"
+fi
+
 cmake \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
@@ -44,7 +52,6 @@ cmake \
     -DARROW_DATASET=ON \
     -DARROW_DEPENDENCY_SOURCE=SYSTEM \
     -DARROW_FLIGHT=ON \
-    -DARROW_GANDIVA=ON \
     -DARROW_HDFS=ON \
     -DARROW_JEMALLOC=ON \
     -DARROW_MIMALLOC=ON \
@@ -69,9 +76,15 @@ cmake \
     -DCMAKE_RANLIB=${RANLIB} \
     -DLLVM_TOOLS_BINARY_DIR=$PREFIX/bin \
     -DPython3_EXECUTABLE=${PYTHON} \
+    -DProtobuf_PROTOC_EXECUTABLE=$BUILD_PREFIX/bin/protoc \
     -GNinja \
     ${EXTRA_CMAKE_ARGS} \
     ..
+
+ninja jemalloc_ep-prefix/src/jemalloc_ep-stamp/jemalloc_ep-patch
+if [[ "${target_platform}" == "osx-arm64" ]]; then
+    cp $BUILD_PREFIX/share/libtool/build-aux/config.* jemalloc_ep-prefix/src/jemalloc_ep/build-aux/
+fi
 
 # Decrease parallelism a bit as we will otherwise get out-of-memory problems
 # This is only necessary on Travis
