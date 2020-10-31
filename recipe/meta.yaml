@@ -15,7 +15,7 @@ source:
     - 8458.patch
 
 build:
-  number: 3
+  number: 4
   skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
@@ -120,7 +120,7 @@ outputs:
         - test -f $PREFIX/include/arrow/api.h              # [unix]
         - test -f $PREFIX/include/arrow/flight/types.h     # [unix]
         - test -f $PREFIX/include/plasma/client.h          # [unix]
-        - test -f $PREFIX/include/gandiva/engine.h         # [unix and not (aarch64 or ppc64le)]
+        - test -f $PREFIX/include/gandiva/engine.h         # [unix and not (osx and arm64)]
         - test -f $PREFIX/include/parquet/api/reader.h     # [unix]
         - if not exist %LIBRARY_INC%\\arrow\\api.h exit 1            # [win]
         - if not exist %LIBRARY_INC%\\gandiva\\engine.h exit 1       # [win]
@@ -132,7 +132,7 @@ outputs:
         - test -f $PREFIX/lib/libarrow_flight.so     # [linux]
         - test -f $PREFIX/lib/libarrow_python.so     # [linux]
         - test -f $PREFIX/lib/libparquet.so          # [linux]
-        - test -f $PREFIX/lib/libgandiva.so          # [linux and not (aarch64 or ppc64le)]
+        - test -f $PREFIX/lib/libgandiva.so          # [linux]
         - test -f $PREFIX/lib/libplasma.so           # [linux]
         {{ "- test %s -f $PREFIX/lib/libarrow_cuda.so" % (['!', ''][cuda_enabled]) }}                         # [linux]
         {{ "- test %s -f $PREFIX/lib/libarrow_cuda.dylib" % (['!', ''][cuda_enabled]) }}                      # [osx]
@@ -140,7 +140,7 @@ outputs:
         - test -f $PREFIX/lib/libarrow.dylib          # [osx]
         - test -f $PREFIX/lib/libarrow_dataset.dylib  # [osx]
         - test -f $PREFIX/lib/libarrow_python.dylib   # [osx]
-        - test -f $PREFIX/lib/libgandiva.dylib        # [osx]
+        - test -f $PREFIX/lib/libgandiva.dylib        # [osx and not arm64]
         - test -f $PREFIX/lib/libparquet.dylib        # [osx]
         - test -f $PREFIX/lib/libplasma.dylib         # [osx]
         - if not exist %PREFIX%\\Library\\bin\\arrow.dll exit 1          # [win]
@@ -219,7 +219,7 @@ outputs:
         - pyarrow
         - pyarrow.dataset
         - pyarrow.flight
-        - pyarrow.gandiva
+        - pyarrow.gandiva  # [not (osx and arm64)]
         - pyarrow.orc      # [unix]
         - pyarrow.parquet
         - pyarrow.plasma   # [unix]
