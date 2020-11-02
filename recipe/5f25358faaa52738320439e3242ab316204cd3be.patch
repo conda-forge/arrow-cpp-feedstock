@@ -1,0 +1,28 @@
+From 5f25358faaa52738320439e3242ab316204cd3be Mon Sep 17 00:00:00 2001
+From: "Uwe L. Korn" <uwe.korn@quantco.com>
+Date: Tue, 15 Sep 2020 10:08:58 +0200
+Subject: [PATCH] ARROW-10011: [C++] Make FindRE2.cmake re-entrant
+
+---
+ cpp/cmake_modules/FindRE2.cmake | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/cpp/cmake_modules/FindRE2.cmake b/cpp/cmake_modules/FindRE2.cmake
+index 4562e3ae89b..bd843d60a25 100644
+--- a/cpp/cmake_modules/FindRE2.cmake
++++ b/cpp/cmake_modules/FindRE2.cmake
+@@ -63,8 +63,10 @@ endif()
+ find_package_handle_standard_args(RE2 REQUIRED_VARS RE2_LIB RE2_INCLUDE_DIR)
+ 
+ if(RE2_FOUND)
+-  add_library(RE2::re2 UNKNOWN IMPORTED)
+-  set_target_properties(RE2::re2
+-                        PROPERTIES IMPORTED_LOCATION "${RE2_LIB}"
+-                                   INTERFACE_INCLUDE_DIRECTORIES "${RE2_INCLUDE_DIR}")
++  if (NOT TARGET RE2::re2)
++    add_library(RE2::re2 UNKNOWN IMPORTED)
++    set_target_properties(RE2::re2
++                          PROPERTIES IMPORTED_LOCATION "${RE2_LIB}"
++                                     INTERFACE_INCLUDE_DIRECTORIES "${RE2_INCLUDE_DIR}")
++  endif()
+ endif()
