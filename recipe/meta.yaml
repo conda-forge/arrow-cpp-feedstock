@@ -72,7 +72,7 @@ outputs:
         - clangdev 8.*
         - llvmdev 8.*
         - lz4-c
-        - numpy 1.16.*
+        - numpy
         - orc  # [unix]
         - python
         - rapidjson

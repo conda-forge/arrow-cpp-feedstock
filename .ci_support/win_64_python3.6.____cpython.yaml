@@ -24,6 +24,8 @@ libprotobuf:
 - '3.13'
 lz4_c:
 - 1.9.2
+numpy:
+- '1.16'
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
@@ -44,6 +46,9 @@ snappy:
 - '1'
 target_platform:
 - win-64
+zip_keys:
+- - python
+  - numpy
 zlib:
 - '1.2'
 zstd:
