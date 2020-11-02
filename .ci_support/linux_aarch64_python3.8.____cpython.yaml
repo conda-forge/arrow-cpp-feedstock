@@ -1,7 +1,9 @@
 BUILD:
 - aarch64-conda_cos7-linux-gnu
+aws_sdk_cpp:
+- 1.8.70
 boost_cpp:
-- '1.72'
+- 1.72.0
 bzip2:
 - '1'
 c_compiler:
@@ -16,6 +18,8 @@ channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
+cuda_compiler_version:
+- None
 cxx_compiler:
 - gxx
 cxx_compiler_version:
@@ -27,11 +31,13 @@ gflags:
 glog:
 - 0.4.0
 grpc_cpp:
-- '1.30'
+- '1.33'
 libprotobuf:
 - '3.12'
 lz4_c:
 - 1.9.2
+orc:
+- 1.6.5
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
@@ -47,9 +53,14 @@ pin_run_as_build:
 python:
 - 3.8.* *_cpython
 re2:
-- 2020.07.06
+- 2020.10.01
 snappy:
 - '1'
+target_platform:
+- linux-aarch64
+zip_keys:
+- - c_compiler_version
+  - cxx_compiler_version
 zlib:
 - '1.2'
 zstd:
