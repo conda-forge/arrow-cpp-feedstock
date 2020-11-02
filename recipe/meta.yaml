@@ -1,5 +1,5 @@
 {% set version = "0.17.1" %}
-{% set number = "11" %}
+{% set number = "12" %}
 {% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '9.2' %}
 {% set build_ext_version = "1.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -13,6 +13,9 @@ package:
 source:
   url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
   sha256: cbc51c343bca08b10f7f1b2ef15cb15057c30e5e9017cfcee18337b7e2da9ea2
+  patches:
+    - 5f25358faaa52738320439e3242ab316204cd3be.patch
+    - a3e7185abdcea52aedec2b10b19776307eb98a64.patch
 
 build:
   number: {{ number }}
@@ -72,7 +75,7 @@ outputs:
         - clangdev 8.*
         - llvmdev 8.*
         - lz4-c
-        - numpy 1.16.*
+        - numpy
         - orc  # [unix]
         - python
         - rapidjson
