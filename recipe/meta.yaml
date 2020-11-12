@@ -17,7 +17,7 @@ source:
     - 0001-ARROW-10252-Python-Add-option-to-skip-inclusion-of-A.patch
 
 build:
-  number: 14
+  number: 15
   skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
