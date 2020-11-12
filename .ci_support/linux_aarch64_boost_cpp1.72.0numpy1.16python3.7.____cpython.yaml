@@ -1,7 +1,7 @@
 BUILD:
 - aarch64-conda_cos7-linux-gnu
 aws_sdk_cpp:
-- 1.8.63
+- 1.8.70
 boost_cpp:
 - 1.72.0
 bzip2:
@@ -25,13 +25,13 @@ cxx_compiler:
 cxx_compiler_version:
 - '7'
 docker_image:
-- condaforge/linux-anvil-aarch64
+- quay.io/condaforge/linux-anvil-aarch64
 gflags:
 - '2.2'
 glog:
 - 0.4.0
 grpc_cpp:
-- '1.32'
+- '1.33'
 libprotobuf:
 - '3.13'
 lz4_c:
@@ -55,7 +55,7 @@ pin_run_as_build:
 python:
 - 3.7.* *_cpython
 re2:
-- 2020.10.01
+- 2020.11.01
 snappy:
 - '1'
 target_platform:

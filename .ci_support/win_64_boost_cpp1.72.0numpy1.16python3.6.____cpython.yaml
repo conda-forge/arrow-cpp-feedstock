@@ -1,5 +1,5 @@
 aws_sdk_cpp:
-- 1.8.63
+- 1.8.70
 boost_cpp:
 - 1.72.0
 bzip2:
@@ -19,7 +19,7 @@ gflags:
 glog:
 - 0.4.0
 grpc_cpp:
-- '1.32'
+- '1.33'
 libprotobuf:
 - '3.13'
 lz4_c:
@@ -41,7 +41,7 @@ pin_run_as_build:
 python:
 - 3.6.* *_cpython
 re2:
-- 2020.10.01
+- 2020.11.01
 snappy:
 - '1'
 target_platform:

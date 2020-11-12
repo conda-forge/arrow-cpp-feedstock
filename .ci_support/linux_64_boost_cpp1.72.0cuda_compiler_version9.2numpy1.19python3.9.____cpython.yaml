@@ -1,5 +1,5 @@
 aws_sdk_cpp:
-- 1.8.63
+- 1.8.70
 boost_cpp:
 - 1.72.0
 bzip2:
@@ -8,6 +8,8 @@ c_compiler:
 - gcc
 c_compiler_version:
 - '7'
+cdt_name:
+- cos6
 channel_sources:
 - conda-forge,defaults
 channel_targets:
@@ -21,13 +23,13 @@ cxx_compiler:
 cxx_compiler_version:
 - '7'
 docker_image:
-- condaforge/linux-anvil-cuda:9.2
+- quay.io/condaforge/linux-anvil-cuda:9.2
 gflags:
 - '2.2'
 glog:
 - 0.4.0
 grpc_cpp:
-- '1.32'
+- '1.33'
 libprotobuf:
 - '3.13'
 lz4_c:
@@ -51,7 +53,7 @@ pin_run_as_build:
 python:
 - 3.9.* *_cpython
 re2:
-- 2020.10.01
+- 2020.11.01
 snappy:
 - '1'
 target_platform:
