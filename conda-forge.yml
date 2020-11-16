@@ -1,3 +1,4 @@
-# linux_ppc64le is explicitly removed again, see https://github.com/conda-forge/arrow-cpp-feedstock/issues/143
-provider: {linux_aarch64: default, win: azure}
+build_platform: {osx_arm64: osx_64}
 conda_forge_output_validation: true
+provider: {linux_aarch64: default, win: azure}
+test_on_native_only: true
