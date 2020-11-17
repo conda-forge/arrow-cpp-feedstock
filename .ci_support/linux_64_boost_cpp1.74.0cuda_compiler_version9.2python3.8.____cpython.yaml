@@ -1,31 +1,29 @@
-BUILD:
-- aarch64-conda_cos7-linux-gnu
 aws_sdk_cpp:
 - 1.8.70
 boost_cpp:
-- 1.72.0
+- 1.74.0
 bzip2:
 - '1'
 c_compiler:
 - gcc
 c_compiler_version:
 - '7'
-cdt_arch:
-- aarch64
 cdt_name:
-- cos7
+- cos6
 channel_sources:
-- conda-forge
+- conda-forge,defaults
 channel_targets:
 - conda-forge main
+cuda_compiler:
+- nvcc
 cuda_compiler_version:
-- None
+- '9.2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
 - '7'
 docker_image:
-- condaforge/linux-anvil-aarch64
+- quay.io/condaforge/linux-anvil-cuda:9.2
 gflags:
 - '2.2'
 glog:
@@ -53,18 +51,20 @@ pin_run_as_build:
   zlib:
     max_pin: x.x
 python:
-- 3.6.* *_cpython
+- 3.8.* *_cpython
 re2:
-- 2020.10.01
+- 2020.11.01
 snappy:
 - '1'
 target_platform:
-- linux-aarch64
+- linux-64
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-- - python
-  - numpy
+- - cuda_compiler_version
+  - docker_image
+- - numpy
+  - python
 zlib:
 - '1.2'
 zstd:
