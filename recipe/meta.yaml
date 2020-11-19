@@ -55,6 +55,12 @@ outputs:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
       build:
+        - python                                 # [build_platform != target_platform]
+        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+        - cython                                 # [build_platform != target_platform]
+        - numpy                                  # [build_platform != target_platform]
+        - libtool                                # [osx and arm64]
+        - libprotobuf
         - cmake 3.16.*
         - autoconf  # [unix]
         - ninja
@@ -72,8 +78,8 @@ outputs:
         - glog
         - grpc-cpp
         - libprotobuf
-        - clangdev 10
-        - llvmdev 10
+        - clangdev 10  # [not (osx and arm64)]
+        - llvmdev 10   # [not (osx and arm64)]
         - libutf8proc
         - lz4-c
         - numpy
@@ -115,7 +121,7 @@ outputs:
         - test -f $PREFIX/include/arrow/api.h              # [unix]
         - test -f $PREFIX/include/arrow/flight/types.h     # [unix]
         - test -f $PREFIX/include/plasma/client.h          # [unix]
-        - test -f $PREFIX/include/gandiva/engine.h         # [unix and not (aarch64 or ppc64le)]
+        - test -f $PREFIX/include/gandiva/engine.h         # [unix and not (osx and arm64)]
         - test -f $PREFIX/include/parquet/api/reader.h     # [unix]
         - if not exist %LIBRARY_INC%\\arrow\\api.h exit 1            # [win]
         - if not exist %LIBRARY_INC%\\gandiva\\engine.h exit 1       # [win]
@@ -135,7 +141,7 @@ outputs:
         - test -f $PREFIX/lib/libarrow.dylib          # [osx]
         - test -f $PREFIX/lib/libarrow_dataset.dylib  # [osx]
         - test -f $PREFIX/lib/libarrow_python.dylib   # [osx]
-        - test -f $PREFIX/lib/libgandiva.dylib        # [osx]
+        - test -f $PREFIX/lib/libgandiva.dylib        # [osx and not (osx and arm64)]
         - test -f $PREFIX/lib/libparquet.dylib        # [osx]
         - test -f $PREFIX/lib/libplasma.dylib         # [osx]
         - if not exist %PREFIX%\\Library\\bin\\arrow.dll exit 1          # [win]
@@ -173,6 +179,10 @@ outputs:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
       build:
+        - python                                 # [build_platform != target_platform]
+        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+        - cython                                 # [build_platform != target_platform]
+        - numpy                                  # [build_platform != target_platform]
         - cmake 3.16.*
         - ninja
         - make  # [unix]
@@ -210,7 +220,7 @@ outputs:
         - pyarrow
         - pyarrow.dataset
         - pyarrow.flight
-        - pyarrow.gandiva
+        - pyarrow.gandiva  # [not (osx and arm64)]
         - pyarrow.orc      # [unix]
         - pyarrow.parquet
         - pyarrow.plasma   # [unix]
@@ -236,6 +246,10 @@ outputs:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
       build:
+        - python                                 # [build_platform != target_platform]
+        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+        - cython                                 # [build_platform != target_platform]
+        - numpy                                  # [build_platform != target_platform]
         - cmake 3.16.*
         - ninja
         - make  # [unix]
