@@ -5,7 +5,7 @@
 {% set proc_build_number = "0" %}
 
 package:
-  name: arrow-cpp-ext
+  name: libarrow
   version: {{ version }}
 
 source:
@@ -19,10 +19,10 @@ build:
   number: 9
   skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
   run_exports:
-    - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
+    - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
 
 outputs:
-  - name: arrow-cpp-proc
+  - name: libarrow-proc
     version: {{ build_ext_version }}
     build:
       number: {{ proc_build_number }}
@@ -37,7 +37,20 @@ outputs:
         - LICENSE.txt
       summary: 'A meta-package to select Arrow build variant'
 
-  - name: arrow-cpp
+  # compat output for old mutex-package naming
+  - name: arrow-cpp-proc
+    version: {{ build_ext_version }}
+    build:
+      number: 0
+      string: "{{ build_ext }}"
+    requirements:
+      run:
+        - libarrow-proc =*={{ build_ext }}
+    test:
+      commands:
+        - exit 0
+
+  - name: libarrow
     script: build-arrow.sh  # [not win]
     script: bld-arrow.bat   # [win]
     version: {{ version }}
@@ -45,7 +58,7 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
       run_exports:
-        - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
+        - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
       ignore_run_exports:
         - cudatoolkit
       track_features:
@@ -103,7 +116,7 @@ outputs:
         - zlib
         - zstd
       run_constrained:
-        - arrow-cpp-proc * {{ build_ext }}
+        - libarrow-proc * {{ build_ext }}
         - cudatoolkit >=9.2  # [cuda_compiler_version not in (undefined, "None")]
 
     about:
@@ -164,6 +177,19 @@ outputs:
         - if exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1        # [win]
         - if exist %PREFIX%\\Library\\lib\\gandiva_static.lib exit 1        # [win]
 
+  # compat output for old naming scheme; added for 2.0.0; keep for a few versions
+  - name: arrow-cpp
+    version: {{ version }}
+    build:
+      number: 0
+      skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
+    requirements:
+      run:
+        - libarrow ={{ version }}
+    test:
+      commands:
+        - exit 0
+
   - name: pyarrow
     script: build-pyarrow.sh  # [not win]
     script: bld-pyarrow.bat   # [win]
@@ -186,10 +212,10 @@ outputs:
         - make  # [unix]
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        # pyarrow does not require nvcc but it needs to link against libraries in arrow-cpp=*=*cuda
+        # pyarrow does not require nvcc but it needs to link against libraries in libarrow=*=*cuda
         - {{ compiler("cuda") }}  # [cuda_compiler_version not in (undefined, "None")]
       host:
-        - {{ pin_subpackage('arrow-cpp', exact=True) }}
+        - {{ pin_subpackage('libarrow', exact=True) }}
         - cython
         - numpy
         - python
@@ -197,13 +223,13 @@ outputs:
         - setuptools_scm
         - six
       run:
-        - {{ pin_subpackage('arrow-cpp', exact=True) }}
+        - {{ pin_subpackage('libarrow', exact=True) }}
         - {{ pin_compatible('numpy', lower_bound='1.16') }}
         # empty parquet-cpp metapackage, force old versions to be uninstalled
         - parquet-cpp 1.5.1.*
         - python
       run_constrained:
-        - arrow-cpp-proc * {{ build_ext }}
+        - libarrow-proc * {{ build_ext }}
         - cudatoolkit >=9.2  # [cuda_compiler_version not in (undefined, "None")]
 
     about:
