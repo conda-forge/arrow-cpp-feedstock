@@ -11,7 +11,7 @@ c_compiler:
 c_compiler_version:
 - '11'
 channel_sources:
-- conda-forge/label/rust_dev,conda-forge,https://conda-web.anaconda.org/conda-forge
+- conda-forge/label/rust_dev,conda-forge
 channel_targets:
 - conda-forge main
 cuda_compiler_version:
@@ -35,7 +35,7 @@ macos_machine:
 numpy:
 - '1.19'
 orc:
-- 1.6.5
+- 1.6.6
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
