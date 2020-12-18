@@ -11,7 +11,7 @@ c_compiler:
 c_compiler_version:
 - '11'
 channel_sources:
-- conda-forge/label/rust_dev,conda-forge,https://conda-web.anaconda.org/conda-forge
+- conda-forge/label/rust_dev,conda-forge
 channel_targets:
 - conda-forge main
 cuda_compiler_version:
@@ -27,7 +27,7 @@ glog:
 grpc_cpp:
 - '1.33'
 libprotobuf:
-- '3.13'
+- '3.14'
 lz4_c:
 - 1.9.2
 macos_machine:
