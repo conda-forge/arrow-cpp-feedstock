@@ -15,7 +15,7 @@ source:
     - 8458.patch
 
 build:
-  number: 6
+  number: 7
   skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
