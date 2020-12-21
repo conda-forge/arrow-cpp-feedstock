@@ -9,7 +9,7 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '7'
+- '9'
 cdt_arch:
 - aarch64
 cdt_name:
@@ -23,7 +23,7 @@ cuda_compiler_version:
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '7'
+- '9'
 docker_image:
 - quay.io/condaforge/linux-anvil-aarch64
 gflags:
@@ -33,7 +33,7 @@ glog:
 grpc_cpp:
 - '1.33'
 libprotobuf:
-- '3.13'
+- '3.14'
 lz4_c:
 - 1.9.2
 numpy:
