@@ -13,9 +13,10 @@ source:
   sha256: be0342cc847bb340d86aeaef43596a0b6c1dbf1ede9c789a503d939e01c71fbe
   patches:
     - 8458.patch
+    - 7df87aca022ab6a309a6ee515370686aa3bcc013.patch
 
 build:
-  number: 7
+  number: 8
   skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
