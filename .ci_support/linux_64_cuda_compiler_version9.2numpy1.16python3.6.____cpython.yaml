@@ -1,7 +1,5 @@
 aws_sdk_cpp:
 - 1.8.70
-boost_cpp:
-- 1.72.0
 bzip2:
 - '1'
 c_compiler:
@@ -35,12 +33,10 @@ libprotobuf:
 lz4_c:
 - 1.9.2
 numpy:
-- '1.19'
+- '1.16'
 orc:
-- 1.6.5
+- 1.6.6
 pin_run_as_build:
-  boost-cpp:
-    max_pin: x.x.x
   bzip2:
     max_pin: x
   lz4-c:
@@ -51,7 +47,7 @@ pin_run_as_build:
   zlib:
     max_pin: x.x
 python:
-- 3.9.* *_cpython
+- 3.6.* *_cpython
 re2:
 - 2020.11.01
 snappy:

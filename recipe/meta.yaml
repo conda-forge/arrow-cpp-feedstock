@@ -16,7 +16,7 @@ source:
     - 7df87aca022ab6a309a6ee515370686aa3bcc013.patch
 
 build:
-  number: 8
+  number: 9
   skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
@@ -48,8 +48,6 @@ outputs:
         - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
       ignore_run_exports:
         - cudatoolkit
-        # Gandiva only needs headers
-        - boost-cpp
       track_features:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
@@ -70,7 +68,7 @@ outputs:
         - {{ compiler("cuda") }}  # [cuda_compiler_version not in (undefined, "None")]
       host:
         - aws-sdk-cpp
-        - boost-cpp
+        - boost-cpp >=1.70
         - brotli
         - bzip2
         - c-ares
