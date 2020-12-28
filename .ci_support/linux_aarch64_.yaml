@@ -1,23 +1,29 @@
-MACOSX_DEPLOYMENT_TARGET:
-- '11.0'
+BUILD:
+- aarch64-conda_cos7-linux-gnu
 aws_sdk_cpp:
 - 1.8.70
 bzip2:
 - '1'
 c_compiler:
-- clang
+- gcc
 c_compiler_version:
-- '11'
+- '9'
+cdt_arch:
+- aarch64
+cdt_name:
+- cos7
 channel_sources:
-- conda-forge/label/rust_dev,conda-forge
+- conda-forge
 channel_targets:
 - conda-forge main
 cuda_compiler_version:
 - None
 cxx_compiler:
-- clangxx
+- gxx
 cxx_compiler_version:
-- '11'
+- '9'
+docker_image:
+- quay.io/condaforge/linux-anvil-aarch64
 gflags:
 - '2.2'
 glog:
@@ -28,9 +34,10 @@ libprotobuf:
 - '3.14'
 lz4_c:
 - 1.9.2
-macos_machine:
-- arm64-apple-darwin20.0.0
 numpy:
+- '1.16'
+- '1.16'
+- '1.16'
 - '1.19'
 orc:
 - 1.6.6
@@ -45,13 +52,16 @@ pin_run_as_build:
   zlib:
     max_pin: x.x
 python:
+- 3.6.* *_cpython
+- 3.7.* *_cpython
+- 3.8.* *_cpython
 - 3.9.* *_cpython
 re2:
 - 2020.11.01
 snappy:
 - '1'
 target_platform:
-- osx-arm64
+- linux-aarch64
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
