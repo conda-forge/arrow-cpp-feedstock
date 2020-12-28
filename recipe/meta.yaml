@@ -1,5 +1,5 @@
 {% set version = "1.0.1" %}
-{% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '9.2' %}
+{% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version != "None" %}
 {% set build_ext_version = "1.0.1" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
 {% set proc_build_number = "1" %}
@@ -19,7 +19,12 @@ source:
 
 build:
   number: 21
-  skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
+  # for cuda on linux, building with 9.2 is enough to be compatible with all later versions,
+  # since arrow is only using libcuda, and not libcudart.
+  skip: true  # [linux and cuda_compiler_version not in ("None", "9.2")]
+  # same for cuda on windows (but starting from 10.0)
+  skip: true  # [win and cuda_compiler_version not in ("None", "10.0")]
+  skip: true  # [osx and cuda_compiler_version != "None"]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 
@@ -45,7 +50,6 @@ outputs:
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
-      skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
       run_exports:
         - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
       ignore_run_exports:
@@ -165,7 +169,6 @@ outputs:
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
-      skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
       ignore_run_exports:
         - cudatoolkit
       track_features:
@@ -222,13 +225,13 @@ outputs:
       commands:
         - test ! -f ${SP_DIR}/pyarrow/tests/test_array.py       # [unix]
         - if exist %SP_DIR%/pyarrow/tests/test_array.py exit 1  # [win]
+
   - name: pyarrow-tests
     script: build-pyarrow.sh  # [not win]
     script: bld-pyarrow.bat   # [win]
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
-      skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
       ignore_run_exports:
         - cudatoolkit
       track_features:
