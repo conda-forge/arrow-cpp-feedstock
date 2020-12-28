@@ -5,7 +5,7 @@
 {% set proc_build_number = "0" %}
 
 package:
-  name: libarrow
+  name: apache-arrow
   version: {{ version }}
 
 source:
@@ -24,7 +24,7 @@ build:
     - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
 
 outputs:
-  - name: libarrow-proc
+  - name: apache-arrow-proc
     version: {{ build_ext_version }}
     build:
       number: {{ proc_build_number }}
@@ -47,7 +47,7 @@ outputs:
       string: "{{ build_ext }}"
     requirements:
       run:
-        - libarrow-proc =*={{ build_ext }}
+        - apache-arrow-proc =*={{ build_ext }}
     test:
       commands:
         - exit 0
@@ -118,7 +118,7 @@ outputs:
         - zlib
         - zstd
       run_constrained:
-        - libarrow-proc * {{ build_ext }}
+        - apache-arrow-proc * {{ build_ext }}
         - cudatoolkit >=9.2  # [cuda_compiler_version not in (undefined, "None")]
 
     about:
@@ -231,7 +231,7 @@ outputs:
         - parquet-cpp 1.5.1.*
         - python
       run_constrained:
-        - libarrow-proc * {{ build_ext }}
+        - apache-arrow-proc * {{ build_ext }}
         - cudatoolkit >=9.2  # [cuda_compiler_version not in (undefined, "None")]
 
     about:
@@ -296,7 +296,7 @@ outputs:
         - {{ pin_subpackage('pyarrow', exact=True) }}
         - python
       run_constrained:
-        - arrow-cpp-proc * {{ build_ext }}
+        - apache-arrow-proc * {{ build_ext }}
         - cudatoolkit >=9.2  # [cuda_compiler_version not in (undefined, "None")]
 
     about:
