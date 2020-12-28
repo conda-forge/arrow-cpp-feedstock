@@ -17,6 +17,8 @@ source:
 
 build:
   number: 9
+  # for cuda, building with 9.2 is enough to be compatible with all later versions,
+  # since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
   run_exports:
     - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
