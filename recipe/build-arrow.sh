@@ -98,3 +98,5 @@ else
 fi
 
 popd
+# clean up cmake-cache between builds
+rm -r cpp/build
