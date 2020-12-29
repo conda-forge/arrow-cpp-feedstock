@@ -23,6 +23,13 @@ SET PYARROW_WITH_GANDIVA=1
 SET PYARROW_WITH_PARQUET=1
 SET PYARROW_CMAKE_GENERATOR=Ninja
 
+:: Enable CUDA support
+if "%cuda_compiler_version%"=="None" (
+    set "PYARROW_WITH_CUDA=0"
+) else (
+    set "PYARROW_WITH_CUDA=1"
+)
+
 %PYTHON%   setup.py ^
            build_ext ^
            install --single-version-externally-managed ^
