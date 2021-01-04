@@ -16,7 +16,7 @@ source:
     - 7df87aca022ab6a309a6ee515370686aa3bcc013.patch
 
 build:
-  number: 10
+  number: 11
   skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
@@ -56,7 +56,7 @@ outputs:
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
-        - libtool                                # [osx and arm64]
+        - gnuconfig                               # [osx and arm64]
         - libprotobuf
         - grpc-cpp
         - cmake 3.16.*

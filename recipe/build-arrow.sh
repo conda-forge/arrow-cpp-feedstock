@@ -36,11 +36,11 @@ fi
 
 if [[ "${target_platform}" == "osx-arm64" ]]; then
     # We need llvm 11+ support in Arrow for this
-    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_GANDIVA=OFF -DARROW_JEMALLOC=OFF -DARROW_MIMALLOC=OFF"
+    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_GANDIVA=OFF"
     sed -i "s;\${GRPC_CPP_PLUGIN};${BUILD_PREFIX}/bin/grpc_cpp_plugin;g" ../src/arrow/flight/CMakeLists.txt
-    # sed -ie 's;"--with-jemalloc-prefix\=je_arrow_";"--with-jemalloc-prefix\=je_arrow_" "--with-lg-page\=16";g' ../cmake_modules/ThirdpartyToolchain.cmake
+    sed -ie 's;"--with-jemalloc-prefix\=je_arrow_";"--with-jemalloc-prefix\=je_arrow_" "--with-lg-page\=14";g' ../cmake_modules/ThirdpartyToolchain.cmake
 else
-    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_GANDIVA=ON -DARROW_JEMALLOC=ON -DARROW_MIMALLOC=ON"
+    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_GANDIVA=ON"
 fi
 
 cmake \
@@ -54,6 +54,8 @@ cmake \
     -DARROW_DEPENDENCY_SOURCE=SYSTEM \
     -DARROW_FLIGHT=ON \
     -DARROW_HDFS=ON \
+    -DARROW_JEMALLOC=ON \
+    -DARROW_MIMALLOC=ON \
     -DARROW_ORC=ON \
     -DARROW_PACKAGE_PREFIX=$PREFIX \
     -DARROW_PARQUET=ON \
@@ -79,11 +81,13 @@ cmake \
     ..
 
 # Commented out until jemalloc and mimalloc are fixed upstream
-# if [[ "${target_platform}" == "osx-arm64" ]]; then
-#     ninja jemalloc_ep-prefix/src/jemalloc_ep-stamp/jemalloc_ep-patch mimalloc_ep-prefix/src/mimalloc_ep-stamp/mimalloc_ep-patch
-#     cp $BUILD_PREFIX/share/libtool/build-aux/config.* jemalloc_ep-prefix/src/jemalloc_ep/build-aux/
-#     sed -ie 's/list(APPEND mi_cflags -march=native)//g' mimalloc_ep-prefix/src/mimalloc_ep/CMakeLists.txt
-# fi
+if [[ "${target_platform}" == "osx-arm64" ]]; then
+     ninja jemalloc_ep-prefix/src/jemalloc_ep-stamp/jemalloc_ep-patch mimalloc_ep-prefix/src/mimalloc_ep-stamp/mimalloc_ep-patch
+     cp $BUILD_PREFIX/share/gnuconfig/config.* jemalloc_ep-prefix/src/jemalloc_ep/build-aux/
+     sed -ie 's/list(APPEND mi_cflags -march=mative)//g' mimalloc_ep-prefix/src/mimalloc_ep/CMakeLists.txt
+     # Use the correct register for thread-local storage
+     sed -ie 's/tpidr_el0/tpidrro_el0/g' mimalloc_ep-prefix/src/mimalloc_ep/include/mimalloc-internal.h
+fi
 
 # Decrease parallelism a bit as we will otherwise get out-of-memory problems
 # This is only necessary on Travis
