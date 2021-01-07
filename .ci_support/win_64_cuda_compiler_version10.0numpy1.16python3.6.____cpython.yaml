@@ -8,8 +8,10 @@ channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
+cuda_compiler:
+- nvcc
 cuda_compiler_version:
-- None
+- '10.0'
 cxx_compiler:
 - vs2017
 gflags:
