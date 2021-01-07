@@ -74,7 +74,8 @@ outputs:
         - libprotobuf
         - clangdev 8.*
         - llvmdev 8.*
-        - lz4-c
+        # Only newer Arrow releases support 1.9.3+
+        - lz4-c 1.9.2
         - numpy
         - orc  # [unix]
         - python
@@ -93,7 +94,7 @@ outputs:
         - gflags
         - glog
         - grpc-cpp
-        - lz4-c
+        - lz4-c 1.9.2
         - python
         - re2
         - zlib
