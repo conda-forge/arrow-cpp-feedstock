@@ -3,7 +3,7 @@ BUILD:
 aws_sdk_cpp:
 - 1.8.70
 boost_cpp:
-- 1.72.0
+- 1.74.0
 bzip2:
 - '1'
 c_compiler:
@@ -31,7 +31,7 @@ gflags:
 glog:
 - 0.4.0
 grpc_cpp:
-- '1.33'
+- '1.34'
 libprotobuf:
 - '3.14'
 lz4_c:
@@ -53,7 +53,7 @@ pin_run_as_build:
   zlib:
     max_pin: x.x
 python:
-- 3.6.* *_cpython
+- 3.8.* *_cpython
 re2:
 - 2020.11.01
 snappy:
@@ -63,8 +63,8 @@ target_platform:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-- - numpy
-  - python
+- - python
+  - numpy
 zlib:
 - '1.2'
 zstd:

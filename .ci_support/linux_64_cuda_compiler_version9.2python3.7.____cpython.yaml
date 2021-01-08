@@ -29,7 +29,7 @@ gflags:
 glog:
 - 0.4.0
 grpc_cpp:
-- '1.33'
+- '1.34'
 libprotobuf:
 - '3.14'
 lz4_c:
@@ -63,8 +63,8 @@ zip_keys:
   - cxx_compiler_version
 - - cuda_compiler_version
   - docker_image
-- - numpy
-  - python
+- - python
+  - numpy
 zlib:
 - '1.2'
 zstd:
