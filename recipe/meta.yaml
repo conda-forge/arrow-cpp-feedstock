@@ -87,18 +87,8 @@ outputs:
         - zlib
         - zstd
       run:
-        - {{ pin_compatible('numpy', lower_bound='1.16') }}
-        - aws-sdk-cpp
-        - boost-cpp
-        - brotli
-        - c-ares
-        - gflags
-        - glog
-        - grpc-cpp
+        - {{ pin_compatible('numpy') }}
         - python
-        - re2
-        - zlib
-        - zstd
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
         - cudatoolkit >=9.2  # [cuda_compiler_version not in (undefined, "None")]
