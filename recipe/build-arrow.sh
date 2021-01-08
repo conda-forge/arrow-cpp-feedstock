@@ -34,6 +34,12 @@ else
     EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=OFF"
 fi
 
+if [[ "${target_platform}" == "linux-ppc64le" ]]; then
+    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DARROW_PLASMA=OFF"
+else
+    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DARROW_PLASMA=ON"
+fi
+
 cmake \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
@@ -51,7 +57,6 @@ cmake \
     -DARROW_ORC=ON \
     -DARROW_PACKAGE_PREFIX=$PREFIX \
     -DARROW_PARQUET=ON \
-    -DARROW_PLASMA=ON \
     -DARROW_PYTHON=ON \
     -DARROW_S3=ON \
     -DARROW_SIMD_LEVEL=NONE \
@@ -71,16 +76,6 @@ cmake \
     ${EXTRA_CMAKE_ARGS} \
     ..
 
-# Decrease parallelism a bit as we will otherwise get out-of-memory problems
-# This is only necessary on Travis
-if [ "${TRAVIS}" = "true" ]; then
-# if [ "$(uname -m)" = "ppc64le" ]; then
-    echo "Using $(grep -c ^processor /proc/cpuinfo) CPUs"
-    CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
-    CPU_COUNT=$((CPU_COUNT / 4))
-    ninja install -j${CPU_COUNT}
-else
-    ninja install
-fi
+ninja install
 
 popd

@@ -113,8 +113,8 @@ outputs:
         # headers
         - test -f $PREFIX/include/arrow/api.h              # [unix]
         - test -f $PREFIX/include/arrow/flight/types.h     # [unix]
-        - test -f $PREFIX/include/plasma/client.h          # [unix]
-        - test -f $PREFIX/include/gandiva/engine.h         # [unix and not (aarch64 or ppc64le)]
+        - test -f $PREFIX/include/plasma/client.h          # [unix and not ppc64le]
+        - test -f $PREFIX/include/gandiva/engine.h         # [unix]
         - test -f $PREFIX/include/parquet/api/reader.h     # [unix]
         - if not exist %LIBRARY_INC%\\arrow\\api.h exit 1            # [win]
         - if not exist %LIBRARY_INC%\\gandiva\\engine.h exit 1       # [win]
@@ -126,8 +126,8 @@ outputs:
         - test -f $PREFIX/lib/libarrow_flight.so     # [linux]
         - test -f $PREFIX/lib/libarrow_python.so     # [linux]
         - test -f $PREFIX/lib/libparquet.so          # [linux]
-        - test -f $PREFIX/lib/libgandiva.so          # [linux and not (aarch64 or ppc64le)]
-        - test -f $PREFIX/lib/libplasma.so           # [linux]
+        - test -f $PREFIX/lib/libgandiva.so          # [linux]
+        - test -f $PREFIX/lib/libplasma.so           # [linux and not ppc64le]
         {{ "- test %s -f $PREFIX/lib/libarrow_cuda.so" % (['!', ''][cuda_enabled]) }}                         # [linux]
         {{ "- test %s -f $PREFIX/lib/libarrow_cuda.dylib" % (['!', ''][cuda_enabled]) }}                      # [osx]
         {{ "- if %s exist %%PREFIX%%\\Library\\bin\\arrow_cuda.dll exit 1" % (['', 'not'][cuda_enabled]) }}   # [win]
@@ -212,7 +212,7 @@ outputs:
         - pyarrow.gandiva
         - pyarrow.orc      # [unix]
         - pyarrow.parquet
-        - pyarrow.plasma   # [unix]
+        - pyarrow.plasma   # [unix and not ppc64le]
         - pyarrow.fs
         - pyarrow._s3fs
         - pyarrow._hdfs

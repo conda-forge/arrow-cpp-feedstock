@@ -15,7 +15,6 @@ export PYARROW_WITH_GANDIVA=1
 export PYARROW_WITH_HDFS=1
 export PYARROW_WITH_ORC=1
 export PYARROW_WITH_PARQUET=1
-export PYARROW_WITH_PLASMA=1
 export PYARROW_WITH_S3=1
 export PYARROW_CMAKE_GENERATOR=Ninja
 BUILD_EXT_FLAGS=""
@@ -29,9 +28,13 @@ else
 fi
 
 # Resolve: Make Error at cmake_modules/SetupCxxFlags.cmake:338 (message): Unsupported arch flag: -march=.
-if [[ "$(uname -m)" = "aarch64" ]]
-then
+if [[ "${target_platform}" == "linux-aarch64" ]]; then
     export PYARROW_CMAKE_OPTIONS="-DARROW_ARMV8_ARCH=armv8-a"
+fi
+if [[ "${target_platform}" == "linux-ppc64le" ]]; then
+    export PYARROW_WITH_PLASMA=0
+else
+    export PYARROW_WITH_PLASMA=1
 fi
 
 cd python
