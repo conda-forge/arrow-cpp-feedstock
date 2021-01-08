@@ -1,5 +1,5 @@
 {% set version = "0.17.1" %}
-{% set number = "13" %}
+{% set number = "14" %}
 {% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '9.2' %}
 {% set build_ext_version = "1.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -74,7 +74,9 @@ outputs:
         - libprotobuf
         - clangdev 8.*
         - llvmdev 8.*
-        - lz4-c
+        # Only newer Arrow releases support 1.9.3+
+        - lz4-c 1.9.2  # [win]
+        - lz4-c        # [not win]
         - numpy
         - orc  # [unix]
         - python
@@ -85,19 +87,8 @@ outputs:
         - zlib
         - zstd
       run:
-        - {{ pin_compatible('numpy', lower_bound='1.16') }}
-        - aws-sdk-cpp
-        - boost-cpp
-        - brotli
-        - c-ares
-        - gflags
-        - glog
-        - grpc-cpp
-        - lz4-c
+        - {{ pin_compatible('numpy') }}
         - python
-        - re2
-        - zlib
-        - zstd
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
         - cudatoolkit >=9.2  # [cuda_compiler_version not in (undefined, "None")]
