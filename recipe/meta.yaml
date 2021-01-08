@@ -15,9 +15,10 @@ source:
     - python_executable.patch
     - 2d3046f2eefd0e79819e15286b17c89b1ec1c8e2.patch
     - 0001-ARROW-10252-Python-Add-option-to-skip-inclusion-of-A.patch
+    - support-grpc-1.34.patch
 
 build:
-  number: 19
+  number: 20
   skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
@@ -73,7 +74,8 @@ outputs:
         - clangdev 10
         - llvmdev 10
         - libutf8proc
-        - lz4-c
+        - lz4-c 1.9.2  # [win]
+        - lz4-c        # [not win]
         - numpy
         - orc  # [unix]
         - python
@@ -91,7 +93,6 @@ outputs:
         - gflags
         - glog
         - grpc-cpp
-        - lz4-c
         - python
         - re2
         - zlib
