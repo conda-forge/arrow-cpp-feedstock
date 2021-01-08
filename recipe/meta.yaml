@@ -221,10 +221,15 @@ outputs:
         - pyarrow._hdfs
         # We can only test importing cuda package but cannot run when a
         # CUDA device is not available, for instance, when building from CI.
-        - pyarrow.cuda     # [cuda_compiler_version not in (undefined, "None")]
+        # On Windows, we cannot even do that due to `nvcuda.dll` not being found, see
+        # https://conda-forge.org/docs/maintainer/knowledge_base.html#nvcuda-dll-cannot-be-found-on-windows
+        # However, we check below for (at least) the presence of a correctly-compiled module
+        - pyarrow.cuda     # [cuda_compiler_version not in (undefined, "None") and not win]
       commands:
-        - test ! -f ${SP_DIR}/pyarrow/tests/test_array.py       # [unix]
-        - if exist %SP_DIR%/pyarrow/tests/test_array.py exit 1  # [win]
+        - test ! -f ${SP_DIR}/pyarrow/tests/test_array.py                         # [unix]
+        - if exist %SP_DIR%/pyarrow/tests/test_array.py exit 1                    # [win]
+        # Need to remove dot from PY_VER; %MYVAR:x=y% replaces "x" in %MYVAR% with "y"
+        - if not exist %SP_DIR%/pyarrow/_cuda.cp%PY_VER:.=%-win_amd64.pyd exit 1  # [win and cuda_compiler_version not in (undefined, "None")]
 
   - name: pyarrow-tests
     script: build-pyarrow.sh  # [not win]
