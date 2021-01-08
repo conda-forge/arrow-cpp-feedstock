@@ -17,7 +17,7 @@ source:
     - support-grpc-1.34.patch
 
 build:
-  number: 12
+  number: 13
   skip: true  # [cuda_compiler_version not in (undefined, "None", "9.2")]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
@@ -60,7 +60,7 @@ outputs:
         - gnuconfig                               # [osx and arm64]
         - libprotobuf
         - grpc-cpp
-        - cmake 3.16.*
+        - cmake
         - autoconf  # [unix]
         - ninja
         - make  # [unix]
@@ -182,7 +182,7 @@ outputs:
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
-        - cmake 3.16.*
+        - cmake
         - ninja
         - make  # [unix]
         - {{ compiler('c') }}
@@ -249,7 +249,7 @@ outputs:
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
-        - cmake 3.16.*
+        - cmake
         - ninja
         - make  # [unix]
         - {{ compiler('c') }}
