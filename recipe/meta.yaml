@@ -57,7 +57,7 @@ outputs:
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
-        - gnuconfig                               # [osx and arm64]
+        - gnuconfig                              # [osx and arm64]
         - libprotobuf
         - grpc-cpp
         - cmake
