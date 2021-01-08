@@ -75,7 +75,8 @@ outputs:
         - clangdev 8.*
         - llvmdev 8.*
         # Only newer Arrow releases support 1.9.3+
-        - lz4-c 1.9.2
+        - lz4-c 1.9.2  # [win]
+        - lz4-c        # [not win]
         - numpy
         - orc  # [unix]
         - python
@@ -94,7 +95,6 @@ outputs:
         - gflags
         - glog
         - grpc-cpp
-        - lz4-c 1.9.2
         - python
         - re2
         - zlib
