@@ -89,16 +89,4 @@ if [[ "${target_platform}" == "osx-arm64" ]]; then
      sed -ie 's/tpidr_el0/tpidrro_el0/g' mimalloc_ep-prefix/src/mimalloc_ep/include/mimalloc-internal.h
 fi
 
-# Decrease parallelism a bit as we will otherwise get out-of-memory problems
-# This is only necessary on Travis
-if [ "${CI}" = "travis" ]; then
-# if [ "$(uname -m)" = "ppc64le" ]; then
-    echo "Using $(grep -c ^processor /proc/cpuinfo) CPUs"
-    CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
-    CPU_COUNT=$((CPU_COUNT / 4))
-    ninja install -j${CPU_COUNT}
-else
-    ninja install
-fi
-
 popd
