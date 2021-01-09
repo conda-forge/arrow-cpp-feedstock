@@ -1,5 +1,5 @@
 {% set version = "2.0.0" %}
-{% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version != "None" %}
+{% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "2.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
 {% set proc_build_number = "0" %}
@@ -70,7 +70,7 @@ outputs:
         - make  # [unix]
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - {{ compiler("cuda") }}  # [cuda_compiler_version not in (undefined, "None")]
+        - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
         - aws-sdk-cpp
         - boost-cpp >=1.70
@@ -99,7 +99,7 @@ outputs:
         - python
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
-        - cudatoolkit >=9.2  # [cuda_compiler_version not in (undefined, "None")]
+        - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
 
     about:
       home: http://github.com/apache/arrow
@@ -181,7 +181,7 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         # pyarrow does not require nvcc but it needs to link against libraries in arrow-cpp=*=*cuda
-        - {{ compiler("cuda") }}  # [cuda_compiler_version not in (undefined, "None")]
+        - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
         - cython
@@ -198,7 +198,7 @@ outputs:
         - python
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
-        - cudatoolkit >=9.2  # [cuda_compiler_version not in (undefined, "None")]
+        - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
 
     about:
       home: http://github.com/apache/arrow
@@ -224,12 +224,12 @@ outputs:
         # On Windows, we cannot even do that due to `nvcuda.dll` not being found, see
         # https://conda-forge.org/docs/maintainer/knowledge_base.html#nvcuda-dll-cannot-be-found-on-windows
         # However, we check below for (at least) the presence of a correctly-compiled module
-        - pyarrow.cuda     # [cuda_compiler_version not in (undefined, "None") and not win]
+        - pyarrow.cuda     # [cuda_compiler_version != "None" and not win]
       commands:
         - test ! -f ${SP_DIR}/pyarrow/tests/test_array.py                         # [unix]
         - if exist %SP_DIR%/pyarrow/tests/test_array.py exit 1                    # [win]
         # Need to remove dot from PY_VER; %MYVAR:x=y% replaces "x" in %MYVAR% with "y"
-        - if not exist %SP_DIR%/pyarrow/_cuda.cp%PY_VER:.=%-win_amd64.pyd exit 1  # [win and cuda_compiler_version not in (undefined, "None")]
+        - if not exist %SP_DIR%/pyarrow/_cuda.cp%PY_VER:.=%-win_amd64.pyd exit 1  # [win and cuda_compiler_version != "None"]
 
   - name: pyarrow-tests
     script: build-pyarrow.sh  # [not win]
@@ -253,7 +253,7 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         # pyarrow does not require nvcc but it needs to link against libraries in arrow-cpp=*=*cuda
-        - {{ compiler("cuda") }}  # [cuda_compiler_version not in (undefined, "None")]
+        - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
         - {{ pin_subpackage('pyarrow', exact=True) }}
@@ -268,7 +268,7 @@ outputs:
         - python
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
-        - cudatoolkit >=9.2  # [cuda_compiler_version not in (undefined, "None")]
+        - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
 
     about:
       home: http://github.com/apache/arrow
