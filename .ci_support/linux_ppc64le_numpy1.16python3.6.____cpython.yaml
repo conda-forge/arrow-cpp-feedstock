@@ -61,5 +61,3 @@ zlib:
 - '1.2'
 zstd:
 - '1.4'
-build_platform:
-- linux-64
