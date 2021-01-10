@@ -89,4 +89,6 @@ if [[ "${target_platform}" == "osx-arm64" ]]; then
      sed -ie 's/tpidr_el0/tpidrro_el0/g' mimalloc_ep-prefix/src/mimalloc_ep/include/mimalloc-internal.h
 fi
 
+ninja install
+
 popd
