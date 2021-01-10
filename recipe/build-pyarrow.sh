@@ -26,29 +26,18 @@ export PYARROW_CMAKE_GENERATOR=Ninja
 BUILD_EXT_FLAGS=""
 
 # Enable CUDA support
-if [[ ! -z "${cuda_compiler_version+x}" && "${cuda_compiler_version}" != "None" ]]
-then
+if [[ ! -z "${cuda_compiler_version+x}" && "${cuda_compiler_version}" != "None" ]]; then
     export PYARROW_WITH_CUDA=1
 else
     export PYARROW_WITH_CUDA=0
 fi
 
 # Resolve: Make Error at cmake_modules/SetupCxxFlags.cmake:338 (message): Unsupported arch flag: -march=.
-if [[ "$(uname -m)" = "aarch64" ]]
-then
+if [[ "${target_platform}" == "linux-aarch64" ]]; then
     export PYARROW_CMAKE_OPTIONS="-DARROW_ARMV8_ARCH=armv8-a"
 fi
 
 cd python
-
-# Decrease parallelism to avoid out-of-memory problems
-# This is only necessary on Travis
-if [ "${CI}" = "travis" ]; then
-    echo "Using $(grep -c ^processor /proc/cpuinfo) CPUs"
-    CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
-    CPU_COUNT=$((CPU_COUNT / 4))
-    export CMAKE_BUILD_PARALLEL_LEVEL=${CPU_COUNT}
-fi
 
 $PYTHON setup.py \
         build_ext \
