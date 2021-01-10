@@ -34,6 +34,15 @@ else
     EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=OFF"
 fi
 
+if [[ "${target_platform}" == "osx-arm64" ]]; then
+    # We need llvm 11+ support in Arrow for this
+    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_GANDIVA=OFF -DARROW_MIMALLOC=OFF"
+    sed -ie "s;\${GRPC_CPP_PLUGIN};${BUILD_PREFIX}/bin/grpc_cpp_plugin;g" ../src/arrow/flight/CMakeLists.txt
+    sed -ie 's;"--with-jemalloc-prefix\=je_arrow_";"--with-jemalloc-prefix\=je_arrow_" "--with-lg-page\=14";g' ../cmake_modules/ThirdpartyToolchain.cmake
+else
+    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_GANDIVA=ON -DARROW_MIMALLOC=ON"
+fi
+
 cmake \
     -DBUILD_SHARED_LIBS=ON \
     -DARROW_BOOST_USE_SHARED=ON \
@@ -47,7 +56,6 @@ cmake \
     -DARROW_GANDIVA=ON \
     -DARROW_HDFS=ON \
     -DARROW_JEMALLOC=ON \
-    -DARROW_MIMALLOC=ON \
     -DARROW_ORC=ON \
     -DARROW_PACKAGE_PREFIX=$PREFIX \
     -DARROW_PARQUET=ON \
@@ -66,20 +74,17 @@ cmake \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
     -DLLVM_TOOLS_BINARY_DIR=$PREFIX/bin \
+    -DPython3_EXECUTABLE=${PYTHON} \
+    -DProtobuf_PROTOC_EXECUTABLE=$BUILD_PREFIX/bin/protoc \
     -GNinja \
     ${EXTRA_CMAKE_ARGS} \
     ..
 
-# Decrease parallelism a bit as we will otherwise get out-of-memory problems
-# This is only necessary on Travis
-if [ "${TRAVIS}" = "true" ]; then
-# if [ "$(uname -m)" = "ppc64le" ]; then
-    echo "Using $(grep -c ^processor /proc/cpuinfo) CPUs"
-    CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
-    CPU_COUNT=$((CPU_COUNT / 4))
-    ninja install -j${CPU_COUNT}
-else
-    ninja install
+if [[ "${target_platform}" == "osx-arm64" ]]; then
+     ninja jemalloc_ep-prefix/src/jemalloc_ep-stamp/jemalloc_ep-patch
+     cp $BUILD_PREFIX/share/gnuconfig/config.* jemalloc_ep-prefix/src/jemalloc_ep/build-aux/
 fi
+
+ninja install
 
 popd
