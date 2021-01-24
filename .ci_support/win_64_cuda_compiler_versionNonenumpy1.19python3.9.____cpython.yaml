@@ -21,7 +21,7 @@ glog:
 grpc_cpp:
 - '1.35'
 libprotobuf:
-- '3.13'
+- '3.14'
 numpy:
 - '1.19'
 pin_run_as_build:
