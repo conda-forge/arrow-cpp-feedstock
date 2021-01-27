@@ -1,7 +1,7 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
 aws_sdk_cpp:
-- 1.8.127
+- 1.8.130
 boost_cpp:
 - 1.74.0
 bzip2:
