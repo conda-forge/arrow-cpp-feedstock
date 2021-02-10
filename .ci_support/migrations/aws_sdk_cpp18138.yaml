@@ -3,5 +3,5 @@ __migrator:
   kind: version
   migration_number: 1
 aws_sdk_cpp:
-- 1.8.134
-migrator_ts: 1612356498.7084358
+- 1.8.138
+migrator_ts: 1612964852.9423509
