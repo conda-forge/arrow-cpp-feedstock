@@ -11,7 +11,7 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler_version:
-- None
+- '10.2'
 cxx_compiler:
 - vs2017
 gflags:
@@ -43,8 +43,8 @@ snappy:
 target_platform:
 - win-64
 zip_keys:
-- - python
-  - numpy
+- - numpy
+  - python
 zlib:
 - '1.2'
 zstd:
