@@ -13,12 +13,10 @@ source:
   sha256: 73c2cc3be537aa1f3fd9490cfec185714168c9bfd599d23e287ab0cc0558e27a
 
 build:
-  number: 3
-  # for cuda on linux, building with 9.2 is enough to be compatible with all later versions,
+  number: 4
+  # for cuda on win/linux, building with 9.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
-  skip: true  # [linux and cuda_compiler_version not in ("None", "9.2")]
-  # same for cuda on windows (but starting from 10.0)
-  skip: true  # [win and cuda_compiler_version not in ("None", "10.0")]
+  skip: true  # [(win or linux) and cuda_compiler_version not in ("None", "10.2")]
   skip: true  # [osx and cuda_compiler_version != "None"]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
