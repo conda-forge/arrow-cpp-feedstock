@@ -11,7 +11,7 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler_version:
-- '10.2'
+- None
 cxx_compiler:
 - vs2017
 gflags:
@@ -21,8 +21,10 @@ glog:
 grpc_cpp:
 - '1.35'
 libprotobuf:
-- '3.14'
+- '3.15'
 numpy:
+- '1.16'
+- '1.16'
 - '1.16'
 pin_run_as_build:
   boost-cpp:
@@ -36,6 +38,8 @@ pin_run_as_build:
     max_pin: x.x
 python:
 - 3.6.* *_cpython
+- 3.7.* *_cpython
+- 3.8.* *_cpython
 re2:
 - 2020.11.01
 snappy:
