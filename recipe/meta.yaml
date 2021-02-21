@@ -15,6 +15,7 @@ source:
     - 5f25358faaa52738320439e3242ab316204cd3be.patch
     - a3e7185abdcea52aedec2b10b19776307eb98a64.patch
     - support-grpc-1.34.patch
+    - 0001-ARROW-11724-C-Resolve-namespace-collisions-with-prot.patch
 
 build:
   number: 25
