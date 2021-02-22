@@ -1,5 +1,5 @@
 {% set version = "0.17.1" %}
-{% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '9.2' %}
+{% set cuda_enabled = cuda_compiler_version is not undefined and cuda_compiler_version == '10.2' %}
 {% set build_ext_version = "1.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
 {% set proc_build_number = "1" %}
@@ -202,7 +202,7 @@ outputs:
         - six
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
-        - cudatoolkit >=9.2  # [cuda_compiler_version not in (undefined, "None")]
+        - cudatoolkit >=10.2  # [cuda_compiler_version not in (undefined, "None")]
 
     about:
       home: http://github.com/apache/arrow
