@@ -8,8 +8,23 @@ jobs:
     vmImage: vs2017-win2016
   strategy:
     matrix:
-      win_64_cuda_compiler_versionNone:
-        CONFIG: win_64_cuda_compiler_versionNone
+      win_64_cuda_compiler_version10.2python3.6.____cpython:
+        CONFIG: win_64_cuda_compiler_version10.2python3.6.____cpython
+        UPLOAD_PACKAGES: 'True'
+      win_64_cuda_compiler_version10.2python3.7.____cpython:
+        CONFIG: win_64_cuda_compiler_version10.2python3.7.____cpython
+        UPLOAD_PACKAGES: 'True'
+      win_64_cuda_compiler_version10.2python3.8.____cpython:
+        CONFIG: win_64_cuda_compiler_version10.2python3.8.____cpython
+        UPLOAD_PACKAGES: 'True'
+      win_64_cuda_compiler_versionNonepython3.6.____cpython:
+        CONFIG: win_64_cuda_compiler_versionNonepython3.6.____cpython
+        UPLOAD_PACKAGES: 'True'
+      win_64_cuda_compiler_versionNonepython3.7.____cpython:
+        CONFIG: win_64_cuda_compiler_versionNonepython3.7.____cpython
+        UPLOAD_PACKAGES: 'True'
+      win_64_cuda_compiler_versionNonepython3.8.____cpython:
+        CONFIG: win_64_cuda_compiler_versionNonepython3.8.____cpython
         UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 360
   variables:

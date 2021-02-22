@@ -5,23 +5,17 @@ boost_cpp:
 bzip2:
 - '1'
 c_compiler:
-- gcc
-c_compiler_version:
-- '7'
-cdt_name:
-- cos6
+- vs2017
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
+cuda_compiler:
+- nvcc
 cuda_compiler_version:
-- None
+- '10.2'
 cxx_compiler:
-- gxx
-cxx_compiler_version:
-- '7'
-docker_image:
-- quay.io/condaforge/linux-anvil-comp7
+- vs2017
 gflags:
 - '2.2'
 glog:
@@ -30,42 +24,27 @@ grpc_cpp:
 - '1.35'
 libprotobuf:
 - '3.15'
-lz4_c:
-- 1.9.3
 numpy:
 - '1.16'
-- '1.16'
-- '1.16'
-orc:
-- 1.6.7
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
   bzip2:
     max_pin: x
-  lz4-c:
-    max_pin: x.x.x
   python:
     min_pin: x.x
     max_pin: x.x
   zlib:
     max_pin: x.x
 python:
-- 3.6.* *_cpython
 - 3.7.* *_cpython
-- 3.8.* *_cpython
 re2:
 - 2020.11.01
 snappy:
 - '1'
 target_platform:
-- linux-64
+- win-64
 zip_keys:
-- - c_compiler_version
-  - cxx_compiler_version
-- - cdt_name
-  - cuda_compiler_version
-  - docker_image
 - - numpy
   - python
 zlib:
