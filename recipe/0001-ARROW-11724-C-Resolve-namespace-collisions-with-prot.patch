@@ -1,0 +1,669 @@
+--- cpp/src/arrow/flight/client.cc.orig	2021-02-21 22:43:50.000000000 +0100
++++ cpp/src/arrow/flight/client.cc	2021-02-21 22:44:01.000000000 +0100
+@@ -52,7 +52,7 @@
+ #include "arrow/flight/serialization_internal.h"
+ #include "arrow/flight/types.h"
+ 
+-namespace pb = arrow::flight::protocol;
++namespace afpb = arrow::flight::protocol;
+ 
+ namespace arrow {
+ 
+@@ -203,12 +203,12 @@
+  public:
+   explicit GrpcClientAuthSender(
+       std::shared_ptr<
+-          grpc::ClientReaderWriter<pb::HandshakeRequest, pb::HandshakeResponse>>
++          grpc::ClientReaderWriter<afpb::HandshakeRequest, afpb::HandshakeResponse>>
+           stream)
+       : stream_(stream) {}
+ 
+   Status Write(const std::string& token) override {
+-    pb::HandshakeRequest response;
++    afpb::HandshakeRequest response;
+     response.set_payload(token);
+     if (stream_->Write(response)) {
+       return Status::OK();
+@@ -217,7 +217,7 @@
+   }
+ 
+  private:
+-  std::shared_ptr<grpc::ClientReaderWriter<pb::HandshakeRequest, pb::HandshakeResponse>>
++  std::shared_ptr<grpc::ClientReaderWriter<afpb::HandshakeRequest, afpb::HandshakeResponse>>
+       stream_;
+ };
+ 
+@@ -225,12 +225,12 @@
+  public:
+   explicit GrpcClientAuthReader(
+       std::shared_ptr<
+-          grpc::ClientReaderWriter<pb::HandshakeRequest, pb::HandshakeResponse>>
++          grpc::ClientReaderWriter<afpb::HandshakeRequest, afpb::HandshakeResponse>>
+           stream)
+       : stream_(stream) {}
+ 
+   Status Read(std::string* token) override {
+-    pb::HandshakeResponse request;
++    afpb::HandshakeResponse request;
+     if (stream_->Read(&request)) {
+       *token = std::move(*request.mutable_payload());
+       return Status::OK();
+@@ -239,7 +239,7 @@
+   }
+ 
+  private:
+-  std::shared_ptr<grpc::ClientReaderWriter<pb::HandshakeRequest, pb::HandshakeResponse>>
++  std::shared_ptr<grpc::ClientReaderWriter<afpb::HandshakeRequest, afpb::HandshakeResponse>>
+       stream_;
+ };
+ 
+@@ -258,7 +258,7 @@
+   GrpcStreamReader();
+ 
+   static Status Open(std::unique_ptr<ClientRpc> rpc,
+-                     std::unique_ptr<grpc::ClientReader<pb::FlightData>> stream,
++                     std::unique_ptr<grpc::ClientReader<afpb::FlightData>> stream,
+                      std::unique_ptr<GrpcStreamReader>* out);
+   std::shared_ptr<Schema> schema() const override;
+   Status Next(FlightStreamChunk* out) override;
+@@ -274,7 +274,7 @@
+ class GrpcIpcMessageReader : public ipc::MessageReader {
+  public:
+   GrpcIpcMessageReader(GrpcStreamReader* reader, std::shared_ptr<ClientRpc> rpc,
+-                       std::unique_ptr<grpc::ClientReader<pb::FlightData>> stream)
++                       std::unique_ptr<grpc::ClientReader<afpb::FlightData>> stream)
+       : flight_reader_(reader),
+         rpc_(rpc),
+         stream_(std::move(stream)),
+@@ -322,14 +322,14 @@
+   GrpcStreamReader* flight_reader_;
+   // The RPC context lifetime must be coupled to the ClientReader
+   std::shared_ptr<ClientRpc> rpc_;
+-  std::unique_ptr<grpc::ClientReader<pb::FlightData>> stream_;
++  std::unique_ptr<grpc::ClientReader<afpb::FlightData>> stream_;
+   bool stream_finished_;
+ };
+ 
+ GrpcStreamReader::GrpcStreamReader() {}
+ 
+ Status GrpcStreamReader::Open(std::unique_ptr<ClientRpc> rpc,
+-                              std::unique_ptr<grpc::ClientReader<pb::FlightData>> stream,
++                              std::unique_ptr<grpc::ClientReader<afpb::FlightData>> stream,
+                               std::unique_ptr<GrpcStreamReader>* out) {
+   *out = std::unique_ptr<GrpcStreamReader>(new GrpcStreamReader);
+   out->get()->rpc_ = std::move(rpc);
+@@ -366,14 +366,14 @@
+   ~GrpcStreamWriter() override = default;
+ 
+   explicit GrpcStreamWriter(
+-      std::shared_ptr<grpc::ClientReaderWriter<pb::FlightData, pb::PutResult>> writer)
++      std::shared_ptr<grpc::ClientReaderWriter<afpb::FlightData, afpb::PutResult>> writer)
+       : app_metadata_(nullptr), batch_writer_(nullptr), writer_(writer) {}
+ 
+   static Status Open(
+       const FlightDescriptor& descriptor, const std::shared_ptr<Schema>& schema,
+-      std::unique_ptr<ClientRpc> rpc, std::unique_ptr<pb::PutResult> response,
++      std::unique_ptr<ClientRpc> rpc, std::unique_ptr<afpb::PutResult> response,
+       std::shared_ptr<std::mutex> read_mutex,
+-      std::shared_ptr<grpc::ClientReaderWriter<pb::FlightData, pb::PutResult>> writer,
++      std::shared_ptr<grpc::ClientReaderWriter<afpb::FlightData, afpb::PutResult>> writer,
+       std::unique_ptr<FlightStreamWriter>* out);
+ 
+   Status WriteRecordBatch(const RecordBatch& batch) override {
+@@ -400,7 +400,7 @@
+   friend class DoPutPayloadWriter;
+   std::shared_ptr<Buffer> app_metadata_;
+   std::unique_ptr<ipc::RecordBatchWriter> batch_writer_;
+-  std::shared_ptr<grpc::ClientReaderWriter<pb::FlightData, pb::PutResult>> writer_;
++  std::shared_ptr<grpc::ClientReaderWriter<afpb::FlightData, afpb::PutResult>> writer_;
+   bool done_writing_ = false;
+ };
+ 
+@@ -409,8 +409,8 @@
+  public:
+   DoPutPayloadWriter(
+       const FlightDescriptor& descriptor, std::unique_ptr<ClientRpc> rpc,
+-      std::unique_ptr<pb::PutResult> response, std::shared_ptr<std::mutex> read_mutex,
+-      std::shared_ptr<grpc::ClientReaderWriter<pb::FlightData, pb::PutResult>> writer,
++      std::unique_ptr<afpb::PutResult> response, std::shared_ptr<std::mutex> read_mutex,
++      std::shared_ptr<grpc::ClientReaderWriter<afpb::FlightData, afpb::PutResult>> writer,
+       GrpcStreamWriter* stream_writer)
+       : descriptor_(descriptor),
+         rpc_(std::move(rpc)),
+@@ -435,7 +435,7 @@
+       }
+       std::string str_descr;
+       {
+-        pb::FlightDescriptor pb_descr;
++        afpb::FlightDescriptor pb_descr;
+         RETURN_NOT_OK(internal::ToProto(descriptor_, &pb_descr));
+         if (!pb_descr.SerializeToString(&str_descr)) {
+           return Status::UnknownError("Failed to serialized Flight descriptor");
+@@ -461,7 +461,7 @@
+     if (!guard.owns_lock()) {
+       return Status::IOError("Cannot close stream with pending read operation.");
+     }
+-    pb::PutResult message;
++    afpb::PutResult message;
+     while (writer_->Read(&message)) {
+     }
+     RETURN_NOT_OK(internal::FromGrpcStatus(writer_->Finish(), &rpc_->context));
+@@ -476,18 +476,18 @@
+   // TODO: there isn't a way to access this as a user.
+   const FlightDescriptor descriptor_;
+   std::unique_ptr<ClientRpc> rpc_;
+-  std::unique_ptr<pb::PutResult> response_;
++  std::unique_ptr<afpb::PutResult> response_;
+   std::shared_ptr<std::mutex> read_mutex_;
+-  std::shared_ptr<grpc::ClientReaderWriter<pb::FlightData, pb::PutResult>> writer_;
++  std::shared_ptr<grpc::ClientReaderWriter<afpb::FlightData, afpb::PutResult>> writer_;
+   bool first_payload_;
+   GrpcStreamWriter* stream_writer_;
+ };
+ 
+ Status GrpcStreamWriter::Open(
+     const FlightDescriptor& descriptor, const std::shared_ptr<Schema>& schema,
+-    std::unique_ptr<ClientRpc> rpc, std::unique_ptr<pb::PutResult> response,
++    std::unique_ptr<ClientRpc> rpc, std::unique_ptr<afpb::PutResult> response,
+     std::shared_ptr<std::mutex> read_mutex,
+-    std::shared_ptr<grpc::ClientReaderWriter<pb::FlightData, pb::PutResult>> writer,
++    std::shared_ptr<grpc::ClientReaderWriter<afpb::FlightData, afpb::PutResult>> writer,
+     std::unique_ptr<FlightStreamWriter>* out) {
+   std::unique_ptr<GrpcStreamWriter> result(new GrpcStreamWriter(writer));
+   std::unique_ptr<ipc::internal::IpcPayloadWriter> payload_writer(new DoPutPayloadWriter(
+@@ -503,13 +503,13 @@
+ class GrpcMetadataReader : public FlightMetadataReader {
+  public:
+   explicit GrpcMetadataReader(
+-      std::shared_ptr<grpc::ClientReaderWriter<pb::FlightData, pb::PutResult>> reader,
++      std::shared_ptr<grpc::ClientReaderWriter<afpb::FlightData, afpb::PutResult>> reader,
+       std::shared_ptr<std::mutex> read_mutex)
+       : reader_(reader), read_mutex_(read_mutex) {}
+ 
+   Status ReadMetadata(std::shared_ptr<Buffer>* out) override {
+     std::lock_guard<std::mutex> guard(*read_mutex_);
+-    pb::PutResult message;
++    afpb::PutResult message;
+     if (reader_->Read(&message)) {
+       *out = Buffer::FromString(std::move(*message.mutable_app_metadata()));
+     } else {
+@@ -520,7 +520,7 @@
+   }
+ 
+  private:
+-  std::shared_ptr<grpc::ClientReaderWriter<pb::FlightData, pb::PutResult>> reader_;
++  std::shared_ptr<grpc::ClientReaderWriter<afpb::FlightData, afpb::PutResult>> reader_;
+   std::shared_ptr<std::mutex> read_mutex_;
+ };
+ 
+@@ -565,7 +565,7 @@
+     interceptors.emplace_back(
+         new GrpcClientInterceptorAdapterFactory(std::move(options.middleware)));
+ 
+-    stub_ = pb::FlightService::NewStub(
++    stub_ = afpb::FlightService::NewStub(
+         grpc::experimental::CreateCustomChannelWithInterceptors(
+             grpc_uri.str(), creds, args, std::move(interceptors)));
+ 
+@@ -576,7 +576,7 @@
+                       std::unique_ptr<ClientAuthHandler> auth_handler) {
+     auth_handler_ = std::move(auth_handler);
+     ClientRpc rpc(options);
+-    std::shared_ptr<grpc::ClientReaderWriter<pb::HandshakeRequest, pb::HandshakeResponse>>
++    std::shared_ptr<grpc::ClientReaderWriter<afpb::HandshakeRequest, afpb::HandshakeResponse>>
+         stream = stub_->Handshake(&rpc.context);
+     GrpcClientAuthSender outgoing{stream};
+     GrpcClientAuthReader incoming{stream};
+@@ -592,17 +592,17 @@
+ 
+   Status ListFlights(const FlightCallOptions& options, const Criteria& criteria,
+                      std::unique_ptr<FlightListing>* listing) {
+-    pb::Criteria pb_criteria;
++    afpb::Criteria pb_criteria;
+     RETURN_NOT_OK(internal::ToProto(criteria, &pb_criteria));
+ 
+     ClientRpc rpc(options);
+     RETURN_NOT_OK(rpc.SetToken(auth_handler_.get()));
+-    std::unique_ptr<grpc::ClientReader<pb::FlightInfo>> stream(
++    std::unique_ptr<grpc::ClientReader<afpb::FlightInfo>> stream(
+         stub_->ListFlights(&rpc.context, pb_criteria));
+ 
+     std::vector<FlightInfo> flights;
+ 
+-    pb::FlightInfo pb_info;
++    afpb::FlightInfo pb_info;
+     while (stream->Read(&pb_info)) {
+       FlightInfo::Data info_data;
+       RETURN_NOT_OK(internal::FromProto(pb_info, &info_data));
+@@ -615,15 +615,15 @@
+ 
+   Status DoAction(const FlightCallOptions& options, const Action& action,
+                   std::unique_ptr<ResultStream>* results) {
+-    pb::Action pb_action;
++    afpb::Action pb_action;
+     RETURN_NOT_OK(internal::ToProto(action, &pb_action));
+ 
+     ClientRpc rpc(options);
+     RETURN_NOT_OK(rpc.SetToken(auth_handler_.get()));
+-    std::unique_ptr<grpc::ClientReader<pb::Result>> stream(
++    std::unique_ptr<grpc::ClientReader<afpb::Result>> stream(
+         stub_->DoAction(&rpc.context, pb_action));
+ 
+-    pb::Result pb_result;
++    afpb::Result pb_result;
+ 
+     std::vector<Result> materialized_results;
+     while (stream->Read(&pb_result)) {
+@@ -638,14 +638,14 @@
+   }
+ 
+   Status ListActions(const FlightCallOptions& options, std::vector<ActionType>* types) {
+-    pb::Empty empty;
++    afpb::Empty empty;
+ 
+     ClientRpc rpc(options);
+     RETURN_NOT_OK(rpc.SetToken(auth_handler_.get()));
+-    std::unique_ptr<grpc::ClientReader<pb::ActionType>> stream(
++    std::unique_ptr<grpc::ClientReader<afpb::ActionType>> stream(
+         stub_->ListActions(&rpc.context, empty));
+ 
+-    pb::ActionType pb_type;
++    afpb::ActionType pb_type;
+     ActionType type;
+     while (stream->Read(&pb_type)) {
+       RETURN_NOT_OK(internal::FromProto(pb_type, &type));
+@@ -657,8 +657,8 @@
+   Status GetFlightInfo(const FlightCallOptions& options,
+                        const FlightDescriptor& descriptor,
+                        std::unique_ptr<FlightInfo>* info) {
+-    pb::FlightDescriptor pb_descriptor;
+-    pb::FlightInfo pb_response;
++    afpb::FlightDescriptor pb_descriptor;
++    afpb::FlightInfo pb_response;
+ 
+     RETURN_NOT_OK(internal::ToProto(descriptor, &pb_descriptor));
+ 
+@@ -676,8 +676,8 @@
+ 
+   Status GetSchema(const FlightCallOptions& options, const FlightDescriptor& descriptor,
+                    std::unique_ptr<SchemaResult>* schema_result) {
+-    pb::FlightDescriptor pb_descriptor;
+-    pb::SchemaResult pb_response;
++    afpb::FlightDescriptor pb_descriptor;
++    afpb::SchemaResult pb_response;
+ 
+     RETURN_NOT_OK(internal::ToProto(descriptor, &pb_descriptor));
+ 
+@@ -695,12 +695,12 @@
+ 
+   Status DoGet(const FlightCallOptions& options, const Ticket& ticket,
+                std::unique_ptr<FlightStreamReader>* out) {
+-    pb::Ticket pb_ticket;
++    afpb::Ticket pb_ticket;
+     internal::ToProto(ticket, &pb_ticket);
+ 
+     std::unique_ptr<ClientRpc> rpc(new ClientRpc(options));
+     RETURN_NOT_OK(rpc->SetToken(auth_handler_.get()));
+-    std::unique_ptr<grpc::ClientReader<pb::FlightData>> stream(
++    std::unique_ptr<grpc::ClientReader<afpb::FlightData>> stream(
+         stub_->DoGet(&rpc->context, pb_ticket));
+ 
+     std::unique_ptr<GrpcStreamReader> reader;
+@@ -715,8 +715,8 @@
+                std::unique_ptr<FlightMetadataReader>* reader) {
+     std::unique_ptr<ClientRpc> rpc(new ClientRpc(options));
+     RETURN_NOT_OK(rpc->SetToken(auth_handler_.get()));
+-    std::unique_ptr<pb::PutResult> response(new pb::PutResult);
+-    std::shared_ptr<grpc::ClientReaderWriter<pb::FlightData, pb::PutResult>> writer(
++    std::unique_ptr<afpb::PutResult> response(new afpb::PutResult);
++    std::shared_ptr<grpc::ClientReaderWriter<afpb::FlightData, afpb::PutResult>> writer(
+         stub_->DoPut(&rpc->context));
+ 
+     std::shared_ptr<std::mutex> read_mutex = std::make_shared<std::mutex>();
+@@ -727,7 +727,7 @@
+   }
+ 
+  private:
+-  std::unique_ptr<pb::FlightService::Stub> stub_;
++  std::unique_ptr<afpb::FlightService::Stub> stub_;
+   std::shared_ptr<ClientAuthHandler> auth_handler_;
+ };
+ 
+--- cpp/src/arrow/flight/serialization_internal.cc.orig	2021-02-21 22:42:04.000000000 +0100
++++ cpp/src/arrow/flight/serialization_internal.cc	2021-02-21 22:42:18.000000000 +0100
+@@ -52,7 +52,7 @@
+ #include "arrow/util/bit_util.h"
+ #include "arrow/util/logging.h"
+ 
+-namespace pb = arrow::flight::protocol;
++namespace afpb = arrow::flight::protocol;
+ 
+ static constexpr int64_t kInt32Max = std::numeric_limits<int32_t>::max();
+ 
+@@ -219,7 +219,7 @@
+ 
+   // Write descriptor
+   if (msg.descriptor != nullptr) {
+-    WireFormatLite::WriteTag(pb::FlightData::kFlightDescriptorFieldNumber,
++    WireFormatLite::WriteTag(afpb::FlightData::kFlightDescriptorFieldNumber,
+                              WireFormatLite::WIRETYPE_LENGTH_DELIMITED, &header_stream);
+     header_stream.WriteVarint32(descriptor_size);
+     header_stream.WriteRawMaybeAliased(msg.descriptor->data(),
+@@ -227,7 +227,7 @@
+   }
+ 
+   // Write header
+-  WireFormatLite::WriteTag(pb::FlightData::kDataHeaderFieldNumber,
++  WireFormatLite::WriteTag(afpb::FlightData::kDataHeaderFieldNumber,
+                            WireFormatLite::WIRETYPE_LENGTH_DELIMITED, &header_stream);
+   header_stream.WriteVarint32(metadata_size);
+   header_stream.WriteRawMaybeAliased(ipc_msg.metadata->data(),
+@@ -235,7 +235,7 @@
+ 
+   // Write app metadata
+   if (app_metadata_size > 0) {
+-    WireFormatLite::WriteTag(pb::FlightData::kAppMetadataFieldNumber,
++    WireFormatLite::WriteTag(afpb::FlightData::kAppMetadataFieldNumber,
+                              WireFormatLite::WIRETYPE_LENGTH_DELIMITED, &header_stream);
+     header_stream.WriteVarint32(app_metadata_size);
+     header_stream.WriteRawMaybeAliased(msg.app_metadata->data(),
+@@ -244,7 +244,7 @@
+ 
+   if (has_body) {
+     // Write body tag
+-    WireFormatLite::WriteTag(pb::FlightData::kDataBodyFieldNumber,
++    WireFormatLite::WriteTag(afpb::FlightData::kDataBodyFieldNumber,
+                              WireFormatLite::WIRETYPE_LENGTH_DELIMITED, &header_stream);
+     header_stream.WriteVarint32(static_cast<uint32_t>(body_size));
+ 
+@@ -293,8 +293,8 @@
+     const uint32_t tag = pb_stream.ReadTag();
+     const int field_number = WireFormatLite::GetTagFieldNumber(tag);
+     switch (field_number) {
+-      case pb::FlightData::kFlightDescriptorFieldNumber: {
+-        pb::FlightDescriptor pb_descriptor;
++      case afpb::FlightData::kFlightDescriptorFieldNumber: {
++        afpb::FlightDescriptor pb_descriptor;
+         uint32_t length;
+         if (!pb_stream.ReadVarint32(&length)) {
+           return grpc::Status(grpc::StatusCode::INTERNAL,
+@@ -313,19 +313,19 @@
+             arrow::flight::internal::FromProto(pb_descriptor, &descriptor));
+         out->descriptor.reset(new arrow::flight::FlightDescriptor(descriptor));
+       } break;
+-      case pb::FlightData::kDataHeaderFieldNumber: {
++      case afpb::FlightData::kDataHeaderFieldNumber: {
+         if (!ReadBytesZeroCopy(wrapped_buffer, &pb_stream, &out->metadata)) {
+           return grpc::Status(grpc::StatusCode::INTERNAL,
+                               "Unable to read FlightData metadata");
+         }
+       } break;
+-      case pb::FlightData::kAppMetadataFieldNumber: {
++      case afpb::FlightData::kAppMetadataFieldNumber: {
+         if (!ReadBytesZeroCopy(wrapped_buffer, &pb_stream, &out->app_metadata)) {
+           return grpc::Status(grpc::StatusCode::INTERNAL,
+                               "Unable to read FlightData application metadata");
+         }
+       } break;
+-      case pb::FlightData::kDataBodyFieldNumber: {
++      case afpb::FlightData::kDataBodyFieldNumber: {
+         if (!ReadBytesZeroCopy(wrapped_buffer, &pb_stream, &out->body)) {
+           return grpc::Status(grpc::StatusCode::INTERNAL,
+                               "Unable to read FlightData body");
+@@ -354,37 +354,37 @@
+ #endif
+ 
+ // Pointer bitcast explanation: grpc::*Writer<T>::Write() and grpc::*Reader<T>::Read()
+-// both take a T* argument (here pb::FlightData*).  But they don't do anything
++// both take a T* argument (here afpb::FlightData*).  But they don't do anything
+ // with that argument except pass it to SerializationTraits<T>::Serialize() and
+ // SerializationTraits<T>::Deserialize().
+ //
+-// Since we control SerializationTraits<pb::FlightData>, we can interpret the
++// Since we control SerializationTraits<afpb::FlightData>, we can interpret the
+ // pointer argument whichever way we want, including cast it back to the original type.
+ // (see customize_protobuf.h).
+ 
+ bool WritePayload(const FlightPayload& payload,
+-                  grpc::ClientReaderWriter<pb::FlightData, pb::PutResult>* writer) {
+-  // Pretend to be pb::FlightData and intercept in SerializationTraits
+-  return writer->Write(*reinterpret_cast<const pb::FlightData*>(&payload),
++                  grpc::ClientReaderWriter<afpb::FlightData, afpb::PutResult>* writer) {
++  // Pretend to be afpb::FlightData and intercept in SerializationTraits
++  return writer->Write(*reinterpret_cast<const afpb::FlightData*>(&payload),
+                        grpc::WriteOptions());
+ }
+ 
+ bool WritePayload(const FlightPayload& payload,
+-                  grpc::ServerWriter<pb::FlightData>* writer) {
+-  // Pretend to be pb::FlightData and intercept in SerializationTraits
+-  return writer->Write(*reinterpret_cast<const pb::FlightData*>(&payload),
++                  grpc::ServerWriter<afpb::FlightData>* writer) {
++  // Pretend to be afpb::FlightData and intercept in SerializationTraits
++  return writer->Write(*reinterpret_cast<const afpb::FlightData*>(&payload),
+                        grpc::WriteOptions());
+ }
+ 
+-bool ReadPayload(grpc::ClientReader<pb::FlightData>* reader, FlightData* data) {
+-  // Pretend to be pb::FlightData and intercept in SerializationTraits
+-  return reader->Read(reinterpret_cast<pb::FlightData*>(data));
++bool ReadPayload(grpc::ClientReader<afpb::FlightData>* reader, FlightData* data) {
++  // Pretend to be afpb::FlightData and intercept in SerializationTraits
++  return reader->Read(reinterpret_cast<afpb::FlightData*>(data));
+ }
+ 
+-bool ReadPayload(grpc::ServerReaderWriter<pb::PutResult, pb::FlightData>* reader,
++bool ReadPayload(grpc::ServerReaderWriter<afpb::PutResult, afpb::FlightData>* reader,
+                  FlightData* data) {
+-  // Pretend to be pb::FlightData and intercept in SerializationTraits
+-  return reader->Read(reinterpret_cast<pb::FlightData*>(data));
++  // Pretend to be afpb::FlightData and intercept in SerializationTraits
++  return reader->Read(reinterpret_cast<afpb::FlightData*>(data));
+ }
+ 
+ #ifndef _WIN32
+--- cpp/src/arrow/flight/server.cc.orig	2021-02-21 22:44:12.000000000 +0100
++++ cpp/src/arrow/flight/server.cc	2021-02-21 22:44:26.000000000 +0100
+@@ -61,7 +61,7 @@
+ template <typename T>
+ using ServerWriter = grpc::ServerWriter<T>;
+ 
+-namespace pb = arrow::flight::protocol;
++namespace afpb = arrow::flight::protocol;
+ 
+ namespace arrow {
+ namespace flight {
+@@ -95,7 +95,7 @@
+ class FlightIpcMessageReader : public ipc::MessageReader {
+  public:
+   explicit FlightIpcMessageReader(
+-      grpc::ServerReaderWriter<pb::PutResult, pb::FlightData>* reader,
++      grpc::ServerReaderWriter<afpb::PutResult, afpb::FlightData>* reader,
+       std::shared_ptr<Buffer>* last_metadata)
+       : reader_(reader), app_metadata_(last_metadata) {}
+ 
+@@ -141,7 +141,7 @@
+     return Status::OK();
+   }
+ 
+-  grpc::ServerReaderWriter<pb::PutResult, pb::FlightData>* reader_;
++  grpc::ServerReaderWriter<afpb::PutResult, afpb::FlightData>* reader_;
+   bool stream_finished_ = false;
+   bool first_message_ = true;
+   FlightDescriptor descriptor_;
+@@ -151,7 +151,7 @@
+ class FlightMessageReaderImpl : public FlightMessageReader {
+  public:
+   explicit FlightMessageReaderImpl(
+-      grpc::ServerReaderWriter<pb::PutResult, pb::FlightData>* reader)
++      grpc::ServerReaderWriter<afpb::PutResult, afpb::FlightData>* reader)
+       : reader_(reader) {}
+ 
+   Status Init() {
+@@ -177,7 +177,7 @@
+  private:
+   std::shared_ptr<Schema> schema_;
+   std::unique_ptr<ipc::DictionaryMemo> dictionary_memo_;
+-  grpc::ServerReaderWriter<pb::PutResult, pb::FlightData>* reader_;
++  grpc::ServerReaderWriter<afpb::PutResult, afpb::FlightData>* reader_;
+   FlightIpcMessageReader* message_reader_;
+   std::shared_ptr<Buffer> last_metadata_;
+   std::shared_ptr<RecordBatchReader> batch_reader_;
+@@ -186,11 +186,11 @@
+ class GrpcMetadataWriter : public FlightMetadataWriter {
+  public:
+   explicit GrpcMetadataWriter(
+-      grpc::ServerReaderWriter<pb::PutResult, pb::FlightData>* writer)
++      grpc::ServerReaderWriter<afpb::PutResult, afpb::FlightData>* writer)
+       : writer_(writer) {}
+ 
+   Status WriteMetadata(const Buffer& buffer) override {
+-    pb::PutResult message{};
++    afpb::PutResult message{};
+     message.set_app_metadata(buffer.data(), buffer.size());
+     if (writer_->Write(message)) {
+       return Status::OK();
+@@ -199,17 +199,17 @@
+   }
+ 
+  private:
+-  grpc::ServerReaderWriter<pb::PutResult, pb::FlightData>* writer_;
++  grpc::ServerReaderWriter<afpb::PutResult, afpb::FlightData>* writer_;
+ };
+ 
+ class GrpcServerAuthReader : public ServerAuthReader {
+  public:
+   explicit GrpcServerAuthReader(
+-      grpc::ServerReaderWriter<pb::HandshakeResponse, pb::HandshakeRequest>* stream)
++      grpc::ServerReaderWriter<afpb::HandshakeResponse, afpb::HandshakeRequest>* stream)
+       : stream_(stream) {}
+ 
+   Status Read(std::string* token) override {
+-    pb::HandshakeRequest request;
++    afpb::HandshakeRequest request;
+     if (stream_->Read(&request)) {
+       *token = std::move(*request.mutable_payload());
+       return Status::OK();
+@@ -218,17 +218,17 @@
+   }
+ 
+  private:
+-  grpc::ServerReaderWriter<pb::HandshakeResponse, pb::HandshakeRequest>* stream_;
++  grpc::ServerReaderWriter<afpb::HandshakeResponse, afpb::HandshakeRequest>* stream_;
+ };
+ 
+ class GrpcServerAuthSender : public ServerAuthSender {
+  public:
+   explicit GrpcServerAuthSender(
+-      grpc::ServerReaderWriter<pb::HandshakeResponse, pb::HandshakeRequest>* stream)
++      grpc::ServerReaderWriter<afpb::HandshakeResponse, afpb::HandshakeRequest>* stream)
+       : stream_(stream) {}
+ 
+   Status Write(const std::string& token) override {
+-    pb::HandshakeResponse response;
++    afpb::HandshakeResponse response;
+     response.set_payload(token);
+     if (stream_->Write(response)) {
+       return Status::OK();
+@@ -237,7 +237,7 @@
+   }
+ 
+  private:
+-  grpc::ServerReaderWriter<pb::HandshakeResponse, pb::HandshakeRequest>* stream_;
++  grpc::ServerReaderWriter<afpb::HandshakeResponse, afpb::HandshakeRequest>* stream_;
+ };
+ 
+ class FlightServiceImpl;
+@@ -397,7 +397,7 @@
+ 
+   grpc::Status Handshake(
+       ServerContext* context,
+-      grpc::ServerReaderWriter<pb::HandshakeResponse, pb::HandshakeRequest>* stream) {
++      grpc::ServerReaderWriter<afpb::HandshakeResponse, afpb::HandshakeRequest>* stream) {
+     GrpcServerCallContext flight_context(context);
+     GRPC_RETURN_NOT_GRPC_OK(
+         MakeCallContext(FlightMethod::Handshake, context, flight_context));
+@@ -415,8 +415,8 @@
+                            auth_handler_->Authenticate(&outgoing, &incoming));
+   }
+ 
+-  grpc::Status ListFlights(ServerContext* context, const pb::Criteria* request,
+-                           ServerWriter<pb::FlightInfo>* writer) {
++  grpc::Status ListFlights(ServerContext* context, const afpb::Criteria* request,
++                           ServerWriter<afpb::FlightInfo>* writer) {
+     GrpcServerCallContext flight_context(context);
+     GRPC_RETURN_NOT_GRPC_OK(
+         CheckAuth(FlightMethod::ListFlights, context, flight_context));
+@@ -438,8 +438,8 @@
+                            WriteStream<FlightInfo>(listing.get(), writer));
+   }
+ 
+-  grpc::Status GetFlightInfo(ServerContext* context, const pb::FlightDescriptor* request,
+-                             pb::FlightInfo* response) {
++  grpc::Status GetFlightInfo(ServerContext* context, const afpb::FlightDescriptor* request,
++                             afpb::FlightInfo* response) {
+     GrpcServerCallContext flight_context(context);
+     GRPC_RETURN_NOT_GRPC_OK(
+         CheckAuth(FlightMethod::GetFlightInfo, context, flight_context));
+@@ -463,8 +463,8 @@
+     RETURN_WITH_MIDDLEWARE(flight_context, grpc::Status::OK);
+   }
+ 
+-  grpc::Status GetSchema(ServerContext* context, const pb::FlightDescriptor* request,
+-                         pb::SchemaResult* response) {
++  grpc::Status GetSchema(ServerContext* context, const afpb::FlightDescriptor* request,
++                         afpb::SchemaResult* response) {
+     GrpcServerCallContext flight_context(context);
+     GRPC_RETURN_NOT_GRPC_OK(CheckAuth(FlightMethod::GetSchema, context, flight_context));
+ 
+@@ -487,8 +487,8 @@
+     RETURN_WITH_MIDDLEWARE(flight_context, grpc::Status::OK);
+   }
+ 
+-  grpc::Status DoGet(ServerContext* context, const pb::Ticket* request,
+-                     ServerWriter<pb::FlightData>* writer) {
++  grpc::Status DoGet(ServerContext* context, const afpb::Ticket* request,
++                     ServerWriter<afpb::FlightData>* writer) {
+     GrpcServerCallContext flight_context(context);
+     GRPC_RETURN_NOT_GRPC_OK(CheckAuth(FlightMethod::DoGet, context, flight_context));
+ 
+@@ -528,7 +528,7 @@
+   }
+ 
+   grpc::Status DoPut(ServerContext* context,
+-                     grpc::ServerReaderWriter<pb::PutResult, pb::FlightData>* reader) {
++                     grpc::ServerReaderWriter<afpb::PutResult, afpb::FlightData>* reader) {
+     GrpcServerCallContext flight_context(context);
+     GRPC_RETURN_NOT_GRPC_OK(CheckAuth(FlightMethod::DoPut, context, flight_context));
+ 
+@@ -542,8 +542,8 @@
+                                           std::move(metadata_writer)));
+   }
+ 
+-  grpc::Status ListActions(ServerContext* context, const pb::Empty* request,
+-                           ServerWriter<pb::ActionType>* writer) {
++  grpc::Status ListActions(ServerContext* context, const afpb::Empty* request,
++                           ServerWriter<afpb::ActionType>* writer) {
+     GrpcServerCallContext flight_context(context);
+     GRPC_RETURN_NOT_GRPC_OK(
+         CheckAuth(FlightMethod::ListActions, context, flight_context));
+@@ -553,8 +553,8 @@
+     RETURN_WITH_MIDDLEWARE(flight_context, WriteStream<ActionType>(types, writer));
+   }
+ 
+-  grpc::Status DoAction(ServerContext* context, const pb::Action* request,
+-                        ServerWriter<pb::Result>* writer) {
++  grpc::Status DoAction(ServerContext* context, const afpb::Action* request,
++                        ServerWriter<afpb::Result>* writer) {
+     GrpcServerCallContext flight_context(context);
+     GRPC_RETURN_NOT_GRPC_OK(CheckAuth(FlightMethod::DoAction, context, flight_context));
+     CHECK_ARG_NOT_NULL(flight_context, request, "Action cannot be null");
+@@ -576,7 +576,7 @@
+         // No more results
+         break;
+       }
+-      pb::Result pb_result;
++      afpb::Result pb_result;
+       SERVICE_RETURN_NOT_OK(flight_context, internal::ToProto(*result, &pb_result));
+       if (!writer->Write(pb_result)) {
+         // Stream may be closed
