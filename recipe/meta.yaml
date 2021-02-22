@@ -19,7 +19,7 @@ source:
 
 build:
   number: 25
-  skip: true  # [cuda_compiler_version not in (undefined, "None", "10.2")]
+  skip: true  # [linux and cuda_compiler_version not in (undefined, "None", "10.2")]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 
