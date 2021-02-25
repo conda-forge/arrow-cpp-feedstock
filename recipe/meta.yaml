@@ -13,6 +13,7 @@ source:
   sha256: 73c2cc3be537aa1f3fd9490cfec185714168c9bfd599d23e287ab0cc0558e27a
   patches:
     - 0001-ARROW-11724-C-Resolve-namespace-collisions-with-prot.patch
+    - 9569.patch
 
 build:
   number: 6
