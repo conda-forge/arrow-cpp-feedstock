@@ -1,4 +1,4 @@
-From 71b54bc050353df4abc25988884a68ccef4e96fd Mon Sep 17 00:00:00 2001
+From e768c3c1a480e7aa35012d8f92f6e031eddba6ca Mon Sep 17 00:00:00 2001
 From: David Li <david@ursacomputing.com>
 Date: Mon, 22 Feb 2021 17:20:29 -0500
 Subject: [PATCH] ARROW-11695: [C++][FlightRPC] fix option to disable TLS
@@ -6,10 +6,10 @@ Subject: [PATCH] ARROW-11695: [C++][FlightRPC] fix option to disable TLS
 
 ---
  cpp/src/arrow/flight/CMakeLists.txt           | 87 ++++++++++++-------
- cpp/src/arrow/flight/client.cc                | 35 ++++++--
+ cpp/src/arrow/flight/client.cc                | 38 ++++++--
  .../flight/try_compile/check_tls_opts_134.cc  | 44 ++++++++++
  .../flight/try_compile/check_tls_opts_136.cc  | 38 ++++++++
- 4 files changed, 163 insertions(+), 41 deletions(-)
+ 4 files changed, 166 insertions(+), 41 deletions(-)
  create mode 100644 cpp/src/arrow/flight/try_compile/check_tls_opts_134.cc
  create mode 100644 cpp/src/arrow/flight/try_compile/check_tls_opts_136.cc
 
@@ -118,7 +118,7 @@ index 2fcb6ef077d..b44bab29074 100644
  
  # </KLUDGE> Restore the CXXFLAGS that were modified above
 diff --git a/cpp/src/arrow/flight/client.cc b/cpp/src/arrow/flight/client.cc
-index 724f999fabe..d63008ad458 100644
+index 724f999fabe..cd6f3a97e58 100644
 --- a/cpp/src/arrow/flight/client.cc
 +++ b/cpp/src/arrow/flight/client.cc
 @@ -860,7 +860,7 @@ namespace {
@@ -143,7 +143,7 @@ index 724f999fabe..d63008ad458 100644
            namespace ge = GRPC_NAMESPACE_FOR_TLS_CREDENTIALS_OPTIONS;
  
            // A callback to supply to TlsCredentialsOptions that accepts any server
-@@ -910,16 +906,37 @@ class FlightClient::FlightClientImpl {
+@@ -910,16 +906,40 @@ class FlightClient::FlightClientImpl {
                return 0;
              }
            };
@@ -153,17 +153,20 @@ index 724f999fabe..d63008ad458 100644
 -              std::make_shared<NoOpTlsAuthorizationCheck>());
 +              server_authorization_check);
 +#if defined(GRPC_USE_TLS_CHANNEL_CREDENTIALS_OPTIONS)
-+#if defined(GRPC_USE_TLS_CHANNEL_CREDENTIALS_OPTIONS_ROOT_CERTS)
 +          auto certificate_provider =
 +              std::make_shared<grpc::experimental::StaticDataCertificateProvider>(
 +                  kDummyRootCert);
++#if defined(GRPC_USE_TLS_CHANNEL_CREDENTIALS_OPTIONS_ROOT_CERTS)
 +          grpc::experimental::TlsChannelCredentialsOptions tls_options(
 +              certificate_provider);
++#else
++          // While gRPC >= 1.36 does not require a root cert (it has a default)
++          // in practice the path it hardcodes is broken. See grpc/grpc#21655.
++          grpc::experimental::TlsChannelCredentialsOptions tls_options;
++          tls_options.set_certificate_provider(certificate_provider);
++#endif
 +          tls_options.watch_root_certs();
 +          tls_options.set_root_cert_name("dummy");
-+#else
-+          grpc::experimental::TlsChannelCredentialsOptions tls_options;
-+#endif
 +          tls_options.set_server_verification_option(
 +              grpc_tls_server_verification_option::GRPC_TLS_SKIP_ALL_SERVER_VERIFICATION);
 +          tls_options.set_server_authorization_check_config(noop_auth_check_);
