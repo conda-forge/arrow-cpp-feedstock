@@ -44,6 +44,8 @@ snappy:
 - '1'
 target_platform:
 - win-64
+thrift_cpp:
+- 0.14.1
 zip_keys:
 - - numpy
   - python
