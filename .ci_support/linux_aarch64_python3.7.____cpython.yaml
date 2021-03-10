@@ -60,6 +60,8 @@ snappy:
 - '1'
 target_platform:
 - linux-aarch64
+thrift_cpp:
+- 0.14.1
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
