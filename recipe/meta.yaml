@@ -90,7 +90,7 @@ outputs:
         - rapidjson
         - re2
         - snappy
-        - thrift-cpp >=0.11
+        - thrift-cpp
         - zlib
         - zstd
       run:
