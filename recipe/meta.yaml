@@ -77,7 +77,7 @@ outputs:
         - gflags
         - glog
         - grpc-cpp
-        - libprotobuf
+        - libprotobuf =3.6.*
         - clangdev 10  # [not (osx and arm64)]
         - llvmdev 10   # [not (osx and arm64)]
         - libutf8proc
