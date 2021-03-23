@@ -59,7 +59,7 @@ outputs:
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
         - gnuconfig                              # [osx and arm64]
-        - libprotobuf
+        - libprotobuf =3.6.*
         - grpc-cpp
         - cmake
         - autoconf  # [unix]
