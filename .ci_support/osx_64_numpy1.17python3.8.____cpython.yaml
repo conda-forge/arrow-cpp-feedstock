@@ -1,19 +1,23 @@
+MACOSX_DEPLOYMENT_TARGET:
+- '10.9'
 aws_sdk_cpp:
 - 1.8.151
 bzip2:
 - '1'
 c_compiler:
-- vs2017
+- clang
+c_compiler_version:
+- '11'
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
-cuda_compiler:
-- nvcc
 cuda_compiler_version:
-- '10.2'
+- None
 cxx_compiler:
-- vs2017
+- clangxx
+cxx_compiler_version:
+- '11'
 gflags:
 - '2.2'
 glog:
@@ -24,8 +28,12 @@ libprotobuf:
 - '3.15'
 lz4_c:
 - 1.9.3
+macos_machine:
+- x86_64-apple-darwin13.4.0
 numpy:
-- '1.16'
+- '1.17'
+orc:
+- 1.6.7
 pin_run_as_build:
   bzip2:
     max_pin: x
@@ -43,12 +51,14 @@ re2:
 snappy:
 - '1'
 target_platform:
-- win-64
+- osx-64
 thrift_cpp:
 - 0.14.1
 zip_keys:
-- - numpy
-  - python
+- - c_compiler_version
+  - cxx_compiler_version
+- - python
+  - numpy
 zlib:
 - '1.2'
 zstd:

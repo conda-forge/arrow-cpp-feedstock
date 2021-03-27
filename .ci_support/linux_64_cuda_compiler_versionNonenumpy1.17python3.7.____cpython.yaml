@@ -5,19 +5,21 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '8'
+- '9'
 cdt_name:
-- cos7
+- cos6
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
+cuda_compiler:
+- nvcc
 cuda_compiler_version:
 - None
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '8'
+- '9'
 docker_image:
 - quay.io/condaforge/linux-anvil-comp7
 gflags:
@@ -31,7 +33,7 @@ libprotobuf:
 lz4_c:
 - 1.9.3
 numpy:
-- '1.16'
+- '1.17'
 orc:
 - 1.6.7
 pin_run_as_build:
@@ -51,12 +53,15 @@ re2:
 snappy:
 - '1'
 target_platform:
-- linux-ppc64le
+- linux-64
 thrift_cpp:
 - 0.14.1
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
+- - cuda_compiler_version
+  - cdt_name
+  - docker_image
 - - python
   - numpy
 zlib:
