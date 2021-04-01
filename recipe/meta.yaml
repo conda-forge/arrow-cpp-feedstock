@@ -18,7 +18,7 @@ source:
     - 0001-ARROW-11724-C-Resolve-namespace-collisions-with-prot.patch
 
 build:
-  number: 28
+  number: 29
   skip: true  # [win and cuda_compiler_version not in (undefined, "None")]
   skip: true  # [linux and cuda_compiler_version not in (undefined, "None", "10.2")]
   run_exports:
