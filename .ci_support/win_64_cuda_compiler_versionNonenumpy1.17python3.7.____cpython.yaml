@@ -23,7 +23,7 @@ grpc_cpp:
 libprotobuf:
 - '3.15'
 numpy:
-- '1.16'
+- '1.17'
 pin_run_as_build:
   bzip2:
     max_pin: x
@@ -35,7 +35,7 @@ pin_run_as_build:
 python:
 - 3.7.* *_cpython
 re2:
-- 2020.11.01
+- 2021.04.01
 snappy:
 - '1'
 target_platform:
