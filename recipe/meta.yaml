@@ -11,9 +11,6 @@ package:
 source:
   url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
   sha256: 4a31d0bf702e953bdbcda67af10762a33308281bd247fcbd152ee177419649ae
-  patches:
-    - 0001-ARROW-11724-C-Resolve-namespace-collisions-with-prot.patch
-    - 9569.patch
 
 build:
   number: 0
