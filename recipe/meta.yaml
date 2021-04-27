@@ -50,7 +50,8 @@ outputs:
         - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
       ignore_run_exports:
         - cudatoolkit
-      track_features: {{ "- arrow-cuda" if cuda_enabled else "" }}
+      track_features:
+        {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
       build:
         - python                                 # [build_platform != target_platform]
@@ -164,7 +165,8 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
-      track_features: {{ "- arrow-cuda" if cuda_enabled else "" }}
+      track_features:
+        {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
       build:
         - python                                 # [build_platform != target_platform]
@@ -235,7 +237,8 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
-      track_features: {{ "- arrow-cuda" if cuda_enabled else "" }}
+      track_features:
+        {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
       build:
         - python                                 # [build_platform != target_platform]
