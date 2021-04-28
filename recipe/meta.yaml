@@ -1,4 +1,4 @@
-{% set version = "3.0.0" %}
+{% set version = "4.0.0" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "3.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -10,13 +10,10 @@ package:
 
 source:
   url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
-  sha256: 73c2cc3be537aa1f3fd9490cfec185714168c9bfd599d23e287ab0cc0558e27a
-  patches:
-    - 0001-ARROW-11724-C-Resolve-namespace-collisions-with-prot.patch
-    - 9569.patch
+  sha256: 4a31d0bf702e953bdbcda67af10762a33308281bd247fcbd152ee177419649ae
 
 build:
-  number: 11
+  number: 0
   # for cuda on win/linux, building with 9.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux) and cuda_compiler_version not in ("None", "10.2")]
@@ -29,7 +26,7 @@ outputs:
     version: {{ build_ext_version }}
     build:
       number: {{ proc_build_number }}
-      string: "{{ build_ext }}"
+      string: {{ build_ext }}
     test:
       commands:
         - exit 0
@@ -38,11 +35,11 @@ outputs:
       license: Apache-2.0
       license_file:
         - LICENSE.txt
-      summary: 'A meta-package to select Arrow build variant'
+      summary: A meta-package to select Arrow build variant
 
   - name: arrow-cpp
     script: build-arrow.sh  # [not win]
-    script: bld-arrow.bat   # [win]
+    script: bld-arrow.bat  # [win]
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
@@ -159,7 +156,7 @@ outputs:
 
   - name: pyarrow
     script: build-pyarrow.sh  # [not win]
-    script: bld-pyarrow.bat   # [win]
+    script: bld-pyarrow.bat  # [win]
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
@@ -231,7 +228,7 @@ outputs:
 
   - name: pyarrow-tests
     script: build-pyarrow.sh  # [not win]
-    script: bld-pyarrow.bat   # [win]
+    script: bld-pyarrow.bat  # [win]
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
