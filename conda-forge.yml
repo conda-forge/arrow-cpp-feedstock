@@ -6,6 +6,6 @@ conda_forge_output_validation: true
 test_on_native_only: true
 bot:
   abi_migration_branches:
-    - "0.17.x"
-    - "1.0.x"
-    - "2.0.x"
+  - 0.17.x
+  - 1.0.x
+  - 2.0.x
