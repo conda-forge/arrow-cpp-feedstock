@@ -25,7 +25,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - boost-cpp
+    - boost-cpp 1.69
     - brotli
     - double-conversion
     - flatbuffers
@@ -45,7 +45,7 @@ requirements:
 
   run:
     - {{ pin_compatible('numpy', lower_bound='1.14') }}
-    - boost-cpp
+    - boost-cpp 1.69
     - brotli
     - double-conversion
     - gflags
