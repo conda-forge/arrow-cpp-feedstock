@@ -8,7 +8,7 @@ package:
 
 source:
   fn: {{ filename }}
-  url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/{{ filename }}
+  url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
   sha256: {{ checksum }}
 
 build:
