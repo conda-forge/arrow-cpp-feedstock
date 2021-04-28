@@ -92,8 +92,11 @@ test:
 
 about:
   home: http://github.com/apache/arrow
-  license: Apache 2.0
   summary: 'C++ libraries for Apache Arrow'
+  license: Apache-2.0
+  license_file:
+    - LICENSE.txt
+  summary: C++ and Python libraries for Apache Arrow
 
 extra:
   recipe-maintainers:
@@ -108,3 +111,6 @@ extra:
     - kou
     - kszucs
     - pitrou
+    - pearu
+    - nealrichardson
+    - jakirkham
