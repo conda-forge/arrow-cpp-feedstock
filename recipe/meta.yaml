@@ -62,6 +62,7 @@ outputs:
         - autoconf  # [unix]
         - ninja
         - make  # [unix]
+        - aws-sdk-cpp
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
