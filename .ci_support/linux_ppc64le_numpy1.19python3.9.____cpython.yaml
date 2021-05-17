@@ -1,5 +1,5 @@
 aws_sdk_cpp:
-- 1.8.151
+- 1.8.186
 bzip2:
 - '1'
 c_compiler:
@@ -23,7 +23,7 @@ docker_image:
 gflags:
 - '2.2'
 glog:
-- 0.4.0
+- '0.5'
 grpc_cpp:
 - '1.37'
 libprotobuf:
