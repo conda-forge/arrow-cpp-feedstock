@@ -1,5 +1,5 @@
 aws_sdk_cpp:
-- 1.8.151
+- 1.8.186
 bzip2:
 - '1'
 c_compiler:
@@ -67,4 +67,4 @@ zip_keys:
 zlib:
 - '1.2'
 zstd:
-- '1.4'
+- '1.5'
