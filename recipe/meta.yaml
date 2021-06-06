@@ -9,7 +9,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
+  url: http://archive.apache.org/dist/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
   sha256: be0342cc847bb340d86aeaef43596a0b6c1dbf1ede9c789a503d939e01c71fbe
   patches:
     - 8458.patch
@@ -19,7 +19,7 @@ source:
     - 9569.patch
 
 build:
-  number: 38
+  number: 39
   # for cuda on win/linux, building with 10.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(linux or win) and cuda_compiler_version not in ("None", "10.2")]
