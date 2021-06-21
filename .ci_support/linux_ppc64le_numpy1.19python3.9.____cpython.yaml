@@ -1,5 +1,5 @@
 aws_sdk_cpp:
-- 1.8.186
+- 1.9.39
 bzip2:
 - '1'
 c_compiler:
