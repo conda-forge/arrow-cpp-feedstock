@@ -84,8 +84,7 @@ outputs:
         - clangdev 10  # [not (osx and arm64)]
         - llvmdev 10   # [not (osx and arm64)]
         - libutf8proc
-        - lz4-c 1.9.2  # [win]
-        - lz4-c        # [not win]
+        - lz4-c
         - numpy
         - orc  # [unix]
         - python
