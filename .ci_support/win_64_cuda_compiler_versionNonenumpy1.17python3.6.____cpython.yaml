@@ -22,11 +22,15 @@ grpc_cpp:
 - '1.38'
 libprotobuf:
 - '3.16'
+lz4_c:
+- 1.9.3
 numpy:
 - '1.17'
 pin_run_as_build:
   bzip2:
     max_pin: x
+  lz4-c:
+    max_pin: x.x.x
   python:
     min_pin: x.x
     max_pin: x.x
