@@ -44,6 +44,7 @@ cmake -G "Ninja" ^
       -DARROW_S3:BOOL=ON ^
       -DBoost_NO_BOOST_CMAKE=ON ^
       -DCMAKE_UNITY_BUILD=ON ^
+      -DLZ4_MSVC_STATIC_LIB_SUFFIX="" ^
       %EXTRA_CMAKE_ARGS% ^
       ..
 if errorlevel 1 exit 1

@@ -35,7 +35,7 @@ lz4_c:
 numpy:
 - '1.17'
 orc:
-- 1.6.7
+- 1.6.8
 pin_run_as_build:
   bzip2:
     max_pin: x
@@ -49,13 +49,13 @@ pin_run_as_build:
 python:
 - 3.6.* *_cpython
 re2:
-- 2021.04.01
+- 2021.06.01
 snappy:
 - '1'
 target_platform:
 - linux-64
 thrift_cpp:
-- 0.14.1
+- 0.14.2
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
@@ -67,4 +67,4 @@ zip_keys:
 zlib:
 - '1.2'
 zstd:
-- '1.4'
+- '1.5'
