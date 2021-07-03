@@ -19,7 +19,7 @@ source:
     - 0001-ARROW-11724-C-Resolve-namespace-collisions-with-prot.patch
 
 build:
-  number: 42
+  number: 43
   # for cuda on win/linux, building with 10.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux) and cuda_compiler_version not in ("None", "10.2")]
