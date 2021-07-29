@@ -7,7 +7,7 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '9'
+- '7'
 cdt_arch:
 - aarch64
 cdt_name:
@@ -21,7 +21,7 @@ cuda_compiler_version:
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '9'
+- '7'
 docker_image:
 - quay.io/condaforge/linux-anvil-comp7
 gflags:
@@ -35,7 +35,7 @@ libprotobuf:
 lz4_c:
 - 1.9.3
 numpy:
-- '1.17'
+- '1.18'
 orc:
 - 1.6.9
 pin_run_as_build:
@@ -49,7 +49,7 @@ pin_run_as_build:
   zlib:
     max_pin: x.x
 python:
-- 3.7.* *_cpython
+- 3.6.* *_cpython
 re2:
 - 2021.06.01
 snappy:
