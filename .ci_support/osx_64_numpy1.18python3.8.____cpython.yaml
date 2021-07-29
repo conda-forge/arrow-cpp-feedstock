@@ -23,7 +23,7 @@ gflags:
 glog:
 - '0.5'
 grpc_cpp:
-- '1.38'
+- '1.39'
 libprotobuf:
 - '3.16'
 lz4_c:
@@ -31,7 +31,7 @@ lz4_c:
 macos_machine:
 - x86_64-apple-darwin13.4.0
 numpy:
-- '1.17'
+- '1.18'
 orc:
 - 1.6.9
 pin_run_as_build:
@@ -45,7 +45,7 @@ pin_run_as_build:
   zlib:
     max_pin: x.x
 python:
-- 3.6.* *_cpython
+- 3.8.* *_cpython
 re2:
 - 2021.06.01
 snappy:
