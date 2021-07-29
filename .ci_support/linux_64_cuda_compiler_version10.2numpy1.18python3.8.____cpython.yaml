@@ -33,7 +33,7 @@ libprotobuf:
 lz4_c:
 - 1.9.3
 numpy:
-- '1.17'
+- '1.18'
 orc:
 - 1.6.9
 pin_run_as_build:
