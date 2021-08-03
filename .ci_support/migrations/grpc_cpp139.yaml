@@ -2,6 +2,6 @@ __migrator:
   build_number: 1
   kind: version
   migration_number: 1
-migrator_ts: 1622567015.403561
-re2:
-- 2021.06.01
+grpc_cpp:
+- '1.39'
+migrator_ts: 1626936388.1171865
