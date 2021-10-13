@@ -1,5 +1,5 @@
 aws_sdk_cpp:
-- 1.8.186
+- 1.9.120
 bzip2:
 - '1'
 c_compiler:
@@ -9,7 +9,7 @@ c_compiler_version:
 cdt_name:
 - cos7
 channel_sources:
-- conda-forge,defaults
+- conda-forge
 channel_targets:
 - conda-forge main
 cuda_compiler_version:
