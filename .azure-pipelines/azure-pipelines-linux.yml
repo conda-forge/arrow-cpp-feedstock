@@ -8,10 +8,6 @@ jobs:
     vmImage: ubuntu-latest
   strategy:
     matrix:
-      linux_64_cuda_compiler_version10.2numpy1.18python3.6.____cpython:
-        CONFIG: linux_64_cuda_compiler_version10.2numpy1.18python3.6.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:10.2
       linux_64_cuda_compiler_version10.2numpy1.18python3.7.____cpython:
         CONFIG: linux_64_cuda_compiler_version10.2numpy1.18python3.7.____cpython
         UPLOAD_PACKAGES: 'True'
@@ -24,10 +20,6 @@ jobs:
         CONFIG: linux_64_cuda_compiler_version10.2numpy1.19python3.9.____cpython
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:10.2
-      linux_64_cuda_compiler_versionNonenumpy1.18python3.6.____cpython:
-        CONFIG: linux_64_cuda_compiler_versionNonenumpy1.18python3.6.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-comp7
       linux_64_cuda_compiler_versionNonenumpy1.18python3.7.____cpython:
         CONFIG: linux_64_cuda_compiler_versionNonenumpy1.18python3.7.____cpython
         UPLOAD_PACKAGES: 'True'
