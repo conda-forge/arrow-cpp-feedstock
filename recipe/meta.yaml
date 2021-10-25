@@ -176,6 +176,8 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
+      ignore_run_exports_from:
+        - openssl
       track_features:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
@@ -196,6 +198,7 @@ outputs:
         - cython
         - numpy
         - python
+        - openssl
         - setuptools
         - setuptools_scm
         - six
@@ -248,6 +251,8 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
+      ignore_run_exports_from:
+        - openssl
       track_features:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
@@ -269,6 +274,7 @@ outputs:
         - cython
         - numpy
         - python
+        - openssl
         - setuptools
         - setuptools_scm
         - six
