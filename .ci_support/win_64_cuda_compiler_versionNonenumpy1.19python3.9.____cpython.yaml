@@ -4,6 +4,8 @@ bzip2:
 - '1'
 c_compiler:
 - vs2017
+c_compiler_version:
+- '7'
 channel_sources:
 - conda-forge
 channel_targets:
@@ -14,6 +16,8 @@ cuda_compiler_version:
 - None
 cxx_compiler:
 - vs2017
+cxx_compiler_version:
+- '7'
 gflags:
 - '2.2'
 glog:
