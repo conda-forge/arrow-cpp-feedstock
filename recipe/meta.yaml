@@ -68,7 +68,8 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
-        - aws-sdk-cpp
+        - aws-sdk-cpp 1.8.186  # [win]
+        - aws-sdk-cpp  # [not win]
         - boost-cpp >=1.70
         - brotli
         - bzip2
