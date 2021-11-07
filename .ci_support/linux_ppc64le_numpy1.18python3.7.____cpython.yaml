@@ -1,15 +1,15 @@
 aws_sdk_cpp:
-- 1.8.186
+- 1.9.120
 bzip2:
 - '1'
 c_compiler:
 - gcc
 c_compiler_version:
-- '9'
+- '7'
 cdt_name:
 - cos7
 channel_sources:
-- conda-forge,defaults
+- conda-forge
 channel_targets:
 - conda-forge main
 cuda_compiler_version:
@@ -17,7 +17,7 @@ cuda_compiler_version:
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '9'
+- '7'
 docker_image:
 - quay.io/condaforge/linux-anvil-comp7
 gflags:
@@ -32,6 +32,8 @@ lz4_c:
 - 1.9.3
 numpy:
 - '1.18'
+openssl:
+- 1.1.1
 orc:
 - 1.7.0
 pin_run_as_build:
