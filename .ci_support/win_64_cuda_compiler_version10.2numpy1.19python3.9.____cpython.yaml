@@ -1,11 +1,9 @@
-aws_sdk_cpp:
-- 1.8.186
 bzip2:
 - '1'
 c_compiler:
 - vs2017
 channel_sources:
-- conda-forge,defaults
+- conda-forge
 channel_targets:
 - conda-forge main
 cuda_compiler:
@@ -16,8 +14,6 @@ cxx_compiler:
 - vs2017
 gflags:
 - '2.2'
-glog:
-- '0.5'
 grpc_cpp:
 - '1.40'
 libprotobuf:
@@ -26,6 +22,8 @@ lz4_c:
 - 1.9.3
 numpy:
 - '1.19'
+openssl:
+- 1.1.1
 pin_run_as_build:
   bzip2:
     max_pin: x
@@ -33,8 +31,6 @@ pin_run_as_build:
     max_pin: x.x.x
   python:
     min_pin: x.x
-    max_pin: x.x
-  zlib:
     max_pin: x.x
 python:
 - 3.9.* *_cpython
@@ -49,7 +45,5 @@ thrift_cpp:
 zip_keys:
 - - numpy
   - python
-zlib:
-- '1.2'
 zstd:
 - '1.5'

@@ -13,7 +13,7 @@ source:
   sha256: 75ccbfa276b925c6b1c978a920ff2f30c4b0d3fdf8b51777915b6f69a211896e
 
 build:
-  number: 13
+  number: 14
   # for cuda on win/linux, building with 9.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux) and cuda_compiler_version not in ("None", "10.2")]
@@ -47,6 +47,8 @@ outputs:
         - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
       ignore_run_exports:
         - cudatoolkit
+      ignore_run_exports_from:
+        - openssl
       track_features:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
@@ -66,15 +68,16 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
-        - aws-sdk-cpp
+        - aws-sdk-cpp 1.8.186  # [win]
+        - aws-sdk-cpp  # [not win]
         - boost-cpp >=1.70
         - brotli
         - bzip2
         - c-ares
         - gflags
-        - glog
         - grpc-cpp
         - libprotobuf
+        - openssl
         - clangdev 10  # [not (osx and arm64)]
         - llvmdev 10   # [not (osx and arm64)]
         - libutf8proc
@@ -86,7 +89,6 @@ outputs:
         - re2
         - snappy
         - thrift-cpp
-        - zlib
         - zstd
       run:
         - {{ pin_compatible('numpy', lower_bound='1.16') }}
@@ -162,6 +164,8 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
+      ignore_run_exports_from:
+        - openssl
       track_features:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
@@ -182,6 +186,7 @@ outputs:
         - cython
         - numpy
         - python
+        - openssl
         - setuptools
         - setuptools_scm
         - six
@@ -234,6 +239,8 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
+      ignore_run_exports_from:
+        - openssl
       track_features:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
@@ -255,6 +262,7 @@ outputs:
         - cython
         - numpy
         - python
+        - openssl
         - setuptools
         - setuptools_scm
         - six
