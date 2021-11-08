@@ -19,7 +19,7 @@ source:
     - 9569.patch
 
 build:
-  number: 49
+  number: 50
   # for cuda on win/linux, building with 10.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(linux or win) and cuda_compiler_version not in ("None", "10.2")]
@@ -72,7 +72,8 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
-        - aws-sdk-cpp
+        - aws-sdk-cpp 1.8.186  # [win]
+        - aws-sdk-cpp          # [not win]
         - boost-cpp >=1.70
         - brotli
         - bzip2
@@ -168,6 +169,8 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
+      ignore_run_exports_from:
+        - openssl
       track_features:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
@@ -188,6 +191,7 @@ outputs:
         - cython
         - numpy
         - python
+        - openssl
         - setuptools
         - setuptools_scm
         - six
@@ -240,6 +244,8 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
+      ignore_run_exports_from:
+        - openssl
       track_features:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
@@ -261,6 +267,7 @@ outputs:
         - cython
         - numpy
         - python
+        - openssl
         - setuptools
         - setuptools_scm
         - six
