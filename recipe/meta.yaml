@@ -9,14 +9,14 @@ package:
   version: {{ version }}
 
 source:
-  url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
+  url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
   sha256: 73c2cc3be537aa1f3fd9490cfec185714168c9bfd599d23e287ab0cc0558e27a
   patches:
     - 0001-ARROW-11724-C-Resolve-namespace-collisions-with-prot.patch
     - 9569.patch
 
 build:
-  number: 27
+  number: 28
   # for cuda on win/linux, building with 9.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux) and cuda_compiler_version not in ("None", "10.2")]
@@ -69,7 +69,8 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
-        - aws-sdk-cpp
+        - aws-sdk-cpp 1.8.186  # [win]
+        - aws-sdk-cpp          # [not win]
         - boost-cpp >=1.70
         - brotli
         - bzip2
@@ -165,6 +166,8 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
+      ignore_run_exports_from:
+        - openssl
       track_features:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
@@ -185,6 +188,7 @@ outputs:
         - cython
         - numpy
         - python
+        - openssl
         - setuptools
         - setuptools_scm
         - six
@@ -237,6 +241,8 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
+      ignore_run_exports_from:
+        - openssl
       track_features:
         {{ "- arrow-cuda" if cuda_enabled else "" }}
     requirements:
@@ -258,6 +264,7 @@ outputs:
         - cython
         - numpy
         - python
+        - openssl
         - setuptools
         - setuptools_scm
         - six
