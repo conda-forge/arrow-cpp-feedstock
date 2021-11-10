@@ -221,6 +221,8 @@ outputs:
       summary: Python libraries for Apache Arrow
 
     test:
+      files:
+        - test_read_parquet.py
       imports:
         - pyarrow
         - pyarrow.dataset
@@ -243,6 +245,7 @@ outputs:
         - if exist %SP_DIR%/pyarrow/tests/test_array.py exit 1                    # [win]
         # Need to remove dot from PY_VER; %MYVAR:x=y% replaces "x" in %MYVAR% with "y"
         - if not exist %SP_DIR%/pyarrow/_cuda.cp%PY_VER:.=%-win_amd64.pyd exit 1  # [win and cuda_compiler_version != "None"]
+        - python test_read_parquet.py
 
   - name: pyarrow-tests
     script: build-pyarrow.sh  # [not win]
