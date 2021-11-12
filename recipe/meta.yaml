@@ -19,7 +19,7 @@ source:
     - 9569.patch
 
 build:
-  number: 53
+  number: 54
   # for cuda on win/linux, building with 10.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(linux or win) and cuda_compiler_version not in ("None", "10.2")]
