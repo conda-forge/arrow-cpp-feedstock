@@ -13,7 +13,7 @@ source:
   sha256: c3b4313eca594c20f761a836719721aaf0760001af896baec3ab64420ff9910a
 
 build:
-  number: 13
+  number: 14
   # for cuda on win/linux, building with 9.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux) and cuda_compiler_version not in ("None", "10.2")]
@@ -65,7 +65,8 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
-        - aws-sdk-cpp
+        - aws-sdk-cpp 1.8.186  # [win]
+        - aws-sdk-cpp          # [not win]
         - boost-cpp >=1.70
         - brotli
         - bzip2
@@ -204,6 +205,8 @@ outputs:
       summary: Python libraries for Apache Arrow
 
     test:
+      files:
+        - test_read_parquet.py
       imports:
         - pyarrow
         - pyarrow.dataset
@@ -226,6 +229,7 @@ outputs:
         - if exist %SP_DIR%/pyarrow/tests/test_array.py exit 1                    # [win]
         # Need to remove dot from PY_VER; %MYVAR:x=y% replaces "x" in %MYVAR% with "y"
         - if not exist %SP_DIR%/pyarrow/_cuda.cp%PY_VER:.=%-win_amd64.pyd exit 1  # [win and cuda_compiler_version != "None"]
+        - python test_read_parquet.py
 
   - name: pyarrow-tests
     script: build-pyarrow.sh  # [not win]
