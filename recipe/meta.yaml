@@ -9,7 +9,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://archive.apache.org/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
+  url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
   sha256: 75ccbfa276b925c6b1c978a920ff2f30c4b0d3fdf8b51777915b6f69a211896e
 
 build:
