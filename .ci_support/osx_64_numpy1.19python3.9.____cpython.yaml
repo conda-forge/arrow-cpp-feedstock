@@ -1,7 +1,7 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
 aws_sdk_cpp:
-- 1.9.148
+- 1.9.154
 bzip2:
 - '1'
 c_compiler:
