@@ -1,7 +1,7 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
 aws_sdk_cpp:
-- 1.9.154
+- 1.9.160
 bzip2:
 - '1'
 c_compiler:
@@ -23,7 +23,7 @@ gflags:
 grpc_cpp:
 - '1.42'
 libprotobuf:
-- '3.18'
+- '3.19'
 lz4_c:
 - 1.9.3
 macos_machine:
