@@ -13,7 +13,7 @@ source:
   sha256: 75ccbfa276b925c6b1c978a920ff2f30c4b0d3fdf8b51777915b6f69a211896e
 
 build:
-  number: 25
+  number: 26
   # for cuda on win/linux, building with 9.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux) and cuda_compiler_version not in ("None", "10.2")]
@@ -68,8 +68,7 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
-        - aws-sdk-cpp 1.8.186  # [win]
-        - aws-sdk-cpp  # [not win]
+        - aws-sdk-cpp 1.8.186
         - boost-cpp >=1.70
         - brotli
         - bzip2
