@@ -1,7 +1,5 @@
 BUILD:
 - aarch64-conda_cos7-linux-gnu
-aws_sdk_cpp:
-- 1.9.160
 bzip2:
 - '1'
 c_compiler:
