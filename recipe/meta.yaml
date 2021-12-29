@@ -183,7 +183,7 @@ outputs:
         - numpy
         - python
         - openssl
-        - setuptools <60
+        - setuptools
         - setuptools_scm
         - six
       run:
@@ -261,7 +261,7 @@ outputs:
         - numpy
         - python
         - openssl
-        - setuptools <60
+        - setuptools
         - setuptools_scm
         - six
       run:
