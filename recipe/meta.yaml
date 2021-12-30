@@ -14,6 +14,7 @@ source:
   patches:
     - 0001-ARROW-11724-C-Resolve-namespace-collisions-with-prot.patch
     - 9569.patch
+    - 876d579b82c28c0488a307a8cfb6be11c3facb9f.patch
 
 build:
   number: 41
