@@ -1,4 +1,4 @@
 c_compiler_version:    # [ppc64le]
-- '7'                  # [ppc64le]
+- '11'                 # [ppc64le]
 cxx_compiler_version:  # [ppc64le]
-- '7'                  # [ppc64le]
+- '11'                 # [ppc64le]
