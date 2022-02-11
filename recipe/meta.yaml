@@ -11,6 +11,8 @@ package:
 source:
   url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
   sha256: e8f49b149a15ecef4e40fcfab1b87c113c6b1ee186005c169e5cdf95d31a99de
+  patches:
+    - 0001-ARROW-15551-C-FlightRPC-Update-gRPC-TLS-options-dete.patch
 
 build:
   number: 0
