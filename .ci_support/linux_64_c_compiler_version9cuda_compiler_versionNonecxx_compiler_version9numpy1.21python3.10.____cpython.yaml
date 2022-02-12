@@ -23,7 +23,7 @@ docker_image:
 gflags:
 - '2.2'
 grpc_cpp:
-- '1.42'
+- '1.43'
 libprotobuf:
 - '3.19'
 lz4_c:
