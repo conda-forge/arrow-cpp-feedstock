@@ -14,6 +14,7 @@ source:
   patches:
     - 0001-ARROW-11724-C-Resolve-namespace-collisions-with-prot.patch
     - 9569.patch
+    - 0001-ARROW-15551-C-FlightRPC-Update-gRPC-TLS-options-dete.patch
 
 build:
   number: 41
