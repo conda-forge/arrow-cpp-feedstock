@@ -13,6 +13,7 @@ source:
   sha256: e8f49b149a15ecef4e40fcfab1b87c113c6b1ee186005c169e5cdf95d31a99de
   patches:
     - 0001-ARROW-15551-C-FlightRPC-Update-gRPC-TLS-options-dete.patch
+    - 8c4f77a9f35eb97a47a09a9555c27c9ca350bd5e.patch
 
 build:
   number: 2
