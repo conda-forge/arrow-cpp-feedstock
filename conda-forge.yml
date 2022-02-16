@@ -3,6 +3,7 @@ bot:
   - 3.0.x
   - 4.0.x
   - 5.0.x
+  - 6.0.x
 build_platform:
   linux_aarch64: linux_64
   linux_ppc64le: linux_64
