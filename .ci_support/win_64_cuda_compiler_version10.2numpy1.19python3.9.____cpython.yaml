@@ -15,7 +15,7 @@ cxx_compiler:
 gflags:
 - '2.2'
 grpc_cpp:
-- '1.43'
+- '1.44'
 libprotobuf:
 - '3.19'
 lz4_c:
