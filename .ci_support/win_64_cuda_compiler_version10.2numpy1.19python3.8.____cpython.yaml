@@ -15,13 +15,13 @@ cxx_compiler:
 gflags:
 - '2.2'
 grpc_cpp:
-- '1.44'
+- '1.45'
 libprotobuf:
 - '3.19'
 lz4_c:
 - 1.9.3
 numpy:
-- '1.18'
+- '1.19'
 openssl:
 - 1.1.1
 pin_run_as_build:
