@@ -3,7 +3,7 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '9'
+- '10'
 cdt_name:
 - cos6
 channel_sources:
@@ -17,7 +17,7 @@ cuda_compiler_version:
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '9'
+- '10'
 docker_image:
 - quay.io/condaforge/linux-anvil-cos7-x86_64
 gflags:
@@ -29,7 +29,7 @@ libprotobuf:
 lz4_c:
 - 1.9.3
 numpy:
-- '1.18'
+- '1.21'
 openssl:
 - 1.1.1
 orc:
@@ -43,7 +43,7 @@ pin_run_as_build:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.8.* *_cpython
+- 3.10.* *_cpython
 re2:
 - 2022.02.01
 snappy:
@@ -51,7 +51,7 @@ snappy:
 target_platform:
 - linux-64
 thrift_cpp:
-- 0.15.0
+- 0.16.0
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version

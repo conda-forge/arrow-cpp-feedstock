@@ -5,7 +5,7 @@ bzip2:
 c_compiler:
 - clang
 c_compiler_version:
-- '11'
+- '12'
 channel_sources:
 - conda-forge
 channel_targets:
@@ -15,7 +15,7 @@ cuda_compiler_version:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '11'
+- '12'
 gflags:
 - '2.2'
 grpc_cpp:
@@ -27,7 +27,7 @@ lz4_c:
 macos_machine:
 - x86_64-apple-darwin13.4.0
 numpy:
-- '1.18'
+- '1.19'
 openssl:
 - 1.1.1
 orc:
@@ -49,7 +49,7 @@ snappy:
 target_platform:
 - osx-64
 thrift_cpp:
-- 0.15.0
+- 0.16.0
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
