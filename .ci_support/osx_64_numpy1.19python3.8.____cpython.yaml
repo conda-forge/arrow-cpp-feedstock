@@ -1,25 +1,21 @@
+MACOSX_DEPLOYMENT_TARGET:
+- '10.9'
 bzip2:
 - '1'
 c_compiler:
-- gcc
+- clang
 c_compiler_version:
-- '9'
-cdt_name:
-- cos6
+- '12'
 channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
-cuda_compiler:
-- nvcc
 cuda_compiler_version:
 - None
 cxx_compiler:
-- gxx
+- clangxx
 cxx_compiler_version:
-- '9'
-docker_image:
-- quay.io/condaforge/linux-anvil-cos7-x86_64
+- '12'
 gflags:
 - '2.2'
 glog:
@@ -30,8 +26,10 @@ libprotobuf:
 - '3.19'
 lz4_c:
 - 1.9.3
+macos_machine:
+- x86_64-apple-darwin13.4.0
 numpy:
-- '1.18'
+- '1.19'
 openssl:
 - 1.1.1
 orc:
@@ -53,15 +51,12 @@ re2:
 snappy:
 - '1'
 target_platform:
-- linux-64
+- osx-64
 thrift_cpp:
-- 0.15.0
+- 0.16.0
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-  - cuda_compiler_version
-  - cdt_name
-  - docker_image
 - - python
   - numpy
 zlib:
