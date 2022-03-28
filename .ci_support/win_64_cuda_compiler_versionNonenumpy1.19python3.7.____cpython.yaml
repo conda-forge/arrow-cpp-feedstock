@@ -23,7 +23,7 @@ libprotobuf:
 lz4_c:
 - 1.9.3
 numpy:
-- '1.18'
+- '1.19'
 openssl:
 - 1.1.1
 pin_run_as_build:
@@ -37,7 +37,7 @@ pin_run_as_build:
   zlib:
     max_pin: x.x
 python:
-- 3.8.* *_cpython
+- 3.7.* *_cpython
 re2:
 - 2022.02.01
 snappy:
@@ -45,7 +45,7 @@ snappy:
 target_platform:
 - win-64
 thrift_cpp:
-- 0.15.0
+- 0.16.0
 zip_keys:
 - - python
   - numpy
