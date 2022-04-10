@@ -19,7 +19,7 @@ glog:
 grpc_cpp:
 - '1.45'
 libprotobuf:
-- '3.19'
+- '3.20'
 lz4_c:
 - 1.9.3
 numpy:
