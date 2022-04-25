@@ -230,8 +230,7 @@ outputs:
         - test ! -f ${SP_DIR}/pyarrow/tests/test_array.py                         # [unix]
         - if exist %SP_DIR%/pyarrow/tests/test_array.py exit 1                    # [win]
         # Need to remove dot from PY_VER; %MYVAR:x=y% replaces "x" in %MYVAR% with "y"
-        - if not exist %SP_DIR%/pyarrow/_cuda.pyd exit 1  # [py==37 and win and cuda_compiler_version != "None"]
-        - if not exist %SP_DIR%/pyarrow/_cuda.cp%PY_VER:.=%-win_amd64.pyd exit 1  # [py>=38 and win and cuda_compiler_version != "None"]
+        - if not exist %SP_DIR%/pyarrow/_cuda.cp%PY_VER:.=%-win_amd64.pyd exit 1  # [win and cuda_compiler_version != "None"]
         - python test_read_parquet.py
 
   - name: pyarrow-tests
