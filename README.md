@@ -13,7 +13,14 @@ Current build status
 ====================
 
 
-<table>
+<table><tr>
+    <td>Travis</td>
+    <td>
+      <a href="https://app.travis-ci.com/conda-forge/arrow-cpp-feedstock">
+        <img alt="linux" src="https://img.shields.io/travis/com/conda-forge/arrow-cpp-feedstock/main.svg?label=Linux">
+      </a>
+    </td>
+  </tr>
     
   <tr>
     <td>Azure</td>
@@ -83,59 +90,59 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_numpy1.19python3.7.____cpython</td>
+              <td>linux_aarch64_cuda_compiler_versionNonenumpy1.19python3.7.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_aarch64_numpy1.19python3.7.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_aarch64_cuda_compiler_versionNonenumpy1.19python3.7.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_numpy1.19python3.8.____cpython</td>
+              <td>linux_aarch64_cuda_compiler_versionNonenumpy1.19python3.8.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_aarch64_numpy1.19python3.8.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_aarch64_cuda_compiler_versionNonenumpy1.19python3.8.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_numpy1.19python3.9.____cpython</td>
+              <td>linux_aarch64_cuda_compiler_versionNonenumpy1.19python3.9.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_aarch64_numpy1.19python3.9.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_aarch64_cuda_compiler_versionNonenumpy1.19python3.9.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_numpy1.21python3.10.____cpython</td>
+              <td>linux_aarch64_cuda_compiler_versionNonenumpy1.21python3.10.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_aarch64_numpy1.21python3.10.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_aarch64_cuda_compiler_versionNonenumpy1.21python3.10.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_numpy1.19python3.7.____cpython</td>
+              <td>linux_ppc64le_cuda_compiler_versionNonenumpy1.19python3.7.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_ppc64le_numpy1.19python3.7.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_ppc64le_cuda_compiler_versionNonenumpy1.19python3.7.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_numpy1.19python3.8.____cpython</td>
+              <td>linux_ppc64le_cuda_compiler_versionNonenumpy1.19python3.8.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_ppc64le_numpy1.19python3.8.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_ppc64le_cuda_compiler_versionNonenumpy1.19python3.8.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_numpy1.19python3.9.____cpython</td>
+              <td>linux_ppc64le_cuda_compiler_versionNonenumpy1.19python3.9.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_ppc64le_numpy1.19python3.9.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_ppc64le_cuda_compiler_versionNonenumpy1.19python3.9.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_numpy1.21python3.10.____cpython</td>
+              <td>linux_ppc64le_cuda_compiler_versionNonenumpy1.21python3.10.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_ppc64le_numpy1.21python3.10.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux_ppc64le_cuda_compiler_versionNonenumpy1.21python3.10.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
