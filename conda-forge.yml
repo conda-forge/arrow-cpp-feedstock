@@ -4,9 +4,10 @@ bot:
   - 4.0.x
   - 5.0.x
   - 6.0.x
-build_platform:
+provider:
   linux_aarch64: default
   linux_ppc64le: default
+build_platform:
   osx_arm64: osx_64
 conda_forge_output_validation: true
 github:
