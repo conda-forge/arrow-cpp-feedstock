@@ -40,7 +40,7 @@ fi
 
 # Limit number of threads used to avoid hardware oversubscription
 if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "linux-ppc64le" ]]; then
-     export PYARROW_CMAKE_OPTIONS="${PYARROW_CMAKE_OPTIONS} --parallel 4"
+     export PYARROW_CMAKE_OPTIONS="${PYARROW_CMAKE_OPTIONS} -DCMAKE_BUILD_PARALLEL_LEVEL=4"
 fi
 
 
