@@ -44,8 +44,6 @@ if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "
 fi
 
 
- ninja install ${EXTRA_NINJA_ARGS}
-
 cd python
 
 $PYTHON setup.py \
