@@ -97,7 +97,7 @@ if [[ "${target_platform}" == "osx-arm64" ]]; then
      sed -ie 's/tpidr_el0/tpidrro_el0/g' mimalloc_ep-prefix/src/mimalloc_ep/include/mimalloc-internal.h
 fi
 
-# Limit
+# Limit number of threads used to avoid hardware oversubscription
 EXTRA_NINJA_ARGS=""
 if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "linux-ppc64le" ]]; then
      EXTRA_NINJA_ARGS="${EXTRA_NINJA_ARGS} -j 4"
