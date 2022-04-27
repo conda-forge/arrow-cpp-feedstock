@@ -43,7 +43,6 @@ if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "
      export CMAKE_BUILD_PARALLEL_LEVEL=4
 fi
 
-
 cd python
 
 $PYTHON setup.py \
