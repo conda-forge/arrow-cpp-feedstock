@@ -49,6 +49,11 @@ else
    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DCMAKE_CXX_STANDARD=17"
 fi
 
+# Limit number of threads used to avoid hardware oversubscription
+if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "linux-ppc64le" ]]; then
+     export CMAKE_BUILD_PARALLEL_LEVEL=4
+fi
+
 cmake \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
@@ -97,13 +102,7 @@ if [[ "${target_platform}" == "osx-arm64" ]]; then
      sed -ie 's/tpidr_el0/tpidrro_el0/g' mimalloc_ep-prefix/src/mimalloc_ep/include/mimalloc-internal.h
 fi
 
-# Limit number of threads used to avoid hardware oversubscription
-EXTRA_NINJA_ARGS=""
-if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "linux-ppc64le" ]]; then
-     EXTRA_NINJA_ARGS="${EXTRA_NINJA_ARGS} -j 4"
-fi
 
-
-ninja install ${EXTRA_NINJA_ARGS}
+cmake --build . --target install --config Release
 
 popd
