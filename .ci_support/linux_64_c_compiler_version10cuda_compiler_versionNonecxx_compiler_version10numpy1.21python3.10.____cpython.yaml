@@ -1,3 +1,5 @@
+abseil_cpp:
+- '20210324.2'
 bzip2:
 - '1'
 c_compiler:
@@ -25,7 +27,7 @@ gflags:
 glog:
 - '0.6'
 google_cloud_cpp:
-- '1.35'
+- '1.36'
 grpc_cpp:
 - '1.43'
 libprotobuf:
