@@ -55,7 +55,7 @@ pin_run_as_build:
 python:
 - 3.8.* *_cpython
 re2:
-- 2022.02.01
+- 2022.04.01
 snappy:
 - '1'
 target_platform:
