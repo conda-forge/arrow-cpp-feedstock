@@ -7,8 +7,10 @@ bot:
   - 7.0.x
 build_platform:
   linux_aarch64: linux_64
-  linux_ppc64le: linux_64
   osx_arm64: osx_64
+provider:
+  linux_aarch64: azure
+  linux_ppc64le: default
 conda_forge_output_validation: true
 github:
   branch_name: main
