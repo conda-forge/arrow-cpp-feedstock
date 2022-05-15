@@ -1,4 +1,2 @@
-c_compiler_version:    # [ppc64le]
-- '7'                  # [ppc64le]
-cxx_compiler_version:  # [ppc64le]
-- '7'                  # [ppc64le]
+google_cloud_cpp:
+  - 1.40.1
