@@ -51,7 +51,7 @@ fi
 
 # Limit number of threads used to avoid hardware oversubscription
 if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "linux-ppc64le" ]]; then
-     export CMAKE_BUILD_PARALLEL_LEVEL=4
+     export CMAKE_BUILD_PARALLEL_LEVEL=3
 fi
 
 cmake \
