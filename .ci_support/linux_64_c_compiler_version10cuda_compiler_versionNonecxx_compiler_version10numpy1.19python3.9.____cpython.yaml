@@ -29,7 +29,7 @@ glog:
 google_cloud_cpp:
 - '1.36'
 grpc_cpp:
-- '1.43'
+- '1.44'
 libprotobuf:
 - '3.19'
 lz4_c:
