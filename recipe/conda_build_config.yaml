@@ -1,7 +1,7 @@
 MACOSX_SDK_VERSION:        # [osx and x86_64]
   - "10.12"                # [osx and x86_64]
-# MACOSX_DEPLOYMENT_TARGET:  # [osx and x86_64]
-#   - "10.12"                # [osx and x86_64]
+MACOSX_DEPLOYMENT_TARGET:  # [osx and x86_64]
+  - "10.12"                # [osx and x86_64]
 # 2022/05/16 - hmaarrfk
 # Newer compilers seem to generate unknown instruction
 # when tested with qemu + x86_64 on azure
