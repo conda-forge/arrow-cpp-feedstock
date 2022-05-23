@@ -43,7 +43,7 @@ else
     EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_GANDIVA=ON"
 fi
 
-if [[ "${target_platform}" == osx-* ]]; then
+if [[ "${target_platform}" == osx-* ]] && [[ "${abseil_cpp}" == "20210324.2" ]]; then
    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DCMAKE_CXX_STANDARD=14"
 else
    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DCMAKE_CXX_STANDARD=17"
