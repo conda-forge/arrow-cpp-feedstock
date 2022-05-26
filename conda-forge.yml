@@ -5,9 +5,6 @@ bot:
   - 5.0.x
   - 6.0.x
   - 7.0.x
-provider:
-  linux_aarch64: default
-  linux_ppc64le: azure
 build_platform:
   osx_arm64: osx_64
 provider:
