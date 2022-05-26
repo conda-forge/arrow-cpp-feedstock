@@ -10,6 +10,9 @@ provider:
   linux_ppc64le: azure
 build_platform:
   osx_arm64: osx_64
+provider:
+  linux_aarch64: azure
+  linux_ppc64le: azure
 conda_forge_output_validation: true
 github:
   branch_name: main
