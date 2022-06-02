@@ -1,3 +1,5 @@
+BUILD:
+- aarch64-conda_cos7-linux-gnu
 abseil_cpp:
 - '20211102.0'
 bzip2:
@@ -5,21 +7,25 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '7'
+- '10'
+cdt_arch:
+- aarch64
 cdt_name:
 - cos7
 channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
+cuda_compiler:
+- nvcc
 cuda_compiler_version:
 - None
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '7'
+- '10'
 docker_image:
-- quay.io/condaforge/linux-anvil-cos7-x86_64
+- quay.io/condaforge/linux-anvil-aarch64
 gflags:
 - '2.2'
 glog:
@@ -47,13 +53,13 @@ pin_run_as_build:
   zlib:
     max_pin: x.x
 python:
-- 3.9.* *_cpython
+- 3.8.* *_cpython
 re2:
 - 2022.04.01
 snappy:
 - '1'
 target_platform:
-- linux-ppc64le
+- linux-aarch64
 thrift_cpp:
 - 0.16.0
 zip_keys:
