@@ -37,7 +37,7 @@ pin_run_as_build:
 python:
 - 3.9.* *_cpython
 re2:
-- 2022.04.01
+- 2022.06.01
 snappy:
 - '1'
 target_platform:
@@ -45,8 +45,8 @@ target_platform:
 thrift_cpp:
 - 0.16.0
 zip_keys:
-- - numpy
-  - python
+- - python
+  - numpy
 zlib:
 - '1.2'
 zstd:
