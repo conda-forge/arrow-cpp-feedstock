@@ -51,7 +51,7 @@ thrift_cpp:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-- - numpy
-  - python
+- - python
+  - numpy
 zstd:
 - '1.5'

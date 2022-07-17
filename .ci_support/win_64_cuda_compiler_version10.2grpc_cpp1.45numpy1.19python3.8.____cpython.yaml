@@ -41,7 +41,7 @@ target_platform:
 thrift_cpp:
 - 0.16.0
 zip_keys:
-- - numpy
-  - python
+- - python
+  - numpy
 zstd:
 - '1.5'
