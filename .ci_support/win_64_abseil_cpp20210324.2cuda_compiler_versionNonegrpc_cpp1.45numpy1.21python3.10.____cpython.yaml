@@ -51,8 +51,8 @@ thrift_cpp:
 zip_keys:
 - - abseil_cpp
   - grpc_cpp
-- - numpy
-  - python
+- - python
+  - numpy
 zlib:
 - '1.2'
 zstd:

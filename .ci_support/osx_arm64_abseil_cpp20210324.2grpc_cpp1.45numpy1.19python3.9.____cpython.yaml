@@ -61,8 +61,8 @@ zip_keys:
   - grpc_cpp
 - - c_compiler_version
   - cxx_compiler_version
-- - numpy
-  - python
+- - python
+  - numpy
 zlib:
 - '1.2'
 zstd:
