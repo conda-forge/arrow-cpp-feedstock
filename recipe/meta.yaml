@@ -80,8 +80,8 @@ outputs:
         - c-ares
         - gflags
         - glog
-        - grpc-cpp
         - google-cloud-cpp
+        - grpc-cpp
         - libprotobuf
         - clangdev 10  # [not (osx and arm64)]
         - llvmdev 10   # [not (osx and arm64)]
@@ -94,6 +94,7 @@ outputs:
         - re2
         - snappy
         - thrift-cpp
+        - xsimd
         - zlib
         - zstd
       run:
