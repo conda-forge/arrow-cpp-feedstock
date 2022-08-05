@@ -1,10 +1,10 @@
 bot:
   abi_migration_branches:
-  - 3.0.x
   - 4.0.x
   - 5.0.x
   - 6.0.x
   - 7.0.x
+  - 8.0.x
 build_platform:
   osx_arm64: osx_64
 conda_forge_output_validation: true
