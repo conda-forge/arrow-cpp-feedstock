@@ -4,6 +4,8 @@ abseil_cpp:
 - '20211102.0'
 bzip2:
 - '1'
+c_ares:
+- '1'
 c_compiler:
 - clang
 c_compiler_version:

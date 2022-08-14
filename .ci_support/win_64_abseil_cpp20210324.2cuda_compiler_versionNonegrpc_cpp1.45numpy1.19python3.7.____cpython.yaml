@@ -2,6 +2,8 @@ abseil_cpp:
 - '20210324.2'
 bzip2:
 - '1'
+c_ares:
+- '1'
 c_compiler:
 - vs2017
 channel_sources:
