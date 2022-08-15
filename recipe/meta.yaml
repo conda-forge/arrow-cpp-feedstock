@@ -60,6 +60,8 @@ outputs:
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
         - gnuconfig                              # [osx and arm64]
+        - libprotobuf
+        - grpc-cpp
         # aws-sdk-cpp 1.8.* doesn't work with a newer CMake
         - cmake <3.22
         - autoconf  # [unix]
@@ -79,8 +81,6 @@ outputs:
         - gflags
         - glog
         - google-cloud-cpp
-        - grpc-cpp
-        - libprotobuf
         - clangdev 10  # [not (osx and arm64)]
         - llvmdev 10   # [not (osx and arm64)]
         - libutf8proc
