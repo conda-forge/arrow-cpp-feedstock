@@ -60,8 +60,6 @@ outputs:
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
         - gnuconfig                              # [osx and arm64]
-        # Hack to try to align grpc packages across build and host for Windows?
-        - openssl 1
         - libprotobuf
         - grpc-cpp
         # aws-sdk-cpp 1.8.* doesn't work with a newer CMake
@@ -75,7 +73,8 @@ outputs:
       host:
         # https://issues.apache.org/jira/browse/ARROW-15141
         - aws-sdk-cpp 1.8.186
-        - abseil-cpp
+        - abseil-cpp  # [not win]
+        - libabseil-static  # [win]
         - boost-cpp >=1.70
         - brotli
         - bzip2
