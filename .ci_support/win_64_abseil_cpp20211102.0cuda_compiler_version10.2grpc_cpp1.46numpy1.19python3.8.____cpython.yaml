@@ -1,3 +1,5 @@
+abseil_cpp:
+- '20211102.0'
 bzip2:
 - '1'
 c_ares:
@@ -11,7 +13,7 @@ channel_targets:
 cuda_compiler:
 - nvcc
 cuda_compiler_version:
-- None
+- '10.2'
 cxx_compiler:
 - vs2017
 gflags:
@@ -49,6 +51,8 @@ target_platform:
 thrift_cpp:
 - 0.16.0
 zip_keys:
+- - abseil_cpp
+  - grpc_cpp
 - - python
   - numpy
 zlib:
