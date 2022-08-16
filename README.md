@@ -405,115 +405,115 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_version10.2grpc_cpp1.45numpy1.19python3.7.____cpython</td>
+              <td>win_64_abseil_cpp20210324.2cuda_compiler_version10.2grpc_cpp1.45numpy1.19python3.7.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_version10.2grpc_cpp1.45numpy1.19python3.7.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20210324.2cuda_compiler_version10.2grpc_cpp1.45numpy1.19python3.7.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_version10.2grpc_cpp1.45numpy1.19python3.8.____cpython</td>
+              <td>win_64_abseil_cpp20210324.2cuda_compiler_version10.2grpc_cpp1.45numpy1.19python3.8.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_version10.2grpc_cpp1.45numpy1.19python3.8.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20210324.2cuda_compiler_version10.2grpc_cpp1.45numpy1.19python3.8.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_version10.2grpc_cpp1.45numpy1.19python3.9.____cpython</td>
+              <td>win_64_abseil_cpp20210324.2cuda_compiler_version10.2grpc_cpp1.45numpy1.19python3.9.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_version10.2grpc_cpp1.45numpy1.19python3.9.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20210324.2cuda_compiler_version10.2grpc_cpp1.45numpy1.19python3.9.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_version10.2grpc_cpp1.45numpy1.21python3.10.____cpython</td>
+              <td>win_64_abseil_cpp20210324.2cuda_compiler_version10.2grpc_cpp1.45numpy1.21python3.10.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_version10.2grpc_cpp1.45numpy1.21python3.10.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20210324.2cuda_compiler_version10.2grpc_cpp1.45numpy1.21python3.10.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_version10.2grpc_cpp1.46numpy1.19python3.7.____cpython</td>
+              <td>win_64_abseil_cpp20210324.2cuda_compiler_versionNonegrpc_cpp1.45numpy1.19python3.7.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_version10.2grpc_cpp1.46numpy1.19python3.7.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20210324.2cuda_compiler_versionNonegrpc_cpp1.45numpy1.19python3.7.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_version10.2grpc_cpp1.46numpy1.19python3.8.____cpython</td>
+              <td>win_64_abseil_cpp20210324.2cuda_compiler_versionNonegrpc_cpp1.45numpy1.19python3.8.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_version10.2grpc_cpp1.46numpy1.19python3.8.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20210324.2cuda_compiler_versionNonegrpc_cpp1.45numpy1.19python3.8.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_version10.2grpc_cpp1.46numpy1.19python3.9.____cpython</td>
+              <td>win_64_abseil_cpp20210324.2cuda_compiler_versionNonegrpc_cpp1.45numpy1.19python3.9.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_version10.2grpc_cpp1.46numpy1.19python3.9.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20210324.2cuda_compiler_versionNonegrpc_cpp1.45numpy1.19python3.9.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_version10.2grpc_cpp1.46numpy1.21python3.10.____cpython</td>
+              <td>win_64_abseil_cpp20210324.2cuda_compiler_versionNonegrpc_cpp1.45numpy1.21python3.10.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_version10.2grpc_cpp1.46numpy1.21python3.10.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20210324.2cuda_compiler_versionNonegrpc_cpp1.45numpy1.21python3.10.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_versionNonegrpc_cpp1.45numpy1.19python3.7.____cpython</td>
+              <td>win_64_abseil_cpp20211102.0cuda_compiler_version10.2grpc_cpp1.46numpy1.19python3.7.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_versionNonegrpc_cpp1.45numpy1.19python3.7.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20211102.0cuda_compiler_version10.2grpc_cpp1.46numpy1.19python3.7.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_versionNonegrpc_cpp1.45numpy1.19python3.8.____cpython</td>
+              <td>win_64_abseil_cpp20211102.0cuda_compiler_version10.2grpc_cpp1.46numpy1.19python3.8.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_versionNonegrpc_cpp1.45numpy1.19python3.8.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20211102.0cuda_compiler_version10.2grpc_cpp1.46numpy1.19python3.8.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_versionNonegrpc_cpp1.45numpy1.19python3.9.____cpython</td>
+              <td>win_64_abseil_cpp20211102.0cuda_compiler_version10.2grpc_cpp1.46numpy1.19python3.9.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_versionNonegrpc_cpp1.45numpy1.19python3.9.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20211102.0cuda_compiler_version10.2grpc_cpp1.46numpy1.19python3.9.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_versionNonegrpc_cpp1.45numpy1.21python3.10.____cpython</td>
+              <td>win_64_abseil_cpp20211102.0cuda_compiler_version10.2grpc_cpp1.46numpy1.21python3.10.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_versionNonegrpc_cpp1.45numpy1.21python3.10.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20211102.0cuda_compiler_version10.2grpc_cpp1.46numpy1.21python3.10.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.7.____cpython</td>
+              <td>win_64_abseil_cpp20211102.0cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.7.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.7.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20211102.0cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.7.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.8.____cpython</td>
+              <td>win_64_abseil_cpp20211102.0cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.8.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.8.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20211102.0cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.8.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.9.____cpython</td>
+              <td>win_64_abseil_cpp20211102.0cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.9.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.9.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20211102.0cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.9.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.21python3.10.____cpython</td>
+              <td>win_64_abseil_cpp20211102.0cuda_compiler_versionNonegrpc_cpp1.46numpy1.21python3.10.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.21python3.10.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win_64_abseil_cpp20211102.0cuda_compiler_versionNonegrpc_cpp1.46numpy1.21python3.10.____cpython" alt="variant">
                 </a>
               </td>
             </tr>
