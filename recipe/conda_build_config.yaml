@@ -9,7 +9,3 @@ c_compiler_version:        # [ppc64le]
   - '7'                    # [ppc64le]
 cxx_compiler_version:      # [ppc64le]
   - '7'                    # [ppc64le]
-grpc_cpp:
-  - '1.45'
-  - '1.46'                 # [not win]
-  - '1.46.3'               # [win]
