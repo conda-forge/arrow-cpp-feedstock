@@ -13,7 +13,7 @@ source:
   sha256: a9a033f0a3490289998f458680d19579cf07911717ba65afde6cb80070f7a9b5
 
 build:
-  number: 0
+  number: 1
   # for cuda on win/linux, building with 9.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux64) and cuda_compiler_version not in ("None", "10.2")]
