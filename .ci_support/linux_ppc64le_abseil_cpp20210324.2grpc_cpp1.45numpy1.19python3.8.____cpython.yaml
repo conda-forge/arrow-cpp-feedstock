@@ -2,6 +2,8 @@ abseil_cpp:
 - '20210324.2'
 bzip2:
 - '1'
+c_ares:
+- '1'
 c_compiler:
 - gcc
 c_compiler_version:
@@ -60,12 +62,12 @@ zip_keys:
 - - abseil_cpp
   - grpc_cpp
 - - c_compiler_version
-  - cdt_name
-  - cuda_compiler_version
   - cxx_compiler_version
+  - cuda_compiler_version
+  - cdt_name
   - docker_image
-- - numpy
-  - python
+- - python
+  - numpy
 zlib:
 - '1.2'
 zstd:

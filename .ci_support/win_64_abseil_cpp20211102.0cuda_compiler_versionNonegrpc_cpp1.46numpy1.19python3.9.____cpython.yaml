@@ -2,6 +2,8 @@ abseil_cpp:
 - '20211102.0'
 bzip2:
 - '1'
+c_ares:
+- '1'
 c_compiler:
 - vs2017
 channel_sources:
@@ -51,8 +53,8 @@ thrift_cpp:
 zip_keys:
 - - abseil_cpp
   - grpc_cpp
-- - numpy
-  - python
+- - python
+  - numpy
 zlib:
 - '1.2'
 zstd:
