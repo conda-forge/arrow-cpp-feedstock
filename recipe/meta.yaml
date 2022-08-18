@@ -60,6 +60,8 @@ outputs:
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
         - gnuconfig                              # [osx and arm64]
+        # Add abseil to try to get static linked version aligned across grpc-cpp in build and host
+        - abseil-cpp
         - libprotobuf
         - grpc-cpp
         # aws-sdk-cpp 1.8.* doesn't work with a newer CMake
