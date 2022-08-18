@@ -13,7 +13,7 @@ source:
   sha256: 82d46929f7574715551da21700f100b39f99c3c4d6790f26cac86d869d64e94e
 
 build:
-  number: 0
+  number: 1
   # for cuda on win/linux, building with 9.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux64) and cuda_compiler_version not in ("None", "10.2")]
@@ -60,6 +60,8 @@ outputs:
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
         - gnuconfig                              # [osx and arm64]
+        # Add abseil to try to get static linked version aligned across grpc-cpp in build and host
+        - abseil-cpp
         - libprotobuf
         - grpc-cpp
         # aws-sdk-cpp 1.8.* doesn't work with a newer CMake
@@ -192,6 +194,8 @@ outputs:
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
+        # pyarrow does not require abseil at build time, but see https://github.com/conda-forge/arrow-cpp-feedstock/issues/814
+        - abseil-cpp
         - cython
         - numpy
         - python
