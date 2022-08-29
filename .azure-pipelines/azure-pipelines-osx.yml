@@ -50,7 +50,7 @@ jobs:
       osx_arm64_abseil_cpp20211102.0grpc_cpp1.46numpy1.21python3.10.____cpython:
         CONFIG: osx_arm64_abseil_cpp20211102.0grpc_cpp1.46numpy1.21python3.10.____cpython
         UPLOAD_PACKAGES: 'True'
-    maxParallel: 10
+    maxParallel: 2
   timeoutInMinutes: 360
 
   steps:

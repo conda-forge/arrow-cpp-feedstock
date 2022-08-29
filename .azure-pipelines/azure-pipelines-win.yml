@@ -56,7 +56,7 @@ jobs:
       win_64_abseil_cpp20211102.0cuda_compiler_versionNonegrpc_cpp1.46numpy1.21python3.10.____cpython:
         CONFIG: win_64_abseil_cpp20211102.0cuda_compiler_versionNonegrpc_cpp1.46numpy1.21python3.10.____cpython
         UPLOAD_PACKAGES: 'True'
-    maxParallel: 11
+    maxParallel: 2
   timeoutInMinutes: 360
   variables:
     CONDA_BLD_PATH: D:\\bld\\
