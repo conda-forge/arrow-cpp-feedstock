@@ -31,7 +31,7 @@ google_cloud_cpp:
 grpc_cpp:
 - '1.45'
 libprotobuf:
-- '3.20'
+- '3.21'
 lz4_c:
 - 1.9.3
 macos_machine:
@@ -41,7 +41,7 @@ numpy:
 openssl:
 - 1.1.1
 orc:
-- 1.7.5
+- 1.7.6
 pin_run_as_build:
   bzip2:
     max_pin: x
