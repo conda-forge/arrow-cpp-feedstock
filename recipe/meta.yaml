@@ -94,6 +94,11 @@ outputs:
         - re2
         - snappy
         - thrift-cpp
+        # arrow 7.0.1 pins xsimd to commit of xsimd 8.0.1
+        # https://github.com/apache/arrow/blob/apache-arrow-7.0.1/cpp/thirdparty/versions.txt#L94
+        # https://github.com/xtensor-stack/xsimd/commit/aeec9c872c8b475dedd7781336710f2dd2666cb2
+        # but 8.0.1 wasn't built for ppc in conda-forge; use 8.0.5
+        - xsimd 8.0.5
         - zlib
         - zstd
       run:
