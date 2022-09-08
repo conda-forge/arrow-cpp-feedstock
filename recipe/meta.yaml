@@ -96,6 +96,9 @@ outputs:
         - re2
         - snappy
         - thrift-cpp
+        # 8.0.1 pins xsimd to a specific commit; use version required by 9.0.0, see
+        # https://github.com/apache/arrow/blob/apache-arrow-9.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L2245
+        - xsimd 8.1.0
         - zlib
         - zstd
       run:
