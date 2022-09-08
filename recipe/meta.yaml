@@ -15,6 +15,9 @@ source:
     - patches/0001-ARROW-15551-C-FlightRPC-Update-gRPC-TLS-options-dete.patch
     # backport https://github.com/apache/arrow/pull/11916/commits/8c4f77a9f35eb97a47a09a9555c27c9ca350bd5e
     - patches/0002-Add-explicit-conversion.patch
+    # minimal backport of the following commit for compatibility with VS2019
+    # https://github.com/apache/arrow/commit/897c186f475f3dd82c1ab47e5cfb87cb0fed8440
+    - patches/0003-ARROW-17433-CI-C-Use-Visual-Studio-2019-on-AppVeyor-.patch
 
 build:
   number: 0
