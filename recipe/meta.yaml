@@ -96,7 +96,9 @@ outputs:
         - re2
         - snappy
         - thrift-cpp
-        - xsimd
+        # https://github.com/apache/arrow/blob/apache-arrow-9.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L2245
+        # currently pins to exact xsimd version
+        - xsimd 8.1.0
         - zlib
         - zstd
       run:
