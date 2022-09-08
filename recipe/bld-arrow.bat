@@ -16,6 +16,7 @@ if "%cuda_compiler_version%"=="None" (
 
 cmake -G "Ninja" ^
       -DBUILD_SHARED_LIBS=ON ^
+      -DCMAKE_CXX_STANDARD=17 ^
       -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
       -DARROW_DEPENDENCY_SOURCE=SYSTEM ^
       -DARROW_PACKAGE_PREFIX="%LIBRARY_PREFIX%" ^
