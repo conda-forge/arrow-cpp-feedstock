@@ -11,6 +11,10 @@ package:
 source:
   url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
   sha256: a9a033f0a3490289998f458680d19579cf07911717ba65afde6cb80070f7a9b5
+  patches:
+    # backport of the following commit for compatibility with VS2019
+    # https://github.com/apache/arrow/commit/897c186f475f3dd82c1ab47e5cfb87cb0fed8440
+    - patches/0001-ARROW-17433-CI-C-Use-Visual-Studio-2019-on-AppVeyor-.patch
 
 build:
   number: 2
