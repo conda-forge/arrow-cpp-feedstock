@@ -89,8 +89,8 @@ outputs:
         - grpc-cpp
         - google-cloud-cpp
         - libprotobuf
-        - clangdev 10  # [not (osx and arm64)]
-        - llvmdev 10   # [not (osx and arm64)]
+        - clangdev 14  # [not (osx and arm64)]
+        - llvmdev 14   # [not (osx and arm64)]
         - libutf8proc
         - lz4-c
         - numpy
