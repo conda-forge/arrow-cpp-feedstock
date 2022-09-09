@@ -1,0 +1,44 @@
+From 79c2a29b712f3b3a4b57fe8ca42402dfdfd8d4a3 Mon Sep 17 00:00:00 2001
+From: Sutou Kouhei <kou@clear-code.com>
+Date: Thu, 25 Aug 2022 15:08:39 +0900
+Subject: [PATCH 2/2] ARROW-17433: [CI][C++] Use Visual Studio 2019 on AppVeyor
+ (#13903)
+
+We can use /external:I for Boost to suppress warnings from Boost
+with Visual Studio 2019 or later.
+
+Lead-authored-by: Sutou Kouhei <kou@clear-code.com>
+Co-authored-by: Antoine Pitrou <antoine@python.org>
+Signed-off-by: Sutou Kouhei <kou@clear-code.com>
+
+Rebased-By: H. Vetinari <h.vetinari@gmx.com>
+---
+ cpp/src/gandiva/precompiled/CMakeLists.txt | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/cpp/src/gandiva/precompiled/CMakeLists.txt b/cpp/src/gandiva/precompiled/CMakeLists.txt
+index 650b80f6b..fefabf883 100644
+--- a/cpp/src/gandiva/precompiled/CMakeLists.txt
++++ b/cpp/src/gandiva/precompiled/CMakeLists.txt
+@@ -31,10 +31,14 @@ set(PRECOMPILED_SRCS
+     ../../arrow/util/basic_decimal.cc)
+ 
+ if(MSVC)
+-  # clang pretends to be a particular version of MSVC. 191[0-9] is
+-  # Visual Studio 2017, and the standard library uses C++14 features,
+-  # so we have to use that -std version to get the IR compilation to work
+-  if(MSVC_VERSION MATCHES "^191[0-9]$")
++  # clang pretends to be a particular version of MSVC. Thestandard
++  # library uses C++14 features, so we have to use that -std version
++  # to get the IR compilation to work.
++  # See https://cmake.org/cmake/help/latest/variable/MSVC_VERSION.html
++  # for MSVC_VERSION and Visual Studio version.
++  if(MSVC_VERSION LESS 1930)
++    set(FMS_COMPATIBILITY 19.20)
++  elseif(MSVC_VERSION LESS 1920)
+     set(FMS_COMPATIBILITY 19.10)
+   else()
+     message(FATAL_ERROR "Unsupported MSVC_VERSION=${MSVC_VERSION}")
+-- 
+2.37.0.windows.1
+

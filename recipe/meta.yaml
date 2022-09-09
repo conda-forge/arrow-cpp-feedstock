@@ -12,7 +12,10 @@ source:
   url: http://archive.apache.org/dist/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
   sha256: 958f64692804224bee322705505dd5d8c0ef75947a7a3d026efb6affd55a6df0
   patches:
-    - 0001-ARROW-15551-C-FlightRPC-Update-gRPC-TLS-options-dete.patch
+    - patches/0001-ARROW-15551-C-FlightRPC-Update-gRPC-TLS-options-dete.patch
+    # minimal backport of the following commit for compatibility with VS2019
+    # https://github.com/apache/arrow/commit/897c186f475f3dd82c1ab47e5cfb87cb0fed8440
+    - patches/0002-ARROW-17433-CI-C-Use-Visual-Studio-2019-on-AppVeyor-.patch
 
 build:
   number: 0
