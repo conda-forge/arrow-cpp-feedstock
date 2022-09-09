@@ -11,6 +11,7 @@ bot:
   - 6.0.x
   - 7.0.x
 build_platform:
+  linux_ppc64le: linux_64
   osx_arm64: osx_64
 conda_forge_output_validation: true
 github:
