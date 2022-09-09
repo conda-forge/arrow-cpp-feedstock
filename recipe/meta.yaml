@@ -12,8 +12,9 @@ source:
   url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
   sha256: e8f49b149a15ecef4e40fcfab1b87c113c6b1ee186005c169e5cdf95d31a99de
   patches:
-    - 0001-ARROW-15551-C-FlightRPC-Update-gRPC-TLS-options-dete.patch
-    - 8c4f77a9f35eb97a47a09a9555c27c9ca350bd5e.patch
+    - patches/0001-ARROW-15551-C-FlightRPC-Update-gRPC-TLS-options-dete.patch
+    # backport https://github.com/apache/arrow/pull/11916/commits/8c4f77a9f35eb97a47a09a9555c27c9ca350bd5e
+    - patches/0002-Add-explicit-conversion.patch
 
 build:
   number: 9
