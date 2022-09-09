@@ -9,9 +9,3 @@ c_compiler_version:    # [ppc64le]
 - '7'                  # [ppc64le]
 cxx_compiler_version:  # [ppc64le]
 - '7'                  # [ppc64le]
-
-# transition period; remove after migrations for
-# abseil/grpc/protobuf have progressed/completed
-grpc_cpp:
-  - "1.46"
-  - "1.47"
