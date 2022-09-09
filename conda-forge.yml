@@ -1,7 +1,4 @@
 azure:
-  # see conda-forge/arrow-cpp-feedstock#825;
-  # manually distributed to ensure we have:
-  # max_parallel(linux) >= #{jobs for aarch/ppc}
   max_parallel: 31
 bot:
   abi_migration_branches:
