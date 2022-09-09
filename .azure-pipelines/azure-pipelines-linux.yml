@@ -136,7 +136,7 @@ jobs:
         CONFIG: linux_ppc64le_abseil_cpp20211102.0grpc_cpp1.46numpy1.21python3.10.____cpython
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-    maxParallel: 26
+    maxParallel: 16
   timeoutInMinutes: 360
 
   steps:
