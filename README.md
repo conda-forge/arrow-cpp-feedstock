@@ -649,6 +649,7 @@ Feedstock Maintainers
 =====================
 
 * [@cpcloud](https://github.com/cpcloud/)
+* [@h-vetinari](https://github.com/h-vetinari/)
 * [@jakirkham](https://github.com/jakirkham/)
 * [@jreback](https://github.com/jreback/)
 * [@kou](https://github.com/kou/)
