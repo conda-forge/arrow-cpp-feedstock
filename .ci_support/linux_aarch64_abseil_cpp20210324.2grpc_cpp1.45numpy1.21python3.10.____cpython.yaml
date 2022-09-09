@@ -43,7 +43,7 @@ numpy:
 openssl:
 - 1.1.1
 orc:
-- 1.7.5
+- 1.7.6
 pin_run_as_build:
   bzip2:
     max_pin: x
@@ -55,7 +55,7 @@ pin_run_as_build:
 python:
 - 3.10.* *_cpython
 re2:
-- 2022.04.01
+- 2022.06.01
 snappy:
 - '1'
 target_platform:

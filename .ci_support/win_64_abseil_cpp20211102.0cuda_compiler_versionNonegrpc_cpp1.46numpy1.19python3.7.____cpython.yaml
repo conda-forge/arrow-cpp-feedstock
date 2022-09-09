@@ -5,7 +5,7 @@ bzip2:
 c_ares:
 - '1'
 c_compiler:
-- vs2017
+- vs2019
 channel_sources:
 - conda-forge
 channel_targets:
@@ -15,7 +15,7 @@ cuda_compiler:
 cuda_compiler_version:
 - None
 cxx_compiler:
-- vs2017
+- vs2019
 gflags:
 - '2.2'
 glog:
@@ -43,7 +43,7 @@ pin_run_as_build:
 python:
 - 3.7.* *_cpython
 re2:
-- 2022.04.01
+- 2022.06.01
 snappy:
 - '1'
 target_platform:

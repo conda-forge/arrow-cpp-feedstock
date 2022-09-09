@@ -1,3 +1,6 @@
+azure:
+  # see conda-forge/arrow-cpp-feedstock#825
+  max_parallel: 31
 bot:
   abi_migration_branches:
   - 3.0.x

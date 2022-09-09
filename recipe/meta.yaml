@@ -1,4 +1,4 @@
-{% set version = "7.0.0" %}
+{% set version = "7.0.1" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "3.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -10,13 +10,17 @@ package:
 
 source:
   url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
-  sha256: e8f49b149a15ecef4e40fcfab1b87c113c6b1ee186005c169e5cdf95d31a99de
+  sha256: 6dc79ded55ff527e24bc14037a860104cbaba8138523a19fd7742f4b7ad80a49
   patches:
-    - 0001-ARROW-15551-C-FlightRPC-Update-gRPC-TLS-options-dete.patch
-    - 8c4f77a9f35eb97a47a09a9555c27c9ca350bd5e.patch
+    - patches/0001-ARROW-15551-C-FlightRPC-Update-gRPC-TLS-options-dete.patch
+    # backport https://github.com/apache/arrow/pull/11916/commits/8c4f77a9f35eb97a47a09a9555c27c9ca350bd5e
+    - patches/0002-Add-explicit-conversion.patch
+    # minimal backport of the following commit for compatibility with VS2019
+    # https://github.com/apache/arrow/commit/897c186f475f3dd82c1ab47e5cfb87cb0fed8440
+    - patches/0003-ARROW-17433-CI-C-Use-Visual-Studio-2019-on-AppVeyor-.patch
 
 build:
-  number: 9
+  number: 0
   # for cuda on win/linux, building with 9.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux) and cuda_compiler_version not in ("None", "10.2")]
@@ -83,8 +87,8 @@ outputs:
         - grpc-cpp
         - google-cloud-cpp
         - libprotobuf
-        - clangdev 10  # [not (osx and arm64)]
-        - llvmdev 10   # [not (osx and arm64)]
+        - clangdev 13  # [not (osx and arm64)]
+        - llvmdev 13   # [not (osx and arm64)]
         - libutf8proc
         - lz4-c
         - numpy
@@ -94,6 +98,11 @@ outputs:
         - re2
         - snappy
         - thrift-cpp
+        # arrow 7.0.1 pins xsimd to commit of xsimd 8.0.1
+        # https://github.com/apache/arrow/blob/apache-arrow-7.0.1/cpp/thirdparty/versions.txt#L94
+        # https://github.com/xtensor-stack/xsimd/commit/aeec9c872c8b475dedd7781336710f2dd2666cb2
+        # but 8.0.1 wasn't built for ppc in conda-forge; use 8.0.5
+        - xsimd 8.0.5
         - zlib
         - zstd
       run:
