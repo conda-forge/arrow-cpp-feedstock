@@ -8,22 +8,6 @@ jobs:
     vmImage: ubuntu-latest
   strategy:
     matrix:
-      linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10grpc_cpp1.46numpy1.19python3.7.____cpython:
-        CONFIG: linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10grpc_cpp1.46numpy1.19python3.7.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10grpc_cpp1.46numpy1.19python3.8.____cpython:
-        CONFIG: linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10grpc_cpp1.46numpy1.19python3.8.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10grpc_cpp1.46numpy1.19python3.9.____cpython:
-        CONFIG: linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10grpc_cpp1.46numpy1.19python3.9.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10grpc_cpp1.46numpy1.21python3.10.____cpython:
-        CONFIG: linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10grpc_cpp1.46numpy1.21python3.10.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
       linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10grpc_cpp1.47numpy1.19python3.7.____cpython:
         CONFIG: linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10grpc_cpp1.47numpy1.19python3.7.____cpython
         UPLOAD_PACKAGES: 'True'
@@ -40,22 +24,6 @@ jobs:
         CONFIG: linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10grpc_cpp1.47numpy1.21python3.10.____cpython
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7grpc_cpp1.46numpy1.19python3.7.____cpython:
-        CONFIG: linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7grpc_cpp1.46numpy1.19python3.7.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7grpc_cpp1.46numpy1.19python3.8.____cpython:
-        CONFIG: linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7grpc_cpp1.46numpy1.19python3.8.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7grpc_cpp1.46numpy1.19python3.9.____cpython:
-        CONFIG: linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7grpc_cpp1.46numpy1.19python3.9.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7grpc_cpp1.46numpy1.21python3.10.____cpython:
-        CONFIG: linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7grpc_cpp1.46numpy1.21python3.10.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
       linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7grpc_cpp1.47numpy1.19python3.7.____cpython:
         CONFIG: linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7grpc_cpp1.47numpy1.19python3.7.____cpython
         UPLOAD_PACKAGES: 'True'
@@ -72,22 +40,6 @@ jobs:
         CONFIG: linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7grpc_cpp1.47numpy1.21python3.10.____cpython
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      linux_aarch64_cuda_compiler_version11.2grpc_cpp1.46numpy1.19python3.7.____cpython:
-        CONFIG: linux_aarch64_cuda_compiler_version11.2grpc_cpp1.46numpy1.19python3.7.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda:11.2
-      linux_aarch64_cuda_compiler_version11.2grpc_cpp1.46numpy1.19python3.8.____cpython:
-        CONFIG: linux_aarch64_cuda_compiler_version11.2grpc_cpp1.46numpy1.19python3.8.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda:11.2
-      linux_aarch64_cuda_compiler_version11.2grpc_cpp1.46numpy1.19python3.9.____cpython:
-        CONFIG: linux_aarch64_cuda_compiler_version11.2grpc_cpp1.46numpy1.19python3.9.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda:11.2
-      linux_aarch64_cuda_compiler_version11.2grpc_cpp1.46numpy1.21python3.10.____cpython:
-        CONFIG: linux_aarch64_cuda_compiler_version11.2grpc_cpp1.46numpy1.21python3.10.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda:11.2
       linux_aarch64_cuda_compiler_version11.2grpc_cpp1.47numpy1.19python3.7.____cpython:
         CONFIG: linux_aarch64_cuda_compiler_version11.2grpc_cpp1.47numpy1.19python3.7.____cpython
         UPLOAD_PACKAGES: 'True'
@@ -104,22 +56,6 @@ jobs:
         CONFIG: linux_aarch64_cuda_compiler_version11.2grpc_cpp1.47numpy1.21python3.10.____cpython
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda:11.2
-      linux_aarch64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.7.____cpython:
-        CONFIG: linux_aarch64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.7.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_aarch64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.8.____cpython:
-        CONFIG: linux_aarch64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.8.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_aarch64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.9.____cpython:
-        CONFIG: linux_aarch64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.19python3.9.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_aarch64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.21python3.10.____cpython:
-        CONFIG: linux_aarch64_cuda_compiler_versionNonegrpc_cpp1.46numpy1.21python3.10.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
       linux_aarch64_cuda_compiler_versionNonegrpc_cpp1.47numpy1.19python3.7.____cpython:
         CONFIG: linux_aarch64_cuda_compiler_versionNonegrpc_cpp1.47numpy1.19python3.7.____cpython
         UPLOAD_PACKAGES: 'True'
@@ -136,39 +72,23 @@ jobs:
         CONFIG: linux_aarch64_cuda_compiler_versionNonegrpc_cpp1.47numpy1.21python3.10.____cpython
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.46numpy1.19python3.7.____cpython:
-        CONFIG: linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.46numpy1.19python3.7.____cpython
+      linux_ppc64le_grpc_cpp1.47numpy1.19python3.7.____cpython:
+        CONFIG: linux_ppc64le_grpc_cpp1.47numpy1.19python3.7.____cpython
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.46numpy1.19python3.8.____cpython:
-        CONFIG: linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.46numpy1.19python3.8.____cpython
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
+      linux_ppc64le_grpc_cpp1.47numpy1.19python3.8.____cpython:
+        CONFIG: linux_ppc64le_grpc_cpp1.47numpy1.19python3.8.____cpython
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.46numpy1.19python3.9.____cpython:
-        CONFIG: linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.46numpy1.19python3.9.____cpython
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
+      linux_ppc64le_grpc_cpp1.47numpy1.19python3.9.____cpython:
+        CONFIG: linux_ppc64le_grpc_cpp1.47numpy1.19python3.9.____cpython
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.46numpy1.21python3.10.____cpython:
-        CONFIG: linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.46numpy1.21python3.10.____cpython
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
+      linux_ppc64le_grpc_cpp1.47numpy1.21python3.10.____cpython:
+        CONFIG: linux_ppc64le_grpc_cpp1.47numpy1.21python3.10.____cpython
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.47numpy1.19python3.7.____cpython:
-        CONFIG: linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.47numpy1.19python3.7.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.47numpy1.19python3.8.____cpython:
-        CONFIG: linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.47numpy1.19python3.8.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.47numpy1.19python3.9.____cpython:
-        CONFIG: linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.47numpy1.19python3.9.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.47numpy1.21python3.10.____cpython:
-        CONFIG: linux_ppc64le_c_compiler_version7cuda_compiler_versionNonecxx_compiler_version7grpc_cpp1.47numpy1.21python3.10.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-    maxParallel: 24
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
+    maxParallel: 11
   timeoutInMinutes: 360
 
   steps:

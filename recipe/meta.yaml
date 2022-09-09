@@ -17,7 +17,7 @@ source:
     - patches/0001-ARROW-17433-CI-C-Use-Visual-Studio-2019-on-AppVeyor-.patch
 
 build:
-  number: 2
+  number: 3
   # for cuda on win/linux, building with 9.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux64) and cuda_compiler_version not in ("None", "10.2")]
@@ -27,6 +27,8 @@ build:
   # It may be possible to move these to cross-compilation, but this will take additional work.
   # Hence this is skipped for now until this can be addressed.
   skip: true  # [linux and ppc64le and cuda_compiler_version != "None"]
+  # shouldn't be necessary after 1.47 migration, but here we are
+  skip: true  # [grpc_cpp == "1.46"]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 
