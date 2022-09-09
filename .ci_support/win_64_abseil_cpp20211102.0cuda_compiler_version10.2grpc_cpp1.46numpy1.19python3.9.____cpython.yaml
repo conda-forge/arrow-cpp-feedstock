@@ -5,7 +5,7 @@ bzip2:
 c_ares:
 - '1'
 c_compiler:
-- vs2017
+- vs2019
 channel_sources:
 - conda-forge
 channel_targets:
@@ -15,13 +15,13 @@ cuda_compiler:
 cuda_compiler_version:
 - '10.2'
 cxx_compiler:
-- vs2017
+- vs2019
 gflags:
 - '2.2'
 glog:
 - '0.6'
 google_cloud_cpp:
-- '1.40'
+- '2.1'
 grpc_cpp:
 - '1.46'
 libprotobuf:
