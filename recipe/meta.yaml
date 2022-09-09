@@ -25,6 +25,8 @@ build:
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux) and cuda_compiler_version not in ("None", "10.2")]
   skip: true  # [osx and cuda_compiler_version != "None"]
+  # shouldn't be necessary after 1.47 migration, but here we are
+  skip: true  # [grpc_cpp == "1.46"]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 
