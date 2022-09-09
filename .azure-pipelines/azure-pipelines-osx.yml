@@ -50,7 +50,7 @@ jobs:
       osx_arm64_grpc_cpp1.46numpy1.21python3.10.____cpython:
         CONFIG: osx_arm64_grpc_cpp1.46numpy1.21python3.10.____cpython
         UPLOAD_PACKAGES: 'True'
-    maxParallel: 11
+    maxParallel: 7
   timeoutInMinutes: 360
 
   steps:
