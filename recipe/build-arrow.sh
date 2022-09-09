@@ -43,12 +43,6 @@ else
     EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_GANDIVA=ON"
 fi
 
-if [[ "${target_platform}" == osx-* ]] && [[ "${abseil_cpp}" == "20210324.2" ]]; then
-   EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DCMAKE_CXX_STANDARD=14"
-else
-   EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DCMAKE_CXX_STANDARD=17"
-fi
-
 # Limit number of threads used to avoid hardware oversubscription
 if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "linux-ppc64le" ]]; then
      export CMAKE_BUILD_PARALLEL_LEVEL=3
@@ -86,6 +80,7 @@ cmake \
     -DARROW_WITH_ZLIB=ON \
     -DARROW_WITH_ZSTD=ON \
     -DCMAKE_BUILD_TYPE=release \
+    -DCMAKE_CXX_STANDARD=17 \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
     -DLLVM_TOOLS_BINARY_DIR=$PREFIX/bin \
