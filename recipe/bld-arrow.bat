@@ -36,7 +36,7 @@ cmake -G "Ninja" ^
       -DARROW_GCS:BOOL=ON ^
       -DARROW_PARQUET:BOOL=ON ^
       -DARROW_GANDIVA:BOOL=ON ^
-      -DARROW_ORC:BOOL=ON ^
+      -DARROW_ORC:BOOL=OFF ^
       -DARROW_S3:BOOL=ON ^
       -DBUILD_SHARED_LIBS=ON ^
       -DCMAKE_BUILD_TYPE=release ^
