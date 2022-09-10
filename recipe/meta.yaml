@@ -73,6 +73,9 @@ outputs:
       host:
         # https://issues.apache.org/jira/browse/ARROW-15141
         - aws-sdk-cpp 1.8.186
+        # abseil is only here to help conda pick the right constraints for pyarrow, see
+        # https://github.com/conda-forge/arrow-cpp-feedstock/pull/815#issuecomment-1216713245
+        - libabseil
         - boost-cpp >=1.70
         - brotli
         - bzip2
