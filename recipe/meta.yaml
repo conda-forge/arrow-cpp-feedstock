@@ -64,8 +64,6 @@ outputs:
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
         - gnuconfig                              # [osx and arm64]
-        # Add abseil to try to get static linked version aligned across grpc-cpp in build and host
-        - libabseil
         - libprotobuf
         - grpc-cpp
         # aws-sdk-cpp 1.8.* doesn't work with a newer CMake
@@ -79,6 +77,8 @@ outputs:
       host:
         # https://issues.apache.org/jira/browse/ARROW-15141
         - aws-sdk-cpp 1.8.186
+        # abseil is only here to help conda pick the right constraints for pyarrow, see
+        # https://github.com/conda-forge/arrow-cpp-feedstock/pull/815#issuecomment-1216713245
         - libabseil
         - boost-cpp >=1.70
         - brotli
@@ -199,8 +199,6 @@ outputs:
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
-        # pyarrow does not require abseil at build time, but see https://github.com/conda-forge/arrow-cpp-feedstock/issues/814
-        - libabseil
         - cython
         - numpy
         - python
