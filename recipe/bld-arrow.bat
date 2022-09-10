@@ -15,13 +15,8 @@ if "%cuda_compiler_version%"=="None" (
 )
 
 cmake -G "Ninja" ^
-      -DBUILD_SHARED_LIBS=ON ^
-      -DCMAKE_CXX_STANDARD=17 ^
-      -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
       -DARROW_DEPENDENCY_SOURCE=SYSTEM ^
       -DARROW_PACKAGE_PREFIX="%LIBRARY_PREFIX%" ^
-      -DLLVM_TOOLS_BINARY_DIR="%LIBRARY_BIN%" ^
-      -DPython3_EXECUTABLE="%PYTHON%" ^
       -DARROW_WITH_BZ2:BOOL=ON ^
       -DARROW_WITH_ZLIB:BOOL=ON ^
       -DARROW_WITH_ZSTD:BOOL=ON ^
@@ -32,7 +27,6 @@ cmake -G "Ninja" ^
       -DARROW_BUILD_TESTS:BOOL=OFF ^
       -DARROW_BUILD_UTILITIES:BOOL=OFF ^
       -DARROW_BUILD_STATIC:BOOL=OFF ^
-      -DCMAKE_BUILD_TYPE=release ^
       -DARROW_SSE42:BOOL=OFF ^
       -DARROW_PYTHON:BOOL=ON ^
       -DARROW_MIMALLOC:BOOL=ON ^
@@ -44,8 +38,14 @@ cmake -G "Ninja" ^
       -DARROW_GANDIVA:BOOL=ON ^
       -DARROW_ORC:BOOL=ON ^
       -DARROW_S3:BOOL=ON ^
-      -DBoost_NO_BOOST_CMAKE=ON ^
+      -DBUILD_SHARED_LIBS=ON ^
+      -DCMAKE_BUILD_TYPE=release ^
+      -DCMAKE_CXX_STANDARD=17 ^
+      -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
       -DCMAKE_UNITY_BUILD=ON ^
+      -DBoost_NO_BOOST_CMAKE=ON ^
+      -DLLVM_TOOLS_BINARY_DIR="%LIBRARY_BIN%" ^
+      -DPython3_EXECUTABLE="%PYTHON%" ^
       %EXTRA_CMAKE_ARGS% ^
       ..
 if errorlevel 1 exit 1
