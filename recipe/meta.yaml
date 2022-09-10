@@ -96,6 +96,8 @@ outputs:
         - libutf8proc
         - lz4-c
         - numpy
+        # gandiva depends on openssl
+        - openssl      # [not (osx and arm64)]
         - orc  # [unix]
         - python
         - rapidjson
