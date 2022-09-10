@@ -48,13 +48,12 @@ if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "
      export CMAKE_BUILD_PARALLEL_LEVEL=3
 fi
 
-cmake \
+cmake -GNinja \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
     -DARROW_BUILD_STATIC=OFF \
     -DARROW_BUILD_TESTS=OFF \
     -DARROW_BUILD_UTILITIES=OFF \
-    -DBUILD_SHARED_LIBS=ON \
     -DARROW_DATASET=ON \
     -DARROW_SUBSTRAIT=ON \
     -DARROW_DEPENDENCY_SOURCE=SYSTEM \
@@ -79,6 +78,7 @@ cmake \
     -DARROW_WITH_SNAPPY=ON \
     -DARROW_WITH_ZLIB=ON \
     -DARROW_WITH_ZSTD=ON \
+    -DBUILD_SHARED_LIBS=ON \
     -DCMAKE_BUILD_TYPE=release \
     -DCMAKE_CXX_STANDARD=17 \
     -DCMAKE_INSTALL_LIBDIR=lib \
@@ -86,7 +86,6 @@ cmake \
     -DLLVM_TOOLS_BINARY_DIR=$PREFIX/bin \
     -DPython3_EXECUTABLE=${PYTHON} \
     -DProtobuf_PROTOC_EXECUTABLE=$BUILD_PREFIX/bin/protoc \
-    -GNinja \
     ${EXTRA_CMAKE_ARGS} \
     ..
 
