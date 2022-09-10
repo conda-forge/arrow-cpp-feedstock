@@ -27,6 +27,8 @@ build:
   # It may be possible to move these to cross-compilation, but this will take additional work.
   # Hence this is skipped for now until this can be addressed.
   skip: true  # [linux and ppc64le and cuda_compiler_version != "None"]
+  # shouldn't be necessary after 1.47 migration, but here we are
+  skip: true  # [grpc_cpp == "1.46"]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 

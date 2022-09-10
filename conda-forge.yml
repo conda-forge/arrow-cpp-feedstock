@@ -1,8 +1,7 @@
 azure:
-  # see conda-forge/arrow-cpp-feedstock#825;
-  # manually distributed to ensure we have:
-  # max_parallel(linux) >= #{jobs for aarch/ppc}
-  max_parallel: 31
+  # see conda-forge/arrow-cpp-feedstock#825; ensure at least:
+  # max_parallel(linux) >= #{emulated linux builds}
+  max_parallel: 20
 bot:
   abi_migration_branches:
   - 3.0.x
@@ -11,6 +10,7 @@ bot:
   - 6.0.x
   - 7.0.x
 build_platform:
+  linux_ppc64le: linux_64
   osx_arm64: osx_64
 conda_forge_output_validation: true
 github:
