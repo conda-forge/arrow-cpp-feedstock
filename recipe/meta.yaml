@@ -20,11 +20,13 @@ source:
     - patches/0003-ARROW-17433-CI-C-Use-Visual-Studio-2019-on-AppVeyor-.patch
 
 build:
-  number: 1
+  number: 2
   # for cuda on win/linux, building with 9.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux) and cuda_compiler_version not in ("None", "10.2")]
   skip: true  # [osx and cuda_compiler_version != "None"]
+  # shouldn't be necessary after 1.47 migration, but here we are
+  skip: true  # [grpc_cpp == "1.46"]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 
@@ -62,8 +64,6 @@ outputs:
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
         - gnuconfig                              # [osx and arm64]
-        # Add abseil to try to get static linked version aligned across grpc-cpp in build and host
-        - libabseil
         - libprotobuf
         - grpc-cpp
         # aws-sdk-cpp 1.8.* doesn't work with a newer CMake
@@ -77,6 +77,8 @@ outputs:
       host:
         # https://issues.apache.org/jira/browse/ARROW-15141
         - aws-sdk-cpp 1.8.186
+        # abseil is only here to help conda pick the right constraints for pyarrow, see
+        # https://github.com/conda-forge/arrow-cpp-feedstock/pull/815#issuecomment-1216713245
         - libabseil
         - boost-cpp >=1.70
         - brotli
@@ -197,8 +199,6 @@ outputs:
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
-        # pyarrow does not require abseil at build time, but see https://github.com/conda-forge/arrow-cpp-feedstock/issues/814
-        - libabseil
         - cython
         - numpy
         - python
