@@ -16,9 +16,11 @@ source:
     # minimal backport of the following commit for compatibility with VS2019
     # https://github.com/apache/arrow/commit/897c186f475f3dd82c1ab47e5cfb87cb0fed8440
     - patches/0002-ARROW-17433-CI-C-Use-Visual-Studio-2019-on-AppVeyor-.patch
+    # backport apache/arrow#11806 for compatibility with C++17
+    - patches/0003-ARROW-14800-C-Disambiguate-std-launder-on-MSVC-with-.patch
 
 build:
-  number: 0
+  number: 1
   # for cuda on win/linux, building with 9.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux) and cuda_compiler_version not in ("None", "10.2")]
@@ -73,6 +75,9 @@ outputs:
       host:
         # https://issues.apache.org/jira/browse/ARROW-15141
         - aws-sdk-cpp 1.8.186
+        # abseil is only here to help conda pick the right constraints for pyarrow, see
+        # https://github.com/conda-forge/arrow-cpp-feedstock/pull/815#issuecomment-1216713245
+        - libabseil
         - boost-cpp >=1.70
         - brotli
         - bzip2

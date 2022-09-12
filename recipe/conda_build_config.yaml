@@ -1,4 +1,14 @@
+MACOSX_SDK_VERSION:        # [osx and x86_64]
+  - "10.12"                # [osx and x86_64]
+MACOSX_DEPLOYMENT_TARGET:  # [osx and x86_64]
+  - "10.12"                # [osx and x86_64]
 c_compiler_version:    # [ppc64le]
 - '7'                  # [ppc64le]
 cxx_compiler_version:  # [ppc64le]
 - '7'                  # [ppc64le]
+
+# transition period; remove after migrations for
+# abseil/grpc/protobuf have progressed/completed
+grpc_cpp:
+  - "1.46"
+  - "1.47"
