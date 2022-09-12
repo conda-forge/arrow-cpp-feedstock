@@ -24,10 +24,6 @@ build:
   skip: true  # [(win or linux64) and cuda_compiler_version not in ("None", "10.2")]
   skip: true  # [linux and (aarch64 or ppc64le) and cuda_compiler_version not in ("None", "11.2")]
   skip: true  # [osx and cuda_compiler_version != "None"]
-  # CUDA builds on ppc64le currently run out of time on Travis CI.
-  # It may be possible to move these to cross-compilation, but this will take additional work.
-  # Hence this is skipped for now until this can be addressed.
-  skip: true  # [linux and ppc64le and cuda_compiler_version != "None"]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 
