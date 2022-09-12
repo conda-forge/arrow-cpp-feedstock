@@ -16,6 +16,8 @@ source:
     # minimal backport of the following commit for compatibility with VS2019
     # https://github.com/apache/arrow/commit/897c186f475f3dd82c1ab47e5cfb87cb0fed8440
     - patches/0002-ARROW-17433-CI-C-Use-Visual-Studio-2019-on-AppVeyor-.patch
+    # backport apache/arrow#11806 for compatibility with C++17
+    - patches/0003-ARROW-14800-C-Disambiguate-std-launder-on-MSVC-with-.patch
 
 build:
   number: 1
