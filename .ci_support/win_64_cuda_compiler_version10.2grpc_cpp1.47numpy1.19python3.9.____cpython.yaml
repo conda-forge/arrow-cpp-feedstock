@@ -23,7 +23,7 @@ grpc_cpp:
 libabseil:
 - '20220623.0'
 libprotobuf:
-- '3.20'
+- '3.21'
 lz4_c:
 - 1.9.3
 numpy:

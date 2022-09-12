@@ -20,11 +20,13 @@ source:
     - patches/0003-ARROW-14800-C-Disambiguate-std-launder-on-MSVC-with-.patch
 
 build:
-  number: 1
+  number: 2
   # for cuda on win/linux, building with 9.2 is enough to be compatible with all later versions,
   # since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux) and cuda_compiler_version not in ("None", "10.2")]
   skip: true  # [osx and cuda_compiler_version != "None"]
+  # shouldn't be necessary after 1.47 migration, but here we are
+  skip: true  # [grpc_cpp == "1.46"]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 
