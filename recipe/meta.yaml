@@ -27,10 +27,6 @@ build:
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
-  # CUDA builds on ppc64le currently run out of time on Travis CI.
-  # It may be possible to move these to cross-compilation, but this will take additional work.
-  # Hence this is skipped for now until this can be addressed.
-  skip: true  # [linux and ppc64le and cuda_compiler_version != "None"]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 
