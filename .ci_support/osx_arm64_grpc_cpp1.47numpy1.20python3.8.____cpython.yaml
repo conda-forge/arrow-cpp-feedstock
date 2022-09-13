@@ -1,7 +1,5 @@
 MACOSX_DEPLOYMENT_TARGET:
-- '10.12'
-MACOSX_SDK_VERSION:
-- '10.12'
+- '11.0'
 bzip2:
 - '1'
 c_ares:
@@ -35,9 +33,9 @@ libprotobuf:
 lz4_c:
 - 1.9.3
 macos_machine:
-- x86_64-apple-darwin13.4.0
+- arm64-apple-darwin20.0.0
 numpy:
-- '1.19'
+- '1.20'
 openssl:
 - 1.1.1
 orc:
@@ -51,13 +49,13 @@ pin_run_as_build:
   zlib:
     max_pin: x.x
 python:
-- 3.7.* *_cpython
+- 3.8.* *_cpython
 re2:
 - 2022.06.01
 snappy:
 - '1'
 target_platform:
-- osx-64
+- osx-arm64
 thrift_cpp:
 - 0.16.0
 zip_keys:
