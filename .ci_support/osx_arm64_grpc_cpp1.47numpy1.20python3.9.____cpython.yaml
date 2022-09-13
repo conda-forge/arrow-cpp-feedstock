@@ -1,19 +1,23 @@
+MACOSX_DEPLOYMENT_TARGET:
+- '11.0'
 bzip2:
 - '1'
 c_ares:
 - '1'
 c_compiler:
-- vs2019
+- clang
+c_compiler_version:
+- '14'
 channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
-cuda_compiler:
-- nvcc
 cuda_compiler_version:
 - None
 cxx_compiler:
-- vs2019
+- clangxx
+cxx_compiler_version:
+- '14'
 gflags:
 - '2.2'
 glog:
@@ -26,10 +30,14 @@ libprotobuf:
 - '3.21'
 lz4_c:
 - 1.9.3
+macos_machine:
+- arm64-apple-darwin20.0.0
 numpy:
-- '1.19'
+- '1.20'
 openssl:
 - 1.1.1
+orc:
+- 1.7.6
 pin_run_as_build:
   bzip2:
     max_pin: x
@@ -45,10 +53,12 @@ re2:
 snappy:
 - '1'
 target_platform:
-- win-64
+- osx-arm64
 thrift_cpp:
 - 0.16.0
 zip_keys:
+- - c_compiler_version
+  - cxx_compiler_version
 - - python
   - numpy
 zlib:
