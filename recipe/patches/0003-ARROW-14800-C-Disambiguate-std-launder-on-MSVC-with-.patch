@@ -1,7 +1,7 @@
 From e22394713e0bc260e935028459201da1f3fc2aed Mon Sep 17 00:00:00 2001
 From: Antoine Pitrou <antoine@python.org>
 Date: Wed, 1 Dec 2021 19:23:45 +0100
-Subject: [PATCH 3/3] ARROW-14800: [C++] Disambiguate std::launder on MSVC with
+Subject: [PATCH 3/4] ARROW-14800: [C++] Disambiguate std::launder on MSVC with
  C++17 enabled
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8

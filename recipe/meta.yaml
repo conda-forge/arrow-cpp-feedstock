@@ -19,6 +19,8 @@ source:
     - patches/0002-ARROW-17433-CI-C-Use-Visual-Studio-2019-on-AppVeyor-.patch
     # backport apache/arrow#11806 for compatibility with C++17
     - patches/0003-ARROW-14800-C-Disambiguate-std-launder-on-MSVC-with-.patch
+    # jemalloc version bump to be able to cross-compile on osx-arm
+    - patches/0004-ARROW-16730-C-Bump-vendored-jemalloc-version-13294.patch
 
 build:
   number: 3

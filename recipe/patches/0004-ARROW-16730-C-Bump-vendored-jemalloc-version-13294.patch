@@ -1,0 +1,32 @@
+From dddf0cef209afee4e4782997f2edff4d38cf5ee8 Mon Sep 17 00:00:00 2001
+From: Antoine Pitrou <antoine@python.org>
+Date: Thu, 2 Jun 2022 22:10:52 +0200
+Subject: [PATCH 4/4] ARROW-16730: [C++] Bump vendored jemalloc version
+ (#13294)
+
+Bump to 5.3.0, which promises performance improvements.
+
+Authored-by: Antoine Pitrou <antoine@python.org>
+Signed-off-by: Sutou Kouhei <kou@clear-code.com>
+---
+ cpp/thirdparty/versions.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/cpp/thirdparty/versions.txt b/cpp/thirdparty/versions.txt
+index 12da46458..c08854678 100644
+--- a/cpp/thirdparty/versions.txt
++++ b/cpp/thirdparty/versions.txt
+@@ -55,8 +55,8 @@ ARROW_GRPC_BUILD_VERSION=v1.35.0
+ ARROW_GRPC_BUILD_SHA256_CHECKSUM=27dd2fc5c9809ddcde8eb6fa1fa278a3486566dfc28335fca13eb8df8bd3b958
+ ARROW_GTEST_BUILD_VERSION=1.10.0
+ ARROW_GTEST_BUILD_SHA256_CHECKSUM=9dc9157a9a1551ec7a7e43daea9a694a0bb5fb8bec81235d8a1e6ef64c716dcb
+-ARROW_JEMALLOC_BUILD_VERSION=5.2.1
+-ARROW_JEMALLOC_BUILD_SHA256_CHECKSUM=34330e5ce276099e2e8950d9335db5a875689a4c6a56751ef3b1d8c537f887f6
++ARROW_JEMALLOC_BUILD_VERSION=5.3.0
++ARROW_JEMALLOC_BUILD_SHA256_CHECKSUM=2db82d1e7119df3e71b7640219b6dfe84789bc0537983c3b7ac4f7189aecfeaa
+ ARROW_LZ4_BUILD_VERSION=v1.9.3
+ ARROW_LZ4_BUILD_SHA256_CHECKSUM=030644df4611007ff7dc962d981f390361e6c97a34e5cbc393ddfbe019ffe2c1
+ # mimalloc 1.6.7 didn't build on Visual Studio 2015
+-- 
+2.37.0.windows.1
+
