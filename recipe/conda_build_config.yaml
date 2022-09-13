@@ -1,3 +1,0 @@
-# no migrator yet, but arrow is the only consumer anyway
-google_cloud_cpp:
-  - "2.2"
