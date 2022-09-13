@@ -19,13 +19,13 @@ channel_targets:
 cuda_compiler:
 - nvcc
 cuda_compiler_version:
-- '11.2'
+- None
 cxx_compiler:
 - gxx
 cxx_compiler_version:
 - '10'
 docker_image:
-- quay.io/condaforge/linux-anvil-aarch64-cuda:11.2
+- quay.io/condaforge/linux-anvil-aarch64
 gflags:
 - '2.2'
 glog:
@@ -41,7 +41,7 @@ libprotobuf:
 lz4_c:
 - 1.9.3
 numpy:
-- '1.19'
+- '1.20'
 openssl:
 - 1.1.1
 orc:
