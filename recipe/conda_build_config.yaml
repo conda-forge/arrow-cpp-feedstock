@@ -1,8 +1,3 @@
-c_compiler_version:    # [ppc64le]
-- '7'                  # [ppc64le]
-cxx_compiler_version:  # [ppc64le]
-- '7'                  # [ppc64le]
-
 # no migrator yet, but arrow is the only consumer anyway
 google_cloud_cpp:
   - "2.2"
