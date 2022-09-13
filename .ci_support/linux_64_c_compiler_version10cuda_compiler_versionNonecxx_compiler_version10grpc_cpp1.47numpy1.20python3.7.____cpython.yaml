@@ -5,19 +5,21 @@ c_ares:
 c_compiler:
 - gcc
 c_compiler_version:
-- '7'
+- '10'
 cdt_name:
-- cos7
+- cos6
 channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
+cuda_compiler:
+- nvcc
 cuda_compiler_version:
 - None
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '7'
+- '10'
 docker_image:
 - quay.io/condaforge/linux-anvil-cos7-x86_64
 gflags:
@@ -35,7 +37,7 @@ libprotobuf:
 lz4_c:
 - 1.9.3
 numpy:
-- '1.19'
+- '1.20'
 openssl:
 - 1.1.1
 orc:
@@ -49,13 +51,13 @@ pin_run_as_build:
   zlib:
     max_pin: x.x
 python:
-- 3.9.* *_cpython
+- 3.7.* *_cpython
 re2:
 - 2022.06.01
 snappy:
 - '1'
 target_platform:
-- linux-ppc64le
+- linux-64
 thrift_cpp:
 - 0.16.0
 zip_keys:
