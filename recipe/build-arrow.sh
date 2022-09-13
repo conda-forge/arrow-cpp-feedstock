@@ -78,15 +78,6 @@ cmake -GNinja \
     ${EXTRA_CMAKE_ARGS} \
     ..
 
-# Commented out until jemalloc and mimalloc are fixed upstream
-if [[ "${target_platform}" == "osx-arm64" ]]; then
-     ninja jemalloc_ep-prefix/src/jemalloc_ep-stamp/jemalloc_ep-patch mimalloc_ep-prefix/src/mimalloc_ep-stamp/mimalloc_ep-patch
-     cp $BUILD_PREFIX/share/gnuconfig/config.* jemalloc_ep-prefix/src/jemalloc_ep/build-aux/
-     sed -ie 's/list(APPEND mi_cflags -march=native)//g' mimalloc_ep-prefix/src/mimalloc_ep/CMakeLists.txt
-     # Use the correct register for thread-local storage
-     sed -ie 's/tpidr_el0/tpidrro_el0/g' mimalloc_ep-prefix/src/mimalloc_ep/include/mimalloc-internal.h
-fi
-
 ninja install
 
 popd
