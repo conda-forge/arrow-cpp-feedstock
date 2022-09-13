@@ -3,6 +3,7 @@
 {% set build_ext_version = "3.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
 {% set proc_build_number = "0" %}
+{% set llvm_version = "13" %}
 
 package:
   name: arrow-cpp-ext
@@ -61,6 +62,8 @@ outputs:
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
+        - clangdev {{ llvm_version }}            # [osx and arm64]
+        - llvmdev {{ llvm_version }}             # [osx and arm64]
         - gnuconfig                              # [osx and arm64]
         - libprotobuf
         - grpc-cpp
@@ -86,8 +89,8 @@ outputs:
         - glog
         - grpc-cpp
         - libprotobuf
-        - clangdev 13
-        - llvmdev 13
+        - clangdev {{ llvm_version }}
+        - llvmdev {{ llvm_version }}
         - libutf8proc
         - lz4-c
         - numpy
