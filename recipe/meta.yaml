@@ -86,13 +86,13 @@ outputs:
         - glog
         - grpc-cpp
         - libprotobuf
-        - clangdev 13  # [not (osx and arm64)]
-        - llvmdev 13   # [not (osx and arm64)]
+        - clangdev 13
+        - llvmdev 13
         - libutf8proc
         - lz4-c
         - numpy
         # gandiva depends on openssl
-        - openssl      # [not (osx and arm64)]
+        - openssl
         - orc          # [unix]
         - python
         - rapidjson
@@ -126,7 +126,7 @@ outputs:
         - test -f $PREFIX/include/arrow/api.h              # [unix]
         - test -f $PREFIX/include/arrow/flight/types.h     # [unix]
         - test -f $PREFIX/include/plasma/client.h          # [unix]
-        - test -f $PREFIX/include/gandiva/engine.h         # [unix and not (osx and arm64)]
+        - test -f $PREFIX/include/gandiva/engine.h         # [unix]
         - test -f $PREFIX/include/parquet/api/reader.h     # [unix]
         - if not exist %LIBRARY_INC%\\arrow\\api.h exit 1            # [win]
         - if not exist %LIBRARY_INC%\\gandiva\\engine.h exit 1       # [win]
@@ -147,7 +147,7 @@ outputs:
         - test -f $PREFIX/lib/libarrow.dylib          # [osx]
         - test -f $PREFIX/lib/libarrow_dataset.dylib  # [osx]
         - test -f $PREFIX/lib/libarrow_python.dylib   # [osx]
-        - test -f $PREFIX/lib/libgandiva.dylib        # [osx and not arm64]
+        - test -f $PREFIX/lib/libgandiva.dylib        # [osx]
         - test -f $PREFIX/lib/libparquet.dylib        # [osx]
         - test -f $PREFIX/lib/libplasma.dylib         # [osx]
         - if not exist %PREFIX%\\Library\\bin\\arrow.dll exit 1          # [win]
@@ -229,7 +229,7 @@ outputs:
         - pyarrow
         - pyarrow.dataset
         - pyarrow.flight
-        - pyarrow.gandiva  # [not (osx and arm64)]
+        - pyarrow.gandiva
         - pyarrow.orc      # [unix]
         - pyarrow.parquet
         - pyarrow.plasma   # [unix]
