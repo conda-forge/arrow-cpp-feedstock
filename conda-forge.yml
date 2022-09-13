@@ -1,5 +1,4 @@
 azure:
-  # see conda-forge/arrow-cpp-feedstock#825
   max_parallel: 20
 bot:
   abi_migration_branches:
