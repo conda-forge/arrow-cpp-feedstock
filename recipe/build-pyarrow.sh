@@ -35,6 +35,11 @@ if [[ "${target_platform}" == "linux-aarch64" ]]; then
     export PYARROW_CMAKE_OPTIONS="-DARROW_ARMV8_ARCH=armv8-a ${PYARROW_CMAKE_OPTIONS}"
 fi
 
+if [[ "${target_platform}" == osx-* ]]; then
+    # See https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk
+    CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
+fi
+
 # Limit number of threads used to avoid hardware oversubscription
 if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "linux-ppc64le" ]]; then
      export CMAKE_BUILD_PARALLEL_LEVEL=4
