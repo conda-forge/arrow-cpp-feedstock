@@ -19,6 +19,8 @@ source:
     # minimal backport of the following commit for compatibility with VS2019
     # https://github.com/apache/arrow/commit/897c186f475f3dd82c1ab47e5cfb87cb0fed8440
     - patches/0003-ARROW-17433-CI-C-Use-Visual-Studio-2019-on-AppVeyor-.patch
+    # jemalloc version bump to be able to cross-compile on osx-arm
+    - patches/0004-ARROW-16730-C-Bump-vendored-jemalloc-version-13294.patch
 
 build:
   number: 4

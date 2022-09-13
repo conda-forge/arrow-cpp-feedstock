@@ -1,7 +1,7 @@
 From ea3a2b2e6463fdf317232b90776da92d2103542e Mon Sep 17 00:00:00 2001
 From: Sutou Kouhei <kou@clear-code.com>
 Date: Thu, 25 Aug 2022 15:08:39 +0900
-Subject: [PATCH 3/3] ARROW-17433: [CI][C++] Use Visual Studio 2019 on AppVeyor
+Subject: [PATCH 3/4] ARROW-17433: [CI][C++] Use Visual Studio 2019 on AppVeyor
  (#13903)
 
 We can use /external:I for Boost to suppress warnings from Boost
