@@ -35,12 +35,8 @@ else
 fi
 
 if [[ "${target_platform}" == "osx-arm64" ]]; then
-    # We need llvm 11+ support in Arrow for this
-    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_GANDIVA=OFF"
     sed -ie "s;protoc-gen-grpc.*$;protoc-gen-grpc=${BUILD_PREFIX}/bin/grpc_cpp_plugin\";g" ../src/arrow/flight/CMakeLists.txt
     sed -ie 's;"--with-jemalloc-prefix\=je_arrow_";"--with-jemalloc-prefix\=je_arrow_" "--with-lg-page\=14";g' ../cmake_modules/ThirdpartyToolchain.cmake
-else
-    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_GANDIVA=ON"
 fi
 
 cmake -GNinja \
@@ -53,6 +49,7 @@ cmake -GNinja \
     -DARROW_DEPENDENCY_SOURCE=SYSTEM \
     -DARROW_FLIGHT=ON \
     -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=ON \
+    -DARROW_GANDIVA=ON \
     -DARROW_GCS=ON \
     -DARROW_HDFS=ON \
     -DARROW_JEMALLOC=ON \
