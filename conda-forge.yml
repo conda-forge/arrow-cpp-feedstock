@@ -8,6 +8,8 @@ bot:
   - 7.0.x
   - 8.0.x
 build_platform:
+  linux_aarch64: linux_64
+  linux_ppc64le: linux_64
   osx_arm64: osx_64
 conda_forge_output_validation: true
 github:
