@@ -1,3 +1,5 @@
+BUILD:
+- aarch64-conda_cos7-linux-gnu
 bzip2:
 - '1'
 c_ares:
@@ -6,6 +8,8 @@ c_compiler:
 - gcc
 c_compiler_version:
 - '10'
+cdt_arch:
+- aarch64
 cdt_name:
 - cos7
 channel_sources:
@@ -51,13 +55,13 @@ pin_run_as_build:
   zlib:
     max_pin: x.x
 python:
-- 3.7.* *_cpython
+- 3.9.* *_cpython
 re2:
 - 2022.06.01
 snappy:
 - '1'
 target_platform:
-- linux-ppc64le
+- linux-aarch64
 thrift_cpp:
 - 0.16.0
 zip_keys:
