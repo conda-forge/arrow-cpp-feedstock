@@ -18,8 +18,8 @@ source:
     - patches/0001-ARROW-17433-CI-C-Use-Visual-Studio-2019-on-AppVeyor-.patch
 
 build:
-  # debug: skip everything but PPC+CUDA
-  skip: true  # [not (ppc64le and cuda_compiler_version != "None")]
+  # debug: skip everything but CUDA on aarch/ppc
+  skip: true  # [not ((aarch64 or ppc64le) and cuda_compiler_version != "None")]
   number: 6
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
