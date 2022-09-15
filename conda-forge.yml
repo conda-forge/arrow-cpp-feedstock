@@ -1,4 +1,6 @@
 azure:
+  # see conda-forge/arrow-cpp-feedstock#825; ensure at least:
+  # max_parallel(linux) >= #{emulated linux builds}
   max_parallel: 20
 bot:
   abi_migration_branches:
