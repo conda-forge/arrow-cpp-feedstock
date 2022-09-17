@@ -1,12 +1,4 @@
-MACOSX_SDK_VERSION:        # [osx and x86_64]
-  - "10.12"                # [osx and x86_64]
-MACOSX_DEPLOYMENT_TARGET:  # [osx and x86_64]
-  - "10.12"                # [osx and x86_64]
-c_compiler_version:    # [ppc64le]
-- '7'                  # [ppc64le]
-cxx_compiler_version:  # [ppc64le]
-- '7'                  # [ppc64le]
-
-# no migrator yet, but arrow is the only consumer anyway
-google_cloud_cpp:
-  - "2.2"
+c_compiler_version:    # [osx and arm64]
+  - 13                 # [osx and arm64]
+cxx_compiler_version:  # [osx and arm64]
+  - 13                 # [osx and arm64]

@@ -1,7 +1,7 @@
 From 41ff7a2796a019c566d0a27898791ca85348b843 Mon Sep 17 00:00:00 2001
 From: Carlos O'Ryan <coryan@google.com>
 Date: Sun, 6 Feb 2022 13:34:45 +0000
-Subject: [PATCH 2/3] Add explicit conversion
+Subject: [PATCH 2/4] Add explicit conversion
 
 Explicitly convert from `std::unique_ptr<Buffer>` to a `std::shared_ptr` on the way to convert to `Result<std::shared_ptr<>>`.  I am not sure why it only failed with one compiler.
 ---
