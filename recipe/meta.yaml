@@ -3,6 +3,7 @@
 {% set build_ext_version = "3.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
 {% set proc_build_number = "0" %}
+{% set llvm_version = "13" %}
 
 package:
   name: arrow-cpp-ext
@@ -18,15 +19,15 @@ source:
     - patches/0002-ARROW-17433-CI-C-Use-Visual-Studio-2019-on-AppVeyor-.patch
     # backport apache/arrow#11806 for compatibility with C++17
     - patches/0003-ARROW-14800-C-Disambiguate-std-launder-on-MSVC-with-.patch
+    # jemalloc version bump to be able to cross-compile on osx-arm
+    - patches/0004-ARROW-16730-C-Bump-vendored-jemalloc-version-13294.patch
 
 build:
-  number: 2
-  # for cuda on win/linux, building with 9.2 is enough to be compatible with all later versions,
-  # since arrow is only using libcuda, and not libcudart.
+  number: 3
+  # for cuda support, building with one version is enough to be compatible with
+  # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux) and cuda_compiler_version not in ("None", "10.2")]
   skip: true  # [osx and cuda_compiler_version != "None"]
-  # shouldn't be necessary after 1.47 migration, but here we are
-  skip: true  # [grpc_cpp == "1.46"]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 
@@ -48,7 +49,7 @@ outputs:
 
   - name: arrow-cpp
     script: build-arrow.sh  # [not win]
-    script: bld-arrow.bat  # [win]
+    script: bld-arrow.bat   # [win]
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
@@ -63,6 +64,8 @@ outputs:
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
+        - clangdev {{ llvm_version }}            # [osx and arm64]
+        - llvmdev {{ llvm_version }}             # [osx and arm64]
         - gnuconfig                              # [osx and arm64]
         - libprotobuf
         - grpc-cpp
@@ -88,12 +91,14 @@ outputs:
         - glog
         - grpc-cpp
         - libprotobuf
-        - clangdev 13  # [not (osx and arm64)]
-        - llvmdev 13   # [not (osx and arm64)]
+        - clangdev {{ llvm_version }}
+        - llvmdev {{ llvm_version }}
         - libutf8proc
         - lz4-c
         - numpy
-        - orc  # [unix]
+        # gandiva depends on openssl
+        - openssl
+        - orc          # [unix]
         - python
         - rapidjson
         - re2
@@ -126,7 +131,7 @@ outputs:
         - test -f $PREFIX/include/arrow/api.h              # [unix]
         - test -f $PREFIX/include/arrow/flight/types.h     # [unix]
         - test -f $PREFIX/include/plasma/client.h          # [unix]
-        - test -f $PREFIX/include/gandiva/engine.h         # [unix and not (osx and arm64)]
+        - test -f $PREFIX/include/gandiva/engine.h         # [unix]
         - test -f $PREFIX/include/parquet/api/reader.h     # [unix]
         - if not exist %LIBRARY_INC%\\arrow\\api.h exit 1            # [win]
         - if not exist %LIBRARY_INC%\\gandiva\\engine.h exit 1       # [win]
@@ -147,7 +152,7 @@ outputs:
         - test -f $PREFIX/lib/libarrow.dylib          # [osx]
         - test -f $PREFIX/lib/libarrow_dataset.dylib  # [osx]
         - test -f $PREFIX/lib/libarrow_python.dylib   # [osx]
-        - test -f $PREFIX/lib/libgandiva.dylib        # [osx and not arm64]
+        - test -f $PREFIX/lib/libgandiva.dylib        # [osx]
         - test -f $PREFIX/lib/libparquet.dylib        # [osx]
         - test -f $PREFIX/lib/libplasma.dylib         # [osx]
         - if not exist %PREFIX%\\Library\\bin\\arrow.dll exit 1          # [win]
@@ -174,7 +179,7 @@ outputs:
 
   - name: pyarrow
     script: build-pyarrow.sh  # [not win]
-    script: bld-pyarrow.bat  # [win]
+    script: bld-pyarrow.bat   # [win]
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
@@ -229,7 +234,7 @@ outputs:
         - pyarrow
         - pyarrow.dataset
         - pyarrow.flight
-        - pyarrow.gandiva  # [not (osx and arm64)]
+        - pyarrow.gandiva
         - pyarrow.orc      # [unix]
         - pyarrow.parquet
         - pyarrow.plasma   # [unix]
@@ -251,7 +256,7 @@ outputs:
 
   - name: pyarrow-tests
     script: build-pyarrow.sh  # [not win]
-    script: bld-pyarrow.bat  # [win]
+    script: bld-pyarrow.bat   # [win]
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
