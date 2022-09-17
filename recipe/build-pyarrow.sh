@@ -11,15 +11,12 @@ export PYARROW_BUILD_TYPE=release
 export PYARROW_BUNDLE_ARROW_CPP_HEADERS=0
 export PYARROW_WITH_DATASET=1
 export PYARROW_WITH_FLIGHT=1
-if [[ "${target_platform}" == "osx-arm64" ]]; then
-    # We need llvm 11+ support in Arrow for this
-    export PYARROW_WITH_GANDIVA=0
-else
-    export PYARROW_WITH_GANDIVA=1
-fi
+export PYARROW_WITH_GANDIVA=1
+export PYARROW_WITH_GCS=1
 export PYARROW_WITH_HDFS=1
 export PYARROW_WITH_ORC=1
 export PYARROW_WITH_PARQUET=1
+export PYARROW_WITH_PARQUET_ENCRYPTION=1
 export PYARROW_WITH_PLASMA=1
 export PYARROW_WITH_S3=1
 export PYARROW_CMAKE_GENERATOR=Ninja
@@ -36,6 +33,11 @@ fi
 # Resolve: Make Error at cmake_modules/SetupCxxFlags.cmake:338 (message): Unsupported arch flag: -march=.
 if [[ "${target_platform}" == "linux-aarch64" ]]; then
     export PYARROW_CMAKE_OPTIONS="-DARROW_ARMV8_ARCH=armv8-a ${PYARROW_CMAKE_OPTIONS}"
+fi
+
+if [[ "${target_platform}" == osx-* ]]; then
+    # See https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk
+    CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
 fi
 
 # Limit number of threads used to avoid hardware oversubscription
