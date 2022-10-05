@@ -41,14 +41,10 @@ numpy:
 openssl:
 - 1.1.1
 orc:
-- 1.7.6
+- 1.8.0
 pin_run_as_build:
-  bzip2:
-    max_pin: x
   python:
     min_pin: x.x
-    max_pin: x.x
-  zlib:
     max_pin: x.x
 python:
 - 3.10.* *_cpython
