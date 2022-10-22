@@ -1,5 +1,9 @@
 @echo on
 
+:: materialize symlink
+rmdir .\python\cmake_modules
+robocopy .\cpp\cmake_modules .\python\cmake_modules /E
+
 mkdir "%SRC_DIR%"\cpp\build
 pushd "%SRC_DIR%"\cpp\build
 
