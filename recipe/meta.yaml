@@ -3,7 +3,14 @@
 {% set build_ext_version = "3.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
 {% set proc_build_number = "0" %}
+
 {% set llvm_version = "14" %}
+# numpy version is not uniform across python versions in conda-forge
+# (new pythons not supported in old numpys), so default rerender would
+# pick up possibly several builds for different numpy versions for the
+# library; however, the C-API is forward-compatible and we only need one.
+# use the lowest numpy version still in the pinning
+{% set numpy_capi = "1.20" %}
 
 package:
   name: arrow-cpp-ext
@@ -52,7 +59,9 @@ outputs:
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
     requirements:
       build:
-        - numpy                                  # [build_platform != target_platform]
+        - numpy {{ numpy_capi }}                 # [build_platform != target_platform]
+        - python *                               # [osx and arm64]
+        - cross-python_{{ target_platform }}     # [osx and arm64]
         - clangdev {{ llvm_version }}            # [osx and arm64]
         - llvmdev {{ llvm_version }}             # [osx and arm64]
         - gnuconfig                              # [osx and arm64]
@@ -85,7 +94,7 @@ outputs:
         - llvmdev {{ llvm_version }}
         - libutf8proc
         - lz4-c
-        - numpy
+        - numpy {{ numpy_capi }}
         # gandiva depends on openssl
         - openssl
         - orc          # [unix]
@@ -97,7 +106,7 @@ outputs:
         - zlib
         - zstd
       run:
-        - {{ pin_compatible('numpy', lower_bound='1.16') }}
+        - {{ pin_compatible('numpy') }}
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
         - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
@@ -176,7 +185,9 @@ outputs:
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
-        - numpy                                  # [build_platform != target_platform]
+        # see below
+        - numpy {{ numpy_capi }}                 # [(build_platform != target_platform) and (py<=39)]
+        - numpy 1.21                             # [(build_platform != target_platform) and (py>39)]
         - cmake
         - ninja
         - make  # [unix]
@@ -189,7 +200,11 @@ outputs:
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
         - cython
-        - numpy
+        # here we need the version from the pinning, but after tricking
+        # conda smithy into creating only one CI job (see cbc.yaml),
+        # we need to specify it manually
+        - numpy {{ numpy_capi }}  # [py<=39]
+        - numpy 1.21              # [py>39]
         - openssl
         - python
         - setuptools
@@ -197,7 +212,7 @@ outputs:
         - six
       run:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
-        - {{ pin_compatible('numpy', lower_bound='1.16') }}
+        - {{ pin_compatible('numpy') }}
         # empty parquet-cpp metapackage, force old versions to be uninstalled
         - parquet-cpp 1.5.1.*
         - python
@@ -255,7 +270,9 @@ outputs:
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
-        - numpy                                  # [build_platform != target_platform]
+        # see below
+        - numpy {{ numpy_capi }}                 # [(build_platform != target_platform) and (py<=39)]
+        - numpy 1.21                             # [(build_platform != target_platform) and (py>39)]
         - cmake
         - ninja
         - make  # [unix]
@@ -269,7 +286,9 @@ outputs:
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
         - cython
-        - numpy
+        # see note in pyarrow host deps
+        - numpy {{ numpy_capi }}  # [py<=39]
+        - numpy 1.21              # [py>39]
         - openssl
         - python
         - setuptools

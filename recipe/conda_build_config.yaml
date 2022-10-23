@@ -1,0 +1,20 @@
+# unfortunately, even with no unpinned "- numpy" line in meta.yaml, conda smithy
+# will fall back to the global pinning, uselessly creating double the CI jobs
+# in the process (for details see comment in meta.yaml).
+# enforce consistent version (take lowest current global numpy pin);
+# must conform to layout of global pinning zip
+numpy:
+  - 1.20               # [not (osx and arm64)]
+  - 1.20
+  - 1.20
+  - 1.20
+python:
+  - 3.7.* *_cpython    # [not (osx and arm64)]
+  - 3.8.* *_cpython
+  - 3.9.* *_cpython
+  - 3.10.* *_cpython
+python_impl:
+  - cpython            # [not (osx and arm64)]
+  - cpython
+  - cpython
+  - cpython
