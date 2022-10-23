@@ -30,6 +30,8 @@ lz4_c:
 - 1.9.3
 numpy:
 - '1.20'
+- '1.20'
+- '1.20'
 openssl:
 - 1.1.1
 pin_run_as_build:
@@ -37,6 +39,8 @@ pin_run_as_build:
     min_pin: x.x
     max_pin: x.x
 python:
+- 3.7.* *_cpython
+- 3.8.* *_cpython
 - 3.9.* *_cpython
 re2:
 - 2022.06.01
