@@ -8,36 +8,20 @@ jobs:
     vmImage: ubuntu-latest
   strategy:
     matrix:
-      linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10numpy1.20:
-        CONFIG: linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10numpy1.20
+      linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10:
+        CONFIG: linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10numpy1.21:
-        CONFIG: linux_64_c_compiler_version10cuda_compiler_versionNonecxx_compiler_version10numpy1.21
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7numpy1.20:
-        CONFIG: linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7numpy1.20
+      linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7:
+        CONFIG: linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7numpy1.21:
-        CONFIG: linux_64_c_compiler_version7cuda_compiler_version10.2cxx_compiler_version7numpy1.21
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      linux_aarch64_numpy1.20:
-        CONFIG: linux_aarch64_numpy1.20
+      linux_aarch64_:
+        CONFIG: linux_aarch64_
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_aarch64_numpy1.21:
-        CONFIG: linux_aarch64_numpy1.21
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_ppc64le_numpy1.20:
-        CONFIG: linux_ppc64le_numpy1.20
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_ppc64le_numpy1.21:
-        CONFIG: linux_ppc64le_numpy1.21
+      linux_ppc64le_:
+        CONFIG: linux_ppc64le_
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
   timeoutInMinutes: 360
