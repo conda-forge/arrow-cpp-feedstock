@@ -1,5 +1,7 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
+aws_sdk_cpp:
+- 1.9.372
 bzip2:
 - '1'
 c_ares:
