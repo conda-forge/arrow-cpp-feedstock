@@ -27,7 +27,7 @@ glog:
 google_cloud_cpp:
 - '2.2'
 grpc_cpp:
-- '1.47'
+- '1.49'
 libabseil:
 - '20220623.0'
 libprotobuf:
