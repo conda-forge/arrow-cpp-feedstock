@@ -28,10 +28,10 @@ gflags:
 - '2.2'
 glog:
 - '0.6'
-grpc_cpp:
-- '1.47'
 libabseil:
 - '20220623.0'
+libgrpc:
+- '1.49'
 libprotobuf:
 - '3.21'
 lz4_c:
