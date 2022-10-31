@@ -67,8 +67,8 @@ outputs:
         - clangdev {{ llvm_version }}            # [osx and arm64]
         - llvmdev {{ llvm_version }}             # [osx and arm64]
         - gnuconfig                              # [osx and arm64]
+        - libgrpc
         - libprotobuf
-        - grpc-cpp
         # aws-sdk-cpp 1.8.* doesn't work with a newer CMake
         - cmake <3.22
         - autoconf  # [unix]
@@ -89,7 +89,7 @@ outputs:
         - c-ares
         - gflags
         - glog
-        - grpc-cpp
+        - libgrpc
         - libprotobuf
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
