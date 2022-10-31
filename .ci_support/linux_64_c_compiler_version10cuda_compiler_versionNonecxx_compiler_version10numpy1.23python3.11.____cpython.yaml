@@ -27,7 +27,7 @@ gflags:
 glog:
 - '0.6'
 google_cloud_cpp:
-- '2.2'
+- 2.3.0
 grpc_cpp:
 - '1.47'
 libabseil:
