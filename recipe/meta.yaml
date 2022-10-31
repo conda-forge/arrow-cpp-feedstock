@@ -18,7 +18,7 @@ source:
     - patches/0001-ARROW-17433-CI-C-Use-Visual-Studio-2019-on-AppVeyor-.patch
 
 build:
-  number: 9
+  number: 10
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux64) and cuda_compiler_version not in ("None", "10.2")]
@@ -67,8 +67,8 @@ outputs:
         - clangdev {{ llvm_version }}            # [osx and arm64]
         - llvmdev {{ llvm_version }}             # [osx and arm64]
         - gnuconfig                              # [osx and arm64]
+        - libgrpc
         - libprotobuf
-        - grpc-cpp
         # aws-sdk-cpp 1.8.* doesn't work with a newer CMake
         - cmake <3.22
         - autoconf  # [unix]
@@ -90,7 +90,7 @@ outputs:
         - gflags
         - glog
         - google-cloud-cpp
-        - grpc-cpp
+        - libgrpc
         - libprotobuf
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
