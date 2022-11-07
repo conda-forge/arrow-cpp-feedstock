@@ -78,6 +78,9 @@ outputs:
       ignore_run_exports:
         - cudatoolkit
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
+      missing_dso_whitelist:
+        - "*/libcuda.so.*"    # [linux]
+        - "*/nvcuda.dll"      # [win]
     requirements:
       build:
         - clangdev {{ llvm_version }}            # [osx and arm64]
