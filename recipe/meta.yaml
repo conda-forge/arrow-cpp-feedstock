@@ -33,6 +33,12 @@ outputs:
     build:
       number: {{ proc_build_number }}
       string: {{ build_ext }}
+      ignore_run_exports_from:
+        - openssl
+    requirements:
+      host:
+        # ensure we split the CI jobs per openssl version
+        - openssl
     test:
       commands:
         - exit 0
@@ -49,7 +55,12 @@ outputs:
     build:
       number: {{ proc_build_number }}
       string: {{ build_ext }}
+      ignore_run_exports_from:
+        - openssl
     requirements:
+      host:
+        # ensure we split the CI jobs per openssl version
+        - openssl
       run:
         - apache-arrow-proc ={{ build_ext_version }}={{ build_ext }}
     test:
