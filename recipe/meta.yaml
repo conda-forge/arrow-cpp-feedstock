@@ -26,8 +26,7 @@ build:
   number: 11
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
-  skip: true  # [(win or linux) and cuda_compiler_version not in ("None", "10.2")]
-  skip: true  # [osx and cuda_compiler_version != "None"]
+  skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 
@@ -118,7 +117,7 @@ outputs:
         - python
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
-        - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
+        - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
 
     about:
       home: http://github.com/apache/arrow
@@ -221,7 +220,7 @@ outputs:
         - python
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
-        - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
+        - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
 
     about:
       home: http://github.com/apache/arrow
@@ -296,7 +295,7 @@ outputs:
         - python
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
-        - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
+        - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
 
     about:
       home: http://github.com/apache/arrow
