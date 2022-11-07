@@ -17,13 +17,7 @@ build:
   number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
-  skip: true  # [(win or linux64) and cuda_compiler_version not in ("None", "10.2")]
-  skip: true  # [linux and (aarch64 or ppc64le) and cuda_compiler_version not in ("None", "11.2")]
-  skip: true  # [osx and cuda_compiler_version != "None"]
-  # CUDA builds on ppc64le currently run out of time on Travis CI.
-  # It may be possible to move these to cross-compilation, but this will take additional work.
-  # Hence this is skipped for now until this can be addressed.
-  skip: true  # [linux and ppc64le and cuda_compiler_version != "None"]
+  skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
   run_exports:
     - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
 
@@ -123,7 +117,7 @@ outputs:
         - zstd
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
-        - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
+        - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
         # make sure we don't co-install with old version of old package name
         - arrow-cpp ={{ version }}
 
@@ -255,7 +249,7 @@ outputs:
         - python
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
-        - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
+        - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
 
     about:
       home: http://github.com/apache/arrow
@@ -340,7 +334,7 @@ outputs:
         - python
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
-        - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
+        - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
 
     about:
       home: http://github.com/apache/arrow
