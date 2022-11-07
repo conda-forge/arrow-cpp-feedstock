@@ -214,6 +214,14 @@ outputs:
       ignore_run_exports_from:
         - openssl
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
+      missing_dso_whitelist:
+        # not actually missing, but installed into SP_DIR, see tests
+        - "*/libarrow_python.so.*"            # [linux]
+        - "*/libarrow_python_flight.so.*"     # [linux]
+        - "*/libarrow_python.*.dylib"         # [osx]
+        - "*/libarrow_python_flight.*.dylib"  # [osx]
+        - "*/arrow_python.dll"                # [win]
+        - "*/arrow_python_flight.dll"         # [win]
     requirements:
       build:
         - python                                 # [build_platform != target_platform]
@@ -277,6 +285,14 @@ outputs:
         # However, we check below for (at least) the presence of a correctly-compiled module
         - pyarrow.cuda     # [cuda_compiler_version != "None" and not win]
       commands:
+        # libraries that depend on python (and hence aren't in libarrow itself)
+        - test -f ${SP_DIR}/pyarrow/libarrow_python.so                            # [linux]
+        - test -f ${SP_DIR}/pyarrow/libarrow_python_flight.so                     # [linux]
+        - test -f ${SP_DIR}/pyarrow/libarrow_python.dylib                         # [osx]
+        - test -f ${SP_DIR}/pyarrow/libarrow_python_flight.dylib                  # [osx]
+        - if not exist %SP_DIR%\pyarrow\arrow_python.dll exit 1                   # [win]
+        - if not exist %SP_DIR%\pyarrow\arrow_python_flight.dll exit 1            # [win]
+
         - test ! -f ${SP_DIR}/pyarrow/tests/test_array.py                         # [unix]
         - if exist %SP_DIR%/pyarrow/tests/test_array.py exit 1                    # [win]
         # Need to remove dot from PY_VER; %MYVAR:x=y% replaces "x" in %MYVAR% with "y"
