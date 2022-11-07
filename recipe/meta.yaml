@@ -229,6 +229,7 @@ outputs:
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
         - cython
+        - gflags  # [unix]
         - numpy
         - openssl
         - python
