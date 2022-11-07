@@ -203,6 +203,7 @@ outputs:
       host:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
         - cython
+        - gflags  # [unix]
         - numpy
         - python
         - openssl
