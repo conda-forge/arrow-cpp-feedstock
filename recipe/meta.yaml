@@ -83,9 +83,6 @@ outputs:
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
         - aws-sdk-cpp
-        # abseil is only here to help conda pick the right constraints for pyarrow, see
-        # https://github.com/conda-forge/arrow-cpp-feedstock/pull/815#issuecomment-1216713245
-        - libabseil
         - boost-cpp >=1.70
         - brotli
         - bzip2
@@ -93,6 +90,7 @@ outputs:
         - gflags
         - glog
         - google-cloud-cpp
+        - libabseil
         - libgrpc
         - libprotobuf
         - clangdev {{ llvm_version }}
