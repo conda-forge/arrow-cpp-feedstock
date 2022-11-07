@@ -82,6 +82,8 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
+        - clangdev {{ llvm_version }}
+        - llvmdev {{ llvm_version }}
         - aws-sdk-cpp
         - boost-cpp >=1.70
         - brotli
@@ -93,8 +95,6 @@ outputs:
         - libabseil
         - libgrpc
         - libprotobuf
-        - clangdev {{ llvm_version }}
-        - llvmdev {{ llvm_version }}
         - libutf8proc
         - lz4-c
         # gandiva depends on openssl
