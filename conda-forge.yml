@@ -5,6 +5,7 @@ bot:
   - 6.0.x
   - 7.0.x
   - 8.0.x
+  - 9.0.x
 build_platform:
   linux_ppc64le: linux_64
   osx_arm64: osx_64
