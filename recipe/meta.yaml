@@ -101,6 +101,11 @@ outputs:
         - glog
         - google-cloud-cpp
         - libabseil
+        # since libgoogle-cloud is static on windows, see
+        # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
+        # its dependencies leak into the build here
+        - libcrc32c  # [win]
+        - libcurl    # [win]
         - libgrpc
         - libprotobuf
         - libutf8proc
