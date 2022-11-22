@@ -210,7 +210,6 @@ outputs:
         - openssl
         - setuptools
         - setuptools_scm
-        - six
       run:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
         - {{ pin_compatible('numpy', lower_bound='1.16') }}
@@ -288,7 +287,6 @@ outputs:
         - openssl
         - setuptools
         - setuptools_scm
-        - six
       run:
         - {{ pin_subpackage('pyarrow', exact=True) }}
         - python
