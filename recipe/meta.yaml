@@ -1,4 +1,4 @@
-{% set version = "10.0.0" %}
+{% set version = "10.0.1" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "4.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -11,7 +11,7 @@ package:
 
 source:
   url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
-  sha256: 5b46fa4c54f53e5df0019fe0f9d421e93fc906b625ebe8e89eed010d561f1f12
+  sha256: c814e0670112a22c1a6ec03ab420a52ae236a9a42e9e438c3cbd37f37e658fb3
 
 build:
   number: 0
