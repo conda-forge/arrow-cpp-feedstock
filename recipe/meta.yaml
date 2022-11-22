@@ -126,13 +126,6 @@ outputs:
         # make sure we don't co-install with old version of old package name
         - arrow-cpp ={{ version }}
 
-    about:
-      home: http://github.com/apache/arrow
-      license: Apache-2.0
-      license_file:
-        - LICENSE.txt
-      summary: C++ libraries for Apache Arrow
-
     test:
       commands:
         # headers
@@ -183,6 +176,13 @@ outputs:
         - if exist %PREFIX%\\Library\\lib\\arrow_flight_sql_static.lib exit 1  # [win]
         - if exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1           # [win]
         - if exist %PREFIX%\\Library\\lib\\gandiva_static.lib exit 1           # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ libraries for Apache Arrow
 
   # compat output for old naming scheme; switched for 10.0.0; keep for a few versions
   - name: arrow-cpp
@@ -255,13 +255,6 @@ outputs:
         - apache-arrow-proc =*={{ build_ext }}
         - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
 
-    about:
-      home: http://github.com/apache/arrow
-      license: Apache-2.0
-      license_file:
-        - LICENSE.txt
-      summary: Python libraries for Apache Arrow
-
     test:
       files:
         - test_read_parquet.py
@@ -296,6 +289,13 @@ outputs:
         # Need to remove dot from PY_VER; %MYVAR:x=y% replaces "x" in %MYVAR% with "y"
         - if not exist %SP_DIR%/pyarrow/_cuda.cp%PY_VER:.=%-win_amd64.pyd exit 1  # [win and cuda_compiler_version != "None"]
         - python test_read_parquet.py
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: Python libraries for Apache Arrow
 
   - name: pyarrow-tests
     script: build-pyarrow.sh  # [not win]
@@ -339,17 +339,17 @@ outputs:
         - apache-arrow-proc =*={{ build_ext }}
         - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
 
+    test:
+      commands:
+        - test -f ${SP_DIR}/pyarrow/tests/test_array.py             # [unix]
+        - if not exist %SP_DIR%/pyarrow/tests/test_array.py exit 1  # [win]
+
     about:
       home: http://github.com/apache/arrow
       license: Apache-2.0
       license_file:
         - LICENSE.txt
       summary: Python test files for Apache Arrow
-
-    test:
-      commands:
-        - test -f ${SP_DIR}/pyarrow/tests/test_array.py             # [unix]
-        - if not exist %SP_DIR%/pyarrow/tests/test_array.py exit 1  # [win]
 
 about:
   home: http://github.com/apache/arrow
