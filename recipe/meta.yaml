@@ -1,4 +1,4 @@
-{% set version = "9.0.0" %}
+{% set version = "10.0.1" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "3.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -11,14 +11,14 @@ package:
 
 source:
   url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
-  sha256: a9a033f0a3490289998f458680d19579cf07911717ba65afde6cb80070f7a9b5
+  sha256: c814e0670112a22c1a6ec03ab420a52ae236a9a42e9e438c3cbd37f37e658fb3
   patches:
     # backport of the following commit for compatibility with VS2019
     # https://github.com/apache/arrow/commit/897c186f475f3dd82c1ab47e5cfb87cb0fed8440
     - patches/0001-ARROW-17433-CI-C-Use-Visual-Studio-2019-on-AppVeyor-.patch
 
 build:
-  number: 10
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux64) and cuda_compiler_version not in ("None", "10.2")]
@@ -49,7 +49,7 @@ outputs:
 
   - name: arrow-cpp
     script: build-arrow.sh  # [not win]
-    script: bld-arrow.bat   # [win]
+    script: bld-arrow.bat  # [win]
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
@@ -182,7 +182,7 @@ outputs:
 
   - name: pyarrow
     script: build-pyarrow.sh  # [not win]
-    script: bld-pyarrow.bat   # [win]
+    script: bld-pyarrow.bat  # [win]
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
@@ -259,7 +259,7 @@ outputs:
 
   - name: pyarrow-tests
     script: build-pyarrow.sh  # [not win]
-    script: bld-pyarrow.bat   # [win]
+    script: bld-pyarrow.bat  # [win]
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
