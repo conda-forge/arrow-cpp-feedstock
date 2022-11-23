@@ -349,7 +349,12 @@ outputs:
         - cd %SP_DIR%\pyarrow\tests                         # [win]
         - export ARROW_TEST_DATA="${SRC_DIR}/testing/data"  # [unix]
         - set "ARROW_TEST_DATA=%SRC_DIR%\testing\data"      # [win]
-        - pytest -v -rfEs
+
+        {% set tests_to_skip = "_not_a_real_test" %}
+        # skip tests that raise SIGINT and crash the test suite
+        {% set tests_to_skip = tests_to_skip + " or (test_csv and test_cancellation)" %}  # [linux]
+        {% set tests_to_skip = tests_to_skip + " or (test_flight and test_interrupt)" %}  # [linux]
+        - pytest -v -rfEs -k "not ({{ tests_to_skip }})"
 
     about:
       home: http://github.com/apache/arrow
