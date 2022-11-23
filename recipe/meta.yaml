@@ -12,6 +12,9 @@ package:
 source:
   url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
   sha256: c814e0670112a22c1a6ec03ab420a52ae236a9a42e9e438c3cbd37f37e658fb3
+  patches:
+    # backport https://github.com/apache/arrow/pull/14656, can be dropped for v>=11
+    - patches/0001-ARROW-18340-Python-PyArrow-C-header-files-no-longer-.patch
 
 build:
   number: 0
@@ -269,6 +272,9 @@ outputs:
         - test -f ${SP_DIR}/pyarrow/libarrow_python_flight.dylib                  # [osx]
         - if not exist %SP_DIR%\pyarrow\arrow_python.dll exit 1                   # [win]
         - if not exist %SP_DIR%\pyarrow\arrow_python_flight.dll exit 1            # [win]
+
+        - test -f ${SP_DIR}/pyarrow/include/arrow/python/pyarrow.h                # [unix]
+        - if not exist %SP_DIR%\pyarrow\include\arrow\python\pyarrow.h exit 1     # [win]
 
         - test ! -f ${SP_DIR}/pyarrow/tests/test_array.py                         # [unix]
         - if exist %SP_DIR%/pyarrow/tests/test_array.py exit 1                    # [win]
