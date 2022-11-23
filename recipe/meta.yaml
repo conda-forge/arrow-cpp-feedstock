@@ -15,6 +15,9 @@ source:
     patches:
       # backport https://github.com/apache/arrow/pull/14656, can be dropped for v>=11
       - patches/0001-ARROW-18340-Python-PyArrow-C-header-files-no-longer-.patch
+      # switch off tests that require the as-yet unpackaged
+      # https://github.com/googleapis/storage-testbench
+      - patches/0002-definitely-skip-all-tests-requiring-gcs_server-fixtu.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 00c483283433b4c02cb811f260dbe35414c806a4
