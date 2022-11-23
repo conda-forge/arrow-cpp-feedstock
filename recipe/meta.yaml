@@ -10,11 +10,15 @@ package:
   version: {{ version }}
 
 source:
-  url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
-  sha256: c814e0670112a22c1a6ec03ab420a52ae236a9a42e9e438c3cbd37f37e658fb3
-  patches:
-    # backport https://github.com/apache/arrow/pull/14656, can be dropped for v>=11
-    - patches/0001-ARROW-18340-Python-PyArrow-C-header-files-no-longer-.patch
+  - url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
+    sha256: c814e0670112a22c1a6ec03ab420a52ae236a9a42e9e438c3cbd37f37e658fb3
+    patches:
+      # backport https://github.com/apache/arrow/pull/14656, can be dropped for v>=11
+      - patches/0001-ARROW-18340-Python-PyArrow-C-header-files-no-longer-.patch
+  # testing-submodule not part of release tarball
+  - git_url: https://github.com/apache/arrow-testing.git
+    git_rev: 00c483283433b4c02cb811f260dbe35414c806a4
+    folder: testing
 
 build:
   number: 0
@@ -332,9 +336,20 @@ outputs:
         - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
 
     test:
+      requires:
+        - pytest
+        - pytest-lazy-fixture
+        - hypothesis
+        - pandas
+        - scipy
+      source_files:
+        - testing/data
       commands:
-        - test -f ${SP_DIR}/pyarrow/tests/test_array.py             # [unix]
-        - if not exist %SP_DIR%/pyarrow/tests/test_array.py exit 1  # [win]
+        - cd ${SP_DIR}/pyarrow/tests                        # [unix]
+        - cd %SP_DIR%\pyarrow\tests                         # [win]
+        - export ARROW_TEST_DATA="${SRC_DIR}/testing/data"  # [unix]
+        - set "ARROW_TEST_DATA=%SRC_DIR%\testing\data"      # [win]
+        - pytest -v -rfEs
 
     about:
       home: http://github.com/apache/arrow
