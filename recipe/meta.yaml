@@ -370,9 +370,17 @@ outputs:
         - set "ARROW_TEST_DATA=%SRC_DIR%\testing\data"      # [win]
 
         {% set tests_to_skip = "_not_a_real_test" %}
+        # we do not have GPUs in CI --> cannot test cuda
+        {% set tests_to_skip = tests_to_skip + " or test_cuda" %}
         # skip tests that raise SIGINT and crash the test suite
         {% set tests_to_skip = tests_to_skip + " or (test_csv and test_cancellation)" %}  # [linux]
         {% set tests_to_skip = tests_to_skip + " or (test_flight and test_interrupt)" %}  # [linux]
+        # skip tests that make invalid(-for-conda) assumptions about the compilers setup
+        {% set tests_to_skip = tests_to_skip + " or test_cython_api" %}                   # [unix]
+        {% set tests_to_skip = tests_to_skip + " or test_visit_strings" %}                # [unix]
+        # skip tests that cannot succeed in emulation
+        {% set tests_to_skip = tests_to_skip + " or test_debug_memory_pool_disabled" %}   # [aarch64 or ppc64le]
+        {% set tests_to_skip = tests_to_skip + " or test_env_var_io_thread_count" %}      # [aarch64 or ppc64le]
         - pytest -v -rfEs -k "not ({{ tests_to_skip }})"
 
     about:
