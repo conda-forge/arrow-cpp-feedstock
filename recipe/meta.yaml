@@ -342,9 +342,25 @@ outputs:
       requires:
         - pytest
         - pytest-lazy-fixture
+        - backports.zoneinfo  # [py<39]
+        - cffi
+        - cloudpickle
+        - cython
+        - fastparquet
+        - fsspec
         - hypothesis
         - pandas
+        # not all arches available in conda-forge; osx-arm not tested anyway
+        - pytorch *           # [unix and not ppc64le and py<311]
         - scipy
+        # we're not building java bindings
+        # - jpype1
+        # doesn't get picked up correctly
+        # - libhdfs3
+        # causes segfaults
+        # - sparse
+        # not rebuilt for grpc 1.49 yet
+        # - tensorflow
       source_files:
         - testing/data
       commands:
