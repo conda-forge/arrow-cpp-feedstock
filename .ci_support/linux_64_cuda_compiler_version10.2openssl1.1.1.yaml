@@ -1,3 +1,5 @@
+aws_sdk_cpp:
+- 1.9.379
 bzip2:
 - '1'
 c_ares:
@@ -15,6 +17,8 @@ channel_targets:
 cuda_compiler:
 - nvcc
 cuda_compiler_version:
+- '10.2'
+cuda_compiler_version_min:
 - '10.2'
 cxx_compiler:
 - gxx
@@ -37,6 +41,9 @@ libprotobuf:
 lz4_c:
 - 1.9.3
 numpy:
+- '1.21'
+- '1.23'
+- '1.20'
 - '1.20'
 openssl:
 - 1.1.1
@@ -47,6 +54,9 @@ pin_run_as_build:
     min_pin: x.x
     max_pin: x.x
 python:
+- 3.10.* *_cpython
+- 3.11.* *_cpython
+- 3.8.* *_cpython
 - 3.9.* *_cpython
 re2:
 - 2022.06.01
