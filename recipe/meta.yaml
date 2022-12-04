@@ -37,9 +37,6 @@ build:
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
-  # temporary: skip CUDA on aarch/ppc until cross-compilation works, see
-  # https://github.com/conda-forge/conda-forge-ci-setup-feedstock/pull/210
-  skip: true  # [(aarch64 or ppc64le) and (cuda_compiler_version != "None")]
   run_exports:
     - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
 
