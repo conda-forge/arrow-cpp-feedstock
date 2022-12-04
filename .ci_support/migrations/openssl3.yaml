@@ -2,6 +2,7 @@ __migrator:
   build_number: 1
   kind: version
   migration_number: 1
-libprotobuf:
-- '3.21'
-migrator_ts: 1661531047.2553904
+migrator_ts: 1631932209.13688
+openssl:
+- 1.1.1
+- '3'
