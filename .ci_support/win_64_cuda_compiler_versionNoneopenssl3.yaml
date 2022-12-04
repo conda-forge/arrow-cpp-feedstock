@@ -41,6 +41,7 @@ numpy:
 - '1.23'
 - '1.20'
 - '1.20'
+- '1.20'
 openssl:
 - '3'
 pin_run_as_build:
@@ -50,6 +51,7 @@ pin_run_as_build:
 python:
 - 3.10.* *_cpython
 - 3.11.* *_cpython
+- 3.7.* *_cpython
 - 3.8.* *_cpython
 - 3.9.* *_cpython
 re2:
