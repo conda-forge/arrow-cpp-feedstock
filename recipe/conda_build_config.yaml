@@ -5,8 +5,10 @@ python:
   - 3.8.* *_cpython
   - 3.9.* *_cpython
   - 3.10.* *_cpython
+  - 3.11.* *_cpython
 python_impl:
   - cpython           # [not (osx and arm64)]
+  - cpython
   - cpython
   - cpython
   - cpython
@@ -15,3 +17,4 @@ numpy:
   - 1.20
   - 1.20
   - 1.21
+  - 1.23
