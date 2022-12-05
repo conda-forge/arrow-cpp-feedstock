@@ -7,7 +7,7 @@ c_ares:
 c_compiler:
 - gcc
 c_compiler_version:
-- '10'
+- '11'
 cdt_arch:
 - aarch64
 cdt_name:
@@ -23,7 +23,7 @@ cuda_compiler_version:
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '10'
+- '11'
 docker_image:
 - quay.io/condaforge/linux-anvil-aarch64
 gflags:
@@ -41,7 +41,7 @@ libprotobuf:
 lz4_c:
 - 1.9.3
 numpy:
-- '1.21'
+- '1.20'
 openssl:
 - 1.1.1
 orc:
@@ -51,7 +51,7 @@ pin_run_as_build:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.10.* *_cpython
+- 3.8.* *_cpython
 re2:
 - 2022.06.01
 snappy:
