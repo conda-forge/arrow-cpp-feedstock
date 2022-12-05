@@ -15,16 +15,16 @@ source:
     patches:
       # backport https://github.com/apache/arrow/pull/14656, can be dropped for v>=11
       - patches/0001-ARROW-18340-Python-PyArrow-C-header-files-no-longer-.patch
-      # switch off tests that require the as-yet unpackaged
+      # make sure we properly skip tests that require the as-yet unpackaged
       # https://github.com/googleapis/storage-testbench
-      - patches/0002-definitely-skip-all-tests-requiring-gcs_server-fixtu.patch
+      - patches/0002-properly-skip-if-instantiation-of-gcs_server-gcfs-fi.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 00c483283433b4c02cb811f260dbe35414c806a4
     folder: testing
 
 build:
-  number: 1
+  number: 2
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
