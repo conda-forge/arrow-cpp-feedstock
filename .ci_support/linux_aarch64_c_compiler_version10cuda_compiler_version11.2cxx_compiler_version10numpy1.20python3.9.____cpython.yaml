@@ -35,7 +35,7 @@ google_cloud_cpp:
 libabseil:
 - '20220623.0'
 libgrpc:
-- '1.49'
+- '1.51'
 libprotobuf:
 - '3.21'
 lz4_c:
@@ -51,7 +51,7 @@ pin_run_as_build:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.8.* *_cpython
+- 3.9.* *_cpython
 re2:
 - 2022.06.01
 snappy:
