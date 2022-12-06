@@ -21,7 +21,7 @@ glog:
 libabseil:
 - '20220623.0'
 libgrpc:
-- '1.49'
+- '1.51'
 libprotobuf:
 - '3.21'
 lz4_c:
