@@ -20,7 +20,7 @@ source:
     - patches/0002-ARROW-16730-C-Bump-vendored-jemalloc-version-13294.patch
 
 build:
-  number: 9
+  number: 10
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [(win or linux64) and cuda_compiler_version not in ("None", "10.2")]
