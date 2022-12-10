@@ -134,10 +134,9 @@ outputs:
     test:
       commands:
         {% set headers = [
-            "arrow/api.h", "arrow/flight/types.h", "arrow/flight/sql/api.h",
-            "gandiva/engine.h", "parquet/api/reader.h"
+            "arrow/api.h", "arrow/flight/types.h", "gandiva/engine.h", "parquet/api/reader.h"
         ] %}
-        {% set headers = headers + ["plasma/client.h"] %}  # [unix]
+        {% set headers = headers + ["arrow/flight/sql/api.h", "plasma/client.h"] %}  # [unix]
         {% for each_header in headers %}
         # headers
         - test -f $PREFIX/include/{{ each_header }} || (echo "{{ each_header }} not found" && exit 1)  # [unix]
@@ -145,10 +144,9 @@ outputs:
         {% endfor %}
 
         {% set libs = (cuda_compiler_version != "None") * ["arrow_cuda"] + [
-            "arrow", "arrow_dataset", "arrow_flight", "arrow_flight_sql",
-            "arrow_python", "gandiva", "parquet"
+            "arrow", "arrow_dataset", "arrow_flight", "arrow_python", "gandiva", "parquet"
         ] %}
-        {% set libs = libs + ["plasma"] %}  # [unix]
+        {% set libs = libs + ["arrow_flight_sql", "plasma"] %}     # [unix]
         {% for each_lib in libs %}
         # shared
         - test -f $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
