@@ -1,5 +1,7 @@
 BUILD:
 - aarch64-conda_cos7-linux-gnu
+aws_sdk_cpp:
+- 1.9.379
 bzip2:
 - '1'
 c_ares:
@@ -20,6 +22,8 @@ cuda_compiler:
 - nvcc
 cuda_compiler_version:
 - None
+cuda_compiler_version_min:
+- '11.2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
