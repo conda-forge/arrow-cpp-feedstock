@@ -122,7 +122,7 @@ outputs:
         - python
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
-        - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
+        - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
 
     about:
       home: http://github.com/apache/arrow
@@ -207,7 +207,7 @@ outputs:
         - python
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
-        - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
+        - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
 
     about:
       home: http://github.com/apache/arrow
@@ -281,7 +281,7 @@ outputs:
         - python
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
-        - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
+        - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
 
     about:
       home: http://github.com/apache/arrow
