@@ -18,8 +18,6 @@ cuda_compiler:
 - nvcc
 cuda_compiler_version:
 - '10.2'
-cuda_compiler_version_min:
-- '10.2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
@@ -43,7 +41,7 @@ numpy:
 openssl:
 - '3'
 orc:
-- 1.8.0
+- 1.8.1
 pin_run_as_build:
   python:
     min_pin: x.x
