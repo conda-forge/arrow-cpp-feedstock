@@ -23,6 +23,9 @@ source:
     # replace with placeholder that allows interested users to fix the file path
     - patches/0002-don-t-bake-non-relocatable-CMAKE_INSTALL_FULL_LIBDIR.patch
 
+# ensure cuda_compiler_version_min gets picked up by conda-smithy
+# [cuda_compiler_version_min == "something"]
+
 build:
   number: 17
   # for cuda support, building with one version is enough to be compatible with
