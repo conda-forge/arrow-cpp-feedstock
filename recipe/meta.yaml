@@ -218,12 +218,11 @@ outputs:
       ignore_run_exports_from:
         - openssl
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
+      rpaths:
+        - lib/
+        - {{ SP_DIR }}/pyarrow
       missing_dso_whitelist:
         # not actually missing, but installed into SP_DIR, see tests
-        - "*/libarrow_python.so.*"            # [linux]
-        - "*/libarrow_python_flight.so.*"     # [linux]
-        - "*/libarrow_python.*.dylib"         # [osx]
-        - "*/libarrow_python_flight.*.dylib"  # [osx]
         - "*/arrow_python.dll"                # [win]
         - "*/arrow_python_flight.dll"         # [win]
     requirements:
