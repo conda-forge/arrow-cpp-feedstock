@@ -354,8 +354,8 @@ outputs:
         - hypothesis
         - pandas
         - scipy
-        # not all arches available in conda-forge; osx-arm not tested anyway
-        - pytorch *           # [unix and not ppc64le and py<311]
+        # not all OSes/arches available in conda-forge
+        - pytorch *           # [unix and not ppc64le]
         - tensorflow          # [unix and x86_64 and py<311]
         # we're not building java bindings
         # - jpype1
