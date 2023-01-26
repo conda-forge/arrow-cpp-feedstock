@@ -1,7 +1,5 @@
 #!/bin/bash
-
-set -e
-set -x
+set -ex
 
 mkdir cpp/build
 pushd cpp/build
