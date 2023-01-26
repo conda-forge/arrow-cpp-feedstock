@@ -85,6 +85,9 @@ outputs:
         - "*/nvcuda.dll"      # [win]
     requirements:
       build:
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
         - clangdev {{ llvm_version }}            # [osx and arm64]
         - llvmdev {{ llvm_version }}             # [osx and arm64]
         - gnuconfig                              # [osx and arm64]
@@ -94,9 +97,6 @@ outputs:
         - autoconf  # [unix]
         - ninja
         - make  # [unix]
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
-        - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
@@ -213,6 +213,10 @@ outputs:
         - "*/arrow_python_flight.dll"         # [win]
     requirements:
       build:
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        # pyarrow does not require nvcc but it needs to link against libraries in libarrow=*=*cuda
+        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
@@ -220,10 +224,6 @@ outputs:
         - cmake
         - ninja
         - make  # [unix]
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
-        # pyarrow does not require nvcc but it needs to link against libraries in libarrow=*=*cuda
-        - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
         - {{ pin_subpackage('libarrow', exact=True) }}
         - clangdev {{ llvm_version }}
@@ -300,6 +300,10 @@ outputs:
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
     requirements:
       build:
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        # pyarrow does not require nvcc but it needs to link against libraries in libarrow=*=*cuda
+        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
@@ -307,10 +311,6 @@ outputs:
         - cmake
         - ninja
         - make  # [unix]
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
-        # pyarrow does not require nvcc but it needs to link against libraries in libarrow=*=*cuda
-        - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
         - {{ pin_subpackage('libarrow', exact=True) }}
         - {{ pin_subpackage('pyarrow', exact=True) }}
