@@ -23,7 +23,7 @@ source:
     - patches/0004-ARROW-16730-C-Bump-vendored-jemalloc-version-13294.patch
 
 build:
-  number: 15
+  number: 16
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", "10.2")]
@@ -79,6 +79,7 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
+        - aws-crt-cpp  # [unix]
         - aws-sdk-cpp
         # abseil is only here to help conda pick the right constraints for pyarrow, see
         # https://github.com/conda-forge/arrow-cpp-feedstock/pull/815#issuecomment-1216713245
@@ -174,8 +175,6 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
-      ignore_run_exports_from:
-        - openssl
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
     requirements:
       build:
@@ -196,7 +195,6 @@ outputs:
         - gflags  # [unix]
         - numpy
         - python
-        - openssl
         - setuptools
         - setuptools_scm
       run:
@@ -251,8 +249,6 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
-      ignore_run_exports_from:
-        - openssl
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
     requirements:
       build:
@@ -273,7 +269,6 @@ outputs:
         - cython
         - numpy
         - python
-        - openssl
         - setuptools
         - setuptools_scm
       run:
