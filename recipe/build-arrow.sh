@@ -3,6 +3,14 @@
 set -e
 set -x
 
+# Copy the [de]activate scripts to $PREFIX/etc/conda/[de]activate.d, see
+# https://conda-forge.org/docs/maintainer/adding_pkgs.html#activate-scripts
+for CHANGE in "activate"
+do
+    mkdir -p "${PREFIX}/etc/conda/${CHANGE}.d"
+    cp "${RECIPE_DIR}/${CHANGE}.sh" "${PREFIX}/etc/conda/${CHANGE}.d/${PKG_NAME}_${CHANGE}.sh"
+done
+
 mkdir cpp/build
 pushd cpp/build
 

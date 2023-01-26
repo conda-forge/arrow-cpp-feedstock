@@ -5,6 +5,9 @@
 {% set proc_build_number = "0" %}
 {% set llvm_version = "14" %}
 
+# see https://github.com/apache/arrow/blob/apache-arrow-10.0.1/cpp/CMakeLists.txt#L88-L90
+{% set so_version = (version.split(".")[0] | int * 100 + version.split(".")[1] | int) ~ "." ~ version.split(".")[2] ~ ".0" %}
+
 package:
   name: arrow-cpp-ext
   version: {{ version }}
@@ -174,6 +177,10 @@ outputs:
         - if exist %LIBRARY_BIN%\arrow_cuda.dll exit 1             # [(cuda_compiler_version == "None") and win]
         - if exist %LIBRARY_LIB%\arrow_cuda.lib exit 1             # [(cuda_compiler_version == "None") and win]
         - if exist %LIBRARY_LIB%\arrow_cuda_static.lib exit 1      # [(cuda_compiler_version == "None") and win]
+
+        # gdb-wrapper (paths are stacked intentionally)
+        - test -f $PREFIX/share/gdb/auto-load/$PREFIX/lib/libarrow.so.{{ so_version }}-gdb.py     # [linux]
+        - test -f $PREFIX/share/gdb/auto-load/$PREFIX/lib/libarrow.{{ so_version }}.dylib-gdb.py  # [osx]
 
   - name: pyarrow
     script: build-pyarrow.sh  # [not win]
