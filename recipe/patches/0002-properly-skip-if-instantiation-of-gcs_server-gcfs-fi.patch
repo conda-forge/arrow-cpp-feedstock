@@ -1,0 +1,61 @@
+From 652c929e80cb53425027d225d3a858266b54360b Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Mon, 5 Dec 2022 20:15:58 +1100
+Subject: [PATCH 2/2] properly skip if instantiation of gcs_server/gcfs fixture
+ fails
+
+---
+ python/pyarrow/tests/conftest.py | 9 ++++++++-
+ python/pyarrow/tests/test_fs.py  | 7 ++++---
+ 2 files changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/python/pyarrow/tests/conftest.py b/python/pyarrow/tests/conftest.py
+index a06ac9209..db0df51ee 100644
+--- a/python/pyarrow/tests/conftest.py
++++ b/python/pyarrow/tests/conftest.py
+@@ -183,9 +183,16 @@ def gcs_server():
+     args = [sys.executable, '-m', 'testbench', '--port', str(port)]
+     proc = None
+     try:
++        # check first if testbench module is available
++        import testbench
++        # start server
+         proc = subprocess.Popen(args, env=env)
+-    except OSError as e:
++        # Make sure the server is alive.
++        assert proc.poll() is None
++    except (ModuleNotFoundError, OSError) as e:
+         pytest.skip(f"Command {args} failed to execute: {e}")
++    except AssertionError as e:
++        pytest.skip(f"Command {args} did not start server successfully: {e}")
+     else:
+         yield {
+             'connection': ('localhost', port),
+diff --git a/python/pyarrow/tests/test_fs.py b/python/pyarrow/tests/test_fs.py
+index 945114454..7380711b3 100644
+--- a/python/pyarrow/tests/test_fs.py
++++ b/python/pyarrow/tests/test_fs.py
+@@ -207,8 +207,6 @@ def gcsfs(request, gcs_server):
+ 
+     host, port = gcs_server['connection']
+     bucket = 'pyarrow-filesystem/'
+-    # Make sure the server is alive.
+-    assert gcs_server['process'].poll() is None
+ 
+     fs = GcsFileSystem(
+         endpoint_override=f'{host}:{port}',
+@@ -217,7 +215,10 @@ def gcsfs(request, gcs_server):
+         anonymous=True,
+         retry_time_limit=timedelta(seconds=45)
+     )
+-    fs.create_dir(bucket)
++    try:
++        fs.create_dir(bucket)
++    except OSError as e:
++        pytest.skip(f"Could not create directory in {fs}: {e}")
+ 
+     yield dict(
+         fs=fs,
+-- 
+2.38.1.windows.1
+
