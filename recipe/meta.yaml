@@ -80,6 +80,7 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
+        - aws-crt-cpp  # [unix]
         - aws-sdk-cpp
         # abseil is only here to help conda pick the right constraints for pyarrow, see
         # https://github.com/conda-forge/arrow-cpp-feedstock/pull/815#issuecomment-1216713245
