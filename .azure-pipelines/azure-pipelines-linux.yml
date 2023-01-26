@@ -8,36 +8,20 @@ jobs:
     vmImage: ubuntu-latest
   strategy:
     matrix:
-      linux_64_cuda_compiler_version10.2openssl1.1.1:
-        CONFIG: linux_64_cuda_compiler_version10.2openssl1.1.1
+      linux_64_cuda_compiler_version10.2:
+        CONFIG: linux_64_cuda_compiler_version10.2
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      linux_64_cuda_compiler_version10.2openssl3:
-        CONFIG: linux_64_cuda_compiler_version10.2openssl3
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      linux_64_cuda_compiler_versionNoneopenssl1.1.1:
-        CONFIG: linux_64_cuda_compiler_versionNoneopenssl1.1.1
+      linux_64_cuda_compiler_versionNone:
+        CONFIG: linux_64_cuda_compiler_versionNone
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_cuda_compiler_versionNoneopenssl3:
-        CONFIG: linux_64_cuda_compiler_versionNoneopenssl3
+      linux_aarch64_cuda_compiler_versionNone:
+        CONFIG: linux_aarch64_cuda_compiler_versionNone
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_aarch64_cuda_compiler_versionNoneopenssl1.1.1:
-        CONFIG: linux_aarch64_cuda_compiler_versionNoneopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_aarch64_cuda_compiler_versionNoneopenssl3:
-        CONFIG: linux_aarch64_cuda_compiler_versionNoneopenssl3
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_ppc64le_cuda_compiler_versionNoneopenssl1.1.1:
-        CONFIG: linux_ppc64le_cuda_compiler_versionNoneopenssl1.1.1
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_ppc64le_cuda_compiler_versionNoneopenssl3:
-        CONFIG: linux_ppc64le_cuda_compiler_versionNoneopenssl3
+      linux_ppc64le_cuda_compiler_versionNone:
+        CONFIG: linux_ppc64le_cuda_compiler_versionNone
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
   timeoutInMinutes: 360
