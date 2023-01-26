@@ -46,12 +46,6 @@ outputs:
     build:
       number: {{ proc_build_number }}
       string: {{ build_ext }}
-      ignore_run_exports_from:
-        - openssl
-    requirements:
-      host:
-        # ensure we split the CI jobs per openssl version
-        - openssl
     test:
       commands:
         - exit 0
@@ -68,12 +62,7 @@ outputs:
     build:
       number: {{ proc_build_number }}
       string: {{ build_ext }}
-      ignore_run_exports_from:
-        - openssl
     requirements:
-      host:
-        # ensure we split the CI jobs per openssl version
-        - openssl
       run:
         - apache-arrow-proc ={{ build_ext_version }}={{ build_ext }}
     test:
@@ -198,8 +187,6 @@ outputs:
         - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
     requirements:
       host:
-        # make sure the builds for different openssl versions (with the same PKG_BUILDNUM) have different hashes
-        - openssl
         - {{ pin_subpackage('libarrow', exact=True) }}
       run:
         - {{ pin_subpackage('libarrow', exact=True) }}
@@ -215,8 +202,6 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
-      ignore_run_exports_from:
-        - openssl
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
       rpaths:
         - lib/
@@ -245,7 +230,6 @@ outputs:
         - cython
         - gflags  # [unix]
         - numpy
-        - openssl
         - python
         - setuptools
         - setuptools_scm
@@ -312,8 +296,6 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
-      ignore_run_exports_from:
-        - openssl
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
     requirements:
       build:
@@ -335,7 +317,6 @@ outputs:
         - llvmdev {{ llvm_version }}
         - cython
         - numpy
-        - openssl
         - python
         - setuptools
         - setuptools_scm
