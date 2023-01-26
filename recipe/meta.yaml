@@ -1,4 +1,4 @@
-{% set version = "10.0.1" %}
+{% set version = "11.0.0" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "4.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -14,7 +14,7 @@ package:
 
 source:
   - url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
-    sha256: c814e0670112a22c1a6ec03ab420a52ae236a9a42e9e438c3cbd37f37e658fb3
+    sha256: 2dd8f0ea0848a58785628ee3a57675548d509e17213a2f5d72b0d900b43f5430
     patches:
       # backport https://github.com/apache/arrow/pull/14656, can be dropped for v>=11
       - patches/0001-ARROW-18340-Python-PyArrow-C-header-files-no-longer-.patch
@@ -33,7 +33,7 @@ source:
     folder: testing
 
 build:
-  number: 6
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
