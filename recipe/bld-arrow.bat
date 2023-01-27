@@ -14,6 +14,11 @@ if "%cuda_compiler_version%"=="None" (
     set "EXTRA_CMAKE_ARGS=-DARROW_CUDA=ON"
 )
 
+:: # reusable variable for dependencies we cannot yet unvendor
+set "READ_RECIPE_META_YAML_WHY_NOT=OFF"
+
+:: for available switches see
+:: https://github.com/apache/arrow/blame/apache-arrow-11.0.0/cpp/cmake_modules/DefineOptions.cmake
 cmake -G "Ninja" ^
       -DARROW_BOOST_USE_SHARED:BOOL=ON ^
       -DARROW_BUILD_STATIC:BOOL=OFF ^
@@ -37,11 +42,15 @@ cmake -G "Ninja" ^
       -DARROW_PARQUET:BOOL=ON ^
       -DARROW_S3:BOOL=ON ^
       -DARROW_SIMD_LEVEL:STRING=NONE ^
+      -DARROW_SKYHOOK:BOOL=ON ^
       -DARROW_SUBSTRAIT:BOOL=ON ^
+      -DARROW_THRIFT_USE_SHARED:BOOL=ON ^
       -DARROW_USE_GLOG:BOOL=ON ^
       -DARROW_WITH_BROTLI:BOOL=ON ^
       -DARROW_WITH_BZ2:BOOL=ON ^
       -DARROW_WITH_LZ4:BOOL=ON ^
+      -DARROW_WITH_NLOHMANN_JSON:BOOL=ON ^
+      -DARROW_WITH_OPENTELEMETRY:BOOL=%READ_RECIPE_META_YAML_WHY_NOT% ^
       -DARROW_WITH_SNAPPY:BOOL=ON ^
       -DARROW_WITH_ZLIB:BOOL=ON ^
       -DARROW_WITH_ZSTD:BOOL=ON ^

@@ -98,6 +98,8 @@ outputs:
         - autoconf     # [linux]
         - make         # [linux]
       host:
+        # for required dependencies, see
+        # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
         - aws-crt-cpp  # [unix]
@@ -106,9 +108,14 @@ outputs:
         - brotli
         - bzip2
         - c-ares
+        # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
+        # - cpp-opentelemetry-sdk
+        # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
         - glog
         - google-cloud-cpp
+        # arrow uses a customized jemalloc, see #944
+        # - jemalloc
         - libabseil
         # since libgoogle-cloud is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
@@ -119,13 +126,16 @@ outputs:
         - libprotobuf
         - libutf8proc
         - lz4-c
+        - nlohmann_json
         # gandiva depends on openssl
         - openssl
+        # not on windows yet: https://github.com/conda-forge/orc-feedstock/issues/54
         - orc          # [unix]
         - rapidjson
         - re2
         - snappy
         - thrift-cpp
+        - ucx          # [linux]
         - xsimd
         - zlib
         - zstd
