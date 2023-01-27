@@ -16,17 +16,12 @@ source:
   - url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
     sha256: 2dd8f0ea0848a58785628ee3a57675548d509e17213a2f5d72b0d900b43f5430
     patches:
-      # backport https://github.com/apache/arrow/pull/14656, can be dropped for v>=11
-      - patches/0001-ARROW-18340-Python-PyArrow-C-header-files-no-longer-.patch
-      # switch off tests that require the as-yet unpackaged
-      # https://github.com/googleapis/storage-testbench
-      - patches/0002-properly-skip-if-instantiation-of-gcs_server-gcfs-fi.patch
       # gdb-integration needs full path to shared library, see
       # https://github.com/apache/arrow/blob/master/docs/source/cpp/gdb.rst#manual-loading
       # however, baking the installation-env into the path for the gdb-file cannot work
       # with the usual relocation treatement and leads to other issues, see #935;
       # replace with placeholder that allows interested users to fix the file path
-      - patches/0003-don-t-bake-non-relocatable-CMAKE_INSTALL_FULL_LIBDIR.patch
+      - patches/0001-don-t-bake-non-relocatable-CMAKE_INSTALL_FULL_LIBDIR.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 00c483283433b4c02cb811f260dbe35414c806a4
