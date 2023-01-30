@@ -56,9 +56,9 @@ cmake -G "Ninja" ^
       -DPython3_EXECUTABLE="%PYTHON%" ^
       %EXTRA_CMAKE_ARGS% ^
       ..
-if errorlevel 1 exit 1
+if %ERRORLEVEL% neq 0 exit 1
 
 cmake --build . --target install --config Release
-if errorlevel 1 exit 1
+if %ERRORLEVEL% neq 0 exit 1
 
 popd
