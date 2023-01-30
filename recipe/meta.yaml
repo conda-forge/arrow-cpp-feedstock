@@ -5,6 +5,9 @@
 {% set proc_build_number = "0" %}
 {% set llvm_version = "14" %}
 
+# see https://github.com/apache/arrow/blob/apache-arrow-10.0.1/cpp/CMakeLists.txt#L88-L90
+{% set so_version = (version.split(".")[0] | int * 100 + version.split(".")[1] | int) ~ "." ~ version.split(".")[2] ~ ".0" %}
+
 package:
   name: arrow-cpp-ext
   version: {{ version }}
@@ -16,9 +19,18 @@ source:
     # backport of the following commit for compatibility with VS2019
     # https://github.com/apache/arrow/commit/897c186f475f3dd82c1ab47e5cfb87cb0fed8440
     - patches/0001-ARROW-17433-CI-C-Use-Visual-Studio-2019-on-AppVeyor-.patch
+    # gdb-integration needs full path to shared library, see
+    # https://github.com/apache/arrow/blob/master/docs/source/cpp/gdb.rst#manual-loading
+    # however, baking the installation-env into the path for the gdb-file cannot work
+    # with the usual relocation treatement and leads to other issues, see #935;
+    # replace with placeholder that allows interested users to fix the file path
+    - patches/0002-don-t-bake-non-relocatable-CMAKE_INSTALL_FULL_LIBDIR.patch
+
+# ensure cuda_compiler_version_min gets picked up by conda-smithy
+# [cuda_compiler_version_min == "something"]
 
 build:
-  number: 16
+  number: 17
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -78,6 +90,7 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
+        - aws-crt-cpp  # [unix]
         - aws-sdk-cpp
         # abseil is only here to help conda pick the right constraints for pyarrow, see
         # https://github.com/conda-forge/arrow-cpp-feedstock/pull/815#issuecomment-1216713245
@@ -165,6 +178,10 @@ outputs:
         - if exist %LIBRARY_LIB%\arrow_cuda.lib exit 1             # [(cuda_compiler_version == "None") and win]
         - if exist %LIBRARY_LIB%\arrow_cuda_static.lib exit 1      # [(cuda_compiler_version == "None") and win]
 
+        # gdb-wrapper (paths are stacked intentionally)
+        - test -f $PREFIX/share/gdb/auto-load/$PREFIX/lib/libarrow.so.{{ so_version }}-gdb.py     # [linux]
+        - test -f $PREFIX/share/gdb/auto-load/$PREFIX/lib/libarrow.{{ so_version }}.dylib-gdb.py  # [osx]
+
   - name: pyarrow
     script: build-pyarrow.sh  # [not win]
     script: bld-pyarrow.bat   # [win]
@@ -173,8 +190,6 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
-      ignore_run_exports_from:
-        - openssl
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
     requirements:
       build:
@@ -195,7 +210,6 @@ outputs:
         - gflags  # [unix]
         - numpy
         - python
-        - openssl
         - setuptools
         - setuptools_scm
       run:
@@ -250,8 +264,6 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports:
         - cudatoolkit
-      ignore_run_exports_from:
-        - openssl
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
     requirements:
       build:
@@ -272,7 +284,6 @@ outputs:
         - cython
         - numpy
         - python
-        - openssl
         - setuptools
         - setuptools_scm
       run:
