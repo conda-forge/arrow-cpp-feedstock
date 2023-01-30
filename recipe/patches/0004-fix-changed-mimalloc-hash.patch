@@ -1,0 +1,25 @@
+From 765af1c893d59aea99456ab7aeccfb05be817b40 Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Tue, 31 Jan 2023 09:51:00 +1100
+Subject: [PATCH 4/4] fix changed mimalloc hash
+
+---
+ cpp/thirdparty/versions.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/cpp/thirdparty/versions.txt b/cpp/thirdparty/versions.txt
+index 0cc496e93..8a9bc5233 100644
+--- a/cpp/thirdparty/versions.txt
++++ b/cpp/thirdparty/versions.txt
+@@ -60,7 +60,7 @@ ARROW_JEMALLOC_BUILD_SHA256_CHECKSUM=2db82d1e7119df3e71b7640219b6dfe84789bc05379
+ ARROW_LZ4_BUILD_VERSION=v1.9.4
+ ARROW_LZ4_BUILD_SHA256_CHECKSUM=0b0e3aa07c8c063ddf40b082bdf7e37a1562bda40a0ff5272957f3e987e0e54b
+ ARROW_MIMALLOC_BUILD_VERSION=v2.0.6
+-ARROW_MIMALLOC_BUILD_SHA256_CHECKSUM=9f05c94cc2b017ed13698834ac2a3567b6339a8bde27640df5a1581d49d05ce5
++ARROW_MIMALLOC_BUILD_SHA256_CHECKSUM=57f86a6bc0045e590358eb2baf1b288edaa383388f0263360444e54a7ac3a2a7
+ ARROW_NLOHMANN_JSON_BUILD_VERSION=v3.10.5
+ ARROW_NLOHMANN_JSON_BUILD_SHA256_CHECKSUM=5daca6ca216495edf89d167f808d1d03c4a4d929cef7da5e10f135ae1540c7e4
+ ARROW_OPENTELEMETRY_BUILD_VERSION=v1.4.1
+-- 
+2.38.1.windows.1
+
