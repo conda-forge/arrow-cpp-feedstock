@@ -9,6 +9,12 @@
 
 # where the GDB wrappers get installed
 GDB_PREFIX=$CONDA_PREFIX/share/gdb/auto-load
+
+# If the directory is not writable, nothing can be done
+if [ ! -w $GDB_PREFIX ]; then
+    return
+fi
+
 # this needs to be in sync with the respective patch
 PLACEHOLDER=replace_this_section_with_absolute_slashed_path_to_CONDA_PREFIX
 # the paths here are intentionally stacked, see #935, resp.
