@@ -28,7 +28,7 @@ source:
     folder: testing
 
 build:
-  number: 0
+  number: 1
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -385,13 +385,17 @@ outputs:
         # vvvvvvv TESTS THAT SHOULDN'T HAVE TO BE SKIPPED vvvvvvv
         # failing on linux with "OSError: Could not connect to socket /tmp/[...]/plasma.sock"
         {% set tests_to_skip = tests_to_skip + " or test_plasma" %}                       # [linux]
+        # gandiva tests are segfaulting on ppc
+        {% set tests_to_skip = tests_to_skip + " or test_gandiva" %}                      # [ppc64le]
+        # test failures on ppc
+        {% set tests_to_skip = tests_to_skip + " or test_safe_cast_from_float_with_nans_to_int" %}  # [ppc64le]
+        # gandiva tests are segfaulting on ppc
+        {% set tests_to_skip = tests_to_skip + " or test_float_with_null_as_integer" %}   # [ppc64le]
         # "Unsupported backend 'nonexistent' specified in ARROW_DEFAULT_MEMORY_POOL"
         {% set tests_to_skip = tests_to_skip + " or (test_memory and test_env_var)" %}    # [unix]
         # test is broken; header is in $PREFIX, not $SP_DIR
         {% set tests_to_skip = tests_to_skip + " or (test_misc and test_get_include)" %}  # [unix]
-        - pytest -v -rfEs -k "not ({{ tests_to_skip }})"  # [not ppc64le]
-        # NOTE: test suite is skipped on ppc due to bugs in QEMU code that cause
-        # CI to fail, even though the tests would run through on native hardware
+        - pytest -v -rfEs -k "not ({{ tests_to_skip }})"
 
     about:
       home: http://github.com/apache/arrow
