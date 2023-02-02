@@ -18,10 +18,13 @@ EXTRA_CMAKE_ARGS=""
 if [ "$(uname)" == "Linux" ]; then
   SYSTEM_INCLUDES=$(echo | ${CXX} -E -Wp,-v -xc++ - 2>&1 | grep '^ ' | awk '{print "-isystem;" substr($1, 1)}' | tr '\n' ';')
   ARROW_GANDIVA_PC_CXX_FLAGS="${SYSTEM_INCLUDES}"
+  # only available on linux so far
+  ARROW_WITH_UCX=ON
 else
   # See https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk
   CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
   ARROW_GANDIVA_PC_CXX_FLAGS="-D_LIBCPP_DISABLE_AVAILABILITY"
+  ARROW_WITH_UCX=OFF
 fi
 
 # Enable CUDA support
@@ -66,6 +69,11 @@ if [[ "${build_platform}" != "${target_platform}" ]]; then
     EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DProtobuf_PROTOC_EXECUTABLE=$BUILD_PREFIX/bin/protoc"
 fi
 
+# reusable variable for dependencies we cannot yet unvendor
+export READ_RECIPE_META_YAML_WHY_NOT=OFF
+
+# for available switches see
+# https://github.com/apache/arrow/blame/apache-arrow-11.0.0/cpp/cmake_modules/DefineOptions.cmake
 cmake -GNinja \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
@@ -100,7 +108,10 @@ cmake -GNinja \
     -DARROW_WITH_BROTLI=ON \
     -DARROW_WITH_BZ2=ON \
     -DARROW_WITH_LZ4=ON \
+    -DARROW_WITH_NLOHMANN_JSON=ON \
+    -DARROW_WITH_OPENTELEMETRY=${READ_RECIPE_META_YAML_WHY_NOT} \
     -DARROW_WITH_SNAPPY=ON \
+    -DARROW_WITH_UCX=${ARROW_WITH_UCX} \
     -DARROW_WITH_ZLIB=ON \
     -DARROW_WITH_ZSTD=ON \
     -DBUILD_SHARED_LIBS=ON \
