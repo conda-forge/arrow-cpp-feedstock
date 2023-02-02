@@ -380,6 +380,8 @@ outputs:
         # vvvvvvv TESTS THAT SHOULDN'T HAVE TO BE SKIPPED vvvvvvv
         # failing on linux with "OSError: Could not connect to socket /tmp/[...]/plasma.sock"
         {% set tests_to_skip = tests_to_skip + " or test_plasma" %}                       # [linux]
+        # gandiva tests are segfaulting on ppc
+        {% set tests_to_skip = tests_to_skip + " or test_gandiva" %}                      # [ppc64le]
         # "Unsupported backend 'nonexistent' specified in ARROW_DEFAULT_MEMORY_POOL"
         {% set tests_to_skip = tests_to_skip + " or (test_memory and test_env_var)" %}    # [unix]
         # test is broken; header is in $PREFIX, not $SP_DIR
