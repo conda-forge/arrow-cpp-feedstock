@@ -131,8 +131,7 @@ outputs:
         - nlohmann_json
         # gandiva depends on openssl
         - openssl
-        # not on windows yet: https://github.com/conda-forge/orc-feedstock/issues/54
-        - orc          # [unix]
+        - orc
         - rapidjson
         - re2
         - snappy
