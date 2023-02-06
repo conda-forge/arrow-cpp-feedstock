@@ -22,13 +22,15 @@ source:
       # with the usual relocation treatement and leads to other issues, see #935;
       # replace with placeholder that allows interested users to fix the file path
       - patches/0001-don-t-bake-non-relocatable-CMAKE_INSTALL_FULL_LIBDIR.patch
+      # backport apache/arrow#34019 to disable useless pkgconfig search that takes ~15min
+      - patches/0002-GH-33882-C-Don-t-find-.pc-files-with-ARROW_BUILD_STA.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 00c483283433b4c02cb811f260dbe35414c806a4
     folder: testing
 
 build:
-  number: 1
+  number: 2
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -129,8 +131,7 @@ outputs:
         - nlohmann_json
         # gandiva depends on openssl
         - openssl
-        # not on windows yet: https://github.com/conda-forge/orc-feedstock/issues/54
-        - orc          # [unix]
+        - orc
         - rapidjson
         - re2
         - snappy
