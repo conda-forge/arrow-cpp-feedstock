@@ -18,13 +18,10 @@ EXTRA_CMAKE_ARGS=""
 if [ "$(uname)" == "Linux" ]; then
   SYSTEM_INCLUDES=$(echo | ${CXX} -E -Wp,-v -xc++ - 2>&1 | grep '^ ' | awk '{print "-isystem;" substr($1, 1)}' | tr '\n' ';')
   ARROW_GANDIVA_PC_CXX_FLAGS="${SYSTEM_INCLUDES}"
-  # only available on linux so far
-  ARROW_WITH_UCX=ON
 else
   # See https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk
   CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
   ARROW_GANDIVA_PC_CXX_FLAGS="-D_LIBCPP_DISABLE_AVAILABILITY"
-  ARROW_WITH_UCX=OFF
 fi
 
 # Enable CUDA support
@@ -111,7 +108,6 @@ cmake -GNinja \
     -DARROW_WITH_NLOHMANN_JSON=ON \
     -DARROW_WITH_OPENTELEMETRY=${READ_RECIPE_META_YAML_WHY_NOT} \
     -DARROW_WITH_SNAPPY=ON \
-    -DARROW_WITH_UCX=${ARROW_WITH_UCX} \
     -DARROW_WITH_ZLIB=ON \
     -DARROW_WITH_ZSTD=ON \
     -DBUILD_SHARED_LIBS=ON \
