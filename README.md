@@ -1,13 +1,48 @@
+About arrow-cpp-ext-feedstock
+=============================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/arrow-cpp-feedstock/blob/main/LICENSE.txt)
+
 About arrow-cpp-ext
-===================
+-------------------
 
 Home: http://github.com/apache/arrow
 
 Package license: Apache-2.0
 
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/arrow-cpp-feedstock/blob/main/LICENSE.txt)
+Summary: C++ and Python libraries for Apache Arrow
+About arrow-cpp
+---------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
 
 Summary: C++ libraries for Apache Arrow
+About arrow-cpp-proc
+--------------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: A meta-package to select Arrow build variant
+About pyarrow
+-------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: Python libraries for Apache Arrow
+About pyarrow-tests
+-------------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: Python test files for Apache Arrow
 
 Current build status
 ====================
