@@ -64,6 +64,8 @@ target_platform:
 - linux-ppc64le
 thrift_cpp:
 - 0.18.1
+ucx:
+- 1.14.0
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
