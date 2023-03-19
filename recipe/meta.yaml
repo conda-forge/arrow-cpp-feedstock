@@ -131,6 +131,7 @@ outputs:
         - re2
         - snappy
         - thrift-cpp
+        - ucx          # [linux]
         - xsimd
         - zlib
         - zstd
