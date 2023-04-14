@@ -73,9 +73,10 @@ outputs:
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
-        - clangdev {{ llvm_version }}            # [osx and arm64]
-        - llvmdev {{ llvm_version }}             # [osx and arm64]
-        - gnuconfig                              # [osx and arm64]
+        # needed for gandiva
+        - clangdev {{ llvm_version }}            # [build_platform != target_platform]
+        - llvmdev {{ llvm_version }}             # [build_platform != target_platform]
+        - gnuconfig                              # [build_platform != target_platform]
         # needs to run protoc & grpc_cpp_plugin
         - libgrpc
         - libprotobuf
