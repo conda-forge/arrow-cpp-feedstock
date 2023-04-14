@@ -47,7 +47,9 @@ else
     EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=OFF"
 fi
 
-if [[ "${target_platform}" == "osx-arm64" ]]; then
+if [[ "${build_platform}" != "${target_platform}" ]]; then
+    # point to a usable protoc/grpc_cpp_plugin if we're cross-compiling
+    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DProtobuf_PROTOC_EXECUTABLE=$BUILD_PREFIX/bin/protoc"
     EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DCLANG_EXECUTABLE=${BUILD_PREFIX}/bin/clang -DLLVM_LINK_EXECUTABLE=${BUILD_PREFIX}/bin/llvm-link"
     sed -ie "s;protoc-gen-grpc.*$;protoc-gen-grpc=${BUILD_PREFIX}/bin/grpc_cpp_plugin\";g" ../src/arrow/flight/CMakeLists.txt
     sed -ie 's;"--with-jemalloc-prefix\=je_arrow_";"--with-jemalloc-prefix\=je_arrow_" "--with-lg-page\=14";g' ../cmake_modules/ThirdpartyToolchain.cmake
@@ -62,11 +64,6 @@ fi
 # Limit number of threads used to avoid hardware oversubscription
 if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "linux-ppc64le" ]]; then
      export CMAKE_BUILD_PARALLEL_LEVEL=3
-fi
-
-# point to a usable protoc if we're running on a different architecture than the target
-if [[ "${build_platform}" != "${target_platform}" ]]; then
-    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DProtobuf_PROTOC_EXECUTABLE=$BUILD_PREFIX/bin/protoc"
 fi
 
 # reusable variable for dependencies we cannot yet unvendor
