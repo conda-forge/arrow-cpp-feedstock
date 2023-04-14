@@ -69,7 +69,7 @@ if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "
      export CMAKE_BUILD_PARALLEL_LEVEL=3
 fi
 
-cmake -GNinja ${CMAKE_ARGS} \
+cmake -GNinja \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
     -DARROW_BUILD_STATIC=OFF \
