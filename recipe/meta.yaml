@@ -69,6 +69,7 @@ outputs:
         - clangdev {{ llvm_version }}            # [osx and arm64]
         - llvmdev {{ llvm_version }}             # [osx and arm64]
         - gnuconfig                              # [osx and arm64]
+        # needs to run protoc & grpc_cpp_plugin
         - libgrpc
         - libprotobuf
         - cmake
