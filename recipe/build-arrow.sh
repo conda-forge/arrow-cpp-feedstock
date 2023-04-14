@@ -50,7 +50,11 @@ fi
 if [[ "${build_platform}" != "${target_platform}" ]]; then
     # point to a usable protoc/grpc_cpp_plugin if we're cross-compiling
     EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DProtobuf_PROTOC_EXECUTABLE=$BUILD_PREFIX/bin/protoc"
-    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DCLANG_EXECUTABLE=${BUILD_PREFIX}/bin/clang -DLLVM_LINK_EXECUTABLE=${BUILD_PREFIX}/bin/llvm-link"
+    if [[ ! -f ${BUILD_PREFIX}/bin/${CONDA_TOOLCHAIN_HOST}-clang ]]; then
+        ln -sf ${BUILD_PREFIX}/bin/clang ${BUILD_PREFIX}/bin/${CONDA_TOOLCHAIN_HOST}-clang
+    fi
+    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DCLANG_EXECUTABLE=${BUILD_PREFIX}/bin/${CONDA_TOOLCHAIN_HOST}-clang"
+    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DLLVM_LINK_EXECUTABLE=${BUILD_PREFIX}/bin/llvm-link"
     sed -ie "s;protoc-gen-grpc.*$;protoc-gen-grpc=${BUILD_PREFIX}/bin/grpc_cpp_plugin\";g" ../src/arrow/flight/CMakeLists.txt
     sed -ie 's;"--with-jemalloc-prefix\=je_arrow_";"--with-jemalloc-prefix\=je_arrow_" "--with-lg-page\=14";g' ../cmake_modules/ThirdpartyToolchain.cmake
 fi
@@ -71,7 +75,7 @@ export READ_RECIPE_META_YAML_WHY_NOT=OFF
 
 # for available switches see
 # https://github.com/apache/arrow/blame/apache-arrow-11.0.0/cpp/cmake_modules/DefineOptions.cmake
-cmake -GNinja \
+cmake -GNinja ${CMAKE_ARGS} \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
     -DARROW_BUILD_STATIC=OFF \
