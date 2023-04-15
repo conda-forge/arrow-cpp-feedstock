@@ -24,8 +24,10 @@ source:
       - patches/0001-don-t-bake-non-relocatable-CMAKE_INSTALL_FULL_LIBDIR.patch
       # backport apache/arrow#34019 to disable useless pkgconfig search that takes ~15min
       - patches/0002-GH-33882-C-Don-t-find-.pc-files-with-ARROW_BUILD_STA.patch
-      # backport https://github.com/apache/arrow/pull/34878 for pandas 2.0 compatibility
-      - patches/0003-GH-15070-Python-CI-Compatibility-with-pandas-2.0-348.patch
+      # backport apache/arrow#34498, 34878 & #34881 for pandas 2.0 compatibility
+      - patches/0003-GH-34404-Python-Failing-tests-because-pandas.Index-c.patch
+      - patches/0004-GH-15070-Python-CI-Compatibility-with-pandas-2.0-348.patch
+      - patches/0005-GH-34880-Python-CI-Fix-Windows-tests-failing-with-la.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 00c483283433b4c02cb811f260dbe35414c806a4

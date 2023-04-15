@@ -1,0 +1,69 @@
+From 7cef42a8ce057fba2008042de9c95fc8c2b15f90 Mon Sep 17 00:00:00 2001
+From: Joris Van den Bossche <jorisvandenbossche@gmail.com>
+Date: Tue, 4 Apr 2023 20:38:25 +0200
+Subject: [PATCH 5/5] GH-34880: [Python][CI] Fix Windows tests failing with
+ latest pandas 2.0 (#34881)
+
+* Closes: #34880
+
+Authored-by: Joris Van den Bossche <jorisvandenbossche@gmail.com>
+Signed-off-by: Jacob Wujciak-Jens <jacob@wujciak.de>
+---
+ ci/appveyor-cpp-setup.bat                   | 3 ++-
+ python/pyarrow/tests/parquet/test_pandas.py | 4 +++-
+ python/pyarrow/tests/test_pandas.py         | 3 ++-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/ci/appveyor-cpp-setup.bat b/ci/appveyor-cpp-setup.bat
+index 64f930a16..73def17e5 100644
+--- a/ci/appveyor-cpp-setup.bat
++++ b/ci/appveyor-cpp-setup.bat
+@@ -64,7 +64,7 @@ if "%ARROW_BUILD_GANDIVA%" == "ON" (
+ @rem Install pre-built "toolchain" packages for faster builds
+ set CONDA_PACKAGES=%CONDA_PACKAGES% --file=ci\conda_env_cpp.txt
+ @rem Arrow conda environment
+-mamba create -n arrow -q -y -c conda-forge ^
++mamba create -n arrow -y -c conda-forge ^
+   --file=ci\conda_env_python.txt ^
+   %CONDA_PACKAGES%  ^
+   "ccache" ^
+@@ -75,6 +75,7 @@ mamba create -n arrow -q -y -c conda-forge ^
+   "fsspec" ^
+   "python=%PYTHON%" ^
+   || exit /B
++conda list -n arrow
+ 
+ @rem
+ @rem Configure compiler
+diff --git a/python/pyarrow/tests/parquet/test_pandas.py b/python/pyarrow/tests/parquet/test_pandas.py
+index b6250e8fc..c27b16de7 100644
+--- a/python/pyarrow/tests/parquet/test_pandas.py
++++ b/python/pyarrow/tests/parquet/test_pandas.py
+@@ -643,7 +643,9 @@ def test_dataset_read_pandas_common_metadata(
+     paths = []
+     for i in range(nfiles):
+         df = _test_dataframe(size, seed=i)
+-        df.index = pd.Index(np.arange(i * size, (i + 1) * size), name='index')
++        df.index = pd.Index(
++            np.arange(i * size, (i + 1) * size, dtype="int64"), name='index'
++        )
+ 
+         path = dirpath / '{}.parquet'.format(i)
+ 
+diff --git a/python/pyarrow/tests/test_pandas.py b/python/pyarrow/tests/test_pandas.py
+index e8ae7f1f5..45a462a7b 100644
+--- a/python/pyarrow/tests/test_pandas.py
++++ b/python/pyarrow/tests/test_pandas.py
+@@ -2570,7 +2570,8 @@ class TestZeroCopyConversion:
+     def test_zero_copy_dictionaries(self):
+         arr = pa.DictionaryArray.from_arrays(
+             np.array([0, 0]),
+-            np.array([5]))
++            np.array([5], dtype="int64"),
++        )
+ 
+         result = arr.to_pandas(zero_copy_only=True)
+         values = pd.Categorical([5, 5])
+-- 
+2.38.1.windows.1
+
