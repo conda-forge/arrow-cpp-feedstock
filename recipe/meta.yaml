@@ -10,8 +10,8 @@ package:
   version: {{ version }}
 
 source:
-  url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
-  sha256: 82d46929f7574715551da21700f100b39f99c3c4d6790f26cac86d869d64e94e
+  url: https://github.com/apache/arrow/archive/refs/tags/apache-arrow-{{ version }}.tar.gz
+  sha256: e4c86329be769f2c8778aacc8d6220a9a13c90d59d4988f9349d51299dacbd11
   patches:
     # minimal backport of the following commit for compatibility with VS2019
     # https://github.com/apache/arrow/commit/897c186f475f3dd82c1ab47e5cfb87cb0fed8440
