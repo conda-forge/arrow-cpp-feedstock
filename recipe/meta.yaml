@@ -13,8 +13,8 @@ package:
   version: {{ version }}
 
 source:
-  - url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
-    sha256: c814e0670112a22c1a6ec03ab420a52ae236a9a42e9e438c3cbd37f37e658fb3
+  - url: https://github.com/apache/arrow/archive/refs/tags/apache-arrow-{{ version }}.tar.gz
+    sha256: 28c3e0402bc1c3c1e047b6e26cedb8d1d89b2b9497d576af24b0b700eef11701
     patches:
       # backport https://github.com/apache/arrow/pull/14656, can be dropped for v>=11
       - patches/0001-ARROW-18340-Python-PyArrow-C-header-files-no-longer-.patch
