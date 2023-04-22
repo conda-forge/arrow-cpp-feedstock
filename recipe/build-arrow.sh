@@ -33,13 +33,19 @@ then
             return 1
         fi
     fi
-    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=ON -DCUDA_TOOLKIT_ROOT_DIR=${CUDA_HOME} -DCMAKE_LIBRARY_PATH=${CUDA_HOME}/lib64/stubs"
+    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=ON -DCUDA_TOOLKIT_ROOT_DIR=${CUDA_HOME} -DCMAKE_LIBRARY_PATH=${CONDA_BUILD_SYSROOT}/lib"
 else
     EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=OFF"
 fi
 
-if [[ "${target_platform}" == "osx-arm64" ]]; then
-    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DCLANG_EXECUTABLE=${BUILD_PREFIX}/bin/clang -DLLVM_LINK_EXECUTABLE=${BUILD_PREFIX}/bin/llvm-link"
+if [[ "${build_platform}" != "${target_platform}" ]]; then
+    # point to a usable protoc/grpc_cpp_plugin if we're cross-compiling
+    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DProtobuf_PROTOC_EXECUTABLE=$BUILD_PREFIX/bin/protoc"
+    if [[ ! -f ${BUILD_PREFIX}/bin/${CONDA_TOOLCHAIN_HOST}-clang ]]; then
+        ln -sf ${BUILD_PREFIX}/bin/clang ${BUILD_PREFIX}/bin/${CONDA_TOOLCHAIN_HOST}-clang
+    fi
+    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DCLANG_EXECUTABLE=${BUILD_PREFIX}/bin/${CONDA_TOOLCHAIN_HOST}-clang"
+    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DLLVM_LINK_EXECUTABLE=${BUILD_PREFIX}/bin/llvm-link"
     sed -ie "s;protoc-gen-grpc.*$;protoc-gen-grpc=${BUILD_PREFIX}/bin/grpc_cpp_plugin\";g" ../src/arrow/flight/CMakeLists.txt
     sed -ie 's;"--with-jemalloc-prefix\=je_arrow_";"--with-jemalloc-prefix\=je_arrow_" "--with-lg-page\=14";g' ../cmake_modules/ThirdpartyToolchain.cmake
 fi

@@ -1,3 +1,5 @@
+BUILD:
+- aarch64-conda_cos7-linux-gnu
 aws_crt_cpp:
 - 0.19.8
 aws_sdk_cpp:
@@ -10,8 +12,10 @@ c_compiler:
 - gcc
 c_compiler_version:
 - '11'
+cdt_arch:
+- aarch64
 cdt_name:
-- cos6
+- cos7
 channel_sources:
 - conda-forge
 channel_targets:
@@ -21,7 +25,7 @@ cuda_compiler:
 cuda_compiler_version:
 - None
 cuda_compiler_version_min:
-- '10.2'
+- '11.2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
@@ -43,7 +47,7 @@ libprotobuf:
 lz4_c:
 - 1.9.3
 numpy:
-- '1.20'
+- '1.21'
 openssl:
 - '3'
 orc:
@@ -59,7 +63,7 @@ re2:
 snappy:
 - '1'
 target_platform:
-- linux-64
+- linux-aarch64
 thrift_cpp:
 - 0.18.1
 zip_keys:

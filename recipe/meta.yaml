@@ -10,8 +10,8 @@ package:
   version: {{ version }}
 
 source:
-  url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
-  sha256: 82d46929f7574715551da21700f100b39f99c3c4d6790f26cac86d869d64e94e
+  url: https://github.com/apache/arrow/archive/refs/tags/apache-arrow-{{ version }}.tar.gz
+  sha256: e4c86329be769f2c8778aacc8d6220a9a13c90d59d4988f9349d51299dacbd11
   patches:
     # minimal backport of the following commit for compatibility with VS2019
     # https://github.com/apache/arrow/commit/897c186f475f3dd82c1ab47e5cfb87cb0fed8440
@@ -23,14 +23,10 @@ source:
 # [cuda_compiler_version_min == "something"]
 
 build:
-  number: 26
+  number: 27
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
-  # CUDA builds on ppc64le currently run out of time on Travis CI.
-  # It may be possible to move these to cross-compilation, but this will take additional work.
-  # Hence this is skipped for now until this can be addressed.
-  skip: true  # [linux and ppc64le and cuda_compiler_version != "None"]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 
@@ -70,9 +66,11 @@ outputs:
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
-        - clangdev {{ llvm_version }}            # [osx and arm64]
-        - llvmdev {{ llvm_version }}             # [osx and arm64]
-        - gnuconfig                              # [osx and arm64]
+        # needed for gandiva
+        - clangdev {{ llvm_version }}            # [build_platform != target_platform]
+        - llvmdev {{ llvm_version }}             # [build_platform != target_platform]
+        - gnuconfig                              # [build_platform != target_platform]
+        # needs to run protoc & grpc_cpp_plugin
         - libgrpc
         - libprotobuf
         - cmake
