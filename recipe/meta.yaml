@@ -13,8 +13,8 @@ package:
   version: {{ version }}
 
 source:
-  - url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
-    sha256: c814e0670112a22c1a6ec03ab420a52ae236a9a42e9e438c3cbd37f37e658fb3
+  - url: https://github.com/apache/arrow/archive/refs/tags/apache-arrow-{{ version }}.tar.gz
+    sha256: 28c3e0402bc1c3c1e047b6e26cedb8d1d89b2b9497d576af24b0b700eef11701
     patches:
       # backport https://github.com/apache/arrow/pull/14656, can be dropped for v>=11
       - patches/0001-ARROW-18340-Python-PyArrow-C-header-files-no-longer-.patch
@@ -33,13 +33,10 @@ source:
     folder: testing
 
 build:
-  number: 18
+  number: 19
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
-  # temporary: skip CUDA on aarch/ppc until cross-compilation works, see
-  # https://github.com/conda-forge/conda-forge-ci-setup-feedstock/pull/210
-  skip: true  # [(aarch64 or ppc64le) and (cuda_compiler_version != "None")]
   run_exports:
     - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
 
@@ -91,12 +88,13 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
-        - clangdev {{ llvm_version }}            # [osx and arm64]
-        - llvmdev {{ llvm_version }}             # [osx and arm64]
-        - gnuconfig                              # [osx and arm64]
         # needs to run protoc & grpc_cpp_plugin
         - libgrpc                                # [build_platform != target_platform]
         - libprotobuf                            # [build_platform != target_platform]
+        # needed for gandiva
+        - clangdev {{ llvm_version }}            # [build_platform != target_platform]
+        - llvmdev {{ llvm_version }}             # [build_platform != target_platform]
+        - gnuconfig                              # [build_platform != target_platform]
         - cmake
         - ninja
         # necessary for vendored jemalloc
@@ -347,7 +345,8 @@ outputs:
         - fastparquet
         - fsspec
         - hypothesis
-        - pandas
+        # see https://github.com/conda-forge/arrow-cpp-feedstock/issues/1016
+        - pandas <2
         - scipy
         # not all OSes/arches available in conda-forge
         - pytorch *           # [unix and not ppc64le]

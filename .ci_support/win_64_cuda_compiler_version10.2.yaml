@@ -29,7 +29,7 @@ libabseil:
 libcrc32c:
 - '1.1'
 libcurl:
-- '7'
+- '8'
 libgrpc:
 - '1.52'
 libprotobuf:
@@ -39,8 +39,8 @@ lz4_c:
 numpy:
 - '1.21'
 - '1.23'
-- '1.20'
-- '1.20'
+- '1.21'
+- '1.21'
 openssl:
 - '3'
 pin_run_as_build:
