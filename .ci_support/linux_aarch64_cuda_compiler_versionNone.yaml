@@ -20,8 +20,12 @@ channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
+cuda_compiler:
+- nvcc
 cuda_compiler_version:
 - None
+cuda_compiler_version_min:
+- '11.2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
@@ -45,8 +49,8 @@ lz4_c:
 numpy:
 - '1.21'
 - '1.23'
-- '1.20'
-- '1.20'
+- '1.21'
+- '1.21'
 openssl:
 - '3'
 orc:

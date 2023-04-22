@@ -3,7 +3,7 @@
 {% set build_ext_version = "4.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
 {% set proc_build_number = "0" %}
-{% set llvm_version = "14" %}
+{% set llvm_version = "15" %}
 
 # see https://github.com/apache/arrow/blob/apache-arrow-10.0.1/cpp/CMakeLists.txt#L88-L90
 {% set so_version = (version.split(".")[0] | int * 100 + version.split(".")[1] | int) ~ "." ~ version.split(".")[2] ~ ".0" %}
@@ -24,19 +24,20 @@ source:
       - patches/0001-don-t-bake-non-relocatable-CMAKE_INSTALL_FULL_LIBDIR.patch
       # backport apache/arrow#34019 to disable useless pkgconfig search that takes ~15min
       - patches/0002-GH-33882-C-Don-t-find-.pc-files-with-ARROW_BUILD_STA.patch
+      # backport apache/arrow#34498, 34878 & #34881 for pandas 2.0 compatibility
+      - patches/0003-GH-34404-Python-Failing-tests-because-pandas.Index-c.patch
+      - patches/0004-GH-15070-Python-CI-Compatibility-with-pandas-2.0-348.patch
+      - patches/0005-GH-34880-Python-CI-Fix-Windows-tests-failing-with-la.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 00c483283433b4c02cb811f260dbe35414c806a4
     folder: testing
 
 build:
-  number: 13
+  number: 14
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
-  # temporary: skip CUDA on aarch/ppc until cross-compilation works, see
-  # https://github.com/conda-forge/conda-forge-ci-setup-feedstock/pull/210
-  skip: true  # [(aarch64 or ppc64le) and (cuda_compiler_version != "None")]
   run_exports:
     - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
 
@@ -88,12 +89,13 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
-        - clangdev {{ llvm_version }}            # [osx and arm64]
-        - llvmdev {{ llvm_version }}             # [osx and arm64]
-        - gnuconfig                              # [osx and arm64]
         # needs to run protoc & grpc_cpp_plugin
         - libgrpc                                # [build_platform != target_platform]
         - libprotobuf                            # [build_platform != target_platform]
+        # needed for gandiva
+        - clangdev {{ llvm_version }}            # [build_platform != target_platform]
+        - llvmdev {{ llvm_version }}             # [build_platform != target_platform]
+        - gnuconfig                              # [build_platform != target_platform]
         - cmake
         - ninja
         # necessary for vendored jemalloc
