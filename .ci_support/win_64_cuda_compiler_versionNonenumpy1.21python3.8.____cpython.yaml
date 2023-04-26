@@ -31,7 +31,7 @@ libcrc32c:
 libcurl:
 - '8'
 libgrpc:
-- '1.52'
+- '1.54'
 libprotobuf:
 - '3.21'
 lz4_c:
