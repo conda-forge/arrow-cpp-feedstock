@@ -1,7 +1,7 @@
 From da0b59a5d55032fb94618d776578b156a244ab2b Mon Sep 17 00:00:00 2001
 From: Alenka Frim <AlenkaF@users.noreply.github.com>
 Date: Fri, 10 Mar 2023 17:36:41 +0100
-Subject: [PATCH 3/5] GH-34404: [Python] Failing tests because pandas.Index can
+Subject: [PATCH 3/6] GH-34404: [Python] Failing tests because pandas.Index can
  now store all numeric dtypes (not only 64bit versions) (#34498)
 
 ### Rationale for this change
