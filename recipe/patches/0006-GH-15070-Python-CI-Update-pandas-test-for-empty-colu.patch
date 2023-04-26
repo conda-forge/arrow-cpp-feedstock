@@ -1,0 +1,40 @@
+From 2184cfcf8a3e7ae6d5bd6ded01c9879ea3d8aa8e Mon Sep 17 00:00:00 2001
+From: Joris Van den Bossche <jorisvandenbossche@gmail.com>
+Date: Wed, 12 Apr 2023 10:32:03 +0200
+Subject: [PATCH 6/6] GH-15070: [Python][CI] Update pandas test for empty
+ columns dtype change in pandas 2.0.1 (#35031)
+
+### Rationale for this change
+
+Pandas changed the default dtype of the columns object for an empty DataFrame from object dtype to integer RangeIndex (see https://github.com/pandas-dev/pandas/issues/52404). This updates our tests to pass with that change.
+
+* Closes: #15070
+
+Authored-by: Joris Van den Bossche <jorisvandenbossche@gmail.com>
+Signed-off-by: Sutou Kouhei <kou@clear-code.com>
+---
+ python/pyarrow/tests/test_pandas.py | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/python/pyarrow/tests/test_pandas.py b/python/pyarrow/tests/test_pandas.py
+index 45a462a7b..b472db614 100644
+--- a/python/pyarrow/tests/test_pandas.py
++++ b/python/pyarrow/tests/test_pandas.py
+@@ -2829,8 +2829,12 @@ class TestConvertMisc:
+ 
+     def test_table_batch_empty_dataframe(self):
+         df = pd.DataFrame({})
+-        _check_pandas_roundtrip(df)
+-        _check_pandas_roundtrip(df, as_batch=True)
++        _check_pandas_roundtrip(df, preserve_index=None)
++        _check_pandas_roundtrip(df, preserve_index=None, as_batch=True)
++
++        expected = pd.DataFrame(columns=pd.Index([]))
++        _check_pandas_roundtrip(df, expected, preserve_index=False)
++        _check_pandas_roundtrip(df, expected, preserve_index=False, as_batch=True)
+ 
+         df2 = pd.DataFrame({}, index=[0, 1, 2])
+         _check_pandas_roundtrip(df2, preserve_index=True)
+-- 
+2.38.1.windows.1
+
