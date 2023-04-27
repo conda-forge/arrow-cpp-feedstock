@@ -29,6 +29,8 @@ source:
       - patches/0004-GH-15070-Python-CI-Compatibility-with-pandas-2.0-348.patch
       - patches/0005-GH-34880-Python-CI-Fix-Windows-tests-failing-with-la.patch
       - patches/0006-GH-15070-Python-CI-Update-pandas-test-for-empty-colu.patch
+      # backport apache/arrow#34747 for compatibility with grpc 1.54
+      - patches/0007-GH-34743-Python-Relax-condition-in-flaky-Flight-test.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 00c483283433b4c02cb811f260dbe35414c806a4

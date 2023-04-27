@@ -1,7 +1,7 @@
 From 041263a350d8c7e00c665480370e41c2031df1b5 Mon Sep 17 00:00:00 2001
 From: Joris Van den Bossche <jorisvandenbossche@gmail.com>
 Date: Tue, 4 Apr 2023 16:43:26 +0200
-Subject: [PATCH 4/6] GH-15070: [Python][CI] Compatibility with pandas 2.0
+Subject: [PATCH 4/7] GH-15070: [Python][CI] Compatibility with pandas 2.0
  (#34878)
 
 ### What changes are included in this PR?
@@ -126,5 +126,5 @@ index ddec0f0de..e8ae7f1f5 100644
      df = pd.DataFrame(columns=columns)
      table1 = pa.Table.from_pandas(df)
 -- 
-2.38.1.windows.1
+2.40.1.windows.1
 
