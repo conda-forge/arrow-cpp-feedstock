@@ -27,6 +27,8 @@ source:
       # with the usual relocation treatement and leads to other issues, see #935;
       # replace with placeholder that allows interested users to fix the file path
       - patches/0003-don-t-bake-non-relocatable-CMAKE_INSTALL_FULL_LIBDIR.patch
+      # backport apache/arrow#34747 for compatibility with grpc 1.54
+      - patches/0004-GH-34743-Python-Relax-condition-in-flaky-Flight-test.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 00c483283433b4c02cb811f260dbe35414c806a4

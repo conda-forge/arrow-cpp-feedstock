@@ -1,7 +1,7 @@
 From 7b0b770b7c35218de9e68e9c5fd2f2212cf56e07 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Thu, 26 Jan 2023 12:37:02 +1100
-Subject: [PATCH 3/3] don't bake non-relocatable CMAKE_INSTALL_FULL_LIBDIR into
+Subject: [PATCH 3/4] don't bake non-relocatable CMAKE_INSTALL_FULL_LIBDIR into
  gdb-integration
 
 ---
@@ -22,5 +22,5 @@ index 099a86237..cd6d15e8b 100644
    endif()
    if(ARROW_GDB_AUTO_LOAD_LIBARROW_GDB_INSTALL)
 -- 
-2.38.1.windows.1
+2.40.1.windows.1
 
