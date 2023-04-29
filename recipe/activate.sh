@@ -25,6 +25,9 @@ fi
 # there's only one lib in that folder, but the libname changes
 # based on the version so use a loop instead of hardcoding it.
 for f in "$GDB_PREFIX/$PLACEHOLDER/lib/*.py"; do
-    # overwrite, because we don't have deactivation (i.e. symlink remains)
-    ln -sf "$f" "$WRAPPER_DIR/$(basename $f)"
+    target="$WRAPPER_DIR/$(basename $f)"
+    # We have write permissions to WRAPPER_DIR but not necessarily target.
+    # Thus it's safest to delete the target in case it already exists.
+    rm -f "$target"
+    ln -s "$f" "$WRAPPER_DIR/$(basename $f)"
 done
