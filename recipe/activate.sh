@@ -10,18 +10,18 @@
 # where the GDB wrappers get installed
 GDB_PREFIX="$CONDA_PREFIX/share/gdb/auto-load"
 
-# If the directory is not writable, nothing can be done
-if [ ! -w "$GDB_PREFIX" ]; then
-    return
-fi
-
 # this needs to be in sync with the respective patch
 PLACEHOLDER="replace_this_section_with_absolute_slashed_path_to_CONDA_PREFIX"
 # the paths here are intentionally stacked, see #935, resp.
 # https://github.com/apache/arrow/blob/master/docs/source/cpp/gdb.rst#manual-loading
 WRAPPER_DIR="$GDB_PREFIX/$CONDA_PREFIX/lib"
 
-mkdir -p "$WRAPPER_DIR"
+mkdir -p "$WRAPPER_DIR" || true
+# If the directory is not writable, nothing can be done
+if [ ! -w "$WRAPPER_DIR" ]; then
+    return
+fi
+
 # there's only one lib in that folder, but the libname changes
 # based on the version so use a loop instead of hardcoding it.
 for f in "$GDB_PREFIX/$PLACEHOLDER/lib/*.py"; do
