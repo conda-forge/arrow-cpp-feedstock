@@ -1,4 +1,4 @@
-{% set version = "11.0.0" %}
+{% set version = "12.0.0" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "4.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -14,30 +14,14 @@ package:
 
 source:
   - url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
-    sha256: 2dd8f0ea0848a58785628ee3a57675548d509e17213a2f5d72b0d900b43f5430
-    patches:
-      # gdb-integration needs full path to shared library, see
-      # https://github.com/apache/arrow/blob/master/docs/source/cpp/gdb.rst#manual-loading
-      # however, baking the installation-env into the path for the gdb-file cannot work
-      # with the usual relocation treatement and leads to other issues, see #935;
-      # replace with placeholder that allows interested users to fix the file path
-      - patches/0001-don-t-bake-non-relocatable-CMAKE_INSTALL_FULL_LIBDIR.patch
-      # backport apache/arrow#34019 to disable useless pkgconfig search that takes ~15min
-      - patches/0002-GH-33882-C-Don-t-find-.pc-files-with-ARROW_BUILD_STA.patch
-      # backport apache/arrow#34498, 34878, #34881 & #35031 for pandas 2.0 compatibility
-      - patches/0003-GH-34404-Python-Failing-tests-because-pandas.Index-c.patch
-      - patches/0004-GH-15070-Python-CI-Compatibility-with-pandas-2.0-348.patch
-      - patches/0005-GH-34880-Python-CI-Fix-Windows-tests-failing-with-la.patch
-      - patches/0006-GH-15070-Python-CI-Update-pandas-test-for-empty-colu.patch
-      # backport apache/arrow#34747 for compatibility with grpc 1.54
-      - patches/0007-GH-34743-Python-Relax-condition-in-flaky-Flight-test.patch
+    sha256: ddd8347882775e53af7d0965a1902b7d8fcd0a030fd14f783d4f85e821352d52
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
-    git_rev: 00c483283433b4c02cb811f260dbe35414c806a4
+    git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
     folder: testing
 
 build:
-  number: 18
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -85,8 +69,8 @@ outputs:
         - cudatoolkit
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
       missing_dso_whitelist:
-        - "*/libcuda.so.*"    # [linux]
-        - "*/nvcuda.dll"      # [win]
+        - '*/libcuda.so.*'    # [linux]
+        - '*/nvcuda.dll'      # [win]
     requirements:
       build:
         - {{ compiler("c") }}
@@ -158,7 +142,6 @@ outputs:
             "arrow/api.h", "arrow/flight/types.h", "arrow/flight/sql/api.h",
             "gandiva/engine.h", "parquet/api/reader.h"
         ] %}
-        {% set headers = headers + ["plasma/client.h"] %}  # [unix]
         {% for each_header in headers %}
         # headers
         - test -f $PREFIX/include/{{ each_header }} || (echo "{{ each_header }} not found" && exit 1)  # [unix]
@@ -169,7 +152,6 @@ outputs:
             "arrow", "arrow_dataset", "arrow_flight", "arrow_flight_sql",
             "arrow_substrait", "gandiva", "parquet"
         ] %}
-        {% set libs = libs + ["plasma"] %}  # [unix]
         {% for each_lib in libs %}
         # shared
         - test -f $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
@@ -230,8 +212,8 @@ outputs:
         - {{ SP_DIR }}/pyarrow
       missing_dso_whitelist:
         # not actually missing, but installed into SP_DIR, see tests
-        - "*/arrow_python.dll"                # [win]
-        - "*/arrow_python_flight.dll"         # [win]
+        - '*/arrow_python.dll'                # [win]
+        - '*/arrow_python_flight.dll'         # [win]
     requirements:
       build:
         - {{ compiler("c") }}
@@ -274,7 +256,6 @@ outputs:
         - pyarrow.gandiva
         - pyarrow.orc      # [unix]
         - pyarrow.parquet
-        - pyarrow.plasma   # [unix]
         - pyarrow.fs
         - pyarrow._s3fs
         - pyarrow._hdfs
@@ -349,9 +330,11 @@ outputs:
 
     test:
       requires:
+        # test_cpp_extension_in_python requires a compiler
+        - {{ compiler("cxx") }}  # [linux]
         - pytest
         - pytest-lazy-fixture
-        - backports.zoneinfo  # [py<39]
+        - backports.zoneinfo     # [py<39]
         - cffi
         - cloudpickle
         - cython
@@ -384,6 +367,8 @@ outputs:
         # skip tests that raise SIGINT and crash the test suite
         {% set tests_to_skip = tests_to_skip + " or (test_csv and test_cancellation)" %}  # [linux]
         {% set tests_to_skip = tests_to_skip + " or (test_flight and test_interrupt)" %}  # [linux]
+        # cannot pass -D_LIBCPP_DISABLE_AVAILABILITY to test suite for our older macos sdk
+        {% set tests_to_skip = tests_to_skip + " or test_cpp_extension_in_python" %}      # [osx]
         # skip tests that make invalid(-for-conda) assumptions about the compilers setup
         {% set tests_to_skip = tests_to_skip + " or test_cython_api" %}                   # [unix]
         {% set tests_to_skip = tests_to_skip + " or test_visit_strings" %}                # [unix]
@@ -391,10 +376,9 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or test_debug_memory_pool_disabled" %}   # [aarch64 or ppc64le]
         {% set tests_to_skip = tests_to_skip + " or test_env_var_io_thread_count" %}      # [aarch64 or ppc64le]
         # vvvvvvv TESTS THAT SHOULDN'T HAVE TO BE SKIPPED vvvvvvv
+        {% set tests_to_skip = tests_to_skip + " or test_extension_to_pandas_storage_type" %}
         # segfaults on OSX: to investigate ASAP
         {% set tests_to_skip = tests_to_skip + " or test_flight" %}                       # [osx]
-        # failing on linux with "OSError: Could not connect to socket /tmp/[...]/plasma.sock"
-        {% set tests_to_skip = tests_to_skip + " or test_plasma" %}                       # [linux]
         # gandiva tests are segfaulting on ppc
         {% set tests_to_skip = tests_to_skip + " or test_gandiva" %}                      # [ppc64le]
         # test failures on ppc
@@ -405,6 +389,7 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or (test_memory and test_env_var)" %}    # [unix]
         # test is broken; header is in $PREFIX, not $SP_DIR
         {% set tests_to_skip = tests_to_skip + " or (test_misc and test_get_include)" %}  # [unix]
+        # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
         - pytest -v -rfEs -k "not ({{ tests_to_skip }})"
 
     about:
