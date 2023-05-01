@@ -75,6 +75,7 @@ export READ_RECIPE_META_YAML_WHY_NOT=OFF
 
 # for available switches see
 # https://github.com/apache/arrow/blame/apache-arrow-11.0.0/cpp/cmake_modules/DefineOptions.cmake
+# placeholder in ARROW_GDB_INSTALL_DIR must match what's used for replacement in activate.sh
 cmake -GNinja \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
@@ -93,6 +94,7 @@ cmake -GNinja \
     -DARROW_GANDIVA=ON \
     -DARROW_GANDIVA_PC_CXX_FLAGS="${ARROW_GANDIVA_PC_CXX_FLAGS}" \
     -DARROW_GCS=ON \
+    -DARROW_GDB_INSTALL_DIR=replace_this_section_with_absolute_slashed_path_to_CONDA_PREFIX/lib \
     -DARROW_HDFS=ON \
     -DARROW_JEMALLOC=ON \
     -DARROW_JSON=ON \
@@ -100,7 +102,6 @@ cmake -GNinja \
     -DARROW_ORC=ON \
     -DARROW_PACKAGE_PREFIX=$PREFIX \
     -DARROW_PARQUET=ON \
-    -DARROW_PLASMA=ON \
     -DARROW_S3=ON \
     -DARROW_SIMD_LEVEL=NONE \
     -DARROW_SUBSTRAIT=ON \

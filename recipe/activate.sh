@@ -10,7 +10,7 @@
 # where the GDB wrappers get installed
 GDB_PREFIX="$CONDA_PREFIX/share/gdb/auto-load"
 
-# this needs to be in sync with the respective patch
+# this needs to be in sync with ARROW_GDB_INSTALL_DIR in build.sh
 PLACEHOLDER="replace_this_section_with_absolute_slashed_path_to_CONDA_PREFIX"
 # the paths here are intentionally stacked, see #935, resp.
 # https://github.com/apache/arrow/blob/master/docs/source/cpp/gdb.rst#manual-loading

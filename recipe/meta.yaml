@@ -142,7 +142,6 @@ outputs:
             "arrow/api.h", "arrow/flight/types.h", "arrow/flight/sql/api.h",
             "gandiva/engine.h", "parquet/api/reader.h"
         ] %}
-        {% set headers = headers + ["plasma/client.h"] %}  # [unix]
         {% for each_header in headers %}
         # headers
         - test -f $PREFIX/include/{{ each_header }} || (echo "{{ each_header }} not found" && exit 1)  # [unix]
@@ -153,7 +152,6 @@ outputs:
             "arrow", "arrow_dataset", "arrow_flight", "arrow_flight_sql",
             "arrow_substrait", "gandiva", "parquet"
         ] %}
-        {% set libs = libs + ["plasma"] %}  # [unix]
         {% for each_lib in libs %}
         # shared
         - test -f $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
@@ -258,7 +256,6 @@ outputs:
         - pyarrow.gandiva
         - pyarrow.orc      # [unix]
         - pyarrow.parquet
-        - pyarrow.plasma   # [unix]
         - pyarrow.fs
         - pyarrow._s3fs
         - pyarrow._hdfs
@@ -333,9 +330,11 @@ outputs:
 
     test:
       requires:
+        # test_cpp_extension_in_python requires a compiler
+        - {{ compiler("cxx") }}  # [linux]
         - pytest
         - pytest-lazy-fixture
-        - backports.zoneinfo  # [py<39]
+        - backports.zoneinfo     # [py<39]
         - cffi
         - cloudpickle
         - cython
@@ -368,6 +367,8 @@ outputs:
         # skip tests that raise SIGINT and crash the test suite
         {% set tests_to_skip = tests_to_skip + " or (test_csv and test_cancellation)" %}  # [linux]
         {% set tests_to_skip = tests_to_skip + " or (test_flight and test_interrupt)" %}  # [linux]
+        # cannot pass -D_LIBCPP_DISABLE_AVAILABILITY to test suite for our older macos sdk
+        {% set tests_to_skip = tests_to_skip + " or test_cpp_extension_in_python" %}      # [osx]
         # skip tests that make invalid(-for-conda) assumptions about the compilers setup
         {% set tests_to_skip = tests_to_skip + " or test_cython_api" %}                   # [unix]
         {% set tests_to_skip = tests_to_skip + " or test_visit_strings" %}                # [unix]
@@ -377,8 +378,6 @@ outputs:
         # vvvvvvv TESTS THAT SHOULDN'T HAVE TO BE SKIPPED vvvvvvv
         # segfaults on OSX: to investigate ASAP
         {% set tests_to_skip = tests_to_skip + " or test_flight" %}                       # [osx]
-        # failing on linux with "OSError: Could not connect to socket /tmp/[...]/plasma.sock"
-        {% set tests_to_skip = tests_to_skip + " or test_plasma" %}                       # [linux]
         # gandiva tests are segfaulting on ppc
         {% set tests_to_skip = tests_to_skip + " or test_gandiva" %}                      # [ppc64le]
         # test failures on ppc
@@ -389,6 +388,7 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or (test_memory and test_env_var)" %}    # [unix]
         # test is broken; header is in $PREFIX, not $SP_DIR
         {% set tests_to_skip = tests_to_skip + " or (test_misc and test_get_include)" %}  # [unix]
+        # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
         - pytest -v -rfEs -k "not ({{ tests_to_skip }})"
 
     about:
