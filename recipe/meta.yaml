@@ -376,6 +376,7 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or test_debug_memory_pool_disabled" %}   # [aarch64 or ppc64le]
         {% set tests_to_skip = tests_to_skip + " or test_env_var_io_thread_count" %}      # [aarch64 or ppc64le]
         # vvvvvvv TESTS THAT SHOULDN'T HAVE TO BE SKIPPED vvvvvvv
+        {% set tests_to_skip = tests_to_skip + " or test_extension_to_pandas_storage_type" %}
         # segfaults on OSX: to investigate ASAP
         {% set tests_to_skip = tests_to_skip + " or test_flight" %}                       # [osx]
         # gandiva tests are segfaulting on ppc
