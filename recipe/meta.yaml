@@ -21,7 +21,7 @@ source:
     folder: testing
 
 build:
-  number: 1
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -139,8 +139,8 @@ outputs:
     test:
       commands:
         {% set headers = [
-            "arrow/api.h", "arrow/flight/types.h", "arrow/flight/sql/api.h",
-            "gandiva/engine.h", "parquet/api/reader.h"
+            "arrow/api.h", "arrow/acero/groupby.h", "arrow/flight/types.h",
+            "arrow/flight/sql/api.h", "gandiva/engine.h", "parquet/api/reader.h"
         ] %}
         {% for each_header in headers %}
         # headers
@@ -149,8 +149,8 @@ outputs:
         {% endfor %}
 
         {% set libs = (cuda_compiler_version != "None") * ["arrow_cuda"] + [
-            "arrow", "arrow_dataset", "arrow_flight", "arrow_flight_sql",
-            "arrow_substrait", "gandiva", "parquet"
+            "arrow", "arrow_acero", "arrow_dataset", "arrow_flight",
+            "arrow_flight_sql", "arrow_substrait", "gandiva", "parquet"
         ] %}
         {% for each_lib in libs %}
         # shared
