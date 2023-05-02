@@ -65,6 +65,8 @@ target_platform:
 thrift_cpp:
 - 0.18.1
 zip_keys:
+- - cuda_compiler
+  - cuda_compiler_version
 - - python
   - numpy
 zlib:
