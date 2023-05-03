@@ -139,8 +139,8 @@ outputs:
     test:
       commands:
         {% set headers = [
-            "arrow/api.h", "arrow/flight/types.h", "arrow/flight/sql/api.h",
-            "gandiva/engine.h", "parquet/api/reader.h"
+            "arrow/api.h", "arrow/acero/groupby.h", "arrow/flight/types.h",
+            "arrow/flight/sql/api.h", "gandiva/engine.h", "parquet/api/reader.h"
         ] %}
         {% for each_header in headers %}
         # headers
@@ -149,8 +149,8 @@ outputs:
         {% endfor %}
 
         {% set libs = (cuda_compiler_version != "None") * ["arrow_cuda"] + [
-            "arrow", "arrow_dataset", "arrow_flight", "arrow_flight_sql",
-            "arrow_substrait", "gandiva", "parquet"
+            "arrow", "arrow_acero", "arrow_dataset", "arrow_flight",
+            "arrow_flight_sql", "arrow_substrait", "gandiva", "parquet"
         ] %}
         {% for each_lib in libs %}
         # shared
