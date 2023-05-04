@@ -23,7 +23,7 @@ gflags:
 glog:
 - '0.6'
 google_cloud_cpp:
-- 2.9.1
+- 2.10.0
 libabseil:
 - '20230125'
 libcrc32c:
@@ -65,6 +65,8 @@ target_platform:
 thrift_cpp:
 - 0.18.1
 zip_keys:
+- - cuda_compiler
+  - cuda_compiler_version
 - - python
   - numpy
 zlib:
