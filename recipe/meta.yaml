@@ -212,9 +212,6 @@ outputs:
         - azure-storage-files-datalake-cpp  # [unix]
         - brotli
         - bzip2
-        # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
-        # - cpp-opentelemetry-sdk
-        # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
         - glog
         # arrow uses a customized jemalloc, see #944
@@ -222,6 +219,7 @@ outputs:
         - libabseil
         - libgoogle-cloud-devel
         - libgoogle-cloud-storage-devel
+        - libopentelemetry-cpp
         - libutf8proc
         - lz4-c
         - orc
