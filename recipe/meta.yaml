@@ -33,7 +33,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 4
+  number: 5
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -73,9 +73,6 @@ requirements:
     - azure-storage-files-datalake-cpp  # [unix]
     - brotli
     - bzip2
-    # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
-    # - cpp-opentelemetry-sdk
-    # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
     - gflags
     - glog
     # arrow uses a customized jemalloc, see #944
@@ -85,6 +82,8 @@ requirements:
     - libgoogle-cloud-devel
     - libgoogle-cloud-storage-devel
     - libgrpc
+    # see https://github.com/apache/arrow/issues/45033
+    - libopentelemetry-cpp          # [unix]
     - libprotobuf
     - libutf8proc
     - lz4-c
@@ -220,9 +219,6 @@ outputs:
         - azure-storage-files-datalake-cpp  # [unix]
         - brotli
         - bzip2
-        # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
-        # - cpp-opentelemetry-sdk
-        # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
         - glog
         # arrow uses a customized jemalloc, see #944
@@ -230,6 +226,8 @@ outputs:
         - libabseil
         - libgoogle-cloud-devel
         - libgoogle-cloud-storage-devel
+        - libopentelemetry-cpp              # [unix]
+        - libprotobuf
         - libutf8proc
         - lz4-c
         - orc
