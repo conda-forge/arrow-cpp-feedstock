@@ -151,6 +151,8 @@ outputs:
         - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
         # make sure we don't co-install with old version of old package name
         - arrow-cpp ={{ version }}
+        # old parquet lib output, now part of this feedstock
+        - parquet-cpp <0.0a0
 
     test:
       commands:
@@ -257,8 +259,6 @@ outputs:
       run:
         - {{ pin_subpackage('libarrow', exact=True) }}
         - {{ pin_compatible('numpy') }}
-        # empty parquet-cpp metapackage, force old versions to be uninstalled
-        - parquet-cpp 1.5.1.*
         - python
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
