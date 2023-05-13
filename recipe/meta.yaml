@@ -93,7 +93,7 @@ outputs:
         # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
-        - aws-crt-cpp  # [unix]
+        - aws-crt-cpp
         - aws-sdk-cpp
         - boost-cpp >=1.70
         - brotli
