@@ -113,7 +113,7 @@ outputs:
         - c-ares
         - gflags
         - glog
-        - google-cloud-cpp
+        - google-cloud-cpp 2.10.1
         - libabseil 20230125.2
         # since libgoogle-cloud is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
