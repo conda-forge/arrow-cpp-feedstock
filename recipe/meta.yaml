@@ -114,7 +114,7 @@ outputs:
         - gflags
         - glog
         - google-cloud-cpp
-        - libabseil
+        - libabseil 20230125.2
         # since libgoogle-cloud is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
         # its dependencies leak into the build here
