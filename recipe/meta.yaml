@@ -13,8 +13,8 @@ package:
   version: {{ version }}
 
 source:
-  - url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
-    sha256: 2dd8f0ea0848a58785628ee3a57675548d509e17213a2f5d72b0d900b43f5430
+  - url: https://github.com/apache/arrow/archive/refs/tags/apache-arrow-{{ version }}.tar.gz
+    sha256: 4a8c0c3d5b39ca81f4a636a41863f1cf5e0ed199f994bf5ead0854ca037eb741
     patches:
       # gdb-integration needs full path to shared library, see
       # https://github.com/apache/arrow/blob/master/docs/source/cpp/gdb.rst#manual-loading
