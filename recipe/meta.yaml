@@ -114,7 +114,7 @@ outputs:
         - numpy
         # gandiva depends on openssl
         - openssl
-        - orc          # [unix]
+        - orc
         - python
         - rapidjson
         - re2
