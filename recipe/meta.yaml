@@ -55,6 +55,8 @@ requirements:
     # necessary for vendored jemalloc
     - autoconf     # [linux]
     - make         # [linux]
+    # test targets require memcpy from glibc >=2.14
+    - sysroot_linux-64 2.17  # [linux64]
   host:
     # for required dependencies, see
     # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
