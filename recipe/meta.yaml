@@ -27,6 +27,9 @@ source:
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
     folder: testing
+  - git_url: https://github.com/apache/parquet-testing.git
+    git_rev: b2e7cc755159196e3a068c8594f7acbaecfdaaac
+    folder: cpp/submodules/parquet-testing
 
 build:
   number: 6

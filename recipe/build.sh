@@ -113,6 +113,8 @@ cmake -GNinja \
 cmake --build .
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" != 1 ]]; then
+    export ARROW_TEST_DATA=$SRC_DIR/testing/data
+    export PARQUET_TEST_DATA=$SRC_DIR/cpp/submodules/parquet-testing/data
     ctest --progress --output-on-failure
 fi
 
