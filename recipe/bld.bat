@@ -20,12 +20,13 @@ cmake -G "Ninja" ^
       -DARROW_AZURE=%READ_RECIPE_META_YAML_WHY_NOT% ^
       -DARROW_BOOST_USE_SHARED:BOOL=ON ^
       -DARROW_BUILD_STATIC:BOOL=OFF ^
-      -DARROW_BUILD_TESTS:BOOL=OFF ^
+      -DARROW_BUILD_TESTS:BOOL=ON ^
       -DARROW_BUILD_UTILITIES:BOOL=OFF ^
       -DARROW_COMPUTE:BOOL=ON ^
       -DARROW_CSV:BOOL=ON ^
       -DARROW_DATASET:BOOL=ON ^
       -DARROW_DEPENDENCY_SOURCE=SYSTEM ^
+      -DARROW_ENABLE_TIMING_TESTS=OFF ^
       -DARROW_FILESYSTEM:BOOL=ON ^
       -DARROW_FLIGHT:BOOL=ON ^
       -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS:BOOL=ON ^
@@ -64,6 +65,9 @@ cmake -G "Ninja" ^
 if %ERRORLEVEL% neq 0 exit 1
 
 cmake --build . --config Release
+if %ERRORLEVEL% neq 0 exit 1
+
+ctest --progress --output-on-failure
 if %ERRORLEVEL% neq 0 exit 1
 
 popd
