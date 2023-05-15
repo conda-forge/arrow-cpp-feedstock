@@ -126,7 +126,7 @@ outputs:
         - lz4-c
         # gandiva depends on openssl
         - openssl
-        - orc          # [unix]
+        - orc
         - rapidjson
         - re2
         - snappy
