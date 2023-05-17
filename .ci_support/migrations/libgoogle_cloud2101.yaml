@@ -3,7 +3,7 @@ __migrator:
   kind: version
   migration_number: 1
 libgoogle_cloud:
-- 2.9.1
+- 2.10.1
 google_cloud_cpp:
-- 2.9.1
-migrator_ts: 1682629098.5266643
+- 2.10.1
+migrator_ts: 1683180056.1050766
