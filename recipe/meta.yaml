@@ -390,7 +390,7 @@ outputs:
         # test is broken; header is in $PREFIX, not $SP_DIR
         {% set tests_to_skip = tests_to_skip + " or (test_misc and test_get_include)" %}  # [unix]
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
-        - pytest -v -rfEs -k "not ({{ tests_to_skip }})"
+        - pytest -rfEs -k "not ({{ tests_to_skip }})"
 
     about:
       home: http://github.com/apache/arrow
