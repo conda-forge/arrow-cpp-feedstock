@@ -1,7 +1,7 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
 aws_crt_cpp:
-- 0.19.9
+- 0.20.1
 aws_sdk_cpp:
 - 1.10.57
 bzip2:
@@ -27,7 +27,7 @@ gflags:
 glog:
 - '0.6'
 google_cloud_cpp:
-- 2.10.0
+- 2.10.1
 libabseil:
 - '20230125'
 libevent:
@@ -59,7 +59,7 @@ python:
 - 3.8.* *_cpython
 - 3.9.* *_cpython
 re2:
-- 2023.02.02
+- 2023.03.02
 snappy:
 - '1'
 target_platform:
