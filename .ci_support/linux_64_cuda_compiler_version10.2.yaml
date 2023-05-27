@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.20.1
+- 0.20.2
 aws_sdk_cpp:
 - 1.10.57
 bzip2:
@@ -77,6 +77,8 @@ zip_keys:
   - cuda_compiler_version
   - cdt_name
   - docker_image
+- - libgrpc
+  - libprotobuf
 - - python
   - numpy
 zlib:
