@@ -27,27 +27,29 @@ fi
 
 # there's only one lib in the placeholder folder, but the libname changes
 # based on the version so use a loop instead of hardcoding it.
-for f in "$GDB_PREFIX/$PLACEHOLDER/lib/"*.py; do
-    if [ ! -e "$f" ]; then
+for target in "$GDB_PREFIX/$PLACEHOLDER/lib/"*.py; do
+    if [ ! -e "$target" ]; then
         # If the file doesn't exist, skip this iteration of the loop.
         # (This happens when no files are found, in which case the
         # loop runs with f equal to the pattern itself.)
         continue
     fi
-    target="$WRAPPER_DIR/$(basename "$f")"
+    symlink="$WRAPPER_DIR/$(basename "$target")"
     # Check if symbolic link already exists and points to correct file
-    if [ -L "$target" ] && [ "$(readlink "$target")" = "$f" ]; then
+    if [ -L "$symlink" ] && [ "$(readlink "$symlink")" = "$target" ]; then
         # Stop if it does
         continue
     fi
-    # We have write permissions to WRAPPER_DIR but not necessarily target.
-    # Thus it's safest to delete the target in case it already exists.
-    rm -f "$target"
-    if [ -e "$target" ]; then
+    # We have write permissions to WRAPPER_DIR but not necessarily the symlink.
+    # Thus it's safest to delete the symlink in case it already exists.
+    rm -f "$symlink"
+    # Check if symlink still exists after trying to delete it
+    if [ -e "$symlink" ]; then
         # Theoretically this should never happen, but in practice...
-        echo "Warning: Unable to remove existing symlink '$target'. Please report this at"
+        echo "Warning: Unable to remove existing symlink '$symlink'. Please report this at"
         echo "<https://github.com/conda-forge/arrow-cpp-feedstock/issues/1060>"
         continue
     fi
-    ln -s "$f" "$target"
+    ln -s "$target" "$symlink"
 done
+
