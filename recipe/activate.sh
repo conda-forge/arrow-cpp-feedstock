@@ -41,15 +41,10 @@ for target in "$GDB_PREFIX/$PLACEHOLDER/lib/"*.py; do
         continue
     fi
     # We have write permissions to WRAPPER_DIR but not necessarily the symlink.
-    # Thus it's safest to delete the symlink in case it already exists.
-    rm -f "$symlink"
-    # Check if symlink still exists after trying to delete it
-    if [ -e "$symlink" ]; then
-        # Theoretically this should never happen, but in practice...
-        echo "Warning: Unable to remove existing symlink '$symlink'. Please report this at"
-        echo "<https://github.com/conda-forge/arrow-cpp-feedstock/issues/1060>"
-        continue
-    fi
-    ln -s "$target" "$symlink"
+    # Thus rather than editing the symlink, we should create a temporary symlink
+    # and then move it into place.
+    temp_symlink="$(mktemp --tmpdir gdb-symlink-for-arrow-cpp-XXXXX)"
+    ln -sf "$target" "$temp_symlink"
+    mv "$temp_symlink" "$symlink"
 done
 
