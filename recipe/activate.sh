@@ -22,7 +22,10 @@ if [ ! -w "$WRAPPER_DIR" ]; then
     return
 fi
 
-# there's only one lib in that folder, but the libname changes
+# Everything that follows amounts to very carefully creating the
+# symlink if need be.
+
+# there's only one lib in the placeholder folder, but the libname changes
 # based on the version so use a loop instead of hardcoding it.
 for f in "$GDB_PREFIX/$PLACEHOLDER/lib/"*.py; do
     if [ ! -e "$f" ]; then
@@ -32,8 +35,19 @@ for f in "$GDB_PREFIX/$PLACEHOLDER/lib/"*.py; do
         continue
     fi
     target="$WRAPPER_DIR/$(basename "$f")"
+    # Check if symbolic link already exists and points to correct file
+    if [ -L "$target" ] && [ "$(readlink "$target")" = "$f" ]; then
+        # Stop if it does
+        continue
+    fi
     # We have write permissions to WRAPPER_DIR but not necessarily target.
     # Thus it's safest to delete the target in case it already exists.
     rm -f "$target"
-    ln -s "$f" "$WRAPPER_DIR/$(basename "$f")"
+    if [ -e "$target" ]; then
+        # Theoretically this should never happen, but in practice...
+        echo "Warning: Unable to remove existing symlink '$target'. Please report this at"
+        echo "<https://github.com/conda-forge/arrow-cpp-feedstock/issues/1060>"
+        continue
+    fi
+    ln -s "$f" "$target"
 done
