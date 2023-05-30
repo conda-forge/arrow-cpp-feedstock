@@ -45,6 +45,7 @@ for _la_target in "$_la_gdb_prefix/$_la_placeholder/lib/"*.py; do
     fi
     _la_log "Creating symlink '$_la_symlink' pointing to '$_la_target'"
     mkdir -p "$_la_wrapper_dir" || true
+    # this check also creates the symlink; if it fails, we enter the if-branch.
     if ! ln -sf "$_la_target" "$_la_symlink"; then
         echo -n "${BASH_SOURCE[0]} ERROR: Failed to create symlink from "
         echo -n "'$_la_target' to '$_la_symlink'"
