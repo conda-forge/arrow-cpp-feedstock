@@ -24,9 +24,11 @@ _la_placeholder="replace_this_section_with_absolute_slashed_path_to_CONDA_PREFIX
 # https://github.com/apache/arrow/blob/master/docs/source/cpp/gdb.rst#manual-loading
 _la_wrapper_dir="$_la_gdb_prefix/$CONDA_PREFIX/lib"
 
-_la_log "   _la_gdb_prefix: $_la_gdb_prefix"
-_la_log "  _la_placeholder: $_la_placeholder"
-_la_log "  _la_wrapper_dir: $_la_wrapper_dir"
+_la_log "          _la_gdb_prefix: $_la_gdb_prefix"
+_la_log "         _la_placeholder: $_la_placeholder"
+_la_log "  _la_target_wrapper_dir: $_la_target_wrapper_dir"
+_la_log "  _la_actual_wrapper_dir: $_la_gdb_prefix/$_la_placeholder/lib"
+_la_log "  content of that folder:\n$(ls -l $_la_gdb_prefix/$_la_placeholder/lib)"
 
 # there's only one lib in the _la_placeholder folder, but the libname changes
 # based on the version so use a loop instead of hardcoding it.
