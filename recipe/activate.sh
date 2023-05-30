@@ -8,7 +8,7 @@
 # is benign and doesn't need to be deleted.
 
 _la_log() {
-    if [ "$LIBARROW_ACTIVATE_LOGGING" = "1" ]; then
+    if [ "$CF_LIBARROW_ACTIVATE_LOGGING" = "1" ]; then
         echo "${BASH_SOURCE[0]} DEBUG: $*"
     fi
 }
