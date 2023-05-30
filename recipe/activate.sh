@@ -38,22 +38,22 @@ for target in "$_la_gdb_prefix/$_la_placeholder/lib/"*.py; do
         _la_log "Skipping extraneous iteration with target as match pattern '$target'"
         continue
     fi
-    symlink="$_la_wrapper_dir/$(basename "$target")"
-    if [ -L "$symlink" ] && [ "$(readlink "$symlink")" = "$target" ]; then
-        _la_log "Symlink '$symlink' already exists and points to '$target', skipping."
+    _la_symlink="$_la_wrapper_dir/$(basename "$target")"
+    if [ -L "$_la_symlink" ] && [ "$(readlink "$_la_symlink")" = "$target" ]; then
+        _la_log "symlink '$_la_symlink' already exists and points to '$target', skipping."
         continue
     fi
-    _la_log "Creating symlink '$symlink' pointing to '$target'"
+    _la_log "Creating symlink '$_la_symlink' pointing to '$target'"
     mkdir -p "$_la_wrapper_dir" || true
     # If the directory is not writable, nothing can be done
     if [ ! -w "$_la_wrapper_dir" ]; then
         echo -n "${BASH_SOURCE[0]} ERROR: Wrapper directory '$_la_wrapper_dir' is not "
-        echo -n "writable, so we can't create the symlink '$symlink' pointing to "
+        echo -n "writable, so we can't create the symlink '$_la_symlink' pointing to "
         echo -n "'$target'."
         echo
         continue
     fi
-    ln -sf "$target" "$symlink"
+    ln -sf "$target" "$_la_symlink"
 done
 
 _la_log "Libarrow activation complete."
@@ -62,3 +62,4 @@ unset _la_log
 unset _la_gdb_prefix
 unset _la_placeholder
 unset _la_wrapper_dir
+unset _la_symlink
