@@ -11,9 +11,10 @@ _la_log() {
     if [ "$CF_LIBARROW_ACTIVATE_LOGGING" = "1" ]; then
         # The following loop is necessary to handle multi-line strings
         # like for the output of `ls -al`.
-        while IFS= read -r line; do
-            echo "${BASH_SOURCE[0]} DEBUG: $line"
-        done <<< "$*"
+        printf '%s\n' "$*" | while IFS= read -r line
+        do
+            echo "$CONDA_PREFIX/etc/conda/activate.d/libarrow_activate.sh DEBUG: $line"
+        done
     fi
 }
 
