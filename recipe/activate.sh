@@ -22,16 +22,13 @@ if [ ! -w "$WRAPPER_DIR" ]; then
     return
 fi
 
-# Everything that follows amounts to very carefully creating the
-# symlink if need be.
-
 # there's only one lib in the placeholder folder, but the libname changes
 # based on the version so use a loop instead of hardcoding it.
 for target in "$GDB_PREFIX/$PLACEHOLDER/lib/"*.py; do
     if [ ! -e "$target" ]; then
         # If the file doesn't exist, skip this iteration of the loop.
         # (This happens when no files are found, in which case the
-        # loop runs with f equal to the pattern itself.)
+        # loop runs with target equal to the pattern itself.)
         continue
     fi
     symlink="$WRAPPER_DIR/$(basename "$target")"
@@ -42,4 +39,3 @@ for target in "$GDB_PREFIX/$PLACEHOLDER/lib/"*.py; do
     fi
     ln -sf "$target" "$symlink"
 done
-
