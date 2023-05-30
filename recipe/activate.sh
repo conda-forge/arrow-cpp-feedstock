@@ -46,9 +46,7 @@ for target in "$_la_gdb_prefix/$_la_placeholder/lib/"*.py; do
         continue
     fi
     symlink="$_la_wrapper_dir/$(basename "$target")"
-    # Check if symbolic link already exists and points to correct file
     if [ -L "$symlink" ] && [ "$(readlink "$symlink")" = "$target" ]; then
-        # Stop if it does
         _la_log "Symlink '$symlink' already exists and points to '$target', skipping."
         continue
     fi
