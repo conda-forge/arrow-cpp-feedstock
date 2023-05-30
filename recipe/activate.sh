@@ -58,9 +58,9 @@ done
 
 _la_log "Libarrow activation complete."
 
-unset _la_log
 unset _la_gdb_prefix
+unset _la_log
 unset _la_placeholder
-unset _la_wrapper_dir
 unset _la_symlink
 unset _la_target
+unset _la_wrapper_dir
