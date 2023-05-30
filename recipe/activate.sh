@@ -7,6 +7,14 @@
 # doesn't come with a deactivate script, because the symlink
 # is benign and doesn't need to be deleted.
 
+_la_log() {
+    if [ "$LIBARROW_ACTIVATE_LOGGING" = "1" ]; then
+        echo "DEBUG ${BASH_SOURCE[0]}: $*"
+    fi
+}
+
+_la_log "Beginning libarrow activation."
+
 # where the GDB wrappers get installed
 GDB_PREFIX="$CONDA_PREFIX/share/gdb/auto-load"
 
@@ -16,9 +24,14 @@ PLACEHOLDER="replace_this_section_with_absolute_slashed_path_to_CONDA_PREFIX"
 # https://github.com/apache/arrow/blob/master/docs/source/cpp/gdb.rst#manual-loading
 WRAPPER_DIR="$GDB_PREFIX/$CONDA_PREFIX/lib"
 
+_la_log "   GDB_PREFIX: $GDB_PREFIX"
+_la_log "  PLACEHOLDER: $PLACEHOLDER"
+_la_log "  WRAPPER_DIR: $WRAPPER_DIR"
+
 mkdir -p "$WRAPPER_DIR" || true
 # If the directory is not writable, nothing can be done
 if [ ! -w "$WRAPPER_DIR" ]; then
+    _la_log "Wrapper directory '$WRAPPER_DIR' is not writable, aborting."
     return
 fi
 
@@ -29,13 +42,20 @@ for target in "$GDB_PREFIX/$PLACEHOLDER/lib/"*.py; do
         # If the file doesn't exist, skip this iteration of the loop.
         # (This happens when no files are found, in which case the
         # loop runs with target equal to the pattern itself.)
+        _la_log "Skipping extraneous iteration with target as match pattern '$target'"
         continue
     fi
     symlink="$WRAPPER_DIR/$(basename "$target")"
     # Check if symbolic link already exists and points to correct file
     if [ -L "$symlink" ] && [ "$(readlink "$symlink")" = "$target" ]; then
         # Stop if it does
+        _la_log "Symlink '$symlink' already exists and points to '$target', skipping."
         continue
     fi
+    _la_log "Creating symlink '$symlink' pointing to '$target'"
     ln -sf "$target" "$symlink"
 done
+
+_la_log "Libarrow activation complete."
+
+unset _la_log
