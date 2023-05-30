@@ -37,7 +37,7 @@ _la_log "    _la_orig_install_dir: $_la_orig_install_dir"
 _la_log "  content of that folder:"
 _la_log "$(ls -al "$_la_orig_install_dir" | sed 's/^/      /')"
 
-# there's only one lib in the _la_placeholder folder, but the libname changes
+# there's only one lib in the _la_orig_install_dir folder, but the libname changes
 # based on the version so use a loop instead of hardcoding it.
 for _la_target in "$_la_orig_install_dir/"*.py; do
     if [ ! -e "$_la_target" ]; then
