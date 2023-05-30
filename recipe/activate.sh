@@ -9,7 +9,7 @@
 
 _la_log() {
     if [ "$LIBARROW_ACTIVATE_LOGGING" = "1" ]; then
-        echo "DEBUG ${BASH_SOURCE[0]}: $*"
+        echo "${BASH_SOURCE[0]} DEBUG: $*"
     fi
 }
 
