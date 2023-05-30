@@ -37,7 +37,7 @@ for _la_target in "$_la_gdb_prefix/$_la_placeholder/lib/"*.py; do
         # If the file doesn't exist, skip this iteration of the loop.
         # (This happens when no files are found, in which case the
         # loop runs with target equal to the pattern itself.)
-        _la_log "Folder $_la_gdb_prefix/$_la_placeholder/lib seems to not contain *.py files, skipping"
+        _la_log "Folder '$_la_gdb_prefix/$_la_placeholder/lib' seems to not contain .py files, skipping"
         continue
     fi
     _la_symlink="$_la_wrapper_dir/$(basename "$_la_target")"
