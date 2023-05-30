@@ -40,11 +40,6 @@ for target in "$GDB_PREFIX/$PLACEHOLDER/lib/"*.py; do
         # Stop if it does
         continue
     fi
-    # We have write permissions to WRAPPER_DIR but not necessarily the symlink.
-    # Thus rather than editing the symlink, we should create a temporary symlink
-    # and then move it into place.
-    temp_symlink="$(mktemp --tmpdir gdb-symlink-for-arrow-cpp-XXXXX)"
-    ln -sf "$target" "$temp_symlink"
-    mv "$temp_symlink" "$symlink"
+    ln -sf "$target" "$symlink"
 done
 
