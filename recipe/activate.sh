@@ -9,7 +9,11 @@
 
 _la_log() {
     if [ "$CF_LIBARROW_ACTIVATE_LOGGING" = "1" ]; then
-        echo "${BASH_SOURCE[0]} DEBUG: $*"
+        # The following loop is necessary to handle multi-line strings
+        # like for the output of `ls -al`.
+        while IFS= read -r line; do
+            echo "${BASH_SOURCE[0]} DEBUG: $line"
+        done <<< "$*"
     fi
 }
 
