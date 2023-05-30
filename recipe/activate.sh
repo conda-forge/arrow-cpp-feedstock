@@ -47,7 +47,10 @@ for target in "$_la_gdb_prefix/$_la_placeholder/lib/"*.py; do
     mkdir -p "$_la_wrapper_dir" || true
     # If the directory is not writable, nothing can be done
     if [ ! -w "$_la_wrapper_dir" ]; then
-        _la_log "Wrapper directory '$_la_wrapper_dir' is not writable, aborting."
+        echo -n "${BASH_SOURCE[0]} ERROR: Wrapper directory '$_la_wrapper_dir' is not "
+        echo -n "writable, so we can't create the symlink '$symlink' pointing to "
+        echo -n "'$target'."
+        echo
         continue
     fi
     ln -sf "$target" "$symlink"
