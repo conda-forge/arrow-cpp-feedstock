@@ -34,7 +34,7 @@ _la_log "         _la_placeholder: $_la_placeholder"
 _la_log "  _la_actual_wrapper_dir: $_la_actual_wrapper_dir"
 _la_log "  _la_target_wrapper_dir: $_la_target_wrapper_dir"
 _la_log "  content of that folder:"
-_la_log "$(ls -al "$_la_target_wrapper_dir" | sed 's/^/    /')"
+_la_log "$(ls -al "$_la_target_wrapper_dir" | sed 's/^/      /')"
 
 # there's only one lib in the _la_placeholder folder, but the libname changes
 # based on the version so use a loop instead of hardcoding it.
@@ -43,15 +43,17 @@ for _la_target in "$_la_target_wrapper_dir/"*.py; do
         # If the file doesn't exist, skip this iteration of the loop.
         # (This happens when no files are found, in which case the
         # loop runs with target equal to the pattern itself.)
-        _la_log "Folder '$_la_target_wrapper_dir' seems to not contain .py files, skipping"
+        _la_log 'Folder $_la_target_wrapper_dir seems to not contain .py files, skipping'
         continue
     fi
     _la_symlink="$_la_actual_wrapper_dir/$(basename "$_la_target")"
+    _la_log "   _la_target: $_la_target"
+    _la_log "  _la_symlink: $_la_symlink"
     if [ -L "$_la_symlink" ] && [ "$(readlink "$_la_symlink")" = "$_la_target" ]; then
-        _la_log "symlink '$_la_symlink' already exists and points to '$_la_target', skipping."
+        _la_log 'symlink $_la_symlink already exists and points to $_la_target, skipping.'
         continue
     fi
-    _la_log "Creating symlink '$_la_symlink' pointing to '$_la_target'"
+    _la_log 'Creating symlink $_la_symlink pointing to $_la_target'
     mkdir -p "$_la_actual_wrapper_dir" || true
     # this check also creates the symlink; if it fails, we enter the if-branch.
     if ! ln -sf "$_la_target" "$_la_symlink"; then
