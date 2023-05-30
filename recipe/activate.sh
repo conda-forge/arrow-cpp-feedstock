@@ -45,15 +45,12 @@ for _la_target in "$_la_gdb_prefix/$_la_placeholder/lib/"*.py; do
     fi
     _la_log "Creating symlink '$_la_symlink' pointing to '$_la_target'"
     mkdir -p "$_la_wrapper_dir" || true
-    # If the directory is not writable, nothing can be done
-    if [ ! -w "$_la_wrapper_dir" ]; then
-        echo -n "${BASH_SOURCE[0]} ERROR: Wrapper directory '$_la_wrapper_dir' is not "
-        echo -n "writable, so we can't create the symlink '$_la_symlink' pointing to "
-        echo -n "'$_la_target'."
+    if ! ln -sf "$_la_target" "$_la_symlink"; then
+        echo -n "${BASH_SOURCE[0]} ERROR: Failed to create symlink from "
+        echo -n "'$_la_target' to '$_la_symlink'"
         echo
         continue
     fi
-    ln -sf "$_la_target" "$_la_symlink"
 done
 
 _la_log "Libarrow activation complete."
