@@ -30,30 +30,30 @@ _la_log "  _la_wrapper_dir: $_la_wrapper_dir"
 
 # there's only one lib in the _la_placeholder folder, but the libname changes
 # based on the version so use a loop instead of hardcoding it.
-for target in "$_la_gdb_prefix/$_la_placeholder/lib/"*.py; do
-    if [ ! -e "$target" ]; then
+for _la_target in "$_la_gdb_prefix/$_la_placeholder/lib/"*.py; do
+    if [ ! -e "$_la_target" ]; then
         # If the file doesn't exist, skip this iteration of the loop.
         # (This happens when no files are found, in which case the
         # loop runs with target equal to the pattern itself.)
-        _la_log "Skipping extraneous iteration with target as match pattern '$target'"
+        _la_log "Skipping extraneous iteration with target as match pattern '$_la_target'"
         continue
     fi
-    _la_symlink="$_la_wrapper_dir/$(basename "$target")"
-    if [ -L "$_la_symlink" ] && [ "$(readlink "$_la_symlink")" = "$target" ]; then
-        _la_log "symlink '$_la_symlink' already exists and points to '$target', skipping."
+    _la_symlink="$_la_wrapper_dir/$(basename "$_la_target")"
+    if [ -L "$_la_symlink" ] && [ "$(readlink "$_la_symlink")" = "$_la_target" ]; then
+        _la_log "symlink '$_la_symlink' already exists and points to '$_la_target', skipping."
         continue
     fi
-    _la_log "Creating symlink '$_la_symlink' pointing to '$target'"
+    _la_log "Creating symlink '$_la_symlink' pointing to '$_la_target'"
     mkdir -p "$_la_wrapper_dir" || true
     # If the directory is not writable, nothing can be done
     if [ ! -w "$_la_wrapper_dir" ]; then
         echo -n "${BASH_SOURCE[0]} ERROR: Wrapper directory '$_la_wrapper_dir' is not "
         echo -n "writable, so we can't create the symlink '$_la_symlink' pointing to "
-        echo -n "'$target'."
+        echo -n "'$_la_target'."
         echo
         continue
     fi
-    ln -sf "$target" "$_la_symlink"
+    ln -sf "$_la_target" "$_la_symlink"
 done
 
 _la_log "Libarrow activation complete."
@@ -63,3 +63,4 @@ unset _la_gdb_prefix
 unset _la_placeholder
 unset _la_wrapper_dir
 unset _la_symlink
+unset _la_target
