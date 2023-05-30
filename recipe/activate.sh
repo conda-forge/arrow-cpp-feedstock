@@ -19,13 +19,13 @@ _la_log "Beginning libarrow activation."
 _la_gdb_prefix="$CONDA_PREFIX/share/gdb/auto-load"
 
 # this needs to be in sync with ARROW_GDB_INSTALL_DIR in build.sh
-PLACEHOLDER="replace_this_section_with_absolute_slashed_path_to_CONDA_PREFIX"
+_la_placeholder="replace_this_section_with_absolute_slashed_path_to_CONDA_PREFIX"
 # the paths here are intentionally stacked, see #935, resp.
 # https://github.com/apache/arrow/blob/master/docs/source/cpp/gdb.rst#manual-loading
 WRAPPER_DIR="$_la_gdb_prefix/$CONDA_PREFIX/lib"
 
 _la_log "   _la_gdb_prefix: $_la_gdb_prefix"
-_la_log "  PLACEHOLDER: $PLACEHOLDER"
+_la_log "  _la_placeholder: $_la_placeholder"
 _la_log "  WRAPPER_DIR: $WRAPPER_DIR"
 
 mkdir -p "$WRAPPER_DIR" || true
@@ -35,9 +35,9 @@ if [ ! -w "$WRAPPER_DIR" ]; then
     return
 fi
 
-# there's only one lib in the placeholder folder, but the libname changes
+# there's only one lib in the _la_placeholder folder, but the libname changes
 # based on the version so use a loop instead of hardcoding it.
-for target in "$_la_gdb_prefix/$PLACEHOLDER/lib/"*.py; do
+for target in "$_la_gdb_prefix/$_la_placeholder/lib/"*.py; do
     if [ ! -e "$target" ]; then
         # If the file doesn't exist, skip this iteration of the loop.
         # (This happens when no files are found, in which case the
@@ -60,3 +60,4 @@ _la_log "Libarrow activation complete."
 
 unset _la_log
 unset _la_gdb_prefix
+unset _la_placeholder
