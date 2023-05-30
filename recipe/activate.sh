@@ -28,13 +28,6 @@ _la_log "   _la_gdb_prefix: $_la_gdb_prefix"
 _la_log "  _la_placeholder: $_la_placeholder"
 _la_log "  _la_wrapper_dir: $_la_wrapper_dir"
 
-mkdir -p "$_la_wrapper_dir" || true
-# If the directory is not writable, nothing can be done
-if [ ! -w "$_la_wrapper_dir" ]; then
-    _la_log "Wrapper directory '$_la_wrapper_dir' is not writable, aborting."
-    return
-fi
-
 # there's only one lib in the _la_placeholder folder, but the libname changes
 # based on the version so use a loop instead of hardcoding it.
 for target in "$_la_gdb_prefix/$_la_placeholder/lib/"*.py; do
@@ -51,6 +44,12 @@ for target in "$_la_gdb_prefix/$_la_placeholder/lib/"*.py; do
         continue
     fi
     _la_log "Creating symlink '$symlink' pointing to '$target'"
+    mkdir -p "$_la_wrapper_dir" || true
+    # If the directory is not writable, nothing can be done
+    if [ ! -w "$_la_wrapper_dir" ]; then
+        _la_log "Wrapper directory '$_la_wrapper_dir' is not writable, aborting."
+        continue
+    fi
     ln -sf "$target" "$symlink"
 done
 
