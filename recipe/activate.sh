@@ -22,16 +22,16 @@ _la_gdb_prefix="$CONDA_PREFIX/share/gdb/auto-load"
 _la_placeholder="replace_this_section_with_absolute_slashed_path_to_CONDA_PREFIX"
 # the paths here are intentionally stacked, see #935, resp.
 # https://github.com/apache/arrow/blob/master/docs/source/cpp/gdb.rst#manual-loading
-WRAPPER_DIR="$_la_gdb_prefix/$CONDA_PREFIX/lib"
+_la_wrapper_dir="$_la_gdb_prefix/$CONDA_PREFIX/lib"
 
 _la_log "   _la_gdb_prefix: $_la_gdb_prefix"
 _la_log "  _la_placeholder: $_la_placeholder"
-_la_log "  WRAPPER_DIR: $WRAPPER_DIR"
+_la_log "  _la_wrapper_dir: $_la_wrapper_dir"
 
-mkdir -p "$WRAPPER_DIR" || true
+mkdir -p "$_la_wrapper_dir" || true
 # If the directory is not writable, nothing can be done
-if [ ! -w "$WRAPPER_DIR" ]; then
-    _la_log "Wrapper directory '$WRAPPER_DIR' is not writable, aborting."
+if [ ! -w "$_la_wrapper_dir" ]; then
+    _la_log "Wrapper directory '$_la_wrapper_dir' is not writable, aborting."
     return
 fi
 
@@ -45,7 +45,7 @@ for target in "$_la_gdb_prefix/$_la_placeholder/lib/"*.py; do
         _la_log "Skipping extraneous iteration with target as match pattern '$target'"
         continue
     fi
-    symlink="$WRAPPER_DIR/$(basename "$target")"
+    symlink="$_la_wrapper_dir/$(basename "$target")"
     # Check if symbolic link already exists and points to correct file
     if [ -L "$symlink" ] && [ "$(readlink "$symlink")" = "$target" ]; then
         # Stop if it does
@@ -61,3 +61,4 @@ _la_log "Libarrow activation complete."
 unset _la_log
 unset _la_gdb_prefix
 unset _la_placeholder
+unset _la_wrapper_dir
