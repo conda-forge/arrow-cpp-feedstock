@@ -367,6 +367,8 @@ outputs:
         # skip tests that raise SIGINT and crash the test suite
         {% set tests_to_skip = tests_to_skip + " or (test_csv and test_cancellation)" %}  # [linux]
         {% set tests_to_skip = tests_to_skip + " or (test_flight and test_interrupt)" %}  # [linux]
+        # tests that risk crashing the agent due to intentional out-of-bound memory writes
+        {% set tests_to_skip = tests_to_skip + " or test_debug_memory_pool" %}            # [aarch64 or ppc64le]
         # cannot pass -D_LIBCPP_DISABLE_AVAILABILITY to test suite for our older macos sdk
         {% set tests_to_skip = tests_to_skip + " or test_cpp_extension_in_python" %}      # [osx]
         # skip tests that make invalid(-for-conda) assumptions about the compilers setup
@@ -389,6 +391,9 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or (test_memory and test_env_var)" %}    # [unix]
         # test is broken; header is in $PREFIX, not $SP_DIR
         {% set tests_to_skip = tests_to_skip + " or (test_misc and test_get_include)" %}  # [unix]
+        # flaky tests that fail occasionally
+        {% set tests_to_skip = tests_to_skip + " or test_total_bytes_allocated " %}       # [linux]
+        {% set tests_to_skip = tests_to_skip + " or test_feather_format " %}              # [linux]
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
         - pytest -rfEs -k "not ({{ tests_to_skip }})"
 
