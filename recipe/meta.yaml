@@ -28,6 +28,11 @@ build:
   run_exports:
     - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
 
+# ensure we split CI jobs per protobuf version
+requirements:
+  host:
+    - libprotobuf
+
 outputs:
   - name: apache-arrow-proc
     version: {{ build_ext_version }}
@@ -200,6 +205,8 @@ outputs:
     requirements:
       host:
         - {{ pin_subpackage('libarrow', exact=True) }}
+        # avoid wrappers for different builds colliding due to identical hashes
+        - libprotobuf
       run:
         - {{ pin_subpackage('libarrow', exact=True) }}
     test:
