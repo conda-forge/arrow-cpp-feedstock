@@ -130,10 +130,9 @@ outputs:
         - xsimd
         - zlib
         - zstd
+        - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
-        - cuda-version >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
-        - cudatoolkit >={{ cuda_compiler_version_min }}   # [cuda_compiler_version != "None"]
         # make sure we don't co-install with old version of old package name
         - arrow-cpp ={{ version }}
         # old parquet lib output, now part of this feedstock
@@ -245,8 +244,6 @@ outputs:
         - python
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
-        - cuda-version >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
-        - cudatoolkit >={{ cuda_compiler_version_min }}   # [cuda_compiler_version != "None"]
 
     test:
       files:
@@ -328,8 +325,6 @@ outputs:
         - python
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
-        - cuda-version >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
-        - cudatoolkit >={{ cuda_compiler_version_min }}   # [cuda_compiler_version != "None"]
 
     test:
       requires:
