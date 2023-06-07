@@ -7,10 +7,6 @@ pushd "%SRC_DIR%"\cpp\build
 if "%cuda_compiler_version%"=="None" (
     set "EXTRA_CMAKE_ARGS=-DARROW_CUDA=OFF"
 ) else (
-    REM this should move to nvcc-feedstock
-    set "CUDA_PATH=%CUDA_PATH:\=/%"
-    set "CUDA_HOME=%CUDA_HOME:\=/%"
-
     set "EXTRA_CMAKE_ARGS=-DARROW_CUDA=ON"
 )
 
