@@ -61,8 +61,8 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       run_exports:
         - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
-      ignore_run_exports:
-        - cudatoolkit
+      ignore_run_exports_from:
+        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
       missing_dso_whitelist:
         - "*/libcuda.so.*"    # [linux]
@@ -128,9 +128,9 @@ outputs:
       run:
         - {{ pin_compatible('numpy', lower_bound='1.16') }}
         - python
+        - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
-        - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
 
     about:
       home: http://github.com/apache/arrow
@@ -186,8 +186,8 @@ outputs:
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
-      ignore_run_exports:
-        - cudatoolkit
+      ignore_run_exports_from:
+        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
     requirements:
       build:
@@ -216,9 +216,9 @@ outputs:
         # empty parquet-cpp metapackage, force old versions to be uninstalled
         - parquet-cpp 1.5.1.*
         - python
+        - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
-        - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
 
     about:
       home: http://github.com/apache/arrow
@@ -260,8 +260,8 @@ outputs:
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
-      ignore_run_exports:
-        - cudatoolkit
+      ignore_run_exports_from:
+        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
     requirements:
       build:
@@ -287,9 +287,9 @@ outputs:
       run:
         - {{ pin_subpackage('pyarrow', exact=True) }}
         - python
+        - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
       run_constrained:
         - arrow-cpp-proc * {{ build_ext }}
-        - cudatoolkit >=9.2  # [cuda_compiler_version != "None"]
 
     about:
       home: http://github.com/apache/arrow
