@@ -15,6 +15,9 @@ package:
 source:
   - url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
     sha256: ddd8347882775e53af7d0965a1902b7d8fcd0a030fd14f783d4f85e821352d52
+    patches:
+      # backport https://github.com/apache/arrow/pull/35673
+      - patches/0001-GH-35538-C-Remove-unnecessary-status.h-include-from-.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
