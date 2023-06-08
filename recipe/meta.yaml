@@ -79,8 +79,8 @@ outputs:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       run_exports:
         - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
-      ignore_run_exports:
-        - cudatoolkit
+      ignore_run_exports_from:
+        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
       missing_dso_whitelist:
         - "*/libcuda.so.*"    # [linux]
@@ -135,9 +135,9 @@ outputs:
         - xsimd
         - zlib
         - zstd
+        - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
-        - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
         # make sure we don't co-install with old version of old package name
         - arrow-cpp ={{ version }}
         # old parquet lib output, now part of this feedstock
@@ -213,8 +213,8 @@ outputs:
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
-      ignore_run_exports:
-        - cudatoolkit
+      ignore_run_exports_from:
+        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
       rpaths:
         - lib/
@@ -251,7 +251,6 @@ outputs:
         - python
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
-        - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
 
     test:
       files:
@@ -304,8 +303,8 @@ outputs:
     version: {{ version }}
     build:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
-      ignore_run_exports:
-        - cudatoolkit
+      ignore_run_exports_from:
+        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
     requirements:
       build:
@@ -334,7 +333,6 @@ outputs:
         - python
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
-        - cudatoolkit >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
 
     test:
       requires:
