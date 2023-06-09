@@ -12,6 +12,7 @@ __migrator:
   operation: key_add
   check_solvable: false
   primary_key: cuda_compiler_version
+  use_local: true
   ordering:
     cxx_compiler_version:
       - 9
@@ -77,4 +78,4 @@ cdt_name:                      # [linux64 and os.environ.get("CF_CUDA_ENABLED", 
   - cos7                       # [linux64 and os.environ.get("CF_CUDA_ENABLED", "False") == "True"]
 
 docker_image:                                      # [os.environ.get("BUILD_PLATFORM", "").startswith("linux-") and os.environ.get("CF_CUDA_ENABLED", "False") == "True"]
-  - quay.io/condaforge/linux-anvil-cos7-x86_64     # [linux64 and os.environ.get("BUILD_PLATFORM") == "linux-64" and os.environ.get("CF_CUDA_ENABLED", "False") == "True"]
+  - quay.io/condaforge/linux-anvil-cos7-x86_64     # [os.environ.get("BUILD_PLATFORM") == "linux-64" and os.environ.get("CF_CUDA_ENABLED", "False") == "True"]
