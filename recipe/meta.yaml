@@ -368,6 +368,8 @@ outputs:
         # tests that may crash the agent due to out-of-bound memory writes or other risky stuff
         {% set tests_to_skip = tests_to_skip + " or test_debug_memory_pool" %}            # [aarch64 or ppc64le]
         {% set tests_to_skip = tests_to_skip + " or test_write_dataset_with_backpressure" %}  # [aarch64 and cuda_compiler != None]
+        {% set tests_to_skip = tests_to_skip + " or test_named_table_invalid_table_name" %}   # [aarch64 and cuda_compiler != None]
+        {% set tests_to_skip = tests_to_skip + " or test_native_file_pandas_text_reader" %}   # [aarch64 and cuda_compiler != None]
         # cannot pass -D_LIBCPP_DISABLE_AVAILABILITY to test suite for our older macos sdk
         {% set tests_to_skip = tests_to_skip + " or test_cpp_extension_in_python" %}      # [osx]
         # skip tests that make invalid(-for-conda) assumptions about the compilers setup
