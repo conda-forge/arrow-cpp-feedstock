@@ -706,7 +706,7 @@ outputs:
         - pyarrow.compute
         - pyarrow.flight
         - pyarrow.gandiva
-        - pyarrow.orc      # [unix]
+        - pyarrow.orc
         - pyarrow.parquet
         - pyarrow.fs
         - pyarrow._s3fs
