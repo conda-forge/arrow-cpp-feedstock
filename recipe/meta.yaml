@@ -71,6 +71,9 @@ outputs:
         - gflags
         # shared lib linked on unix, not on win
         - glog                                   # [win]
+      ignore_run_exports:
+        # we don't need all of brotli's run-exports
+        - libbrotlicommon
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
       missing_dso_whitelist:
         - '*/libcuda.so.*'    # [linux]
