@@ -100,16 +100,10 @@ outputs:
         - boost-cpp >=1.70
         - brotli
         - bzip2
-        - c-ares
         - gflags
         - glog
         - google-cloud-cpp
         - libabseil
-        # since libgoogle-cloud is static on windows, see
-        # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
-        # its dependencies leak into the build here
-        - libcrc32c  # [win]
-        - libcurl    # [win]
         - libgrpc
         - libprotobuf
         - clangdev {{ llvm_version }}
@@ -130,6 +124,12 @@ outputs:
         - xsimd 8.1.0
         - zlib
         - zstd
+        # since libgoogle-cloud & libgrpc are static on windows, see
+        # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
+        # their host deps (which aren't yet covered above) leak into the build here
+        - c-ares     # [win]
+        - libcrc32c  # [win]
+        - libcurl    # [win]
       run:
         - {{ pin_compatible('numpy', lower_bound='1.16') }}
         - python
