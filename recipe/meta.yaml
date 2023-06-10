@@ -105,7 +105,6 @@ outputs:
         - boost-cpp >=1.70
         - brotli
         - bzip2
-        - c-ares
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
         # - cpp-opentelemetry-sdk
         # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
@@ -115,11 +114,6 @@ outputs:
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
-        # since libgoogle-cloud is static on windows, see
-        # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
-        # its dependencies leak into the build here
-        - libcrc32c  # [win]
-        - libcurl    # [win]
         - libgrpc
         - libprotobuf
         - libutf8proc
@@ -137,6 +131,12 @@ outputs:
         - zlib
         - zstd
         - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
+        # since libgoogle-cloud & libgrpc are static on windows, see
+        # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
+        # their host deps (which aren't yet covered above) leak into the build here
+        - c-ares     # [win]
+        - libcrc32c  # [win]
+        - libcurl    # [win]
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
         # make sure we don't co-install with old version of old package name
