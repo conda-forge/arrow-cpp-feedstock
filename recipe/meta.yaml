@@ -63,6 +63,10 @@ outputs:
         - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
+        # arrow only uses headers, except for plasma
+        - gflags                                 # [win]
+        # shared lib linked on unix, not on win
+        - glog                                   # [win]
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
       missing_dso_whitelist:
         - "*/libcuda.so.*"    # [linux]
