@@ -129,7 +129,6 @@ outputs:
         # its dependencies leak into the build here
         - libcrc32c  # [win]
         - libcurl    # [win]
-        - libevent
         - libgrpc
         - libprotobuf
         - libutf8proc
