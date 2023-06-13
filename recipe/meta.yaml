@@ -1,4 +1,4 @@
-{% set version = "12.0.0" %}
+{% set version = "12.0.1" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "4.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -14,7 +14,7 @@ package:
 
 source:
   - url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
-    sha256: ddd8347882775e53af7d0965a1902b7d8fcd0a030fd14f783d4f85e821352d52
+    sha256: 3481c411393aa15c75e88d93cf8315faf7f43e180fe0790128d3840d417de858
     patches:
       # backport https://github.com/apache/arrow/pull/35673
       - patches/0001-GH-35538-C-Remove-unnecessary-status.h-include-from-.patch
@@ -24,7 +24,7 @@ source:
     folder: testing
 
 build:
-  number: 9
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -66,7 +66,7 @@ outputs:
         - exit 0
 
   - name: libarrow
-    script: build-arrow.sh   # [unix]
+    script: build-arrow.sh  # [unix]
     script: build-arrow.bat  # [win]
     version: {{ version }}
     build:
@@ -220,7 +220,7 @@ outputs:
         - exit 0
 
   - name: pyarrow
-    script: build-pyarrow.sh   # [unix]
+    script: build-pyarrow.sh  # [unix]
     script: build-pyarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -308,7 +308,7 @@ outputs:
       summary: Python libraries for Apache Arrow
 
   - name: pyarrow-tests
-    script: build-pyarrow.sh   # [unix]
+    script: build-pyarrow.sh  # [unix]
     script: build-pyarrow.bat  # [win]
     version: {{ version }}
     build:
