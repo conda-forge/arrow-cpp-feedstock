@@ -6,8 +6,6 @@ aws_sdk_cpp:
 - 1.10.57
 bzip2:
 - '1'
-c_ares:
-- '1'
 c_compiler:
 - clang
 c_compiler_version:
@@ -45,7 +43,7 @@ numpy:
 openssl:
 - '3'
 orc:
-- 1.8.3
+- 1.8.4
 pin_run_as_build:
   python:
     min_pin: x.x
