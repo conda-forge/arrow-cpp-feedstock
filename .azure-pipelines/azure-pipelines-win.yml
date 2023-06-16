@@ -8,11 +8,17 @@ jobs:
     vmImage: windows-2022
   strategy:
     matrix:
-      win_64_cuda_compiler_version10.2:
-        CONFIG: win_64_cuda_compiler_version10.2
+      win_64_cuda_compiler_version10.2libprotobuf3.21:
+        CONFIG: win_64_cuda_compiler_version10.2libprotobuf3.21
         UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_versionNone:
-        CONFIG: win_64_cuda_compiler_versionNone
+      win_64_cuda_compiler_version10.2libprotobuf4.23.2:
+        CONFIG: win_64_cuda_compiler_version10.2libprotobuf4.23.2
+        UPLOAD_PACKAGES: 'True'
+      win_64_cuda_compiler_versionNonelibprotobuf3.21:
+        CONFIG: win_64_cuda_compiler_versionNonelibprotobuf3.21
+        UPLOAD_PACKAGES: 'True'
+      win_64_cuda_compiler_versionNonelibprotobuf4.23.2:
+        CONFIG: win_64_cuda_compiler_versionNonelibprotobuf4.23.2
         UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 360
   variables:

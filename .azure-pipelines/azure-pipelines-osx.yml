@@ -8,11 +8,17 @@ jobs:
     vmImage: macOS-11
   strategy:
     matrix:
-      osx_64_:
-        CONFIG: osx_64_
+      osx_64_libprotobuf3.21:
+        CONFIG: osx_64_libprotobuf3.21
         UPLOAD_PACKAGES: 'True'
-      osx_arm64_:
-        CONFIG: osx_arm64_
+      osx_64_libprotobuf4.23.2:
+        CONFIG: osx_64_libprotobuf4.23.2
+        UPLOAD_PACKAGES: 'True'
+      osx_arm64_libprotobuf3.21:
+        CONFIG: osx_arm64_libprotobuf3.21
+        UPLOAD_PACKAGES: 'True'
+      osx_arm64_libprotobuf4.23.2:
+        CONFIG: osx_arm64_libprotobuf4.23.2
         UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 360
 
