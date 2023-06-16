@@ -126,10 +126,9 @@ outputs:
         - xsimd 8.1.0
         - zlib
         - zstd
-        # since libgoogle-cloud & libgrpc are static on windows, see
+        # since libgoogle-cloud is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
-        # their host deps (which aren't yet covered above) leak into the build here
-        - c-ares     # [win]
+        # its host deps (which aren't yet covered above) leak into the build here
         - libcrc32c  # [win]
         - libcurl    # [win]
       run:
