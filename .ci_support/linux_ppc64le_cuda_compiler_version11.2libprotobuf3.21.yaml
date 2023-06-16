@@ -1,19 +1,13 @@
-BUILD:
-- aarch64-conda_cos7-linux-gnu
 aws_crt_cpp:
 - 0.20.2
 aws_sdk_cpp:
 - 1.10.57
 bzip2:
 - '1'
-c_ares:
-- '1'
 c_compiler:
 - gcc
 c_compiler_version:
 - '10'
-cdt_arch:
-- aarch64
 cdt_name:
 - cos7
 channel_sources:
@@ -40,8 +34,6 @@ google_cloud_cpp:
 - 2.11.0
 libabseil:
 - '20230125'
-libevent:
-- 2.1.12
 libgrpc:
 - '1.54'
 libprotobuf:
@@ -56,7 +48,7 @@ numpy:
 openssl:
 - '3'
 orc:
-- 1.8.3
+- 1.8.4
 pin_run_as_build:
   python:
     min_pin: x.x
@@ -71,7 +63,7 @@ re2:
 snappy:
 - '1'
 target_platform:
-- linux-aarch64
+- linux-ppc64le
 thrift_cpp:
 - 0.18.1
 ucx:

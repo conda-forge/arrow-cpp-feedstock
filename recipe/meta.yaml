@@ -15,18 +15,26 @@ package:
 source:
   - url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
     sha256: ddd8347882775e53af7d0965a1902b7d8fcd0a030fd14f783d4f85e821352d52
+    patches:
+      # backport https://github.com/apache/arrow/pull/35673
+      - patches/0001-GH-35538-C-Remove-unnecessary-status.h-include-from-.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
     folder: testing
 
 build:
-  number: 7
+  number: 8
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
   run_exports:
     - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
+
+# ensure we split CI jobs per protobuf version
+requirements:
+  host:
+    - libprotobuf
 
 outputs:
   - name: apache-arrow-proc
@@ -67,6 +75,13 @@ outputs:
         - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
+        # arrow only uses headers, apparently
+        - gflags
+        # shared lib linked on unix, not on win
+        - glog                                   # [win]
+      ignore_run_exports:
+        # we don't need all of brotli's run-exports
+        - libbrotlicommon
       track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
       missing_dso_whitelist:
         - '*/libcuda.so.*'    # [linux]
@@ -98,7 +113,6 @@ outputs:
         - boost-cpp >=1.70
         - brotli
         - bzip2
-        - c-ares
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
         # - cpp-opentelemetry-sdk
         # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
@@ -108,12 +122,6 @@ outputs:
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
-        # since libgoogle-cloud is static on windows, see
-        # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
-        # its dependencies leak into the build here
-        - libcrc32c  # [win]
-        - libcurl    # [win]
-        - libevent
         - libgrpc
         - libprotobuf
         - libutf8proc
@@ -131,6 +139,13 @@ outputs:
         - zlib
         - zstd
         - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
+        # since libgoogle-cloud is static on windows, see
+        # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
+        # its host deps (which aren't yet covered above) leak into the build here
+        - libcrc32c  # [win]
+        - libcurl    # [win]
+        # same for libgrpc (before 1.55.0, which is coupled with libprotobuf 4.23.x)
+        - c-ares     # [win and libprotobuf == "3.21"]
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
         # make sure we don't co-install with old version of old package name
@@ -194,6 +209,8 @@ outputs:
     requirements:
       host:
         - {{ pin_subpackage('libarrow', exact=True) }}
+        # avoid wrappers for different builds colliding due to identical hashes
+        - libprotobuf
       run:
         - {{ pin_subpackage('libarrow', exact=True) }}
     test:
@@ -233,7 +250,6 @@ outputs:
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
         - cython
-        - gflags  # [unix]
         - numpy
         - python
         - setuptools
@@ -341,10 +357,23 @@ outputs:
         - hypothesis
         - pandas
         - scipy
+        # can only use something as a test dep if it's done the same migrations as arrow;
+        # generally, pytorch/tensorflow are behind on migrations (due to how hard they are
+        # to build), especially for abseil/protobuf, so cannot set those unconditionally.
+        # If youre reading this, please ensure the versions below represent the last
+        # versions for which pytorch/tensorflow have been migrated in conda-forge.
+        {% set torch_latest_abseil = "20230125" %}
+        {% set torch_latest_proto = "3.21" %}
+        {% if libabseil == torch_latest_abseil and libprotobuf == torch_latest_proto %}
         # not all OSes/arches available in conda-forge
         - pytorch *           # [unix and not ppc64le]
-        # not yet rebuilt for libabseil 20230125
-        # - tensorflow          # [unix and x86_64 and py<311]
+        {% endif %}
+        {% set tf_latest_abseil = "20220623.0" %}
+        {% set tf_latest_proto = "3.21" %}
+        {% if libabseil == tf_latest_abseil and libprotobuf == tf_latest_proto %}
+        # not all OSes/arches available in conda-forge
+        - tensorflow          # [unix and x86_64 and py<311]
+        {% endif %}
         # we're not building java bindings
         # - jpype1
         # doesn't get picked up correctly
@@ -367,9 +396,6 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or (test_flight and test_interrupt)" %}  # [linux]
         # tests that may crash the agent due to out-of-bound memory writes or other risky stuff
         {% set tests_to_skip = tests_to_skip + " or test_debug_memory_pool" %}            # [aarch64 or ppc64le]
-        {% set tests_to_skip = tests_to_skip + " or test_write_dataset_with_backpressure" %}  # [aarch64 and cuda_compiler != None]
-        {% set tests_to_skip = tests_to_skip + " or test_named_table_invalid_table_name" %}   # [aarch64 and cuda_compiler != None]
-        {% set tests_to_skip = tests_to_skip + " or test_native_file_pandas_text_reader" %}   # [aarch64 and cuda_compiler != None]
         # cannot pass -D_LIBCPP_DISABLE_AVAILABILITY to test suite for our older macos sdk
         {% set tests_to_skip = tests_to_skip + " or test_cpp_extension_in_python" %}      # [osx]
         # skip tests that make invalid(-for-conda) assumptions about the compilers setup
@@ -396,7 +422,12 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or test_total_bytes_allocated " %}       # [linux]
         {% set tests_to_skip = tests_to_skip + " or test_feather_format " %}              # [linux]
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
+        {% if not (aarch64 or ppc64le) or py == 311 %}
+        # only run the full test suite for one python version when in emulation (each run takes ~45min);
+        # there's essentially zero divergence in behaviour across python versions anyway, and otherwise
+        # CUDA builds for aarch/ppc consistently would run out of disk space on azure for some reason
         - pytest -rfEs -k "not ({{ tests_to_skip }})"
+        {% endif %}
 
     about:
       home: http://github.com/apache/arrow
