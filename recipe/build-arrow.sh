@@ -117,3 +117,6 @@ cmake -GNinja \
 cmake --build . --target install --config Release
 
 popd
+
+# clean up artefacts afterwards to save space
+rm -rf cpp/build
