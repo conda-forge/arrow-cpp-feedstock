@@ -346,7 +346,8 @@ outputs:
       requires:
         # test_cpp_extension_in_python requires a compiler
         - {{ compiler("cxx") }}  # [linux]
-        - pytest
+        # temporary pin due to missing fixture
+        - pytest <7.4.0
         - pytest-lazy-fixture
         - backports.zoneinfo     # [py<39]
         - cffi
