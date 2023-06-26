@@ -353,6 +353,10 @@ outputs:
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
 
+    {% if not (aarch64 or ppc64le) or py == 311 %}
+    # only run the full test suite for one python version when in emulation (each run takes ~45min);
+    # there's essentially zero divergence in behaviour across python versions anyway, and otherwise
+    # CUDA builds for aarch/ppc consistently run out of disk space on azure for some reason
     test:
       requires:
         # temporary pin due to missing fixture
@@ -393,7 +397,6 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or (test_flight and test_interrupt)" %}  # [linux]
         # tests that may crash the agent due to out-of-bound memory writes or other risky stuff
         {% set tests_to_skip = tests_to_skip + " or test_debug_memory_pool" %}            # [aarch64 or ppc64le]
-        {% set tests_to_skip = tests_to_skip + " or test_write_dataset_with_backpressure" %}  # [aarch64 and cuda_compiler != None]
         # skip tests that make invalid(-for-conda) assumptions about the compilers setup
         {% set tests_to_skip = tests_to_skip + " or test_cython_api" %}                   # [unix]
         {% set tests_to_skip = tests_to_skip + " or test_visit_strings" %}                # [unix]
@@ -420,6 +423,7 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or test_feather_format " %}              # [linux]
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
         - pytest -rfEs -k "not ({{ tests_to_skip }})"
+    {% endif %}
 
     about:
       home: http://github.com/apache/arrow
