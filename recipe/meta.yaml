@@ -353,7 +353,8 @@ outputs:
 
     test:
       requires:
-        - pytest
+        # temporary pin due to missing fixture
+        - pytest <7.4.0
         - pytest-lazy-fixture
         - backports.zoneinfo  # [py<39]
         - cffi
