@@ -56,9 +56,14 @@ fi
 # this symbol affects the ABI also on unix, see https://github.com/apache/arrow/issues/35987
 CXXFLAGS="$CXXFLAGS -DPROTOBUF_USE_DLLS"
 
-# Limit number of threads used to avoid hardware oversubscription
+ARROW_WITH_GCS=ON
 if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "linux-ppc64le" ]]; then
-     export CMAKE_BUILD_PARALLEL_LEVEL=3
+    # Limit number of threads used to avoid hardware oversubscription
+    export CMAKE_BUILD_PARALLEL_LEVEL=3
+    # see meta.yaml
+    if [[ "${cuda_compiler_version}" != "None" ]]; then
+        ARROW_WITH_GCS=OFF
+    fi
 fi
 
 # reusable variable for dependencies we cannot yet unvendor
@@ -85,7 +90,7 @@ cmake -GNinja \
     -DARROW_FLIGHT_SQL=ON \
     -DARROW_GANDIVA=ON \
     -DARROW_GANDIVA_PC_CXX_FLAGS="${ARROW_GANDIVA_PC_CXX_FLAGS}" \
-    -DARROW_GCS=ON \
+    -DARROW_GCS=${ARROW_WITH_GCS} \
     -DARROW_GDB_INSTALL_DIR=replace_this_section_with_absolute_slashed_path_to_CONDA_PREFIX/lib \
     -DARROW_HDFS=ON \
     -DARROW_JEMALLOC=ON \
@@ -122,3 +127,6 @@ cmake -GNinja \
 cmake --build . --target install --config Release
 
 popd
+
+# clean up artefacts afterwards to save space
+rm -rf cpp/build

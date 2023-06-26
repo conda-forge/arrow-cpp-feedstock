@@ -24,7 +24,7 @@ source:
     folder: testing
 
 build:
-  number: 8
+  number: 9
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -118,7 +118,9 @@ outputs:
         # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
         - glog
-        - google-cloud-cpp
+        # constantly runs out of disk space in CI; for now either gcp- OR cuda-support on aarch/ppc
+        # retry again after https://github.com/conda-forge/google-cloud-cpp-feedstock/issues/141
+        - google-cloud-cpp  # [not ((aarch64 or ppc64le) and cuda_compiler_version != "None")]
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
@@ -342,11 +344,16 @@ outputs:
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
 
+    {% if not (aarch64 or ppc64le) or py == 311 %}
+    # only run the full test suite for one python version when in emulation (each run takes ~45min);
+    # there's essentially zero divergence in behaviour across python versions anyway, and otherwise
+    # CUDA builds for aarch/ppc consistently run out of disk space on azure for some reason
     test:
       requires:
         # test_cpp_extension_in_python requires a compiler
         - {{ compiler("cxx") }}  # [linux]
-        - pytest
+        # temporary pin due to missing fixture
+        - pytest <7.4.0
         - pytest-lazy-fixture
         - backports.zoneinfo     # [py<39]
         - cffi
@@ -422,12 +429,8 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or test_total_bytes_allocated " %}       # [linux]
         {% set tests_to_skip = tests_to_skip + " or test_feather_format " %}              # [linux]
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
-        {% if not (aarch64 or ppc64le) or py == 311 %}
-        # only run the full test suite for one python version when in emulation (each run takes ~45min);
-        # there's essentially zero divergence in behaviour across python versions anyway, and otherwise
-        # CUDA builds for aarch/ppc consistently would run out of disk space on azure for some reason
         - pytest -rfEs -k "not ({{ tests_to_skip }})"
-        {% endif %}
+    {% endif %}
 
     about:
       home: http://github.com/apache/arrow
