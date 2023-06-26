@@ -344,6 +344,10 @@ outputs:
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
 
+    {% if not (aarch64 or ppc64le) or py == 311 %}
+    # only run the full test suite for one python version when in emulation (each run takes ~45min);
+    # there's essentially zero divergence in behaviour across python versions anyway, and otherwise
+    # CUDA builds for aarch/ppc consistently run out of disk space on azure for some reason
     test:
       requires:
         # test_cpp_extension_in_python requires a compiler
@@ -425,12 +429,8 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or test_total_bytes_allocated " %}       # [linux]
         {% set tests_to_skip = tests_to_skip + " or test_feather_format " %}              # [linux]
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
-        {% if not (aarch64 or ppc64le) or py == 311 %}
-        # only run the full test suite for one python version when in emulation (each run takes ~45min);
-        # there's essentially zero divergence in behaviour across python versions anyway, and otherwise
-        # CUDA builds for aarch/ppc consistently would run out of disk space on azure for some reason
         - pytest -rfEs -k "not ({{ tests_to_skip }})"
-        {% endif %}
+    {% endif %}
 
     about:
       home: http://github.com/apache/arrow
