@@ -25,8 +25,9 @@ build:
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
+  # arrow promises API- & ABI-compatibility along SemVer, see #1096
   run_exports:
-    - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
+    - {{ pin_subpackage("libarrow", max_pin="x") }}
 
 # ensure we split CI jobs per protobuf version
 requirements:
