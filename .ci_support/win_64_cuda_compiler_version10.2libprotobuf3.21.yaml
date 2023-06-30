@@ -46,7 +46,7 @@ numpy:
 openssl:
 - '3'
 orc:
-- 1.8.4
+- 1.9.0
 pin_run_as_build:
   python:
     min_pin: x.x
