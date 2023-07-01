@@ -35,9 +35,9 @@ google_cloud_cpp:
 libabseil:
 - '20230125'
 libgrpc:
-- '1.55'
+- '1.56'
 libprotobuf:
-- 4.23.2
+- 4.23.3
 lz4_c:
 - 1.9.3
 numpy:
