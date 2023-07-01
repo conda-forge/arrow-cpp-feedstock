@@ -362,23 +362,10 @@ outputs:
         - hypothesis
         - pandas
         - scipy
-        # can only use something as a test dep if it's done the same migrations as arrow;
-        # generally, pytorch/tensorflow are behind on migrations (due to how hard they are
-        # to build), especially for abseil/protobuf, so cannot set those unconditionally.
-        # If youre reading this, please ensure the versions below represent the last
-        # versions for which pytorch/tensorflow have been migrated in conda-forge.
-        {% set torch_latest_abseil = "20230125" %}
-        {% set torch_latest_proto = "3.21" %}
-        {% if libabseil == torch_latest_abseil and libprotobuf == torch_latest_proto %}
-        # not all OSes/arches available in conda-forge
-        - pytorch *           # [unix and not ppc64le]
-        {% endif %}
-        {% set tf_latest_abseil = "20220623.0" %}
-        {% set tf_latest_proto = "3.21" %}
-        {% if libabseil == tf_latest_abseil and libprotobuf == tf_latest_proto %}
-        # not all OSes/arches available in conda-forge
-        - tensorflow          # [unix and x86_64 and py<311]
-        {% endif %}
+        # these are generally (far) behind on migrating abseil/grpc/protobuf,
+        # and using them as test dependencies blocks the migrator unnecessarily
+        # - pytorch
+        # - tensorflow
         # we're not building java bindings
         # - jpype1
         # doesn't get picked up correctly
