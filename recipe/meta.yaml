@@ -362,10 +362,10 @@ outputs:
         # see https://github.com/conda-forge/arrow-cpp-feedstock/issues/1016
         - pandas <2
         - scipy
-        # not all OSes/arches available in conda-forge
-        - pytorch *           # [unix and not ppc64le]
-        # not yet rebuilt for libabseil 20230125
-        # - tensorflow          # [unix and x86_64 and py<311]
+        # these are generally (far) behind on migrating abseil/grpc/protobuf,
+        # and using them as test dependencies blocks the migrator unnecessarily
+        # - pytorch
+        # - tensorflow
         # we're not building java bindings
         # - jpype1
         # doesn't get picked up correctly
