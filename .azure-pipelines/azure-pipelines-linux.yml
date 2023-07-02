@@ -12,48 +12,48 @@ jobs:
         CONFIG: linux_64_cuda_compiler_version10.2libprotobuf3.21
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      linux_64_cuda_compiler_version10.2libprotobuf4.23.2:
-        CONFIG: linux_64_cuda_compiler_version10.2libprotobuf4.23.2
+      linux_64_cuda_compiler_version10.2libprotobuf4.23.3:
+        CONFIG: linux_64_cuda_compiler_version10.2libprotobuf4.23.3
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
       linux_64_cuda_compiler_versionNonelibprotobuf3.21:
         CONFIG: linux_64_cuda_compiler_versionNonelibprotobuf3.21
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_cuda_compiler_versionNonelibprotobuf4.23.2:
-        CONFIG: linux_64_cuda_compiler_versionNonelibprotobuf4.23.2
+      linux_64_cuda_compiler_versionNonelibprotobuf4.23.3:
+        CONFIG: linux_64_cuda_compiler_versionNonelibprotobuf4.23.3
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
       linux_aarch64_cuda_compiler_version11.2libprotobuf3.21:
         CONFIG: linux_aarch64_cuda_compiler_version11.2libprotobuf3.21
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
-      linux_aarch64_cuda_compiler_version11.2libprotobuf4.23.2:
-        CONFIG: linux_aarch64_cuda_compiler_version11.2libprotobuf4.23.2
+      linux_aarch64_cuda_compiler_version11.2libprotobuf4.23.3:
+        CONFIG: linux_aarch64_cuda_compiler_version11.2libprotobuf4.23.3
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
       linux_aarch64_cuda_compiler_versionNonelibprotobuf3.21:
         CONFIG: linux_aarch64_cuda_compiler_versionNonelibprotobuf3.21
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_aarch64_cuda_compiler_versionNonelibprotobuf4.23.2:
-        CONFIG: linux_aarch64_cuda_compiler_versionNonelibprotobuf4.23.2
+      linux_aarch64_cuda_compiler_versionNonelibprotobuf4.23.3:
+        CONFIG: linux_aarch64_cuda_compiler_versionNonelibprotobuf4.23.3
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
       linux_ppc64le_cuda_compiler_version11.2libprotobuf3.21:
         CONFIG: linux_ppc64le_cuda_compiler_version11.2libprotobuf3.21
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
-      linux_ppc64le_cuda_compiler_version11.2libprotobuf4.23.2:
-        CONFIG: linux_ppc64le_cuda_compiler_version11.2libprotobuf4.23.2
+      linux_ppc64le_cuda_compiler_version11.2libprotobuf4.23.3:
+        CONFIG: linux_ppc64le_cuda_compiler_version11.2libprotobuf4.23.3
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
       linux_ppc64le_cuda_compiler_versionNonelibprotobuf3.21:
         CONFIG: linux_ppc64le_cuda_compiler_versionNonelibprotobuf3.21
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_ppc64le_cuda_compiler_versionNonelibprotobuf4.23.2:
-        CONFIG: linux_ppc64le_cuda_compiler_versionNonelibprotobuf4.23.2
+      linux_ppc64le_cuda_compiler_versionNonelibprotobuf4.23.3:
+        CONFIG: linux_ppc64le_cuda_compiler_versionNonelibprotobuf4.23.3
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
   timeoutInMinutes: 360
