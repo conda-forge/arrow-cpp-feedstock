@@ -128,5 +128,5 @@ cmake --build . --target install --config Release
 
 popd
 
-# clean up artefacts afterwards to save space
+# clean up between builds (and to save space)
 rm -rf cpp/build
