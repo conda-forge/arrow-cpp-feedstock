@@ -29,11 +29,6 @@ build:
   run_exports:
     - {{ pin_subpackage("libarrow", max_pin="x") }}
 
-# ensure we split CI jobs per protobuf version
-requirements:
-  host:
-    - libprotobuf
-
 outputs:
   - name: apache-arrow-proc
     version: {{ build_ext_version }}
@@ -246,7 +241,9 @@ outputs:
         - cmake
         - ninja
       host:
-        - {{ pin_subpackage('libarrow', exact=True) }}
+        # we're building for two protobuf versions, cannot pin exactly
+        # - {{ pin_subpackage('libarrow', exact=True) }}
+        - libarrow ={{ version }}=*_{{ PKG_BUILDNUM }}_{{ build_ext }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
         - cython
@@ -255,7 +252,8 @@ outputs:
         - setuptools
         - setuptools_scm
       run:
-        - {{ pin_subpackage('libarrow', exact=True) }}
+        # - {{ pin_subpackage('libarrow', exact=True) }}
+        - libarrow ={{ version }}=*_{{ PKG_BUILDNUM }}_{{ build_ext }}
         - {{ pin_compatible('numpy') }}
         - python
       run_constrained:
