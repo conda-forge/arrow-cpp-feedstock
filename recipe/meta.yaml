@@ -25,6 +25,8 @@ source:
     # with the usual relocation treatement and leads to other issues, see #935;
     # replace with placeholder that allows interested users to fix the file path
     - patches/0002-don-t-bake-non-relocatable-CMAKE_INSTALL_FULL_LIBDIR.patch
+    # backport apache/arrow#34019 to disable useless pkgconfig search that takes ~15-60min
+    - patches/0003-GH-33882-C-Don-t-find-.pc-files-with-ARROW_BUILD_STA.patch
 
 # ensure cuda_compiler_version_min gets picked up by conda-smithy
 # [cuda_compiler_version_min == "something"]
