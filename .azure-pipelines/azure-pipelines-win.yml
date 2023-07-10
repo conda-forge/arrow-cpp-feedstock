@@ -8,29 +8,29 @@ jobs:
     vmImage: windows-2022
   strategy:
     matrix:
-      win_64_cuda_compiler_version10.2numpy1.21python3.10.____cpython:
-        CONFIG: win_64_cuda_compiler_version10.2numpy1.21python3.10.____cpython
+      win_64_cuda_compilerNonecuda_compiler_versionNonenumpy1.21python3.10.____cpython:
+        CONFIG: win_64_cuda_compilerNonecuda_compiler_versionNonenumpy1.21python3.10.____cpython
         UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_version10.2numpy1.21python3.8.____cpython:
-        CONFIG: win_64_cuda_compiler_version10.2numpy1.21python3.8.____cpython
+      win_64_cuda_compilerNonecuda_compiler_versionNonenumpy1.21python3.8.____cpython:
+        CONFIG: win_64_cuda_compilerNonecuda_compiler_versionNonenumpy1.21python3.8.____cpython
         UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_version10.2numpy1.21python3.9.____cpython:
-        CONFIG: win_64_cuda_compiler_version10.2numpy1.21python3.9.____cpython
+      win_64_cuda_compilerNonecuda_compiler_versionNonenumpy1.21python3.9.____cpython:
+        CONFIG: win_64_cuda_compilerNonecuda_compiler_versionNonenumpy1.21python3.9.____cpython
         UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_version10.2numpy1.23python3.11.____cpython:
-        CONFIG: win_64_cuda_compiler_version10.2numpy1.23python3.11.____cpython
+      win_64_cuda_compilerNonecuda_compiler_versionNonenumpy1.23python3.11.____cpython:
+        CONFIG: win_64_cuda_compilerNonecuda_compiler_versionNonenumpy1.23python3.11.____cpython
         UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_versionNonenumpy1.21python3.10.____cpython:
-        CONFIG: win_64_cuda_compiler_versionNonenumpy1.21python3.10.____cpython
+      win_64_cuda_compilernvcccuda_compiler_version10.2numpy1.21python3.10.____cpython:
+        CONFIG: win_64_cuda_compilernvcccuda_compiler_version10.2numpy1.21python3.10.____cpython
         UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_versionNonenumpy1.21python3.8.____cpython:
-        CONFIG: win_64_cuda_compiler_versionNonenumpy1.21python3.8.____cpython
+      win_64_cuda_compilernvcccuda_compiler_version10.2numpy1.21python3.8.____cpython:
+        CONFIG: win_64_cuda_compilernvcccuda_compiler_version10.2numpy1.21python3.8.____cpython
         UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_versionNonenumpy1.21python3.9.____cpython:
-        CONFIG: win_64_cuda_compiler_versionNonenumpy1.21python3.9.____cpython
+      win_64_cuda_compilernvcccuda_compiler_version10.2numpy1.21python3.9.____cpython:
+        CONFIG: win_64_cuda_compilernvcccuda_compiler_version10.2numpy1.21python3.9.____cpython
         UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_versionNonenumpy1.23python3.11.____cpython:
-        CONFIG: win_64_cuda_compiler_versionNonenumpy1.23python3.11.____cpython
+      win_64_cuda_compilernvcccuda_compiler_version10.2numpy1.23python3.11.____cpython:
+        CONFIG: win_64_cuda_compilernvcccuda_compiler_version10.2numpy1.23python3.11.____cpython
         UPLOAD_PACKAGES: 'True'
     maxParallel: 4
   timeoutInMinutes: 360
@@ -82,10 +82,7 @@ jobs:
         if EXIST LICENSE.txt (
           copy LICENSE.txt "recipe\\recipe-scripts-license.txt"
         )
-        if NOT [%HOST_PLATFORM%] == [%BUILD_PLATFORM%] (
-          set "EXTRA_CB_OPTIONS=%EXTRA_CB_OPTIONS% --no-test"
-        )
-        conda.exe mambabuild "recipe" -m .ci_support\%CONFIG%.yaml --suppress-variables %EXTRA_CB_OPTIONS%
+        conda.exe mambabuild "recipe" -m .ci_support\%CONFIG%.yaml --suppress-variables
       displayName: Build recipe
       env:
         PYTHONUNBUFFERED: 1
