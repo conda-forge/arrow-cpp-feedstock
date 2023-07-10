@@ -29,13 +29,15 @@ source:
       - patches/0003-don-t-bake-non-relocatable-CMAKE_INSTALL_FULL_LIBDIR.patch
       # backport apache/arrow#34747 for compatibility with grpc 1.54
       - patches/0004-GH-34743-Python-Relax-condition-in-flaky-Flight-test.patch
+      # backport apache/arrow#34019 to disable useless pkgconfig search that takes ~15-60min
+      - patches/0005-GH-33882-C-Don-t-find-.pc-files-with-ARROW_BUILD_STA.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 00c483283433b4c02cb811f260dbe35414c806a4
     folder: testing
 
 build:
-  number: 32
+  number: 33
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -210,6 +212,8 @@ outputs:
     requirements:
       host:
         - {{ pin_subpackage('libarrow', exact=True) }}
+        # avoid wrappers for different builds colliding due to identical hashes
+        - libprotobuf
       run:
         - {{ pin_subpackage('libarrow', exact=True) }}
     test:
@@ -245,7 +249,9 @@ outputs:
         - cmake
         - ninja
       host:
-        - {{ pin_subpackage('libarrow', exact=True) }}
+        # we're building for two protobuf versions, cannot pin exactly
+        # - {{ pin_subpackage('libarrow', exact=True) }}
+        - libarrow ={{ version }}=*_{{ PKG_BUILDNUM }}_{{ build_ext }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
         - cython
@@ -255,7 +261,8 @@ outputs:
         - setuptools
         - setuptools_scm
       run:
-        - {{ pin_subpackage('libarrow', exact=True) }}
+        # - {{ pin_subpackage('libarrow', exact=True) }}
+        - libarrow ={{ version }}=*_{{ PKG_BUILDNUM }}_{{ build_ext }}
         - {{ pin_compatible('numpy') }}
         - python
       run_constrained:
@@ -349,6 +356,9 @@ outputs:
     # CUDA builds for aarch/ppc consistently run out of disk space on azure for some reason
     test:
       requires:
+        # vary protobuf version in test suite (historically, test failures only have a very
+        # weak dependency on python version, so we don't lose coverage by doing half & half)
+        - libprotobuf <4         # [py % 2 == 0]
         # temporary pin due to missing fixture
         - pytest <7.4.0
         - pytest-lazy-fixture
@@ -362,10 +372,10 @@ outputs:
         # see https://github.com/conda-forge/arrow-cpp-feedstock/issues/1016
         - pandas <2
         - scipy
-        # not all OSes/arches available in conda-forge
-        - pytorch *           # [unix and not ppc64le]
-        # not yet rebuilt for libabseil 20230125
-        # - tensorflow          # [unix and x86_64 and py<311]
+        # these are generally (far) behind on migrating abseil/grpc/protobuf,
+        # and using them as test dependencies blocks the migrator unnecessarily
+        # - pytorch
+        # - tensorflow
         # we're not building java bindings
         # - jpype1
         # doesn't get picked up correctly

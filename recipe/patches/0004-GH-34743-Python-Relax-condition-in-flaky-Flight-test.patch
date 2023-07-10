@@ -1,7 +1,7 @@
 From 1156ace4091cbc504e535bda1dc2969aae088e97 Mon Sep 17 00:00:00 2001
 From: David Li <li.davidm96@gmail.com>
 Date: Fri, 31 Mar 2023 11:57:35 -0400
-Subject: [PATCH 4/4] GH-34743: [Python] Relax condition in flaky Flight test
+Subject: [PATCH 4/5] GH-34743: [Python] Relax condition in flaky Flight test
  (#34747)
 
 ### Rationale for this change
@@ -38,6 +38,3 @@ index 69318a553..a42681678 100644
              client.do_get(flight.Ticket(b'ints'))
          client.close()
  
--- 
-2.40.1.windows.1
-
