@@ -1,5 +1,5 @@
 MACOSX_DEPLOYMENT_TARGET:
-- '11.0'
+- '10.9'
 aws_crt_cpp:
 - 0.20.3
 aws_sdk_cpp:
@@ -30,12 +30,14 @@ libabseil:
 - '20230125'
 libgrpc:
 - '1.54'
+- '1.56'
 libprotobuf:
 - '3.21'
+- 4.23.3
 lz4_c:
 - 1.9.3
 macos_machine:
-- arm64-apple-darwin20.0.0
+- x86_64-apple-darwin13.4.0
 numpy:
 - '1.21'
 - '1.23'
@@ -59,7 +61,7 @@ re2:
 snappy:
 - '1'
 target_platform:
-- osx-arm64
+- osx-64
 thrift_cpp:
 - 0.18.1
 zip_keys:

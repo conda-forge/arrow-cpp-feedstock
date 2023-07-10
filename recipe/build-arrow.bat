@@ -1,7 +1,7 @@
 @echo on
 
-mkdir "%SRC_DIR%"\cpp\build
-pushd "%SRC_DIR%"\cpp\build
+mkdir cpp\build
+pushd cpp\build
 
 :: Enable CUDA support
 if "%cuda_compiler_version%"=="None" (
@@ -66,3 +66,6 @@ cmake --build . --target install --config Release
 if %ERRORLEVEL% neq 0 exit 1
 
 popd
+
+:: clean up between builds (and to save space)
+rmdir /s /q cpp\build
