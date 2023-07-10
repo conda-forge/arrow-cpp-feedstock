@@ -1,7 +1,7 @@
 From 984b9c8cf0b72e24e8917900862b37964fb27e58 Mon Sep 17 00:00:00 2001
 From: Alenka Frim <AlenkaF@users.noreply.github.com>
 Date: Tue, 22 Nov 2022 22:01:32 +0100
-Subject: [PATCH 1/4] ARROW-18340: [Python] PyArrow C++ header files no longer
+Subject: [PATCH 1/5] ARROW-18340: [Python] PyArrow C++ header files no longer
  always included in installed pyarrow (#14656)
 
 This PR adds code to `_run_cmake` to always copy PyArrow C++ header files to `pyarrow/iclude`.
@@ -81,6 +81,3 @@ index 2a7e5f7a3..528d9537f 100755
  
              # Move the built C-extension to the place expected by the Python
              # build
--- 
-2.40.1.windows.1
-

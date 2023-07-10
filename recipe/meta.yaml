@@ -29,6 +29,8 @@ source:
       - patches/0003-don-t-bake-non-relocatable-CMAKE_INSTALL_FULL_LIBDIR.patch
       # backport apache/arrow#34747 for compatibility with grpc 1.54
       - patches/0004-GH-34743-Python-Relax-condition-in-flaky-Flight-test.patch
+      # backport apache/arrow#34019 to disable useless pkgconfig search that takes ~15-60min
+      - patches/0005-GH-33882-C-Don-t-find-.pc-files-with-ARROW_BUILD_STA.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 00c483283433b4c02cb811f260dbe35414c806a4
