@@ -222,6 +222,8 @@ outputs:
     requirements:
       host:
         - {{ pin_subpackage('libarrow', exact=True) }}
+        # avoid wrappers for different builds colliding due to identical hashes
+        - libprotobuf
       run:
         - {{ pin_subpackage('libarrow', exact=True) }}
     test:
@@ -257,7 +259,9 @@ outputs:
         - cmake
         - ninja
       host:
-        - {{ pin_subpackage('libarrow', exact=True) }}
+        # we're building for two protobuf versions, cannot pin exactly
+        # - {{ pin_subpackage('libarrow', exact=True) }}
+        - libarrow ={{ version }}=*_{{ PKG_BUILDNUM }}_{{ build_ext }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
         - cython
@@ -267,7 +271,8 @@ outputs:
         - setuptools
         - setuptools_scm
       run:
-        - {{ pin_subpackage('libarrow', exact=True) }}
+        # - {{ pin_subpackage('libarrow', exact=True) }}
+        - libarrow ={{ version }}=*_{{ PKG_BUILDNUM }}_{{ build_ext }}
         - {{ pin_compatible('numpy') }}
         - python
       run_constrained:
