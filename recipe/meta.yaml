@@ -121,9 +121,7 @@ outputs:
         - bzip2
         - gflags
         - glog
-        # constantly runs out of disk space in CI; for now either gcp- OR cuda-support on aarch/ppc
-        # retry again after https://github.com/conda-forge/google-cloud-cpp-feedstock/issues/141
-        - google-cloud-cpp  # [not ((aarch64 or ppc64le) and cuda_compiler_version != "None")]
+        - google-cloud-cpp
         - libabseil
         - libgrpc
         - libprotobuf
