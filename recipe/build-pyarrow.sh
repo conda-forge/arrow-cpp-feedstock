@@ -41,10 +41,6 @@ fi
 if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "linux-ppc64le" ]]; then
     # Limit number of threads used to avoid hardware oversubscription
     export CMAKE_BUILD_PARALLEL_LEVEL=4
-    # see meta.yaml
-    if [[ "${cuda_compiler_version}" != "None" ]]; then
-        PYARROW_WITH_GCS=0
-    fi
 fi
 
 cd python
