@@ -338,7 +338,7 @@ outputs:
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
 
-    {% if not (aarch64 or ppc64le) or py == 311 %}
+    {% if not (aarch64 or ppc64le) or py in (310, 311) %}
     # only run the full test suite for one python version when in emulation (each run takes ~45min);
     # there's essentially zero divergence in behaviour across python versions anyway, and otherwise
     # CUDA builds for aarch/ppc consistently run out of disk space on azure for some reason
