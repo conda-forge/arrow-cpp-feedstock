@@ -59,7 +59,7 @@ outputs:
         - exit 0
 
   - name: libarrow
-    script: build-arrow.sh  # [unix]
+    script: build-arrow.sh   # [unix]
     script: build-arrow.bat  # [win]
     version: {{ version }}
     build:
@@ -211,7 +211,7 @@ outputs:
         - exit 0
 
   - name: pyarrow
-    script: build-pyarrow.sh  # [unix]
+    script: build-pyarrow.sh   # [unix]
     script: build-pyarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -302,7 +302,7 @@ outputs:
       summary: Python libraries for Apache Arrow
 
   - name: pyarrow-tests
-    script: build-pyarrow.sh  # [unix]
+    script: build-pyarrow.sh   # [unix]
     script: build-pyarrow.bat  # [win]
     version: {{ version }}
     build:
