@@ -53,9 +53,6 @@ if [[ "$target_platform" == "linux-ppc64le" ]]; then
   CXXFLAGS="$(echo $CXXFLAGS | sed 's/-fno-plt //g')"
 fi
 
-# this symbol affects the ABI also on unix, see https://github.com/apache/arrow/issues/35987
-CXXFLAGS="$CXXFLAGS -DPROTOBUF_USE_DLLS"
-
 if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "linux-ppc64le" ]]; then
     # Limit number of threads used to avoid hardware oversubscription
     export CMAKE_BUILD_PARALLEL_LEVEL=3
