@@ -200,7 +200,7 @@ outputs:
       build:
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - cython                                 # [build_platform != target_platform]
+        - cython <3                              # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
         - cmake
         - ninja
@@ -211,7 +211,7 @@ outputs:
         - {{ compiler("cuda") }}  # [cuda_compiler_version != "None"]
       host:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
-        - cython
+        - cython <3
         - gflags  # [unix]
         - numpy
         - python
@@ -274,7 +274,7 @@ outputs:
       build:
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - cython                                 # [build_platform != target_platform]
+        - cython <3                              # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
         - cmake
         - ninja
@@ -286,7 +286,7 @@ outputs:
       host:
         - {{ pin_subpackage('arrow-cpp', exact=True) }}
         - {{ pin_subpackage('pyarrow', exact=True) }}
-        - cython
+        - cython <3
         - numpy
         - python
         - setuptools
