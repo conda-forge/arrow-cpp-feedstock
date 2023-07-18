@@ -234,7 +234,7 @@ outputs:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - cython                                 # [build_platform != target_platform]
+        - cython <3                              # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
         - cmake
         - ninja
@@ -244,7 +244,7 @@ outputs:
         - libarrow ={{ version }}=*_{{ PKG_BUILDNUM }}_{{ build_ext }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
-        - cython
+        - cython <3
         - numpy
         - python
         - setuptools
@@ -318,7 +318,7 @@ outputs:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - cython                                 # [build_platform != target_platform]
+        - cython <3                              # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
         - cmake
         - ninja
@@ -327,7 +327,7 @@ outputs:
         - {{ pin_subpackage('pyarrow', exact=True) }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
-        - cython
+        - cython <3
         - numpy
         - python
         - setuptools
@@ -355,7 +355,7 @@ outputs:
         - backports.zoneinfo     # [py<39]
         - cffi
         - cloudpickle
-        - cython
+        - cython <3
         - fastparquet
         - fsspec
         - hypothesis
