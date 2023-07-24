@@ -1,6 +1,6 @@
 {% set version = "13.0.0" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
-{% set build_ext_version = "4.0.0" %}
+{% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
 {% set proc_build_number = "0" %}
 {% set llvm_version = "15" %}
@@ -41,6 +41,10 @@ outputs:
     build:
       number: {{ proc_build_number }}
       string: {{ build_ext }}
+    requirements:
+      run_constrained:
+        # avoid installation with old naming of proc package
+        - arrow-cpp-proc <0.0a0
     test:
       commands:
         - exit 0
@@ -50,19 +54,6 @@ outputs:
       license_file:
         - LICENSE.txt
       summary: A meta-package to select Arrow build variant
-
-  # compat output for old mutex-package naming
-  - name: arrow-cpp-proc
-    version: {{ build_ext_version }}
-    build:
-      number: {{ proc_build_number }}
-      string: {{ build_ext }}
-    requirements:
-      run:
-        - apache-arrow-proc ={{ build_ext_version }}={{ build_ext }}
-    test:
-      commands:
-        - exit 0
 
   - name: libarrow
     script: build-arrow.sh   # [unix]
@@ -145,8 +136,8 @@ outputs:
         - libcurl    # [win]
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
-        # make sure we don't co-install with old version of old package name
-        - arrow-cpp ={{ version }}
+        # avoid installation with old naming of lib package
+        - arrow-cpp <0.0a0
         # old parquet lib output, now part of this feedstock
         - parquet-cpp <0.0a0
 
@@ -195,22 +186,6 @@ outputs:
       license_file:
         - LICENSE.txt
       summary: C++ libraries for Apache Arrow
-
-  # compat output for old naming scheme; switched for 10.0.0; keep for a few versions
-  - name: arrow-cpp
-    version: {{ version }}
-    build:
-      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
-      run_exports:
-        - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
-    requirements:
-      host:
-        - {{ pin_subpackage('libarrow', exact=True) }}
-      run:
-        - {{ pin_subpackage('libarrow', exact=True) }}
-    test:
-      commands:
-        - exit 0
 
   - name: pyarrow
     script: build-pyarrow.sh   # [unix]
