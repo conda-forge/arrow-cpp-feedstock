@@ -65,7 +65,7 @@ outputs:
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       run_exports:
-        - {{ pin_subpackage("libarrow", max_pin="x.x.x") }}
+        - {{ pin_subpackage("libarrow", max_pin="x") }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
         # arrow only uses headers, apparently
