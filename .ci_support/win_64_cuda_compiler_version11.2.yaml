@@ -15,9 +15,9 @@ channel_targets:
 cuda_compiler:
 - nvcc
 cuda_compiler_version:
-- '10.2'
+- '11.2'
 cuda_compiler_version_min:
-- '10.2'
+- '11.2'
 cxx_compiler:
 - vs2019
 gflags:

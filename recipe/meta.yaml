@@ -21,7 +21,7 @@ source:
     folder: testing
 
 build:
-  number: 5
+  number: 6
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -59,7 +59,7 @@ outputs:
         - exit 0
 
   - name: libarrow
-    script: build-arrow.sh  # [unix]
+    script: build-arrow.sh   # [unix]
     script: build-arrow.bat  # [win]
     version: {{ version }}
     build:
@@ -111,9 +111,7 @@ outputs:
         # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
         - glog
-        # constantly runs out of disk space in CI; for now either gcp- OR cuda-support on aarch/ppc
-        # retry again after https://github.com/conda-forge/google-cloud-cpp-feedstock/issues/141
-        - google-cloud-cpp  # [not ((aarch64 or ppc64le) and cuda_compiler_version != "None")]
+        - google-cloud-cpp
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
@@ -213,7 +211,7 @@ outputs:
         - exit 0
 
   - name: pyarrow
-    script: build-pyarrow.sh  # [unix]
+    script: build-pyarrow.sh   # [unix]
     script: build-pyarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -236,7 +234,7 @@ outputs:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - cython                                 # [build_platform != target_platform]
+        - cython <3                              # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
         - cmake
         - ninja
@@ -246,7 +244,7 @@ outputs:
         - libarrow ={{ version }}=*_{{ PKG_BUILDNUM }}_{{ build_ext }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
-        - cython
+        - cython <3
         - numpy
         - python
         - setuptools
@@ -304,7 +302,7 @@ outputs:
       summary: Python libraries for Apache Arrow
 
   - name: pyarrow-tests
-    script: build-pyarrow.sh  # [unix]
+    script: build-pyarrow.sh   # [unix]
     script: build-pyarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -320,7 +318,7 @@ outputs:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - cython                                 # [build_platform != target_platform]
+        - cython <3                              # [build_platform != target_platform]
         - numpy                                  # [build_platform != target_platform]
         - cmake
         - ninja
@@ -329,7 +327,7 @@ outputs:
         - {{ pin_subpackage('pyarrow', exact=True) }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
-        - cython
+        - cython <3
         - numpy
         - python
         - setuptools
@@ -340,7 +338,7 @@ outputs:
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
 
-    {% if not (aarch64 or ppc64le) or py == 311 %}
+    {% if not (aarch64 or ppc64le) or py in (310, 311) %}
     # only run the full test suite for one python version when in emulation (each run takes ~45min);
     # there's essentially zero divergence in behaviour across python versions anyway, and otherwise
     # CUDA builds for aarch/ppc consistently run out of disk space on azure for some reason
@@ -357,7 +355,7 @@ outputs:
         - backports.zoneinfo     # [py<39]
         - cffi
         - cloudpickle
-        - cython
+        - cython <3
         - fastparquet
         - fsspec
         - hypothesis
