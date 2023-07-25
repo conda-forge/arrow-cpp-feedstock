@@ -19,7 +19,7 @@ cuda_compiler:
 cuda_compiler_version:
 - None
 cuda_compiler_version_min:
-- '10.2'
+- '11.2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:

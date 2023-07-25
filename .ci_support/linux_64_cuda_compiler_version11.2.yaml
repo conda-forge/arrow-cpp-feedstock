@@ -7,9 +7,9 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '7'
+- '10'
 cdt_name:
-- cos6
+- cos7
 channel_sources:
 - conda-forge
 channel_targets:
@@ -17,15 +17,15 @@ channel_targets:
 cuda_compiler:
 - nvcc
 cuda_compiler_version:
-- '10.2'
+- '11.2'
 cuda_compiler_version_min:
-- '10.2'
+- '11.2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '7'
+- '10'
 docker_image:
-- quay.io/condaforge/linux-anvil-cos7-cuda:10.2
+- quay.io/condaforge/linux-anvil-cuda:11.2
 gflags:
 - '2.2'
 glog:

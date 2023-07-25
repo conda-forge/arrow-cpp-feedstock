@@ -1,3 +1,5 @@
+# keep this in sync with llvm_version in meta.yaml;
+# don't rely on global pinning even if it matches
 c_compiler_version:            # [osx]
   - 15                         # [osx]
 cxx_compiler_version:          # [osx]
