@@ -53,14 +53,9 @@ if [[ "$target_platform" == "linux-ppc64le" ]]; then
   CXXFLAGS="$(echo $CXXFLAGS | sed 's/-fno-plt //g')"
 fi
 
-ARROW_WITH_GCS=ON
 if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "linux-ppc64le" ]]; then
     # Limit number of threads used to avoid hardware oversubscription
     export CMAKE_BUILD_PARALLEL_LEVEL=3
-    # see meta.yaml
-    if [[ "${cuda_compiler_version}" != "None" ]]; then
-        ARROW_WITH_GCS=OFF
-    fi
 fi
 
 cmake -GNinja \
@@ -80,7 +75,7 @@ cmake -GNinja \
     -DARROW_FLIGHT_SQL=ON \
     -DARROW_GANDIVA=ON \
     -DARROW_GANDIVA_PC_CXX_FLAGS="${ARROW_GANDIVA_PC_CXX_FLAGS}" \
-    -DARROW_GCS=${ARROW_WITH_GCS} \
+    -DARROW_GCS=ON \
     -DARROW_HDFS=ON \
     -DARROW_JEMALLOC=ON \
     -DARROW_JSON=ON \
