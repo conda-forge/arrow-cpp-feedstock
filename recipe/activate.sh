@@ -65,9 +65,9 @@ for _la_target in "$_la_orig_install_dir/"*.py; do
     mkdir -p "$_la_symlink_dir" || true
     # this check also creates the symlink; if it fails, we enter the if-branch.
     if ! ln -sf "$_la_target" "$_la_symlink"; then
-        echo -n "${BASH_SOURCE[0]} ERROR: Failed to create symlink from "
-        echo -n "'$_la_target' to '$_la_symlink'!"
-        echo
+        echo -n "${BASH_SOURCE[0]} WARNING: Failed to create symlink from "
+        echo "'$_la_target' to '$_la_symlink'!"
+        echo "Unless you plan to use the GDB debugger with libarrow, this warning can be safely ignored."
         continue
     fi
 done
