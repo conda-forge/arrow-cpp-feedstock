@@ -26,6 +26,7 @@ _la_gdb_prefix="$CONDA_PREFIX/share/gdb/auto-load"
 # If the directory is not writable, nothing can be done
 if [ ! -w "$_la_gdb_prefix" ]; then
     _la_log 'No rights to modify $_la_gdb_prefix, cannot create symlink!'
+    _la_log 'Unless you plan to use the GDB debugger with libarrow, this warning can be safely ignored.'
     return
 fi
 
