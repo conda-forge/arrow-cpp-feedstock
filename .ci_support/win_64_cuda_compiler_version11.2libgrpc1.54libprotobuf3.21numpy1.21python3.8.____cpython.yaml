@@ -13,9 +13,9 @@ channel_targets:
 cuda_compiler:
 - nvcc
 cuda_compiler_version:
-- '10.2'
+- '11.2'
 cuda_compiler_version_min:
-- '10.2'
+- '11.2'
 cxx_compiler:
 - vs2019
 gflags:
@@ -37,7 +37,7 @@ libprotobuf:
 lz4_c:
 - 1.9.3
 numpy:
-- '1.23'
+- '1.21'
 openssl:
 - '3'
 orc:
@@ -47,7 +47,7 @@ pin_run_as_build:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.11.* *_cpython
+- 3.8.* *_cpython
 re2:
 - 2023.03.02
 snappy:

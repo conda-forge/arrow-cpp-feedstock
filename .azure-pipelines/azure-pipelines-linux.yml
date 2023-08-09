@@ -8,6 +8,38 @@ jobs:
     vmImage: ubuntu-latest
   strategy:
     matrix:
+      ? linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.54libprotobuf3.21numpy1.21python3.10.____cpython
+      : CONFIG: linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.54libprotobuf3.21numpy1.21python3.10.____cpython
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+      ? linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.54libprotobuf3.21numpy1.21python3.8.____cpython
+      : CONFIG: linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.54libprotobuf3.21numpy1.21python3.8.____cpython
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+      ? linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.54libprotobuf3.21numpy1.21python3.9.____cpython
+      : CONFIG: linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.54libprotobuf3.21numpy1.21python3.9.____cpython
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+      ? linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.54libprotobuf3.21numpy1.23python3.11.____cpython
+      : CONFIG: linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.54libprotobuf3.21numpy1.23python3.11.____cpython
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+      ? linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.56libprotobuf4.23.3numpy1.21python3.10.____cpython
+      : CONFIG: linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.56libprotobuf4.23.3numpy1.21python3.10.____cpython
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+      ? linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.56libprotobuf4.23.3numpy1.21python3.8.____cpython
+      : CONFIG: linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.56libprotobuf4.23.3numpy1.21python3.8.____cpython
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+      ? linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.56libprotobuf4.23.3numpy1.21python3.9.____cpython
+      : CONFIG: linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.56libprotobuf4.23.3numpy1.21python3.9.____cpython
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+      ? linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.56libprotobuf4.23.3numpy1.23python3.11.____cpython
+      : CONFIG: linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10libgrpc1.56libprotobuf4.23.3numpy1.23python3.11.____cpython
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
       ? linux_64_c_compiler_version12cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version12libgrpc1.54libprotobuf3.21numpy1.21python3.10.____cpython
       : CONFIG: linux_64_c_compiler_version12cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version12libgrpc1.54libprotobuf3.21numpy1.21python3.10.____cpython
         UPLOAD_PACKAGES: 'True'
@@ -40,38 +72,6 @@ jobs:
       : CONFIG: linux_64_c_compiler_version12cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version12libgrpc1.56libprotobuf4.23.3numpy1.23python3.11.____cpython
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      ? linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.54libprotobuf3.21numpy1.21python3.10.____cpython
-      : CONFIG: linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.54libprotobuf3.21numpy1.21python3.10.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      ? linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.54libprotobuf3.21numpy1.21python3.8.____cpython
-      : CONFIG: linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.54libprotobuf3.21numpy1.21python3.8.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      ? linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.54libprotobuf3.21numpy1.21python3.9.____cpython
-      : CONFIG: linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.54libprotobuf3.21numpy1.21python3.9.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      ? linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.54libprotobuf3.21numpy1.23python3.11.____cpython
-      : CONFIG: linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.54libprotobuf3.21numpy1.23python3.11.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      ? linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.56libprotobuf4.23.3numpy1.21python3.10.____cpython
-      : CONFIG: linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.56libprotobuf4.23.3numpy1.21python3.10.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      ? linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.56libprotobuf4.23.3numpy1.21python3.8.____cpython
-      : CONFIG: linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.56libprotobuf4.23.3numpy1.21python3.8.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      ? linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.56libprotobuf4.23.3numpy1.21python3.9.____cpython
-      : CONFIG: linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.56libprotobuf4.23.3numpy1.21python3.9.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
-      ? linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.56libprotobuf4.23.3numpy1.23python3.11.____cpython
-      : CONFIG: linux_64_c_compiler_version7cuda_compilernvcccuda_compiler_version10.2cxx_compiler_version7libgrpc1.56libprotobuf4.23.3numpy1.23python3.11.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-cuda:10.2
       ? linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10libgrpc1.54libprotobuf3.21numpy1.21python3.10.____cpython
       : CONFIG: linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10libgrpc1.54libprotobuf3.21numpy1.21python3.10.____cpython
         UPLOAD_PACKAGES: 'True'
@@ -205,10 +205,27 @@ jobs:
 
   steps:
   - script: |
-         rm -rf /opt/ghc
+         sudo mkdir -p /opt/empty_dir || true
+         for d in \
+                  /opt/ghc \
+                  /opt/hostedtoolcache \
+                  /usr/lib/jvm \
+                  /usr/local/.ghcup \
+                  /usr/local/lib/android \
+                  /usr/local/share/powershell \
+                  /usr/share/dotnet \
+                  /usr/share/swift \
+                  ; do
+           sudo rsync --stats -a --delete /opt/empty_dir/ $d || true
+         done
+         sudo apt-get purge -y -f firefox \
+                                  google-chrome-stable \
+                                  microsoft-edge-stable
+         sudo apt-get autoremove -y >& /dev/null
+         sudo apt-get autoclean -y >& /dev/null
+         sudo docker image prune --all --force
          df -h
     displayName: Manage disk space
-
   # configure qemu binfmt-misc running.  This allows us to run docker containers
   # embedded qemu-static
   - script: |
