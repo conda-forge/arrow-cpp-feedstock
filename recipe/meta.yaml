@@ -344,9 +344,6 @@ outputs:
     # CUDA builds for aarch/ppc consistently run out of disk space on azure for some reason
     test:
       requires:
-        # vary protobuf version in test suite (historically, test failures only have a very
-        # weak dependency on python version, so we don't lose coverage by doing half & half)
-        - libprotobuf <4         # [py % 2 == 0]
         # test_cpp_extension_in_python requires a compiler
         - {{ compiler("cxx") }}  # [linux]
         # temporary pin due to missing fixture
