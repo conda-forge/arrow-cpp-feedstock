@@ -137,8 +137,6 @@ outputs:
         # its host deps (which aren't yet covered above) leak into the build here
         - libcrc32c  # [win]
         - libcurl    # [win]
-        # same for libgrpc (before 1.55.0, which is coupled with libprotobuf 4.23.x)
-        - c-ares     # [win and libprotobuf == "3.21"]
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
         # make sure we don't co-install with old version of old package name
@@ -202,8 +200,6 @@ outputs:
     requirements:
       host:
         - {{ pin_subpackage('libarrow', exact=True) }}
-        # avoid wrappers for different builds colliding due to identical hashes
-        - libprotobuf
       run:
         - {{ pin_subpackage('libarrow', exact=True) }}
     test:
@@ -239,9 +235,7 @@ outputs:
         - cmake
         - ninja
       host:
-        # we're building for two protobuf versions, cannot pin exactly
-        # - {{ pin_subpackage('libarrow', exact=True) }}
-        - libarrow ={{ version }}=*_{{ PKG_BUILDNUM }}_{{ build_ext }}
+        - {{ pin_subpackage('libarrow', exact=True) }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
         - cython <3
@@ -250,8 +244,7 @@ outputs:
         - setuptools
         - setuptools_scm
       run:
-        # - {{ pin_subpackage('libarrow', exact=True) }}
-        - libarrow ={{ version }}=*_{{ PKG_BUILDNUM }}_{{ build_ext }}
+        - {{ pin_subpackage('libarrow', exact=True) }}
         - {{ pin_compatible('numpy') }}
         - python
       run_constrained:
