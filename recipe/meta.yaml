@@ -21,7 +21,7 @@ source:
     folder: testing
 
 build:
-  number: 8
+  number: 9
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -137,8 +137,6 @@ outputs:
         # its host deps (which aren't yet covered above) leak into the build here
         - libcrc32c  # [win]
         - libcurl    # [win]
-        # same for libgrpc (before 1.55.0, which is coupled with libprotobuf 4.23.x)
-        - c-ares     # [win and libprotobuf == "3.21"]
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
         # make sure we don't co-install with old version of old package name
@@ -202,8 +200,6 @@ outputs:
     requirements:
       host:
         - {{ pin_subpackage('libarrow', exact=True) }}
-        # avoid wrappers for different builds colliding due to identical hashes
-        - libprotobuf
       run:
         - {{ pin_subpackage('libarrow', exact=True) }}
     test:
@@ -239,9 +235,7 @@ outputs:
         - cmake
         - ninja
       host:
-        # we're building for two protobuf versions, cannot pin exactly
-        # - {{ pin_subpackage('libarrow', exact=True) }}
-        - libarrow ={{ version }}=*_{{ PKG_BUILDNUM }}_{{ build_ext }}
+        - {{ pin_subpackage('libarrow', exact=True) }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
         - cython <3
@@ -250,8 +244,7 @@ outputs:
         - setuptools
         - setuptools_scm
       run:
-        # - {{ pin_subpackage('libarrow', exact=True) }}
-        - libarrow ={{ version }}=*_{{ PKG_BUILDNUM }}_{{ build_ext }}
+        - {{ pin_subpackage('libarrow', exact=True) }}
         - {{ pin_compatible('numpy') }}
         - python
       run_constrained:
@@ -344,9 +337,6 @@ outputs:
     # CUDA builds for aarch/ppc consistently run out of disk space on azure for some reason
     test:
       requires:
-        # vary protobuf version in test suite (historically, test failures only have a very
-        # weak dependency on python version, so we don't lose coverage by doing half & half)
-        - libprotobuf <4         # [py % 2 == 0]
         # test_cpp_extension_in_python requires a compiler
         - {{ compiler("cxx") }}  # [linux]
         # temporary pin due to missing fixture
