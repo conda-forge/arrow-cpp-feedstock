@@ -3,6 +3,7 @@ azure:
   max_parallel: 20
 bot:
   abi_migration_branches:
+  - 12.x
   - 11.0.x
   - 10.0.x
   - 9.0.x

@@ -1,0 +1,52 @@
+From 0ff739a0d3c8c4df4b46625f0bb0bc87c6b0d29d Mon Sep 17 00:00:00 2001
+From: h-vetinari <h.vetinari@gmx.com>
+Date: Fri, 28 Jul 2023 13:31:01 +1100
+Subject: [PATCH] GH-15017: [Python] Harden test_memory.py for use with
+ ARROW_USE_GLOG=ON (#36901)
+
+Accept output pattern for ARROW_USE_GLOG=ON too.
+
+* Closes: #15017
+
+Lead-authored-by: H. Vetinari <h.vetinari@gmx.com>
+Co-authored-by: Sutou Kouhei <kou@cozmixng.org>
+Signed-off-by: Sutou Kouhei <kou@clear-code.com>
+---
+ dev/tasks/conda-recipes/arrow-cpp/meta.yaml |  2 --
+ python/pyarrow/tests/test_memory.py         | 10 ++++++++--
+ 2 files changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/dev/tasks/conda-recipes/arrow-cpp/meta.yaml b/dev/tasks/conda-recipes/arrow-cpp/meta.yaml
+index 2f79bbe95..24c0a6ba7 100644
+--- a/dev/tasks/conda-recipes/arrow-cpp/meta.yaml
++++ b/dev/tasks/conda-recipes/arrow-cpp/meta.yaml
+@@ -381,8 +381,6 @@ outputs:
+         {% set tests_to_skip = tests_to_skip + " or test_safe_cast_from_float_with_nans_to_int" %}  # [ppc64le]
+         # gandiva tests are segfaulting on ppc
+         {% set tests_to_skip = tests_to_skip + " or test_float_with_null_as_integer" %}   # [ppc64le]
+-        # "Unsupported backend 'nonexistent' specified in ARROW_DEFAULT_MEMORY_POOL"
+-        {% set tests_to_skip = tests_to_skip + " or (test_memory and test_env_var)" %}    # [unix]
+         # test is broken; header is in $PREFIX, not $SP_DIR
+         {% set tests_to_skip = tests_to_skip + " or (test_misc and test_get_include)" %}  # [unix]
+         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
+diff --git a/python/pyarrow/tests/test_memory.py b/python/pyarrow/tests/test_memory.py
+index 092c50de3..d9fdeb152 100644
+--- a/python/pyarrow/tests/test_memory.py
++++ b/python/pyarrow/tests/test_memory.py
+@@ -134,8 +134,14 @@ def check_env_var(name, expected, *, expect_warning=False):
+         res.check_returncode()  # fail
+     errlines = res.stderr.splitlines()
+     if expect_warning:
+-        assert len(errlines) == 1
+-        assert f"Unsupported backend '{name}'" in errlines[0]
++        assert len(errlines) in (1, 2)
++        if len(errlines) == 1:
++            # ARROW_USE_GLOG=OFF
++            assert f"Unsupported backend '{name}'" in errlines[0]
++        else:
++            # ARROW_USE_GLOG=ON
++            assert "InitGoogleLogging()" in errlines[0]
++            assert f"Unsupported backend '{name}'" in errlines[1]
+     else:
+         assert len(errlines) == 0
+ 
