@@ -389,8 +389,6 @@ outputs:
         # vvvvvvv TESTS THAT SHOULDN'T HAVE TO BE SKIPPED vvvvvvv
         # new fsspec changed behaviour, see https://github.com/apache/arrow/issues/37555
         {% set tests_to_skip = tests_to_skip + " or test_get_file_info_with_selector" %}
-        # segfaults on OSX: to investigate ASAP
-        {% set tests_to_skip = tests_to_skip + " or test_flight" %}                       # [osx]
         # gandiva tests are segfaulting on ppc
         {% set tests_to_skip = tests_to_skip + " or test_gandiva" %}                      # [ppc64le]
         # test failures on ppc (both failing with: Float value was truncated converting to int32)
