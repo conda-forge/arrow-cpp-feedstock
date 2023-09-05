@@ -347,7 +347,7 @@ outputs:
         - cloudpickle
         - cython <3
         - fastparquet
-        - fsspec
+        - fsspec <2023.9
         - hypothesis
         - pandas <2.1
         - scipy
