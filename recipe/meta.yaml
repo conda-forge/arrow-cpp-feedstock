@@ -356,7 +356,7 @@ outputs:
         - cloudpickle
         - cython <3
         - fastparquet
-        - fsspec
+        - fsspec <2023.9
         - hypothesis
         # see https://github.com/conda-forge/arrow-cpp-feedstock/issues/1016
         - pandas <2
