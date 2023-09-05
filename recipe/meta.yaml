@@ -389,6 +389,8 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or test_debug_memory_pool_disabled" %}   # [aarch64 or ppc64le]
         {% set tests_to_skip = tests_to_skip + " or test_env_var_io_thread_count" %}      # [aarch64 or ppc64le]
         # vvvvvvv TESTS THAT SHOULDN'T HAVE TO BE SKIPPED vvvvvvv
+        # new fsspec changed behaviour, see https://github.com/apache/arrow/issues/37555
+        {% set tests_to_skip = tests_to_skip + " or test_get_file_info_with_selector" %}
         # segfaults on OSX: to investigate ASAP
         {% set tests_to_skip = tests_to_skip + " or test_flight" %}                       # [osx]
         # gandiva tests are segfaulting on ppc
