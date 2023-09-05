@@ -349,7 +349,7 @@ outputs:
         - fastparquet
         - fsspec
         - hypothesis
-        - pandas
+        - pandas <2.1
         - scipy
         # these are generally (far) behind on migrating abseil/grpc/protobuf,
         # and using them as test dependencies blocks the migrator unnecessarily
