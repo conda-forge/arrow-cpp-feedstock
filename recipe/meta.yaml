@@ -21,7 +21,7 @@ source:
     folder: testing
 
 build:
-  number: 9
+  number: 10
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -347,9 +347,9 @@ outputs:
         - cloudpickle
         - cython <3
         - fastparquet
-        - fsspec
+        - fsspec <2023.9
         - hypothesis
-        - pandas
+        - pandas <2.1
         - scipy
         # these are generally (far) behind on migrating abseil/grpc/protobuf,
         # and using them as test dependencies blocks the migrator unnecessarily
