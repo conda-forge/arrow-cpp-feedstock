@@ -1,7 +1,7 @@
 aws_crt_cpp:
 - 0.23.0
 aws_sdk_cpp:
-- 1.10.57
+- 1.11.156
 bzip2:
 - '1'
 c_compiler:
@@ -41,7 +41,7 @@ libprotobuf:
 lz4_c:
 - 1.9.3
 numpy:
-- '1.22'
+- '1.23'
 openssl:
 - '3'
 orc:
@@ -51,7 +51,7 @@ pin_run_as_build:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.10.* *_cpython
+- 3.11.* *_cpython
 re2:
 - 2023.03.02
 snappy:
