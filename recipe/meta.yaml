@@ -37,7 +37,7 @@ source:
     folder: testing
 
 build:
-  number: 38
+  number: 39
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -356,7 +356,7 @@ outputs:
         - cloudpickle
         - cython <3
         - fastparquet
-        - fsspec
+        - fsspec <2023.9
         - hypothesis
         # see https://github.com/conda-forge/arrow-cpp-feedstock/issues/1016
         - pandas <2
