@@ -39,7 +39,7 @@ source:
     folder: testing
 
 build:
-  number: 36
+  number: 37
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -352,10 +352,10 @@ outputs:
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
 
-    {% if not (aarch64 or ppc64le) or py in (310, 311) %}
-    # only run the full test suite for one python version when in emulation (each run takes ~45min);
-    # there's essentially zero divergence in behaviour across python versions anyway, and otherwise
-    # CUDA builds for aarch/ppc consistently run out of disk space on azure for some reason
+    {% if not (aarch64 or ppc64le) or py == 311 %}
+    # only run the full test suite for one python version when in emulation
+    # (each run can take up to ~45min); there's essentially zero divergence
+    # in behaviour across python versions anyway
     test:
       requires:
         # temporary pin due to missing fixture
