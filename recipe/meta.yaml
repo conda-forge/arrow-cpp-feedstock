@@ -35,6 +35,11 @@ build:
   run_exports:
     - {{ pin_subpackage("libarrow", max_pin="x") }}
 
+requirements:
+  build:
+    # needed to clone arrow-testing
+    - git-lfs
+
 outputs:
   - name: apache-arrow-proc
     version: {{ build_ext_version }}
