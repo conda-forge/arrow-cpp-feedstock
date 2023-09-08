@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.23.0
+- 0.23.1
 aws_sdk_cpp:
 - 1.11.156
 bzip2:
@@ -51,7 +51,7 @@ pin_run_as_build:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.9.* *_cpython
+- 3.8.* *_cpython
 re2:
 - 2023.03.02
 snappy:
