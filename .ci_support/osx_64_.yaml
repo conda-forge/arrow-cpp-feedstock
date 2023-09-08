@@ -1,7 +1,7 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
 aws_crt_cpp:
-- 0.23.0
+- 0.23.1
 aws_sdk_cpp:
 - 1.11.156
 bzip2:
