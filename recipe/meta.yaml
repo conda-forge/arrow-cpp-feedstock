@@ -115,6 +115,8 @@ outputs:
         - libgrpc
         - libprotobuf
         - libutf8proc
+        # gandiva requires shared libllvm
+        - llvm  # [unix]
         - lz4-c
         - nlohmann_json
         # gandiva depends on openssl
