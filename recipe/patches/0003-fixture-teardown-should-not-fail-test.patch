@@ -1,0 +1,37 @@
+From 93389575d6e06cd561357a46d6eb5c888f3e18bb Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Wed, 13 Sep 2023 21:34:29 +1100
+Subject: [PATCH 3/3] fixture teardown should not fail test
+
+---
+ python/pyarrow/tests/test_fs.py | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/python/pyarrow/tests/test_fs.py b/python/pyarrow/tests/test_fs.py
+index b64680c87..d81213b64 100644
+--- a/python/pyarrow/tests/test_fs.py
++++ b/python/pyarrow/tests/test_fs.py
+@@ -256,7 +256,10 @@ def s3fs(request, s3_server):
+         allow_move_dir=False,
+         allow_append_to_file=False,
+     )
+-    fs.delete_dir(bucket)
++    try:
++        fs.delete_dir(bucket)
++    except OSError:
++        pass
+ 
+ 
+ @pytest.fixture
+@@ -358,7 +361,10 @@ def py_fsspec_s3fs(request, s3_server):
+         allow_move_dir=False,
+         allow_append_to_file=True,
+     )
+-    fs.delete_dir(bucket)
++    try:
++        fs.delete_dir(bucket)
++    except OSError:
++        pass
+ 
+ 
+ @pytest.fixture(params=[
