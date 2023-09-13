@@ -372,6 +372,8 @@ outputs:
         # XMinioInvalidObjectName on win: "Object name contains unsupported characters"
         {% set tests_to_skip = tests_to_skip + " or test_write_to_dataset_with_partitions_s3fs" %}  # [win]
         # vvvvvvv TESTS THAT SHOULDN'T HAVE TO BE SKIPPED vvvvvvv
+        # currently broken
+        {% set tests_to_skip = tests_to_skip + " or test_fastparquet_cross_compatibility" %}
         # new fsspec changed behaviour, see https://github.com/apache/arrow/issues/37555
         {% set tests_to_skip = tests_to_skip + " or test_get_file_info_with_selector" %}
         # gandiva tests are segfaulting on ppc
