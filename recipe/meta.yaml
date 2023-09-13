@@ -378,8 +378,6 @@ outputs:
         # skip tests that raise SIGINT and crash the test suite
         {% set tests_to_skip = tests_to_skip + " or (test_csv and test_cancellation)" %}  # [linux]
         {% set tests_to_skip = tests_to_skip + " or (test_flight and test_interrupt)" %}  # [linux]
-        # cannot pass -D_LIBCPP_DISABLE_AVAILABILITY to test suite for our older macos sdk
-        {% set tests_to_skip = tests_to_skip + " or test_cpp_extension_in_python" %}      # [osx]
         # skip tests that make invalid(-for-conda) assumptions about the compilers setup
         {% set tests_to_skip = tests_to_skip + " or test_cython_api" %}                   # [unix]
         {% set tests_to_skip = tests_to_skip + " or test_visit_strings" %}                # [unix]
