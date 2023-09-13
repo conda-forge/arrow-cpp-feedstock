@@ -354,6 +354,7 @@ outputs:
         - fastparquet
         - fsspec
         - hypothesis
+        - minio-server
         - pandas
         - scipy
         # these are generally (far) behind on migrating abseil/grpc/protobuf,
