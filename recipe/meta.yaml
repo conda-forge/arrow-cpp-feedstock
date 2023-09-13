@@ -348,6 +348,7 @@ outputs:
         - pytest
         - pytest-lazy-fixture
         - backports.zoneinfo     # [py<39]
+        - boto3
         - cffi
         - cloudpickle
         - cython <3
@@ -356,6 +357,7 @@ outputs:
         - hypothesis
         - minio-server
         - pandas
+        - s3fs
         - scipy
         # these are generally (far) behind on migrating abseil/grpc/protobuf,
         # and using them as test dependencies blocks the migrator unnecessarily
