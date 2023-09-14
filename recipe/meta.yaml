@@ -340,7 +340,7 @@ outputs:
         - hypothesis
         - minio-server
         - pandas
-        - s3fs
+        - s3fs >=2023
         - scipy
         - sparse >=0.14
         # these are generally (far) behind on migrating abseil/grpc/protobuf,
