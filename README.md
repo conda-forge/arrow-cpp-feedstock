@@ -150,8 +150,6 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-apache--arrow--proc-green.svg)](https://anaconda.org/conda-forge/apache-arrow-proc) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/apache-arrow-proc.svg)](https://anaconda.org/conda-forge/apache-arrow-proc) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/apache-arrow-proc.svg)](https://anaconda.org/conda-forge/apache-arrow-proc) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/apache-arrow-proc.svg)](https://anaconda.org/conda-forge/apache-arrow-proc) |
-| [![Conda Recipe](https://img.shields.io/badge/recipe-arrow--cpp-green.svg)](https://anaconda.org/conda-forge/arrow-cpp) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/arrow-cpp.svg)](https://anaconda.org/conda-forge/arrow-cpp) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/arrow-cpp.svg)](https://anaconda.org/conda-forge/arrow-cpp) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/arrow-cpp.svg)](https://anaconda.org/conda-forge/arrow-cpp) |
-| [![Conda Recipe](https://img.shields.io/badge/recipe-arrow--cpp--proc-green.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/arrow-cpp-proc.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/arrow-cpp-proc.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/arrow-cpp-proc.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow-green.svg)](https://anaconda.org/conda-forge/libarrow) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow.svg)](https://anaconda.org/conda-forge/libarrow) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow.svg)](https://anaconda.org/conda-forge/libarrow) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow.svg)](https://anaconda.org/conda-forge/libarrow) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-pyarrow-green.svg)](https://anaconda.org/conda-forge/pyarrow) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pyarrow.svg)](https://anaconda.org/conda-forge/pyarrow) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/pyarrow.svg)](https://anaconda.org/conda-forge/pyarrow) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/pyarrow.svg)](https://anaconda.org/conda-forge/pyarrow) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-pyarrow--tests-green.svg)](https://anaconda.org/conda-forge/pyarrow-tests) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pyarrow-tests.svg)](https://anaconda.org/conda-forge/pyarrow-tests) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/pyarrow-tests.svg)](https://anaconda.org/conda-forge/pyarrow-tests) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/pyarrow-tests.svg)](https://anaconda.org/conda-forge/pyarrow-tests) |
@@ -166,16 +164,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `apache-arrow-proc, arrow-cpp, arrow-cpp-proc, libarrow, pyarrow, pyarrow-tests` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `apache-arrow-proc, libarrow, pyarrow, pyarrow-tests` can be installed with `conda`:
 
 ```
-conda install apache-arrow-proc arrow-cpp arrow-cpp-proc libarrow pyarrow pyarrow-tests
+conda install apache-arrow-proc libarrow pyarrow pyarrow-tests
 ```
 
 or with `mamba`:
 
 ```
-mamba install apache-arrow-proc arrow-cpp arrow-cpp-proc libarrow pyarrow pyarrow-tests
+mamba install apache-arrow-proc libarrow pyarrow pyarrow-tests
 ```
 
 It is possible to list all of the versions of `apache-arrow-proc` available on your platform with `conda`:
