@@ -213,7 +213,6 @@ outputs:
         - '*/nvcuda.dll'      # [win]
     requirements:
       build:
-        - {{ pin_subpackage('libarrow', exact=True) }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
@@ -345,7 +344,6 @@ outputs:
         - '*/nvcuda.dll'      # [win]
     requirements:
       build:
-        - {{ pin_subpackage('libarrow', exact=True) }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
@@ -478,8 +476,6 @@ outputs:
         - '*/nvcuda.dll'      # [win]
     requirements:
       build:
-        - {{ pin_subpackage('libarrow', exact=True) }}
-        - {{ pin_subpackage('libarrow-acero', exact=True) }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
@@ -613,8 +609,6 @@ outputs:
         - '*/nvcuda.dll'      # [win]
     requirements:
       build:
-        - {{ pin_subpackage('libarrow', exact=True) }}
-        - {{ pin_subpackage('libarrow-dataset', exact=True) }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
@@ -748,7 +742,6 @@ outputs:
         - '*/nvcuda.dll'      # [win]
     requirements:
       build:
-        - {{ pin_subpackage('libarrow', exact=True) }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
@@ -880,7 +873,6 @@ outputs:
         - '*/nvcuda.dll'      # [win]
     requirements:
       build:
-        - {{ pin_subpackage('libarrow-flight', exact=True) }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
@@ -1107,6 +1099,8 @@ outputs:
         - cmake
         - ninja
       host:
+        - {{ pin_subpackage('libarrow', exact=True) }}
+        - {{ pin_subpackage('libarrow-acero', exact=True) }}
         - {{ pin_subpackage('libarrow-dataset', exact=True) }}
         - {{ pin_subpackage('libarrow-flight', exact=True) }}
         - {{ pin_subpackage('libarrow-gandiva', exact=True) }}
