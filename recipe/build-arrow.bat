@@ -10,26 +10,76 @@ if "%cuda_compiler_version%"=="None" (
     set "EXTRA_CMAKE_ARGS=-DARROW_CUDA=ON"
 )
 
+:: Set CMAKE components based on package
+if [%PKG_NAME%] == [libarrow-acero] (
+    set "ARROW_PKG_CMAKE_ARGS=-DARROW_ACERO=ON ^
+                              -DARROW_COMPUTE:BOOL=ON ^
+                              -DARROW_DATASET:BOOL=OFF ^
+                              -DARROW_FLIGHT:BOOL=OFF ^
+                              -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS:BOOL=OFF ^
+                              -DARROW_FLIGHT_SQL:BOOL=OFF ^
+                              -DARROW_GANDIVA:BOOL=OFF ^
+                              -DARROW_SUBSTRAIT:BOOL=OFF"
+) else if [%PKG_NAME%] == [libarrow-dataset] (
+    set "ARROW_PKG_CMAKE_ARGS=-DARROW_ACERO=ON ^
+                              -DARROW_COMPUTE:BOOL=ON ^
+                              -DARROW_DATASET:BOOL=ON ^
+                              -DARROW_FLIGHT:BOOL=OFF ^
+                              -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS:BOOL=OFF ^
+                              -DARROW_FLIGHT_SQL:BOOL=OFF ^
+                              -DARROW_GANDIVA:BOOL=OFF ^
+                              -DARROW_SUBSTRAIT:BOOL=OFF"
+) else if [%PKG_NAME%] == [libarrow-gandiva] (
+    set "ARROW_PKG_CMAKE_ARGS=-DARROW_ACERO=OFF ^
+                              -DARROW_COMPUTE:BOOL=OFF ^
+                              -DARROW_DATASET:BOOL=OFF ^
+                              -DARROW_FLIGHT:BOOL=OFF ^
+                              -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS:BOOL=OFF ^
+                              -DARROW_FLIGHT_SQL:BOOL=OFF ^
+                              -DARROW_GANDIVA:BOOL=ON ^
+                              -DARROW_SUBSTRAIT:BOOL=OFF"
+) else if [%PKG_NAME%] == [libarrow-substrait] (
+    set "ARROW_PKG_CMAKE_ARGS=-DARROW_ACERO=OFF ^
+                              -DARROW_COMPUTE:BOOL=OFF ^
+                              -DARROW_DATASET:BOOL=OFF ^
+                              -DARROW_FLIGHT:BOOL=OFF ^
+                              -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS:BOOL=OFF ^
+                              -DARROW_FLIGHT_SQL:BOOL=OFF ^
+                              -DARROW_GANDIVA:BOOL=OFF ^
+                              -DARROW_SUBSTRAIT:BOOL=ON"
+) else if [%PKG_NAME%] == [libarrow-flight] (
+    set "ARROW_PKG_CMAKE_ARGS=-DARROW_ACERO=OFF ^
+                              -DARROW_COMPUTE:BOOL=OFF ^
+                              -DARROW_DATASET:BOOL=OFF ^
+                              -DARROW_FLIGHT:BOOL=ON ^
+                              -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS:BOOL=ON ^
+                              -DARROW_FLIGHT_SQL:BOOL=OFF ^
+                              -DARROW_GANDIVA:BOOL=OFF ^
+                              -DARROW_SUBSTRAIT:BOOL=OFF"
+) else if [%PKG_NAME%] == [libarrow-flight-sql] (
+    set "ARROW_PKG_CMAKE_ARGS=-DARROW_ACERO=OFF ^
+                              -DARROW_COMPUTE:BOOL=OFF ^
+                              -DARROW_DATASET:BOOL=OFF ^
+                              -DARROW_FLIGHT:BOOL=ON ^
+                              -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS:BOOL=ON ^
+                              -DARROW_FLIGHT_SQL:BOOL=ON ^
+                              -DARROW_GANDIVA:BOOL=OFF ^
+                              -DARROW_SUBSTRAIT:BOOL=OFF"
+)
+
 :: # reusable variable for dependencies we cannot yet unvendor
 set "READ_RECIPE_META_YAML_WHY_NOT=OFF"
 
 :: for available switches see
 :: https://github.com/apache/arrow/blame/apache-arrow-12.0.0/cpp/cmake_modules/DefineOptions.cmake
 cmake -G "Ninja" ^
-      -DARROW_ACERO=ON ^
       -DARROW_BOOST_USE_SHARED:BOOL=ON ^
       -DARROW_BUILD_STATIC:BOOL=OFF ^
       -DARROW_BUILD_TESTS:BOOL=OFF ^
       -DARROW_BUILD_UTILITIES:BOOL=OFF ^
-      -DARROW_COMPUTE:BOOL=ON ^
       -DARROW_CSV:BOOL=ON ^
-      -DARROW_DATASET:BOOL=ON ^
       -DARROW_DEPENDENCY_SOURCE=SYSTEM ^
       -DARROW_FILESYSTEM:BOOL=ON ^
-      -DARROW_FLIGHT:BOOL=ON ^
-      -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS:BOOL=ON ^
-      -DARROW_FLIGHT_SQL:BOOL=ON ^
-      -DARROW_GANDIVA:BOOL=ON ^
       -DARROW_GCS:BOOL=ON ^
       -DARROW_HDFS:BOOL=ON ^
       -DARROW_JSON:BOOL=ON ^
@@ -39,7 +89,6 @@ cmake -G "Ninja" ^
       -DARROW_PARQUET:BOOL=ON ^
       -DARROW_S3:BOOL=ON ^
       -DARROW_SIMD_LEVEL:STRING=NONE ^
-      -DARROW_SUBSTRAIT:BOOL=ON ^
       -DARROW_USE_GLOG:BOOL=ON ^
       -DARROW_WITH_BROTLI:BOOL=ON ^
       -DARROW_WITH_BZ2:BOOL=ON ^
@@ -58,6 +107,7 @@ cmake -G "Ninja" ^
       -DLLVM_TOOLS_BINARY_DIR="%LIBRARY_BIN%" ^
       -DPARQUET_REQUIRE_ENCRYPTION:BOOL=ON ^
       -DPython3_EXECUTABLE="%PYTHON%" ^
+      %ARROW_PKG_CMAKE_ARGS% ^
       %EXTRA_CMAKE_ARGS% ^
       ..
 if %ERRORLEVEL% neq 0 exit 1
