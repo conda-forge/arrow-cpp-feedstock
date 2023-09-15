@@ -35,8 +35,55 @@ build:
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
   # arrow promises API- & ABI-compatibility along SemVer, see #1096
-  run_exports:
-    - {{ pin_subpackage("libarrow", max_pin="x") }}
+
+requirements:
+  build:
+    - {{ compiler("c") }}
+    - {{ compiler("cxx") }}
+    - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
+    # needs to run protoc & grpc_cpp_plugin
+    - libgrpc                                # [build_platform != target_platform]
+    - libprotobuf                            # [build_platform != target_platform]
+    # needed for gandiva
+    - clangdev {{ llvm_version }}            # [build_platform != target_platform]
+    - llvmdev {{ llvm_version }}             # [build_platform != target_platform]
+    - gnuconfig                              # [build_platform != target_platform]
+    - cmake
+    - ninja
+    # necessary for vendored jemalloc
+    - autoconf     # [linux]
+    - make         # [linux]
+  host:
+    # for required dependencies, see
+    # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
+    - clangdev {{ llvm_version }}
+    - llvmdev {{ llvm_version }}
+    - aws-crt-cpp
+    - aws-sdk-cpp
+    - brotli
+    - bzip2
+    # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
+    # - cpp-opentelemetry-sdk
+    # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
+    - gflags
+    - glog
+    - google-cloud-cpp
+    # arrow uses a customized jemalloc, see #944
+    # - jemalloc
+    - libabseil
+    - libboost-headers
+    - libutf8proc
+    - lz4-c
+    - nlohmann_json
+    - orc
+    - rapidjson
+    - re2
+    - snappy
+    - thrift-cpp
+    - ucx          # [linux]
+    - xsimd
+    - zlib
+    - zstd
 
 outputs:
   - name: apache-arrow-proc
@@ -58,9 +105,57 @@ outputs:
         - LICENSE.txt
       summary: A meta-package to select Arrow build variant
 
+  - name: libarrow-all
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      run_exports:
+        - {{ pin_subpackage("libarrow", max_pin="x") }}
+        - {{ pin_subpackage("libarrow-acero", max_pin="x") }}
+        - {{ pin_subpackage("libarrow-dataset", max_pin="x") }}
+        - {{ pin_subpackage("libarrow-flight", max_pin="x") }}
+        - {{ pin_subpackage("libarrow-flight-sql", max_pin="x") }}
+        - {{ pin_subpackage("libarrow-gandiva", max_pin="x") }}
+        - {{ pin_subpackage("libarrow-substrait", max_pin="x") }}
+        - {{ pin_subpackage("libparquet", max_pin="x") }}
+    requirements:
+      build:
+        - cmake
+        - ninja
+      host:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-dataset", exact=True) }}
+        - {{ pin_subpackage("libarrow-flight", exact=True) }}
+        - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
+        - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
+        - {{ pin_subpackage("libarrow-substrait", exact=True) }}
+        - {{ pin_subpackage("libparquet", exact=True) }}
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-dataset", exact=True) }}
+        - {{ pin_subpackage("libarrow-flight", exact=True) }}
+        - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
+        - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
+        - {{ pin_subpackage("libarrow-substrait", exact=True) }}
+        - {{ pin_subpackage("libparquet", exact=True) }}
+    test:
+      commands:
+        - echo "tested in other outputs"
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ libraries for Apache Arrow
+
   - name: libarrow
-    script: build-arrow.sh   # [unix]
-    script: build-arrow.bat  # [win]
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
@@ -81,26 +176,13 @@ outputs:
         - '*/nvcuda.dll'      # [win]
     requirements:
       build:
+        - cmake
+        - ninja
+        # for strong run-exports
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
-        # needs to run protoc & grpc_cpp_plugin
-        - libgrpc                                # [build_platform != target_platform]
-        - libprotobuf                            # [build_platform != target_platform]
-        # needed for gandiva
-        - clangdev {{ llvm_version }}            # [build_platform != target_platform]
-        - llvmdev {{ llvm_version }}             # [build_platform != target_platform]
-        - gnuconfig                              # [build_platform != target_platform]
-        - cmake
-        - ninja
-        # necessary for vendored jemalloc
-        - autoconf     # [linux]
-        - make         # [linux]
       host:
-        # for required dependencies, see
-        # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
-        - clangdev {{ llvm_version }}
-        - llvmdev {{ llvm_version }}
         - aws-crt-cpp
         - aws-sdk-cpp
         - brotli
@@ -114,23 +196,12 @@ outputs:
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
-        - libboost-headers
-        - libgrpc
-        - libprotobuf
         - libutf8proc
-        # gandiva requires shared libllvm
-        - llvm  # [unix]
         - lz4-c
-        - nlohmann_json
-        # gandiva depends on openssl
-        - openssl
+        - openssl    # [win]
         - orc
-        - rapidjson
         - re2
         - snappy
-        - thrift-cpp
-        - ucx          # [linux]
-        - xsimd
         - zlib
         - zstd
         - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
@@ -145,23 +216,16 @@ outputs:
         - arrow-cpp <0.0a0
         # old parquet lib output, now part of this feedstock
         - parquet-cpp <0.0a0
+        # since all the other libarrow-* variants in this recipe depend exactly on libarrow,
+        # this avoids that libarrow-X & -Y get installed with different builds or versions.
 
     test:
       commands:
-        {% set headers = [
-            "arrow/api.h", "arrow/acero/api.h", "arrow/flight/types.h",
-            "arrow/flight/sql/api.h", "gandiva/engine.h", "parquet/api/reader.h"
-        ] %}
-        {% for each_header in headers %}
         # headers
-        - test -f $PREFIX/include/{{ each_header }} || (echo "{{ each_header }} not found" && exit 1)  # [unix]
-        - if not exist %LIBRARY_INC%\{{ "\\".join(each_header.split("/")) }} exit 1                    # [win]
-        {% endfor %}
+        - test -f $PREFIX/include/arrow/api.h               # [unix]
+        - if not exist %LIBRARY_INC%\arrow\api.h exit 1     # [win]
 
-        {% set libs = (cuda_compiler_version != "None") * ["arrow_cuda"] + [
-            "arrow", "arrow_acero", "arrow_dataset", "arrow_flight",
-            "arrow_flight_sql", "arrow_substrait", "gandiva", "parquet"
-        ] %}
+        {% set libs = ["arrow"] + (cuda_compiler_version != "None") * ["arrow_cuda"] %}
         {% for each_lib in libs %}
         # shared
         - test -f $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
@@ -185,12 +249,373 @@ outputs:
         - test -f $PREFIX/share/gdb/auto-load/$PREFIX/lib/libarrow.so.{{ so_version }}-gdb.py     # [linux]
         - test -f $PREFIX/share/gdb/auto-load/$PREFIX/lib/libarrow.{{ so_version }}.dylib-gdb.py  # [osx]
 
+        {% set libs = [
+            "arrow_acero", "arrow_dataset", "arrow_flight",
+            "arrow_flight_sql", "arrow_substrait", "gandiva", "parquet"
+        ] %}
+        {% for each_lib in libs %}
+        # absence of libraries that belong in other outputs
+        - test ! -f $PREFIX/lib/lib{{ each_lib }}.so                # [linux]
+        - test ! -f $PREFIX/lib/lib{{ each_lib }}.dylib             # [osx]
+        - if exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1          # [win]
+        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1          # [win]
+        {% endfor %}
+
     about:
       home: http://github.com/apache/arrow
       license: Apache-2.0
       license_file:
         - LICENSE.txt
-      summary: C++ libraries for Apache Arrow
+      summary: C++ libraries for Apache Arrow core
+
+  - name: libarrow-acero
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      run_exports:
+        - {{ pin_subpackage("libarrow-acero", max_pin="x") }}
+    requirements:
+      build:
+        - cmake
+        - ninja
+        # for strong run-exports
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+      host:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+      # run-constraints handled by libarrow, since we depend on it with exact=True
+
+    test:
+      commands:
+        # headers
+        - test -f $PREFIX/include/arrow/acero/api.h             # [unix]
+        - if not exist %LIBRARY_INC%\arrow\acero\api.h exit 1   # [win]
+
+        # shared libraries
+        - test -f $PREFIX/lib/libarrow_acero.so                 # [linux]
+        - test -f $PREFIX/lib/libarrow_acero.dylib              # [osx]
+        - if not exist %LIBRARY_BIN%\arrow_acero.dll exit 1     # [win]
+        - if not exist %LIBRARY_LIB%\arrow_acero.lib exit 1     # [win]
+
+        # absence of static libraries
+        - test ! -f $PREFIX/lib/libarrow_acero.a                # [unix]
+        - if exist %LIBRARY_LIB%\arrow_acero_static.lib exit 1  # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ libraries for Apache Arrow Acero
+
+  - name: libarrow-dataset
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      run_exports:
+        - {{ pin_subpackage("libarrow-dataset", max_pin="x") }}
+    requirements:
+      build:
+        - cmake
+        - ninja
+        # for strong run-exports
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+      host:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libparquet", exact=True) }}
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libparquet", exact=True) }}
+      # run-constraints handled by libarrow, since we depend on it with exact=True
+
+    test:
+      commands:
+        # headers
+        - test -f $PREFIX/include/arrow/dataset/api.h               # [unix]
+        - if not exist %LIBRARY_INC%\arrow\dataset\api.h exit 1     # [win]
+
+        # shared libraries
+        - test -f $PREFIX/lib/libarrow_dataset.so                   # [linux]
+        - test -f $PREFIX/lib/libarrow_dataset.dylib                # [osx]
+        - if not exist %LIBRARY_BIN%\arrow_dataset.dll exit 1       # [win]
+        - if not exist %LIBRARY_LIB%\arrow_dataset.lib exit 1       # [win]
+
+        # absence of static libraries
+        - test ! -f $PREFIX/lib/libarrow_dataset.a                  # [unix]
+        - if exist %LIBRARY_LIB%\arrow_dataset_static.lib exit 1    # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ libraries for Apache Arrow Dataset
+
+  - name: libarrow-flight
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      run_exports:
+        - {{ pin_subpackage("libarrow-flight", max_pin="x") }}
+    requirements:
+      build:
+        - cmake
+        - ninja
+        # for strong run-exports
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        # needs to run protoc & grpc_cpp_plugin
+        - libgrpc                                # [build_platform != target_platform]
+        - libprotobuf                            # [build_platform != target_platform]
+      host:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - libabseil
+        - libgrpc
+        - libprotobuf
+        - ucx          # [linux]
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+      # run-constraints handled by libarrow, since we depend on it with exact=True
+
+    test:
+      commands:
+        # headers
+        - test -f $PREFIX/include/arrow/flight/types.h              # [unix]
+        - if not exist %LIBRARY_INC%\arrow\flight\types.h exit 1    # [win]
+
+        # shared libraries
+        - test -f $PREFIX/lib/libarrow_flight.so                    # [linux]
+        - test -f $PREFIX/lib/libarrow_flight.dylib                 # [osx]
+        - if not exist %LIBRARY_BIN%\arrow_flight.dll exit 1        # [win]
+        - if not exist %LIBRARY_LIB%\arrow_flight.lib exit 1        # [win]
+
+        # absence of static libraries
+        - test ! -f $PREFIX/lib/libarrow_flight.a                   # [unix]
+        - if exist %LIBRARY_LIB%\arrow_flight_static.lib exit 1     # [win]
+
+        # Only check UCX on Linux
+        - test -f $PREFIX/lib/libarrow_flight_transport_ucx.so      # [linux]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ libraries for Apache Arrow Flight
+
+  - name: libarrow-flight-sql
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      run_exports:
+        - {{ pin_subpackage("libarrow-flight-sql", max_pin="x") }}
+    requirements:
+      build:
+        - cmake
+        - ninja
+        # for strong run-exports
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        # needs to run protoc & grpc_cpp_plugin
+        - libgrpc                                # [build_platform != target_platform]
+        - libprotobuf                            # [build_platform != target_platform]
+      host:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-flight", exact=True) }}
+        - libprotobuf
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-flight", exact=True) }}
+      # run-constraints handled by libarrow, since we depend on it with exact=True
+
+    test:
+      commands:
+        # headers
+        - test -f $PREFIX/include/arrow/flight/sql/api.h                # [unix]
+        - if not exist %LIBRARY_INC%\arrow\flight\sql\api.h exit 1      # [win]
+
+        # shared libraries
+        - test -f $PREFIX/lib/libarrow_flight_sql.so                    # [linux]
+        - test -f $PREFIX/lib/libarrow_flight_sql.dylib                 # [osx]
+        - if not exist %LIBRARY_BIN%\arrow_flight_sql.dll exit 1        # [win]
+        - if not exist %LIBRARY_LIB%\arrow_flight_sql.lib exit 1        # [win]
+
+        # absence of static libraries
+        - test ! -f $PREFIX/lib/libarrow_flight_sql.a                   # [unix]
+        - if exist %LIBRARY_LIB%\arrow_flight_sql_static.lib exit 1     # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ libraries for Apache Arrow Flight SQL
+
+  - name: libarrow-gandiva
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      run_exports:
+        - {{ pin_subpackage("libarrow-gandiva", max_pin="x") }}
+    requirements:
+      build:
+        - cmake
+        - ninja
+        # for strong run-exports
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+      host:
+        - {{ pin_subpackage("libarrow", max_pin="x") }}
+        - libutf8proc
+        # gandiva requires shared libllvm
+        - llvm  # [unix]
+        - openssl
+        - re2
+        - zlib  # [win]
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+      # run-constraints handled by libarrow, since we depend on it with exact=True
+
+    test:
+      commands:
+        # headers
+        - test -f $PREFIX/include/gandiva/engine.h              # [unix]
+        - if not exist %LIBRARY_INC%\gandiva\engine.h exit 1    # [win]
+
+        # shared libraries
+        - test -f $PREFIX/lib/libgandiva.so                     # [linux]
+        - test -f $PREFIX/lib/libgandiva.dylib                  # [osx]
+        - if not exist %LIBRARY_BIN%\gandiva.dll exit 1         # [win]
+        - if not exist %LIBRARY_LIB%\gandiva.lib exit 1         # [win]
+
+        # absence of static libraries
+        - test ! -f $PREFIX/lib/libgandiva.a                    # [unix]
+        - if exist %LIBRARY_LIB%\gandiva_static.lib exit 1      # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ libraries for Apache Arrow Gandiva
+
+  - name: libarrow-substrait
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      run_exports:
+        - {{ pin_subpackage("libarrow-substrait", max_pin="x") }}
+    requirements:
+      build:
+      build:
+        - cmake
+        - ninja
+        # for strong run-exports
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        - libprotobuf                            # [build_platform != target_platform]
+        # for strong run-exports
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        - cmake
+        - ninja
+      host:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-dataset", exact=True) }}
+        - libabseil  # [win]
+        - libprotobuf
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-dataset", exact=True) }}
+      # run-constraints handled by libarrow, since we depend on it with exact=True
+
+    test:
+      commands:
+        # headers
+        - test -f $PREFIX/include/arrow/engine/substrait/api.h              # [unix]
+        - if not exist %LIBRARY_INC%\arrow\engine\substrait\api.h exit 1    # [win]
+
+        # shared libraries
+        - test -f $PREFIX/lib/libarrow_substrait.so                         # [linux]
+        - test -f $PREFIX/lib/libarrow_substrait.dylib                      # [osx]
+        - if not exist %LIBRARY_BIN%\arrow_substrait.dll exit 1             # [win]
+        - if not exist %LIBRARY_LIB%\arrow_substrait.lib exit 1             # [win]
+
+        # absence of static libraries
+        - test ! -f $PREFIX/lib/libarrow_substrait.a                        # [unix]
+        - if exist %LIBRARY_LIB%\arrow_substrait_static.lib exit 1          # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ libraries for Apache Arrow Substrait
+
+  - name: libparquet
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      run_exports:
+        - {{ pin_subpackage("libparquet", max_pin="x") }}
+    requirements:
+      build:
+        - cmake
+        - ninja
+        # for strong run-exports
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+      host:
+        - {{ pin_subpackage("libarrow", max_pin="x") }}
+        - openssl
+        - thrift-cpp
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+      # run-constraints handled by libarrow, since we depend on it with exact=True
+
+    test:
+      commands:
+        # headers
+        - test -f $PREFIX/include/parquet/api/reader.h              # [unix]
+        - if not exist %LIBRARY_INC%\parquet\api\reader.h exit 1    # [win]
+
+        # shared libraries
+        - test -f $PREFIX/lib/libparquet.so                         # [linux]
+        - test -f $PREFIX/lib/libparquet.dylib                      # [osx]
+        - if not exist %LIBRARY_BIN%\parquet.dll exit 1             # [win]
+        - if not exist %LIBRARY_LIB%\parquet.lib exit 1             # [win]
+
+        # absence of static libraries
+        - test ! -f $PREFIX/lib/libparquet.a                        # [unix]
+        - if exist %LIBRARY_LIB%\parquet_static.lib exit 1          # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ libraries for Apache Parquet
 
   - name: pyarrow
     script: build-pyarrow.sh   # [unix]
@@ -221,7 +646,7 @@ outputs:
         - cmake
         - ninja
       host:
-        - {{ pin_subpackage('libarrow', exact=True) }}
+        - {{ pin_subpackage("libarrow-all", exact=True) }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
         - cython <3
@@ -231,7 +656,15 @@ outputs:
         # see https://github.com/apache/arrow/issues/37931
         - setuptools_scm <8
       run:
-        - {{ pin_subpackage('libarrow', exact=True) }}
+        # full set of libs because run-exports from libarrow-all aren't picked up
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-dataset", exact=True) }}
+        - {{ pin_subpackage("libarrow-flight", exact=True) }}
+        - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
+        - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
+        - {{ pin_subpackage("libarrow-substrait", exact=True) }}
+        - {{ pin_subpackage("libparquet", exact=True) }}
         - {{ pin_compatible('numpy') }}
         - python
       run_constrained:
@@ -243,6 +676,7 @@ outputs:
       imports:
         - pyarrow
         - pyarrow.dataset
+        - pyarrow.compute
         - pyarrow.flight
         - pyarrow.gandiva
         - pyarrow.orc      # [unix]
@@ -303,7 +737,7 @@ outputs:
         - cmake
         - ninja
       host:
-        - {{ pin_subpackage('libarrow', exact=True) }}
+        - {{ pin_subpackage("libarrow-all", exact=True) }}
         - {{ pin_subpackage('pyarrow', exact=True) }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}

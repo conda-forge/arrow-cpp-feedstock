@@ -1,15 +1,7 @@
 #!/bin/bash
 set -ex
 
-# Copy the [de]activate scripts to $PREFIX/etc/conda/[de]activate.d, see
-# https://conda-forge.org/docs/maintainer/adding_pkgs.html#activate-scripts
-for CHANGE in "activate"
-do
-    mkdir -p "${PREFIX}/etc/conda/${CHANGE}.d"
-    cp "${RECIPE_DIR}/${CHANGE}.sh" "${PREFIX}/etc/conda/${CHANGE}.d/${PKG_NAME}_${CHANGE}.sh"
-done
-
-mkdir cpp/build
+mkdir -p cpp/build
 pushd cpp/build
 
 EXTRA_CMAKE_ARGS=""
@@ -116,9 +108,7 @@ cmake -GNinja \
     ${EXTRA_CMAKE_ARGS} \
     ..
 
-cmake --build . --target install --config Release
+# Do not install arrow, only build.
+cmake --build . --config Release
 
 popd
-
-# clean up between builds (and to save space)
-rm -rf cpp/build
