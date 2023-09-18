@@ -60,87 +60,39 @@ fi
 # reusable variable for dependencies we cannot yet unvendor
 export READ_RECIPE_META_YAML_WHY_NOT=OFF
 
-ARROW_PKG_CMAKE_ARGS=""
+ARROW_ACERO=OFF
+ARROW_DATASET=OFF
+ARROW_FLIGHT=OFF
+ARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=OFF
+ARROW_FLIGHT_SQL=OFF
+ARROW_GANDIVA=OFF
+ARROW_SUBSTRAIT=OFF
 
 case "$PKG_NAME" in
 libarrow-acero)
-	ARROW_PKG_CMAKE_ARGS="-DARROW_ACERO=ON \
-                          -DARROW_COMPUTE=ON \
-                          -DARROW_DATASET=OFF \
-                          -DARROW_FLIGHT=OFF \
-                          -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=OFF \
-                          -DARROW_FLIGHT_SQL=OFF \
-                          -DARROW_GANDIVA=OFF \
-                          -DARROW_SUBSTRAIT=OFF"
+    ARROW_ACERO=ON
     ;;
 libarrow-dataset)
-	ARROW_PKG_CMAKE_ARGS="-DARROW_ACERO=ON \
-                          -DARROW_COMPUTE=ON \
-                          -DARROW_DATASET=ON \
-                          -DARROW_FLIGHT=OFF \
-                          -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=OFF \
-                          -DARROW_FLIGHT_SQL=OFF \
-                          -DARROW_GANDIVA=OFF \
-                          -DARROW_SUBSTRAIT=OFF"
+    ARROW_ACERO=ON
+    ARROW_DATASET=ON
     ;;
 libarrow-gandiva)
-	ARROW_PKG_CMAKE_ARGS="-DARROW_ACERO=OFF \
-                          -DARROW_COMPUTE=OFF \
-                          -DARROW_DATASET=OFF \
-                          -DARROW_FLIGHT=OFF \
-                          -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=OFF \
-                          -DARROW_FLIGHT_SQL=OFF \
-                          -DARROW_GANDIVA=ON \
-                          -DARROW_GANDIVA_PC_CXX_FLAGS="${ARROW_GANDIVA_PC_CXX_FLAGS}" \
-                          -DARROW_SUBSTRAIT=OFF"
+    ARROW_GANDIVA=ON
     ;;
 libarrow-substrait)
-	ARROW_PKG_CMAKE_ARGS="-DARROW_ACERO=OFF \
-                          -DARROW_COMPUTE=OFF \
-                          -DARROW_DATASET=OFF \
-                          -DARROW_FLIGHT=OFF \
-                          -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=OFF \
-                          -DARROW_FLIGHT_SQL=OFF \
-                          -DARROW_GANDIVA=OFF \
-                          -DARROW_SUBSTRAIT=ON"
+    ARROW_SUBSTRAIT=ON
     ;;
 libarrow-flight)
-	ARROW_PKG_CMAKE_ARGS="-DARROW_ACERO=OFF \
-                          -DARROW_COMPUTE=OFF \
-                          -DARROW_DATASET=OFF \
-                          -DARROW_FLIGHT=ON \
-                          -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=ON \
-                          -DARROW_FLIGHT_SQL=OFF \
-                          -DARROW_GANDIVA=OFF \
-                          -DARROW_SUBSTRAIT=OFF"
+    ARROW_FLIGHT=ON
+    ARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=ON
     if [[ "${build_platform}" != "${target_platform}" ]]; then
         sed -ie "s;protoc-gen-grpc.*$;protoc-gen-grpc=${BUILD_PREFIX}/bin/grpc_cpp_plugin\";g" ../src/arrow/flight/CMakeLists.txt
     fi
     ;;
 libarrow-flight-sql)
-	ARROW_PKG_CMAKE_ARGS="-DARROW_ACERO=OFF \
-                          -DARROW_COMPUTE=OFF \
-                          -DARROW_DATASET=OFF \
-                          -DARROW_FLIGHT=ON \
-                          -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=ON \
-                          -DARROW_FLIGHT_SQL=ON \
-                          -DARROW_GANDIVA=OFF \
-                          -DARROW_SUBSTRAIT=OFF"
-    if [[ "${build_platform}" != "${target_platform}" ]]; then
-        sed -ie "s;protoc-gen-grpc.*$;protoc-gen-grpc=${BUILD_PREFIX}/bin/grpc_cpp_plugin\";g" ../src/arrow/flight/CMakeLists.txt
-    fi
-    ;;
-libarrow-all)
-    # TODO: Currently not used. Do we need it?
-	ARROW_PKG_CMAKE_ARGS="-DARROW_ACERO=ON \
-                          -DARROW_COMPUTE=ON \
-                          -DARROW_DATASET=ON \
-                          -DARROW_FLIGHT=ON \
-                          -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=ON \
-                          -DARROW_FLIGHT_SQL=ON \
-                          -DARROW_GANDIVA=ON \
-                          -DARROW_GANDIVA_PC_CXX_FLAGS="${ARROW_GANDIVA_PC_CXX_FLAGS}" \
-                          -DARROW_SUBSTRAIT=ON"
+    ARROW_FLIGHT=ON
+    ARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=ON
+    ARROW_FLIGHT_SQL=ON
     if [[ "${build_platform}" != "${target_platform}" ]]; then
         sed -ie "s;protoc-gen-grpc.*$;protoc-gen-grpc=${BUILD_PREFIX}/bin/grpc_cpp_plugin\";g" ../src/arrow/flight/CMakeLists.txt
     fi
@@ -153,16 +105,23 @@ esac
 # https://github.com/apache/arrow/blame/apache-arrow-12.0.0/cpp/cmake_modules/DefineOptions.cmake
 # placeholder in ARROW_GDB_INSTALL_DIR must match _la_placeholder in activate.sh
 cmake -GNinja \
-    -DARROW_COMPUTE=ON \
+    -DARROW_ACERO=${ARROW_ACERO} \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
     -DARROW_BUILD_STATIC=OFF \
     -DARROW_BUILD_TESTS=OFF \
     -DARROW_BUILD_UTILITIES=OFF \
+    -DARROW_COMPUTE=ON \
     -DARROW_CSV=ON \
     -DARROW_CXXFLAGS="${CXXFLAGS}" \
+    -DARROW_DATASET=${ARROW_DATASET} \
     -DARROW_DEPENDENCY_SOURCE=SYSTEM \
     -DARROW_FILESYSTEM=ON \
+    -DARROW_FLIGHT=${ARROW_FLIGHT} \
+    -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=${ARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS} \
+    -DARROW_FLIGHT_SQL=${ARROW_FLIGHT_SQL} \
+    -DARROW_GANDIVA=${ARROW_GANDIVA} \
+    -DARROW_GANDIVA_PC_CXX_FLAGS="${ARROW_GANDIVA_PC_CXX_FLAGS}" \
     -DARROW_GCS=ON \
     -DARROW_GDB_INSTALL_DIR=replace_this_section_with_absolute_slashed_path_to_CONDA_PREFIX/lib \
     -DARROW_HDFS=ON \
@@ -174,6 +133,7 @@ cmake -GNinja \
     -DARROW_PARQUET=ON \
     -DARROW_S3=ON \
     -DARROW_SIMD_LEVEL=NONE \
+    -DARROW_SUBSTRAIT=${ARROW_SUBSTRAIT} \
     -DARROW_USE_GLOG=ON \
     -DARROW_USE_LD_GOLD=ON \
     -DARROW_WITH_BROTLI=ON \
@@ -193,7 +153,6 @@ cmake -GNinja \
     -DLLVM_TOOLS_BINARY_DIR=$PREFIX/bin \
     -DPARQUET_REQUIRE_ENCRYPTION=ON \
     -DPython3_EXECUTABLE=${PYTHON} \
-    ${ARROW_PKG_CMAKE_ARGS} \
     ${EXTRA_CMAKE_ARGS} \
     ..
 
