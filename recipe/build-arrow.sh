@@ -153,6 +153,7 @@ esac
 # https://github.com/apache/arrow/blame/apache-arrow-12.0.0/cpp/cmake_modules/DefineOptions.cmake
 # placeholder in ARROW_GDB_INSTALL_DIR must match _la_placeholder in activate.sh
 cmake -GNinja \
+    -DARROW_COMPUTE=ON \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
     -DARROW_BUILD_STATIC=OFF \
