@@ -44,6 +44,7 @@ if [[ "${build_platform}" != "${target_platform}" ]]; then
     EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DCLANG_EXECUTABLE=${BUILD_PREFIX}/bin/${CONDA_TOOLCHAIN_HOST}-clang"
     EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DLLVM_LINK_EXECUTABLE=${BUILD_PREFIX}/bin/llvm-link"
     EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DARROW_JEMALLOC_LG_PAGE=16"
+    sed -ie "s;protoc-gen-grpc.*$;protoc-gen-grpc=${BUILD_PREFIX}/bin/grpc_cpp_plugin\";g" ../src/arrow/flight/CMakeLists.txt
 fi
 
 # disable -fno-plt, which causes problems with GCC on PPC
@@ -85,17 +86,11 @@ libarrow-substrait)
 libarrow-flight)
     ARROW_FLIGHT=ON
     ARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=ON
-    if [[ "${build_platform}" != "${target_platform}" ]]; then
-        sed -ie "s;protoc-gen-grpc.*$;protoc-gen-grpc=${BUILD_PREFIX}/bin/grpc_cpp_plugin\";g" ../src/arrow/flight/CMakeLists.txt
-    fi
     ;;
 libarrow-flight-sql)
     ARROW_FLIGHT=ON
     ARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=ON
     ARROW_FLIGHT_SQL=ON
-    if [[ "${build_platform}" != "${target_platform}" ]]; then
-        sed -ie "s;protoc-gen-grpc.*$;protoc-gen-grpc=${BUILD_PREFIX}/bin/grpc_cpp_plugin\";g" ../src/arrow/flight/CMakeLists.txt
-    fi
     ;;
 *)
 	;;

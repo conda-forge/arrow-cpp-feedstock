@@ -831,6 +831,7 @@ outputs:
         - test ! -f $PREFIX/lib/lib{{ each_lib }}.a                # [unix]
         - if exist %LIBRARY_LIB%\{{ each_lib }}_static.lib exit 1  # [win]
         {% endfor %}
+
         # Only check UCX on Linux
         - test -f $PREFIX/lib/libarrow_flight_transport_ucx.so     # [linux]
 
