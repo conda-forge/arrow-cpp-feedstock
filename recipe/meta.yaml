@@ -90,9 +90,6 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
-        # needs to run protoc & grpc_cpp_plugin
-        - libgrpc                                # [build_platform != target_platform]
-        - libprotobuf                            # [build_platform != target_platform]
         # needed for gandiva
         - clangdev {{ llvm_version }}            # [build_platform != target_platform]
         - llvmdev {{ llvm_version }}             # [build_platform != target_platform]
@@ -120,9 +117,6 @@ outputs:
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
-        - libboost-headers
-        - libgrpc
-        - libprotobuf
         - libutf8proc
         - lz4-c
         - nlohmann_json
@@ -233,7 +227,6 @@ outputs:
         - llvmdev {{ llvm_version }}
         - aws-crt-cpp
         - aws-sdk-cpp
-        - boost-cpp >=1.70
         - brotli
         - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
@@ -245,8 +238,7 @@ outputs:
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
-        - libgrpc
-        - libprotobuf
+        - libboost-headers
         - libutf8proc
         - lz4-c
         - nlohmann_json
@@ -364,7 +356,6 @@ outputs:
         - llvmdev {{ llvm_version }}
         - aws-crt-cpp
         - aws-sdk-cpp
-        - boost-cpp >=1.70
         - brotli
         - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
@@ -376,8 +367,7 @@ outputs:
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
-        - libgrpc
-        - libprotobuf
+        - libboost-headers
         - libutf8proc
         - lz4-c
         - nlohmann_json
@@ -497,7 +487,6 @@ outputs:
         - llvmdev {{ llvm_version }}
         - aws-crt-cpp
         - aws-sdk-cpp
-        - boost-cpp >=1.70
         - brotli
         - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
@@ -509,8 +498,7 @@ outputs:
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
-        - libgrpc
-        - libprotobuf
+        - libboost-headers
         - libutf8proc
         - lz4-c
         - nlohmann_json
@@ -631,7 +619,6 @@ outputs:
         - llvmdev {{ llvm_version }}
         - aws-crt-cpp
         - aws-sdk-cpp
-        - boost-cpp >=1.70
         - brotli
         - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
@@ -643,6 +630,7 @@ outputs:
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
+        - libboost-headers
         - libgrpc
         - libprotobuf
         - libutf8proc
@@ -766,7 +754,6 @@ outputs:
         - llvmdev {{ llvm_version }}
         - aws-crt-cpp
         - aws-sdk-cpp
-        - boost-cpp >=1.70
         - brotli
         - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
@@ -778,6 +765,7 @@ outputs:
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
+        - libboost-headers
         - libgrpc
         - libprotobuf
         - libutf8proc
@@ -903,7 +891,6 @@ outputs:
         - llvmdev {{ llvm_version }}
         - aws-crt-cpp
         - aws-sdk-cpp
-        - boost-cpp >=1.70
         - brotli
         - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
@@ -915,6 +902,7 @@ outputs:
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
+        - libboost-headers
         - libgrpc
         - libprotobuf
         - libutf8proc
