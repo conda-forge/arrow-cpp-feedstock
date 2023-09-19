@@ -1,4 +1,5 @@
 @echo on
+setlocal EnableDelayedExpansion
 
 mkdir cpp\build
 pushd cpp\build
