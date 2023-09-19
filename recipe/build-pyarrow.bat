@@ -17,6 +17,14 @@ SET PYARROW_WITH_S3=1
 SET PYARROW_WITH_SUBSTRAIT=1
 SET PYARROW_CMAKE_GENERATOR=Ninja
 
+:: Modify ArrowOptions.cmake to set build flags for other components
+sed -ie "s/ARROW_ACERO \"OFF/ARROW_ACERO \"ON/" ${PREFIX}\Library\lib\cmake\Arrow\ArrowOptions.cmake
+sed -ie "s/ARROW_COMPUTE \"OFF/ARROW_COMPUTE \"ON/" ${PREFIX}\Library\lib\cmake\Arrow\ArrowOptions.cmake
+sed -ie "s/ARROW_DATASET \"OFF/ARROW_DATASET \"ON/" ${PREFIX}\Library\lib\cmake\Arrow\ArrowOptions.cmake
+sed -ie "s/ARROW_GANDIVA \"OFF/ARROW_GANDIVA \"ON/" ${PREFIX}\Library\lib\cmake\Arrow\ArrowOptions.cmake
+sed -ie "s/ARROW_FLIGHT \"OFF/ARROW_FLIGHT \"ON/" ${PREFIX}\Library\lib\cmake\Arrow\ArrowOptions.cmake
+sed -ie "s/ARROW_SUBSTRAIT \"OFF/ARROW_SUBSTRAIT \"ON/" ${PREFIX}\Library\lib\cmake\Arrow\ArrowOptions.cmake
+
 :: Enable CUDA support
 if "%cuda_compiler_version%"=="None" (
     set "PYARROW_WITH_CUDA=0"
