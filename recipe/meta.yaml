@@ -818,7 +818,7 @@ outputs:
         - if not exist %LIBRARY_INC%\{{ "\\".join(each_header.split("/")) }} exit 1                    # [win]
         {% endfor %}
         {% set libs = (cuda_compiler_version != "None") * ["arrow_cuda"] + [
-            "arrow", "arrow_flight", "arrow_flight_transport_ucx"
+            "arrow", "arrow_flight"
         ] %}
         {% for each_lib in libs %}
         # shared
@@ -831,6 +831,8 @@ outputs:
         - test ! -f $PREFIX/lib/lib{{ each_lib }}.a                # [unix]
         - if exist %LIBRARY_LIB%\{{ each_lib }}_static.lib exit 1  # [win]
         {% endfor %}
+        # Only check UCX on Linux
+        - test -f $PREFIX/lib/libarrow_flight_transport_ucx.so     # [linux]
 
         # absence of arrow_cuda for CPU builds
         - test ! -f $PREFIX/lib/libarrow_cuda.so                   # [(cuda_compiler_version == "None") and linux]
@@ -952,8 +954,7 @@ outputs:
         - if not exist %LIBRARY_INC%\{{ "\\".join(each_header.split("/")) }} exit 1                    # [win]
         {% endfor %}
         {% set libs = (cuda_compiler_version != "None") * ["arrow_cuda"] + [
-            "arrow", "arrow_flight", "arrow_flight_transport_ucx",
-            "arrow_flight_sql"
+            "arrow", "arrow_flight", "arrow_flight_sql"
         ] %}
         {% for each_lib in libs %}
         # shared
@@ -966,6 +967,9 @@ outputs:
         - test ! -f $PREFIX/lib/lib{{ each_lib }}.a                # [unix]
         - if exist %LIBRARY_LIB%\{{ each_lib }}_static.lib exit 1  # [win]
         {% endfor %}
+
+        # Only check UCX on Linux
+        - test -f $PREFIX/lib/libarrow_flight_transport_ucx.so     # [linux]
 
         # absence of arrow_cuda for CPU builds
         - test ! -f $PREFIX/lib/libarrow_cuda.so                   # [(cuda_compiler_version == "None") and linux]
