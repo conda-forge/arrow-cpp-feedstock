@@ -43,19 +43,6 @@ if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "
     export CMAKE_BUILD_PARALLEL_LEVEL=4
 fi
 
-# Modify ArrowOptions.cmake to set build flags for other components
-sed -ie "s;ARROW_ACERO \"OFF;ARROW_ACERO \"ON;g" ${PREFIX}/lib/cmake/Arrow/ArrowOptions.cmake
-sed -ie "s;ARROW_COMPUTE \"OFF;ARROW_COMPUTE \"ON;g" ${PREFIX}/lib/cmake/Arrow/ArrowOptions.cmake
-sed -ie "s;ARROW_DATASET \"OFF;ARROW_DATASET \"ON;g" ${PREFIX}/lib/cmake/Arrow/ArrowOptions.cmake
-sed -ie "s;ARROW_GANDIVA \"OFF;ARROW_GANDIVA \"ON;g" ${PREFIX}/lib/cmake/Arrow/ArrowOptions.cmake
-sed -ie "s;ARROW_FLIGHT \"OFF;ARROW_FLIGHT \"ON;g" ${PREFIX}/lib/cmake/Arrow/ArrowOptions.cmake
-# sed -ie "s;ARROW_FLIGHT_SQL \"OFF;ARROW_FLIGHT_SQL \"ON;g" ${PREFIX}/lib/cmake/Arrow/ArrowOptions.cmake
-sed -ie "s;ARROW_GCS \"OFF;ARROW_GCS \"ON;g" ${PREFIX}/lib/cmake/Arrow/ArrowOptions.cmake
-sed -ie "s;ARROW_HDFS \"OFF;ARROW_HDFS \"ON;g" ${PREFIX}/lib/cmake/Arrow/ArrowOptions.cmake
-sed -ie "s;ARROW_ORC \"OFF;ARROW_ORC \"ON;g" ${PREFIX}/lib/cmake/Arrow/ArrowOptions.cmake
-sed -ie "s;ARROW_S3 \"OFF;ARROW_S3 \"ON;g" ${PREFIX}/lib/cmake/Arrow/ArrowOptions.cmake
-sed -ie "s;ARROW_SUBSTRAIT \"OFF;ARROW_SUBSTRAIT \"ON;g" ${PREFIX}/lib/cmake/Arrow/ArrowOptions.cmake
-
 cd python
 
 $PYTHON setup.py \

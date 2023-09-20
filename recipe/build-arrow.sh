@@ -61,46 +61,11 @@ fi
 # reusable variable for dependencies we cannot yet unvendor
 export READ_RECIPE_META_YAML_WHY_NOT=OFF
 
-ARROW_ACERO=OFF
-ARROW_DATASET=OFF
-ARROW_FLIGHT=OFF
-ARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=OFF
-ARROW_FLIGHT_SQL=OFF
-ARROW_GANDIVA=OFF
-ARROW_SUBSTRAIT=OFF
-
-case "$PKG_NAME" in
-libarrow-acero)
-    ARROW_ACERO=ON
-    ;;
-libarrow-dataset)
-    ARROW_ACERO=ON
-    ARROW_DATASET=ON
-    ;;
-libarrow-gandiva)
-    ARROW_GANDIVA=ON
-    ;;
-libarrow-substrait)
-    ARROW_SUBSTRAIT=ON
-    ;;
-libarrow-flight)
-    ARROW_FLIGHT=ON
-    ARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=ON
-    ;;
-libarrow-flight-sql)
-    ARROW_FLIGHT=ON
-    ARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=ON
-    ARROW_FLIGHT_SQL=ON
-    ;;
-*)
-	;;
-esac
-
 # for available switches see
 # https://github.com/apache/arrow/blame/apache-arrow-12.0.0/cpp/cmake_modules/DefineOptions.cmake
 # placeholder in ARROW_GDB_INSTALL_DIR must match _la_placeholder in activate.sh
 cmake -GNinja \
-    -DARROW_ACERO=${ARROW_ACERO} \
+    -DARROW_ACERO=ON \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
     -DARROW_BUILD_STATIC=OFF \
@@ -109,13 +74,13 @@ cmake -GNinja \
     -DARROW_COMPUTE=ON \
     -DARROW_CSV=ON \
     -DARROW_CXXFLAGS="${CXXFLAGS}" \
-    -DARROW_DATASET=${ARROW_DATASET} \
+    -DARROW_DATASET=ON \
     -DARROW_DEPENDENCY_SOURCE=SYSTEM \
     -DARROW_FILESYSTEM=ON \
-    -DARROW_FLIGHT=${ARROW_FLIGHT} \
-    -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=${ARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS} \
-    -DARROW_FLIGHT_SQL=${ARROW_FLIGHT_SQL} \
-    -DARROW_GANDIVA=${ARROW_GANDIVA} \
+    -DARROW_FLIGHT=ON \
+    -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=ON \
+    -DARROW_FLIGHT_SQL=ON \
+    -DARROW_GANDIVA=ON \
     -DARROW_GANDIVA_PC_CXX_FLAGS="${ARROW_GANDIVA_PC_CXX_FLAGS}" \
     -DARROW_GCS=ON \
     -DARROW_GDB_INSTALL_DIR=replace_this_section_with_absolute_slashed_path_to_CONDA_PREFIX/lib \
@@ -128,7 +93,7 @@ cmake -GNinja \
     -DARROW_PARQUET=ON \
     -DARROW_S3=ON \
     -DARROW_SIMD_LEVEL=NONE \
-    -DARROW_SUBSTRAIT=${ARROW_SUBSTRAIT} \
+    -DARROW_SUBSTRAIT=ON \
     -DARROW_USE_GLOG=ON \
     -DARROW_USE_LD_GOLD=ON \
     -DARROW_WITH_BROTLI=ON \
@@ -151,12 +116,7 @@ cmake -GNinja \
     ${EXTRA_CMAKE_ARGS} \
     ..
 
-cmake --build . --target install --config Release
+# Do not install arrow, only build.
+cmake --build . --config Release
 
 popd
-# TODO: Even if we do not clean `cpp/build` it doesn't reuse
-# arrow core already built.
-# Investigate how to reuse previously built libarrow
-
-# clean up between builds (and to save space)
-rm -rf cpp/build

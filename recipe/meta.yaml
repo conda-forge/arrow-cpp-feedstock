@@ -64,9 +64,89 @@ outputs:
       commands:
         - exit 0
   # TODO: Extract parquet. Clean up build/host/run requirements
-  - name: libarrow
+  - name: libarrow-all
     script: build-arrow.sh   # [unix]
     script: build-arrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      run_exports:
+        - {{ pin_subpackage("libarrow-all", max_pin="x") }}
+      ignore_run_exports_from:
+        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
+        # arrow only uses headers, apparently
+        - gflags
+        # shared lib linked on unix, not on win
+        - glog                                   # [win]
+      ignore_run_exports:
+        # we don't need all of brotli's run-exports
+        - libbrotlicommon
+      track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
+      missing_dso_whitelist:
+        - '*/libcuda.so.*'    # [linux]
+        - '*/nvcuda.dll'      # [win]
+    requirements:
+      build:
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
+        # needed for gandiva
+        - clangdev {{ llvm_version }}            # [build_platform != target_platform]
+        - llvmdev {{ llvm_version }}             # [build_platform != target_platform]
+        - gnuconfig                              # [build_platform != target_platform]
+        - cmake
+        - ninja
+        # necessary for vendored jemalloc
+        - autoconf     # [linux]
+        - make         # [linux]
+      host:
+        # for required dependencies, see
+        # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
+        - clangdev {{ llvm_version }}
+        - llvmdev {{ llvm_version }}
+        - aws-crt-cpp
+        - aws-sdk-cpp
+        - boost-cpp >=1.70
+        - brotli
+        - bzip2
+        # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
+        # - cpp-opentelemetry-sdk
+        # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
+        - gflags
+        - glog
+        - google-cloud-cpp
+        # arrow uses a customized jemalloc, see #944
+        # - jemalloc
+        - libabseil
+        - libutf8proc
+        - lz4-c
+        - nlohmann_json
+        - orc
+        - rapidjson
+        - re2
+        - snappy
+        - thrift-cpp
+        - ucx          # [linux]
+        - xsimd
+        - zlib
+        - zstd
+        - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
+        # since libgoogle-cloud is static on windows, see
+        # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
+        # its host deps (which aren't yet covered above) leak into the build here
+        - libcrc32c  # [win]
+        - libcurl    # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: Meta build
+
+  - name: libarrow
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
@@ -100,6 +180,7 @@ outputs:
         - autoconf     # [linux]
         - make         # [linux]
       host:
+        - {{ pin_subpackage('libarrow-all', exact=True) }}
         # for required dependencies, see
         # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
         - clangdev {{ llvm_version }}
@@ -185,8 +266,8 @@ outputs:
       summary: C++ libraries for Apache Arrow core
 
   - name: libarrow-gandiva
-    script: build-arrow.sh   # [unix]
-    script: build-arrow.bat  # [win]
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
@@ -314,8 +395,8 @@ outputs:
       summary: C++ libraries for Apache Arrow Gandiva
 
   - name: libarrow-acero
-    script: build-arrow.sh   # [unix]
-    script: build-arrow.bat  # [win]
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
@@ -444,8 +525,8 @@ outputs:
 
 
   - name: libarrow-dataset
-    script: build-arrow.sh   # [unix]
-    script: build-arrow.bat  # [win]
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
@@ -575,8 +656,8 @@ outputs:
       summary: C++ libraries for Apache Arrow Dataset
 
   - name: libarrow-substrait
-    script: build-arrow.sh   # [unix]
-    script: build-arrow.bat  # [win]
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
@@ -709,8 +790,8 @@ outputs:
       summary: C++ libraries for Apache Arrow Substrait
 
   - name: libarrow-flight
-    script: build-arrow.sh   # [unix]
-    script: build-arrow.bat  # [win]
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
@@ -846,8 +927,8 @@ outputs:
       summary: C++ libraries for Apache Arrow Flight
 
   - name: libarrow-flight-sql
-    script: build-arrow.sh   # [unix]
-    script: build-arrow.bat  # [win]
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
@@ -1011,6 +1092,8 @@ outputs:
         - cmake
         - ninja
       host:
+        - {{ pin_subpackage('libarrow', exact=True) }}
+        - {{ pin_subpackage('libarrow-acero', exact=True) }}
         - {{ pin_subpackage('libarrow-dataset', exact=True) }}
         - {{ pin_subpackage('libarrow-flight', exact=True) }}
         - {{ pin_subpackage('libarrow-gandiva', exact=True) }}
@@ -1024,6 +1107,8 @@ outputs:
         # see https://github.com/apache/arrow/issues/37931
         - setuptools_scm <8
       run:
+        - {{ pin_subpackage('libarrow', exact=True) }}
+        - {{ pin_subpackage('libarrow-acero', exact=True) }}
         - {{ pin_subpackage('libarrow-dataset', exact=True) }}
         - {{ pin_subpackage('libarrow-flight', exact=True) }}
         - {{ pin_subpackage('libarrow-gandiva', exact=True) }}
