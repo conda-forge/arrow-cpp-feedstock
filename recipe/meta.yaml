@@ -90,6 +90,9 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
+        # needs to run protoc & grpc_cpp_plugin
+        - libgrpc                                # [build_platform != target_platform]
+        - libprotobuf                            # [build_platform != target_platform]
         # needed for gandiva
         - clangdev {{ llvm_version }}            # [build_platform != target_platform]
         - llvmdev {{ llvm_version }}             # [build_platform != target_platform]
