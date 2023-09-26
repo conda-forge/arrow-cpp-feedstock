@@ -31,7 +31,7 @@ if [%PKG_NAME%] == [libarrow] (
     mkdir %LIBRARY_PREFIX%\share\arrow
     move .\temp_prefix\share\arrow %LIBRARY_PREFIX%\share\arrow
     mkdir %LIBRARY_PREFIX%\include\arrow
-    move .\temp_prefix\include\arrow %LIBRARY_PREFIX%\include\arrow
+    xcopy /s /y .\temp_prefix\include\arrow %LIBRARY_PREFIX%\include\arrow
 ) else if [%PKG_NAME%] == [libarrow-acero] (
     move .\temp_prefix\lib\arrow_acero.lib %LIBRARY_LIB%
     move .\temp_prefix\bin\arrow_acero.dll %LIBRARY_BIN%
