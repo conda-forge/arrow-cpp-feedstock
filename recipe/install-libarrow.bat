@@ -5,12 +5,6 @@ mkdir temp_prefix
 
 cmake --install .\cpp\build --prefix=.\temp_prefix
 
-dir %CD%
-dir %CD%\temp_prefix
-dir %CD%\temp_prefix\lib
-dir %CD%\temp_prefix\share
-dir %CD%\temp_prefix\include
-
 if [%PKG_NAME%] == [libarrow] (
     move .\temp_prefix\lib\arrow.lib %LIBRARY_LIB%
     move .\temp_prefix\bin\arrow.dll %LIBRARY_BIN%
@@ -49,6 +43,8 @@ if [%PKG_NAME%] == [libarrow] (
     move .\temp_prefix\bin\gandiva.dll %LIBRARY_BIN%
     mkdir %LIBRARY_LIB%\cmake\Gandiva
     move .\temp_prefix\lib\cmake\Gandiva\* %LIBRARY_LIB%\cmake\Gandiva
+    mkdir %LIBRARY_PREFIX%\include\gandiva
+    xcopy /s /y .\temp_prefix\include\gandiva %LIBRARY_PREFIX%\include\gandiva
 ) else if [%PKG_NAME%] == [libarrow-substrait] (
     move .\temp_prefix\lib\arrow_substrait.lib %LIBRARY_LIB%
     move .\temp_prefix\bin\arrow_substrait.dll %LIBRARY_BIN%
@@ -65,9 +61,6 @@ if [%PKG_NAME%] == [libarrow] (
     mkdir %LIBRARY_LIB%\cmake\ArrowFlightSql
     move .\temp_prefix\lib\cmake\ArrowFlightSql\* %LIBRARY_LIB%\cmake\ArrowFlightSql
 )
-
-dir %LIBRARY_LIB%
-dir %LIBRARY_BIN%
 
 :: clean up temp_prefix between builds
 rmdir /s /q temp_prefix
