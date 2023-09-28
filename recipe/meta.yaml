@@ -63,6 +63,7 @@ outputs:
     test:
       commands:
         - exit 0
+
   # TODO: Extract parquet. Clean up build/host/run requirements
   - name: libarrow-all
     script: build-arrow.sh   # [unix]
@@ -209,7 +210,6 @@ outputs:
         - re2
         - snappy
         - thrift-cpp
-        - ucx          # [linux]
         - xsimd
         - zlib
         - zstd
@@ -309,29 +309,17 @@ outputs:
         # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
-        - aws-crt-cpp
-        - aws-sdk-cpp
-        - brotli
-        - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
         # - cpp-opentelemetry-sdk
         # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
-        - glog
-        - google-cloud-cpp
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
-        - libabseil
         - libboost-headers
         - libutf8proc
-        - lz4-c
         - nlohmann_json
-        - orc
         - rapidjson
         - re2
-        - snappy
-        - thrift-cpp
-        - ucx          # [linux]
         - xsimd
         - zlib
         - zstd
@@ -438,32 +426,16 @@ outputs:
         # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
-        - aws-crt-cpp
-        - aws-sdk-cpp
-        - brotli
-        - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
         # - cpp-opentelemetry-sdk
         # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
-        - glog
-        - google-cloud-cpp
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
-        - libabseil
         - libboost-headers
-        - libutf8proc
-        - lz4-c
         - nlohmann_json
-        - orc
         - rapidjson
-        - re2
-        - snappy
-        - thrift-cpp
-        - ucx          # [linux]
         - xsimd
-        - zlib
-        - zstd
         - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
         # since libgoogle-cloud is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
@@ -569,31 +541,18 @@ outputs:
         # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
-        - aws-crt-cpp
-        - aws-sdk-cpp
-        - brotli
-        - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
         # - cpp-opentelemetry-sdk
         # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
-        - glog
-        - google-cloud-cpp
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
         - libboost-headers
-        - libutf8proc
-        - lz4-c
         - nlohmann_json
-        - orc
         - rapidjson
-        - re2
         - snappy
-        - thrift-cpp
-        - ucx          # [linux]
         - xsimd
-        - zlib
         - zstd
         - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
         # since libgoogle-cloud is static on windows, see
@@ -701,34 +660,16 @@ outputs:
         # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
-        - aws-crt-cpp
-        - aws-sdk-cpp
-        - brotli
-        - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
         # - cpp-opentelemetry-sdk
         # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
-        - glog
-        - google-cloud-cpp
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
-        - libabseil
         - libboost-headers
-        - libgrpc
-        - libprotobuf
-        - libutf8proc
-        - lz4-c
         - nlohmann_json
-        - orc
         - rapidjson
-        - re2
-        - snappy
-        - thrift-cpp
-        - ucx          # [linux]
         - xsimd
-        - zlib
-        - zstd
         - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
         # since libgoogle-cloud is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
@@ -836,34 +777,20 @@ outputs:
         # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
-        - aws-crt-cpp
-        - aws-sdk-cpp
-        - brotli
-        - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
         # - cpp-opentelemetry-sdk
         # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
-        - glog
-        - google-cloud-cpp
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
         - libboost-headers
         - libgrpc
         - libprotobuf
-        - libutf8proc
-        - lz4-c
         - nlohmann_json
-        - orc
         - rapidjson
-        - re2
-        - snappy
-        - thrift-cpp
         - ucx          # [linux]
         - xsimd
-        - zlib
-        - zstd
         - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
         # since libgoogle-cloud is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
@@ -973,34 +900,12 @@ outputs:
         # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
-        - aws-crt-cpp
-        - aws-sdk-cpp
-        - brotli
-        - bzip2
-        # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
-        # - cpp-opentelemetry-sdk
-        # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
-        - glog
-        - google-cloud-cpp
-        # arrow uses a customized jemalloc, see #944
-        # - jemalloc
-        - libabseil
         - libboost-headers
-        - libgrpc
         - libprotobuf
-        - libutf8proc
-        - lz4-c
         - nlohmann_json
-        - orc
         - rapidjson
-        - re2
-        - snappy
-        - thrift-cpp
-        - ucx          # [linux]
         - xsimd
-        - zlib
-        - zstd
         - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
         # since libgoogle-cloud is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,

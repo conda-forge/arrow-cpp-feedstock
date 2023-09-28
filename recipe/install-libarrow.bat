@@ -12,7 +12,6 @@ if [%PKG_NAME%] == [libarrow] (
     move .\temp_prefix\bin\parquet.dll %LIBRARY_BIN%
     move .\temp_prefix\lib\arrow_cuda.lib %LIBRARY_LIB% || true
     move .\temp_prefix\bin\arrow_cuda.dll %LIBRARY_BIN% || true
-    move .\temp_prefix\lib\arrow.lib %LIBRARY_LIB%
     move .\temp_prefix\lib\pkgconfig\* %LIBRARY_LIB%\pkgconfig
     mkdir %LIBRARY_LIB%\cmake\Arrow
     move .\temp_prefix\lib\cmake\Arrow\* %LIBRARY_LIB%\cmake\Arrow
