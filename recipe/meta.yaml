@@ -64,7 +64,7 @@ outputs:
       commands:
         - exit 0
 
-  # TODO: Extract parquet. Clean up build/host/run requirements
+  # TODO: Extract parquet.
   - name: libarrow-all
     script: build-arrow.sh   # [unix]
     script: build-arrow.bat  # [win]
@@ -205,6 +205,7 @@ outputs:
         - libutf8proc
         - lz4-c
         - nlohmann_json
+        - openssl
         - orc
         - rapidjson
         - re2
@@ -318,6 +319,7 @@ outputs:
         - libboost-headers
         - libutf8proc
         - nlohmann_json
+        - openssl
         - rapidjson
         - re2
         - xsimd
@@ -551,9 +553,7 @@ outputs:
         - libboost-headers
         - nlohmann_json
         - rapidjson
-        - snappy
         - xsimd
-        - zstd
         - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
         # since libgoogle-cloud is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
@@ -678,6 +678,7 @@ outputs:
         - libcurl    # [win]
       run:
         - {{ pin_subpackage('libarrow', exact=True) }}
+        - {{ pin_subpackage('libarrow-acero', exact=True) }}
         - {{ pin_subpackage('libarrow-dataset', exact=True) }}
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
@@ -895,6 +896,7 @@ outputs:
         - autoconf     # [linux]
         - make         # [linux]
       host:
+        - {{ pin_subpackage('libarrow', exact=True) }}
         - {{ pin_subpackage('libarrow-flight', exact=True) }}
         # for required dependencies, see
         # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
@@ -913,6 +915,7 @@ outputs:
         - libcrc32c  # [win]
         - libcurl    # [win]
       run:
+        - {{ pin_subpackage('libarrow', exact=True) }}
         - {{ pin_subpackage('libarrow-flight', exact=True) }}
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
