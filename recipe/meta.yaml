@@ -242,7 +242,7 @@ outputs:
         - numpy
         - python
         - setuptools
-        - setuptools_scm
+        - setuptools_scm <8
       run:
         - {{ pin_subpackage('libarrow', exact=True) }}
         - {{ pin_compatible('numpy') }}
@@ -324,7 +324,7 @@ outputs:
         - numpy
         - python
         - setuptools
-        - setuptools_scm
+        - setuptools_scm <8
       run:
         - {{ pin_subpackage('pyarrow', exact=True) }}
         - python
