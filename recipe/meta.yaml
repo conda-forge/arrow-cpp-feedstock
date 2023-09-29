@@ -116,13 +116,13 @@ outputs:
         - llvmdev {{ llvm_version }}
         - aws-crt-cpp  # [unix]
         - aws-sdk-cpp
-        - libboost-headers
         - brotli
         - bzip2
         - gflags
         - glog
         - google-cloud-cpp
         - libabseil
+        - libboost-headers
         - libgrpc
         - libprotobuf
         - libutf8proc
