@@ -21,7 +21,7 @@ source:
     folder: testing
 
 build:
-  number: 13
+  number: 14
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -103,7 +103,6 @@ outputs:
         - llvmdev {{ llvm_version }}
         - aws-crt-cpp
         - aws-sdk-cpp
-        - boost-cpp >=1.70
         - brotli
         - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
@@ -115,6 +114,7 @@ outputs:
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
+        - libboost-headers
         - libgrpc
         - libprotobuf
         - libutf8proc
@@ -242,7 +242,7 @@ outputs:
         - numpy
         - python
         - setuptools
-        - setuptools_scm
+        - setuptools_scm <8
       run:
         - {{ pin_subpackage('libarrow', exact=True) }}
         - {{ pin_compatible('numpy') }}
@@ -324,7 +324,7 @@ outputs:
         - numpy
         - python
         - setuptools
-        - setuptools_scm
+        - setuptools_scm <8
       run:
         - {{ pin_subpackage('pyarrow', exact=True) }}
         - python
