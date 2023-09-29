@@ -120,7 +120,6 @@ outputs:
         - llvmdev {{ llvm_version }}
         - aws-crt-cpp  # [unix]
         - aws-sdk-cpp
-        - libboost-headers
         - brotli
         - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
@@ -132,6 +131,7 @@ outputs:
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
+        - libboost-headers
         - libgrpc
         - libprotobuf
         - libutf8proc
