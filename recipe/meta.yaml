@@ -204,12 +204,10 @@ outputs:
         - libutf8proc
         - lz4-c
         - nlohmann_json
-        - openssl
         - orc
         - rapidjson
         - re2
         - snappy
-        - thrift-cpp
         - xsimd
         - zlib
         - zstd
@@ -299,31 +297,17 @@ outputs:
         - autoconf     # [linux]
         - make         # [linux]
       host:
+        - {{ pin_subpackage("libarrow", max_pin="x") }}
         # for required dependencies, see
         # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
-        - brotli
-        - bzip2
-        # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
-        # - cpp-opentelemetry-sdk
-        # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
-        - glog
-        # arrow uses a customized jemalloc, see #944
-        # - jemalloc
-        - libabseil
-        - libutf8proc
-        - lz4-c
         - nlohmann_json
         - openssl
         - rapidjson
-        - re2
-        - snappy
         - thrift-cpp
         - xsimd
-        - zlib
-        - zstd
         # since libgoogle-cloud is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
         # its host deps (which aren't yet covered above) leak into the build here
@@ -354,7 +338,7 @@ outputs:
         - test ! -f $PREFIX/lib/libparquet.a                   # [unix]
         - if exist %LIBRARY_LIB%\parquet_static.lib exit 1     # [win]
 
-        {% set libs = ["arrow", "arrow_acero", "arrow_dataset", "arrow_flight",
+        {% set libs = ["arrow_acero", "arrow_dataset", "arrow_flight",
                        "arrow_flight_sql", "arrow_substrait", "gandiva"] %}
         {% for each_lib in libs %}
         - test ! -f $PREFIX/lib/lib{{ each_lib }}.so           # [linux]
@@ -396,17 +380,10 @@ outputs:
         - autoconf     # [linux]
         - make         # [linux]
       host:
-        - {{ pin_subpackage('libarrow', exact=True) }}
         # for required dependencies, see
         # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
-        # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
-        # - cpp-opentelemetry-sdk
-        # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
-        - gflags
-        # arrow uses a customized jemalloc, see #944
-        # - jemalloc
         - libboost-headers
         - libutf8proc
         - nlohmann_json
@@ -422,8 +399,6 @@ outputs:
         # its host deps (which aren't yet covered above) leak into the build here
         - libcrc32c  # [win]
         - libcurl    # [win]
-      run:
-        - {{ pin_subpackage('libarrow', exact=True) }}
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
         # make sure we don't co-install with old version of old package name
@@ -442,7 +417,7 @@ outputs:
         - if not exist %LIBRARY_INC%\{{ "\\".join(each_header.split("/")) }} exit 1                    # [win]
         {% endfor %}
         {% set libs = (cuda_compiler_version != "None") * ["arrow_cuda"] + [
-            "arrow", "gandiva"
+            "gandiva"
         ] %}
         {% for each_lib in libs %}
         # shared
@@ -463,7 +438,7 @@ outputs:
         - if exist %LIBRARY_LIB%\arrow_cuda.lib exit 1             # [(cuda_compiler_version == "None") and win]
         - if exist %LIBRARY_LIB%\arrow_cuda_static.lib exit 1      # [(cuda_compiler_version == "None") and win]
         # absence of libs (is arrow present?)
-        {% set libs = ["arrow_acero", "arrow_dataset", "arrow_flight", "arrow_flight_sql", "arrow_substrait"] %}
+        {% set libs = ["arrow", "arrow_acero", "arrow_dataset", "arrow_flight", "arrow_flight_sql", "arrow_substrait"] %}
         {% for each_lib in libs %}
         - test ! -f $PREFIX/lib/lib{{ each_lib }}.so               # [linux]
         - test ! -f $PREFIX/lib/lib{{ each_lib }}.dylib            # [osx]
@@ -630,6 +605,7 @@ outputs:
       host:
         - {{ pin_subpackage('libarrow', exact=True) }}
         - {{ pin_subpackage('libarrow-acero', exact=True) }}
+        - {{ pin_subpackage('libparquet', exact=True) }}
         # for required dependencies, see
         # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
         - clangdev {{ llvm_version }}
@@ -653,6 +629,7 @@ outputs:
       run:
         - {{ pin_subpackage('libarrow', exact=True) }}
         - {{ pin_subpackage('libarrow-acero', exact=True) }}
+        - {{ pin_subpackage('libparquet', exact=True) }}
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
         # make sure we don't co-install with old version of old package name
@@ -671,7 +648,7 @@ outputs:
         - if not exist %LIBRARY_INC%\{{ "\\".join(each_header.split("/")) }} exit 1                    # [win]
         {% endfor %}
         {% set libs = (cuda_compiler_version != "None") * ["arrow_cuda"] + [
-            "arrow", "arrow_acero", "arrow_dataset"
+            "arrow", "arrow_acero", "arrow_dataset", "parquet"
         ] %}
         {% for each_lib in libs %}
         # shared
