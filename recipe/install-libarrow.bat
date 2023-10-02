@@ -8,8 +8,6 @@ cmake --install .\cpp\build --prefix=.\temp_prefix
 if [%PKG_NAME%] == [libarrow] (
     move .\temp_prefix\lib\arrow.lib %LIBRARY_LIB%
     move .\temp_prefix\bin\arrow.dll %LIBRARY_BIN%
-    move .\temp_prefix\lib\parquet.lib %LIBRARY_LIB%
-    move .\temp_prefix\bin\parquet.dll %LIBRARY_BIN%
     move .\temp_prefix\lib\arrow_cuda.lib %LIBRARY_LIB% || true
     move .\temp_prefix\bin\arrow_cuda.dll %LIBRARY_BIN% || true
     move .\temp_prefix\lib\pkgconfig\* %LIBRARY_LIB%\pkgconfig
@@ -17,14 +15,17 @@ if [%PKG_NAME%] == [libarrow] (
     move .\temp_prefix\lib\cmake\Arrow\* %LIBRARY_LIB%\cmake\Arrow
     mkdir %LIBRARY_LIB%\cmake\ArrowCUDA
     move .\temp_prefix\lib\cmake\ArrowCUDA\* %LIBRARY_LIB%\cmake\ArrowCUDA || true
-    mkdir %LIBRARY_LIB%\cmake\Parquet
-    move .\temp_prefix\lib\cmake\Parquet\* %LIBRARY_LIB%\cmake\Parquet
     mkdir %LIBRARY_PREFIX%\share\doc\arrow
     move .\temp_prefix\share\doc\arrow\* %LIBRARY_PREFIX%\share\doc\arrow
     mkdir %LIBRARY_PREFIX%\share\arrow
     xcopy /s /y .\temp_prefix\share\arrow %LIBRARY_PREFIX%\share\arrow
     mkdir %LIBRARY_PREFIX%\include\arrow
     xcopy /s /y .\temp_prefix\include\arrow %LIBRARY_PREFIX%\include\arrow
+) else if [%PKG_NAME%] == [libparquet] (
+    move .\temp_prefix\lib\parquet.lib %LIBRARY_LIB%
+    move .\temp_prefix\bin\parquet.dll %LIBRARY_BIN%
+    mkdir %LIBRARY_LIB%\cmake\Parquet
+    move .\temp_prefix\lib\cmake\Parquet\* %LIBRARY_LIB%\cmake\Parquet
     mkdir %LIBRARY_PREFIX%\include\parquet
     xcopy /s /y .\temp_prefix\include\parquet %LIBRARY_PREFIX%\include\parquet
 ) else if [%PKG_NAME%] == [libarrow-acero] (

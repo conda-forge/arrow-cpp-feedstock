@@ -9,13 +9,16 @@ cmake --install ./cpp/build --prefix=./temp_prefix
 if [[ "${PKG_NAME}" == libarrow ]]; then
     # only libarrow
     mv ./temp_prefix/lib/libarrow.* $PREFIX/lib
-    mv ./temp_prefix/lib/libparquet.* $PREFIX/lib
     mv ./temp_prefix/lib/libarrow_cuda.* $PREFIX/lib || true
     mv ./temp_prefix/lib/cmake/* $PREFIX/lib/cmake
     mv ./temp_prefix/share/arrow/* $PREFIX/share/arrow
     mv ./temp_prefix/share/gdb/* $PREFIX/share/gdb
     mv ./temp_prefix/share/doc/* $PREFIX/share/doc
-    mv ./temp_prefix/include/* $PREFIX/include
+    mv ./temp_prefix/include/arrow $PREFIX/include/
+elif [[ "${PKG_NAME}" == libparquet ]]; then
+    # only parquet
+    mv ./temp_prefix/lib/libparquet.* $PREFIX/lib
+    mv ./temp_prefix/include/parquet $PREFIX/include/
 elif [[ "${PKG_NAME}" == libarrow-acero ]]; then
     # only libarrow-acero
     mv ./temp_prefix/lib/libarrow_acero.* $PREFIX/lib
@@ -25,6 +28,7 @@ elif [[ "${PKG_NAME}" == libarrow-dataset ]]; then
 elif [[ "${PKG_NAME}" == libarrow-gandiva ]]; then
     # only libarrow-gandiva
     mv ./temp_prefix/lib/libgandiva.* $PREFIX/lib
+    mv ./temp_prefix/include/gandiva $PREFIX/include/
 elif [[ "${PKG_NAME}" == libarrow-substrait ]]; then
     # only libarrow-substrait
     mv ./temp_prefix/lib/libarrow_substrait.* $PREFIX/lib

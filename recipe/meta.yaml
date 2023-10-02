@@ -119,13 +119,21 @@ outputs:
       commands:
         - exit 0
 
-  # TODO: Extract parquet.
   - name: libarrow-all
     version: {{ version }}
     requirements:
       run:
-        - python
         - {{ pin_subpackage('libarrow', exact=True) }}
+        - {{ pin_subpackage('libparquet', exact=True) }}
+        - {{ pin_subpackage('libarrow-acero', exact=True) }}
+        - {{ pin_subpackage('libarrow-dataset', exact=True) }}
+        - {{ pin_subpackage('libarrow-gandiva', exact=True) }}
+        - {{ pin_subpackage('libarrow-substrait', exact=True) }}
+        - {{ pin_subpackage('libarrow-flight', exact=True) }}
+        - {{ pin_subpackage('libarrow-flight-sql', exact=True) }}
+      host:
+        - {{ pin_subpackage('libarrow', exact=True) }}
+        - {{ pin_subpackage('libparquet', exact=True) }}
         - {{ pin_subpackage('libarrow-acero', exact=True) }}
         - {{ pin_subpackage('libarrow-dataset', exact=True) }}
         - {{ pin_subpackage('libarrow-gandiva', exact=True) }}
@@ -221,7 +229,7 @@ outputs:
     test:
       commands:
         {% set headers = [
-            "arrow/api.h", "parquet/api/reader.h"
+            "arrow/api.h"
         ] %}
         {% for each_header in headers %}
         # headers
@@ -230,7 +238,7 @@ outputs:
         {% endfor %}
 
         {% set libs = (cuda_compiler_version != "None") * ["arrow_cuda"] + [
-            "arrow", "parquet"
+            "arrow"
         ] %}
         {% for each_lib in libs %}
         # shared
@@ -245,7 +253,8 @@ outputs:
         {% endfor %}
 
         {% set libs = ["arrow_acero", "arrow_dataset", "arrow_flight",
-                       "arrow_flight_sql", "arrow_substrait", "gandiva"] %}
+                       "arrow_flight_sql", "arrow_substrait", "gandiva",
+                       "parquet"] %}
         {% for each_lib in libs %}
         - test ! -f $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
         - test ! -f $PREFIX/lib/lib{{ each_lib }}.dylib              # [osx]
@@ -260,6 +269,107 @@ outputs:
         - LICENSE.txt
       summary: C++ libraries for Apache Arrow core
 
+  - name: libparquet
+    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      run_exports:
+        - {{ pin_subpackage("libparquet", max_pin="x") }}
+      ignore_run_exports_from:
+        # arrow only uses headers, apparently
+        - gflags
+        # shared lib linked on unix, not on win
+        - glog                                   # [win]
+      ignore_run_exports:
+        # we don't need all of brotli's run-exports
+        - libbrotlicommon
+    requirements:
+      build:
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        # needed for gandiva
+        - clangdev {{ llvm_version }}            # [build_platform != target_platform]
+        - llvmdev {{ llvm_version }}             # [build_platform != target_platform]
+        - gnuconfig                              # [build_platform != target_platform]
+        - cmake
+        - ninja
+        # necessary for vendored jemalloc
+        - autoconf     # [linux]
+        - make         # [linux]
+      host:
+        # for required dependencies, see
+        # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
+        - clangdev {{ llvm_version }}
+        - llvmdev {{ llvm_version }}
+        - brotli
+        - bzip2
+        # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
+        # - cpp-opentelemetry-sdk
+        # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
+        - gflags
+        - glog
+        # arrow uses a customized jemalloc, see #944
+        # - jemalloc
+        - libabseil
+        - libutf8proc
+        - lz4-c
+        - nlohmann_json
+        - openssl
+        - rapidjson
+        - re2
+        - snappy
+        - thrift-cpp
+        - xsimd
+        - zlib
+        - zstd
+        # since libgoogle-cloud is static on windows, see
+        # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
+        # its host deps (which aren't yet covered above) leak into the build here
+        - libcrc32c  # [win]
+        - libcurl    # [win]
+      run_constrained:
+        - apache-arrow-proc =*={{ build_ext }}
+        # old parquet lib output, now part of this feedstock
+        - parquet-cpp <0.0a0
+
+    test:
+      commands:
+        {% set headers = [
+            "parquet/api/reader.h"
+        ] %}
+        {% for each_header in headers %}
+        # headers
+        - test -f $PREFIX/include/{{ each_header }} || (echo "{{ each_header }} not found" && exit 1)  # [unix]
+        - if not exist %LIBRARY_INC%\{{ "\\".join(each_header.split("/")) }} exit 1                    # [win]
+        {% endfor %}
+
+        # shared
+        - test -f $PREFIX/lib/libparquet.so                    # [linux]
+        - test -f $PREFIX/lib/libparquet.dylib                 # [osx]
+        - if not exist %LIBRARY_BIN%\parquet.dll exit 1        # [win]
+        - if not exist %LIBRARY_LIB%\parquet.lib exit 1        # [win]
+        # absence of static libraries
+        - test ! -f $PREFIX/lib/libparquet.a                   # [unix]
+        - if exist %LIBRARY_LIB%\parquet_static.lib exit 1     # [win]
+
+        {% set libs = ["arrow", "arrow_acero", "arrow_dataset", "arrow_flight",
+                       "arrow_flight_sql", "arrow_substrait", "gandiva"] %}
+        {% for each_lib in libs %}
+        - test ! -f $PREFIX/lib/lib{{ each_lib }}.so           # [linux]
+        - test ! -f $PREFIX/lib/lib{{ each_lib }}.dylib        # [osx]
+        - if exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1     # [win]
+        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1     # [win]
+        {% endfor %}
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ libraries for Apache Parquet
+
   - name: libarrow-gandiva
     script: install-libarrow.sh   # [unix]
     script: install-libarrow.bat  # [win]
@@ -268,19 +378,9 @@ outputs:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       run_exports:
         - {{ pin_subpackage("libarrow-gandiva", max_pin="x") }}
-      ignore_run_exports_from:
-        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
+      ignore_run_exports_from:             # [cuda_compiler_version != "None"]
         # arrow only uses headers, apparently
         - gflags
-        # shared lib linked on unix, not on win
-        - glog                                   # [win]
-      ignore_run_exports:
-        # we don't need all of brotli's run-exports
-        - libbrotlicommon
-      track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
-      missing_dso_whitelist:
-        - '*/libcuda.so.*'    # [linux]
-        - '*/nvcuda.dll'      # [win]
     requirements:
       build:
         - {{ compiler("c") }}
@@ -365,10 +465,10 @@ outputs:
         # absence of libs (is arrow present?)
         {% set libs = ["arrow_acero", "arrow_dataset", "arrow_flight", "arrow_flight_sql", "arrow_substrait"] %}
         {% for each_lib in libs %}
-        - test ! -f $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
-        - test ! -f $PREFIX/lib/lib{{ each_lib }}.dylib              # [osx]
-        - if exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1     # [win]
-        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1     # [win]
+        - test ! -f $PREFIX/lib/lib{{ each_lib }}.so               # [linux]
+        - test ! -f $PREFIX/lib/lib{{ each_lib }}.dylib            # [osx]
+        - if exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1         # [win]
+        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1         # [win]
         {% endfor %}
 
     about:
@@ -478,10 +578,10 @@ outputs:
         # absence of libs (is arrow present?)
         {% set libs = ["arrow_dataset", "arrow_flight", "arrow_flight_sql", "arrow_substrait", "gandiva"] %}
         {% for each_lib in libs %}
-        - test ! -f $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
-        - test ! -f $PREFIX/lib/lib{{ each_lib }}.dylib              # [osx]
-        - if exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1     # [win]
-        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1     # [win]
+        - test ! -f $PREFIX/lib/lib{{ each_lib }}.so               # [linux]
+        - test ! -f $PREFIX/lib/lib{{ each_lib }}.dylib            # [osx]
+        - if exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1         # [win]
+        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1         # [win]
         {% endfor %}
 
     about:
@@ -540,7 +640,6 @@ outputs:
         - gflags
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
-        - libabseil
         - libboost-headers
         - nlohmann_json
         - rapidjson
@@ -595,10 +694,10 @@ outputs:
         # absence of libs (is arrow present?)
         {% set libs = ["arrow_flight", "arrow_flight_sql", "arrow_substrait", "gandiva"] %}
         {% for each_lib in libs %}
-        - test ! -f $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
-        - test ! -f $PREFIX/lib/lib{{ each_lib }}.dylib              # [osx]
-        - if exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1     # [win]
-        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1     # [win]
+        - test ! -f $PREFIX/lib/lib{{ each_lib }}.so               # [linux]
+        - test ! -f $PREFIX/lib/lib{{ each_lib }}.dylib            # [osx]
+        - if exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1         # [win]
+        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1         # [win]
         {% endfor %}
 
     about:
@@ -658,6 +757,7 @@ outputs:
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libboost-headers
+        - libprotobuf
         - nlohmann_json
         - rapidjson
         - xsimd
@@ -712,10 +812,10 @@ outputs:
         # absence of libs (is arrow present?)
         {% set libs = ["arrow_flight", "arrow_flight_sql", "gandiva"] %}
         {% for each_lib in libs %}
-        - test ! -f $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
-        - test ! -f $PREFIX/lib/lib{{ each_lib }}.dylib              # [osx]
-        - if exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1     # [win]
-        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1     # [win]
+        - test ! -f $PREFIX/lib/lib{{ each_lib }}.so               # [linux]
+        - test ! -f $PREFIX/lib/lib{{ each_lib }}.dylib            # [osx]
+        - if exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1         # [win]
+        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1         # [win]
         {% endfor %}
 
     about:
@@ -835,10 +935,10 @@ outputs:
         # absence of libs (is arrow present?)
         {% set libs = ["arrow_acero", "arrow_dataset", "arrow_flight_sql", "arrow_substrait", "gandiva"] %}
         {% for each_lib in libs %}
-        - test ! -f lib/lib{{ each_lib }}.so                 # [linux]
-        - test ! -f lib/lib{{ each_lib }}.dylib              # [osx]
-        - if exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1     # [win]
-        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1     # [win]
+        - test ! -f lib/lib{{ each_lib }}.so                       # [linux]
+        - test ! -f lib/lib{{ each_lib }}.dylib                    # [osx]
+        - if exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1         # [win]
+        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1         # [win]
         {% endfor %}
 
     about:
@@ -952,10 +1052,10 @@ outputs:
         # absence of libs (is arrow present?)
         {% set libs = ["arrow_acero", "arrow_dataset", "arrow_substrait", "gandiva"] %}
         {% for each_lib in libs %}
-        - test ! -f lib/lib{{ each_lib }}.so                 # [linux]
-        - test ! -f lib/lib{{ each_lib }}.dylib              # [osx]
-        - if exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1     # [win]
-        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1     # [win]
+        - test ! -f lib/lib{{ each_lib }}.so                       # [linux]
+        - test ! -f lib/lib{{ each_lib }}.dylib                    # [osx]
+        - if exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1         # [win]
+        - if exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1         # [win]
         {% endfor %}
 
     about:
