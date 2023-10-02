@@ -59,7 +59,6 @@ requirements:
     - llvmdev {{ llvm_version }}
     - aws-crt-cpp
     - aws-sdk-cpp
-    - boost-cpp >=1.70
     - brotli
     - bzip2
     # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
@@ -71,6 +70,7 @@ requirements:
     # arrow uses a customized jemalloc, see #944
     # - jemalloc
     - libabseil
+    - libboost-headers
     - libutf8proc
     - lz4-c
     - nlohmann_json
