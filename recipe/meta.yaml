@@ -131,15 +131,6 @@ outputs:
         - {{ pin_subpackage('libarrow-substrait', exact=True) }}
         - {{ pin_subpackage('libarrow-flight', exact=True) }}
         - {{ pin_subpackage('libarrow-flight-sql', exact=True) }}
-      host:
-        - {{ pin_subpackage('libarrow', exact=True) }}
-        - {{ pin_subpackage('libparquet', exact=True) }}
-        - {{ pin_subpackage('libarrow-acero', exact=True) }}
-        - {{ pin_subpackage('libarrow-dataset', exact=True) }}
-        - {{ pin_subpackage('libarrow-gandiva', exact=True) }}
-        - {{ pin_subpackage('libarrow-substrait', exact=True) }}
-        - {{ pin_subpackage('libarrow-flight', exact=True) }}
-        - {{ pin_subpackage('libarrow-flight-sql', exact=True) }}
 
     about:
       home: http://github.com/apache/arrow
@@ -313,6 +304,8 @@ outputs:
         # its host deps (which aren't yet covered above) leak into the build here
         - libcrc32c  # [win]
         - libcurl    # [win]
+      run:
+        - {{ pin_subpackage('libarrow', exact=True) }}
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
         # old parquet lib output, now part of this feedstock
@@ -329,14 +322,20 @@ outputs:
         - if not exist %LIBRARY_INC%\{{ "\\".join(each_header.split("/")) }} exit 1                    # [win]
         {% endfor %}
 
+        {% set libs = (cuda_compiler_version != "None") * ["arrow_cuda"] + [
+            "arrow", "parquet"
+        ] %}
+        {% for each_lib in libs %}
         # shared
-        - test -f $PREFIX/lib/libparquet.so                    # [linux]
-        - test -f $PREFIX/lib/libparquet.dylib                 # [osx]
-        - if not exist %LIBRARY_BIN%\parquet.dll exit 1        # [win]
-        - if not exist %LIBRARY_LIB%\parquet.lib exit 1        # [win]
+        - test -f $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
+        - test -f $PREFIX/lib/lib{{ each_lib }}.dylib              # [osx]
+        - if not exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1     # [win]
+        - if not exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1     # [win]
+
         # absence of static libraries
-        - test ! -f $PREFIX/lib/libparquet.a                   # [unix]
-        - if exist %LIBRARY_LIB%\parquet_static.lib exit 1     # [win]
+        - test ! -f $PREFIX/lib/lib{{ each_lib }}.a                # [unix]
+        - if exist %LIBRARY_LIB%\{{ each_lib }}_static.lib exit 1  # [win]
+        {% endfor %}
 
         {% set libs = ["arrow_acero", "arrow_dataset", "arrow_flight",
                        "arrow_flight_sql", "arrow_substrait", "gandiva"] %}
@@ -380,6 +379,7 @@ outputs:
         - autoconf     # [linux]
         - make         # [linux]
       host:
+        - {{ pin_subpackage("libarrow", max_pin="x") }}
         # for required dependencies, see
         # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
         - clangdev {{ llvm_version }}
@@ -399,6 +399,8 @@ outputs:
         # its host deps (which aren't yet covered above) leak into the build here
         - libcrc32c  # [win]
         - libcurl    # [win]
+      run:
+        - {{ pin_subpackage('libarrow', exact=True) }}
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
         # make sure we don't co-install with old version of old package name
@@ -416,20 +418,29 @@ outputs:
         - test -f $PREFIX/include/{{ each_header }} || (echo "{{ each_header }} not found" && exit 1)  # [unix]
         - if not exist %LIBRARY_INC%\{{ "\\".join(each_header.split("/")) }} exit 1                    # [win]
         {% endfor %}
-        # shared
-        - test -f $PREFIX/lib/libgandiva.so                 # [linux]
-        - test -f $PREFIX/lib/libgandiva.dylib              # [osx]
-        - if not exist %LIBRARY_BIN%\gandiva.dll exit 1     # [win]
-        - if not exist %LIBRARY_LIB%\gandiva.lib exit 1     # [win]
-
-        # absence of static gandiva libraries
-        - test ! -f $PREFIX/lib/libgandiva.a                # [unix]
-        - if exist %LIBRARY_LIB%\gandiva_static.lib exit 1  # [win]
-
-        # absence of other libs
-        {% set libs = ["arrow", "arrow_acero", "arrow_cuda", "arrow_dataset",
-                       "arrow_flight", "arrow_flight_sql", "arrow_substrait"
+        {% set libs = (cuda_compiler_version != "None") * ["arrow_cuda"] + [
+            "arrow", "gandiva"
         ] %}
+        {% for each_lib in libs %}
+        # shared
+        - test -f $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
+        - test -f $PREFIX/lib/lib{{ each_lib }}.dylib              # [osx]
+        - if not exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1     # [win]
+        - if not exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1     # [win]
+
+        # absence of static libraries
+        - test ! -f $PREFIX/lib/lib{{ each_lib }}.a                # [unix]
+        - if exist %LIBRARY_LIB%\{{ each_lib }}_static.lib exit 1  # [win]
+        {% endfor %}
+
+        # absence of arrow_cuda for CPU builds
+        - test ! -f $PREFIX/lib/libarrow_cuda.so                   # [(cuda_compiler_version == "None") and linux]
+        - test ! -f $PREFIX/lib/libarrow_cuda.a                    # [(cuda_compiler_version == "None") and linux]
+        - if exist %LIBRARY_BIN%\arrow_cuda.dll exit 1             # [(cuda_compiler_version == "None") and win]
+        - if exist %LIBRARY_LIB%\arrow_cuda.lib exit 1             # [(cuda_compiler_version == "None") and win]
+        - if exist %LIBRARY_LIB%\arrow_cuda_static.lib exit 1      # [(cuda_compiler_version == "None") and win]
+        # absence of libs (is arrow present?)
+        {% set libs = ["arrow_acero", "arrow_dataset", "arrow_flight", "arrow_flight_sql", "arrow_substrait"] %}
         {% for each_lib in libs %}
         - test ! -f $PREFIX/lib/lib{{ each_lib }}.so               # [linux]
         - test ! -f $PREFIX/lib/lib{{ each_lib }}.dylib            # [osx]
