@@ -121,6 +121,16 @@ outputs:
 
   - name: libarrow-all
     version: {{ version }}
+    build:
+      run_exports:
+        - {{ pin_subpackage('libarrow', exact=True) }}
+        - {{ pin_subpackage('libparquet', exact=True) }}
+        - {{ pin_subpackage('libarrow-acero', exact=True) }}
+        - {{ pin_subpackage('libarrow-dataset', exact=True) }}
+        - {{ pin_subpackage('libarrow-gandiva', exact=True) }}
+        - {{ pin_subpackage('libarrow-substrait', exact=True) }}
+        - {{ pin_subpackage('libarrow-flight', exact=True) }}
+        - {{ pin_subpackage('libarrow-flight-sql', exact=True) }}
     requirements:
       run:
         - {{ pin_subpackage('libarrow', exact=True) }}
