@@ -8,10 +8,6 @@ c_compiler:
 - vs2019
 channel_sources:
 - conda-forge
-- conda-forge
-- conda-forge/label/python_rc,conda-forge
-- conda-forge
-- conda-forge
 channel_targets:
 - conda-forge main
 cuda_compiler:
@@ -75,7 +71,6 @@ zip_keys:
   - libprotobuf
 - - python
   - numpy
-  - channel_sources
 zlib:
 - '1.2'
 zstd:
