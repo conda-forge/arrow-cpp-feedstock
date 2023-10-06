@@ -12,10 +12,6 @@ cdt_name:
 - cos6
 channel_sources:
 - conda-forge
-- conda-forge
-- conda-forge/label/python_rc,conda-forge
-- conda-forge
-- conda-forge
 channel_targets:
 - conda-forge main
 cuda_compiler:
@@ -73,7 +69,7 @@ target_platform:
 thrift_cpp:
 - 0.19.0
 ucx:
-- 1.14.0
+- 1.15.0
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
@@ -85,7 +81,6 @@ zip_keys:
   - libprotobuf
 - - python
   - numpy
-  - channel_sources
 zlib:
 - '1.2'
 zstd:
