@@ -767,7 +767,7 @@ outputs:
         - cffi
         - cloudpickle
         - cython
-        - fastparquet
+        - fastparquet            # [python_impl == "cpython"]
         - fsspec
         - hypothesis
         - minio-server
