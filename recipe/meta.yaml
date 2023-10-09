@@ -621,6 +621,8 @@ outputs:
     script: build-pyarrow.bat  # [win]
     version: {{ version }}
     build:
+      # debug: only pypy
+      skip: true  # [python_impl != "pypy"]
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
@@ -719,6 +721,8 @@ outputs:
     script: build-pyarrow.bat  # [win]
     version: {{ version }}
     build:
+      # debug: only pypy
+      skip: true  # [python_impl != "pypy"]
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
@@ -752,7 +756,7 @@ outputs:
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
 
-    {% if not (aarch64 or ppc64le) or py == 311 %}
+    {% if not (aarch64 or ppc64le) or py == 39 %}
     # only run the full test suite for one python version when in emulation
     # (each run can take up to ~45min); there's essentially zero divergence
     # in behaviour across python versions anyway
@@ -817,7 +821,7 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or test_safe_cast_from_float_with_nans_to_int" %}  # [ppc64le]
         {% set tests_to_skip = tests_to_skip + " or test_float_with_null_as_integer" %}             # [ppc64le]
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
-        - pytest pyarrow/ -rfEs -k "not ({{ tests_to_skip }})"
+        - pytest pyarrow/ -rfEs -k "not ({{ tests_to_skip }})" -v
     {% endif %}
 
     about:
