@@ -1,7 +1,7 @@
 From 2184cfcf8a3e7ae6d5bd6ded01c9879ea3d8aa8e Mon Sep 17 00:00:00 2001
 From: Joris Van den Bossche <jorisvandenbossche@gmail.com>
 Date: Wed, 12 Apr 2023 10:32:03 +0200
-Subject: [PATCH 6/8] GH-15070: [Python][CI] Update pandas test for empty
+Subject: [PATCH 6/9] GH-15070: [Python][CI] Update pandas test for empty
  columns dtype change in pandas 2.0.1 (#35031)
 
 ### Rationale for this change
