@@ -31,13 +31,15 @@ source:
       - patches/0004-GH-34743-Python-Relax-condition-in-flaky-Flight-test.patch
       # backport apache/arrow#34019 to disable useless pkgconfig search that takes ~15-60min
       - patches/0005-GH-33882-C-Don-t-find-.pc-files-with-ARROW_BUILD_STA.patch
+      # backport https://github.com/apache/arrow/pull/38265
+      - patches/0006-GH-38263-C-Prefer-to-call-string_view-data-instead-o.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 00c483283433b4c02cb811f260dbe35414c806a4
     folder: testing
 
 build:
-  number: 46
+  number: 47
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
