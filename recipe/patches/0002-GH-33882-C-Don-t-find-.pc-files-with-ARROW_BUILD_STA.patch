@@ -1,7 +1,7 @@
 From 179a3caa661b7a93f6a136ea44f6f53671611533 Mon Sep 17 00:00:00 2001
 From: Sutou Kouhei <kou@clear-code.com>
 Date: Sat, 4 Feb 2023 22:08:54 +0900
-Subject: [PATCH 2/8] GH-33882: [C++] Don't find .pc files with
+Subject: [PATCH 2/9] GH-33882: [C++] Don't find .pc files with
  ARROW_BUILD_STATIC=OFF (#34019)
 
 Because they are needless and `pkg-config grpc++` is slow.
