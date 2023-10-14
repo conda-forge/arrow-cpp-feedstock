@@ -15,6 +15,9 @@ package:
 source:
   - url: https://github.com/apache/arrow/archive/refs/tags/apache-arrow-{{ version }}.tar.gz
     sha256: f01b76a42ceb30409e7b1953ef64379297dd0c08502547cae6aaafd2c4a4d92e
+    patches:
+      # backport https://github.com/apache/arrow/pull/38265
+      - patches/0001-GH-38263-C-Prefer-to-call-string_view-data-instead-o.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12

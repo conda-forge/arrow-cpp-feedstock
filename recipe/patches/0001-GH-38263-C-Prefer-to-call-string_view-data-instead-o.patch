@@ -1,0 +1,65 @@
+From fe7604c601cc363cc8dd55e1c44da3e625ef9ec5 Mon Sep 17 00:00:00 2001
+From: Felipe Oliveira Carvalho <felipekde@gmail.com>
+Date: Fri, 13 Oct 2023 18:15:39 -0300
+Subject: [PATCH] GH-38263 [C++]: Prefer to call string_view::data() instead of
+ begin() where a char pointer is expected
+
+* Use re2::StringPiece instead of std::string_view when using re2`
+
+* Prefer data() instead of begin()
+
+* Don't rely on missing absl::string_view::ToString()
+---
+ cpp/src/arrow/compute/kernels/scalar_string_ascii.cc | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/cpp/src/arrow/compute/kernels/scalar_string_ascii.cc b/cpp/src/arrow/compute/kernels/scalar_string_ascii.cc
+index a90a7282b..90f5d40b9 100644
+--- a/cpp/src/arrow/compute/kernels/scalar_string_ascii.cc
++++ b/cpp/src/arrow/compute/kernels/scalar_string_ascii.cc
+@@ -2063,12 +2063,12 @@ struct RegexSubstringReplacer {
+         regex_find_("(" + options_.pattern + ")", MakeRE2Options<Type>()),
+         regex_replacement_(options_.pattern, MakeRE2Options<Type>()) {}
+ 
+-  Status ReplaceString(std::string_view s, TypedBufferBuilder<uint8_t>* builder) const {
++  Status ReplaceString(re2::StringPiece s, TypedBufferBuilder<uint8_t>* builder) const {
+     re2::StringPiece replacement(options_.replacement);
+ 
+     // If s is empty, then it's essentially global
+     if (options_.max_replacements == -1 || s.empty()) {
+-      std::string s_copy(s);
++      std::string s_copy{s.data(), s.length()};
+       RE2::GlobalReplace(&s_copy, regex_replacement_, replacement);
+       return builder->Append(reinterpret_cast<const uint8_t*>(s_copy.data()),
+                              s_copy.length());
+@@ -2079,18 +2079,18 @@ struct RegexSubstringReplacer {
+     // We might do this faster similar to RE2::GlobalReplace using Match and Rewrite
+     const char* i = s.data();
+     const char* end = s.data() + s.length();
+-    re2::StringPiece piece(s.data(), s.length());
++    re2::StringPiece mutable_s{s};
+ 
+     int64_t max_replacements = options_.max_replacements;
+     while ((i < end) && (max_replacements != 0)) {
+       std::string found;
+-      if (!RE2::FindAndConsume(&piece, regex_find_, &found)) {
++      if (!RE2::FindAndConsume(&mutable_s, regex_find_, &found)) {
+         RETURN_NOT_OK(builder->Append(reinterpret_cast<const uint8_t*>(i),
+                                       static_cast<int64_t>(end - i)));
+         i = end;
+       } else {
+         // wind back to the beginning of the match
+-        const char* pos = piece.begin() - found.length();
++        const char* pos = mutable_s.data() - found.length();
+         // the string before the pattern
+         RETURN_NOT_OK(builder->Append(reinterpret_cast<const uint8_t*>(i),
+                                       static_cast<int64_t>(pos - i)));
+@@ -2101,7 +2101,7 @@ struct RegexSubstringReplacer {
+         RETURN_NOT_OK(builder->Append(reinterpret_cast<const uint8_t*>(found.data()),
+                                       static_cast<int64_t>(found.length())));
+         // skip pattern
+-        i = piece.begin();
++        i = mutable_s.data();
+         max_replacements--;
+       }
+     }
