@@ -361,7 +361,7 @@ outputs:
         - hypothesis
         - minio-server
         - pandas
-        - s3fs
+        - s3fs >=2023
         - scipy
         # these are generally (far) behind on migrating abseil/grpc/protobuf,
         # and using them as test dependencies blocks the migrator unnecessarily
