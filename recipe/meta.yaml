@@ -356,14 +356,13 @@ outputs:
         - cffi
         - cloudpickle
         - cython <3
+        - fastparquet
         - fsspec
         - hypothesis
         - minio-server
         - pandas
-        # remove selectors as soon as these are available on python 3.12
-        - fastparquet   # [py<312]
-        - s3fs          # [py<312]
-        - scipy         # [py<312]
+        - s3fs >=2023
+        - scipy
         # these are generally (far) behind on migrating abseil/grpc/protobuf,
         # and using them as test dependencies blocks the migrator unnecessarily
         # - pytorch
