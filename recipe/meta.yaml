@@ -482,8 +482,8 @@ outputs:
       host:
         - {{ pin_subpackage("libarrow", max_pin="x") }}
         - libutf8proc
-        # gandiva requires shared libllvm
-        - llvm  # [unix]
+        # gandiva requires shared libllvm; needs to match version used at build time
+        - llvm {{ llvm_version }}  # [unix]
         - openssl
         - re2
         - zlib  # [win]
