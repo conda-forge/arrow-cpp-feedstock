@@ -77,5 +77,11 @@ else
     exit 1
 fi
 
+if [[ "${PKG_NAME}" != "libarrow" ]]; then
+    # delete symlink that's created by libarrow's activation script,
+    # to avoid that it gets wrongly detected as content of libarrow-*.
+    rm $PREFIX/share/gdb/auto-load/$PREFIX/lib/libarrow.*-gdb.py || true
+fi
+
 # Clean up temp_prefix
 rm -rf temp_prefix
