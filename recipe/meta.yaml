@@ -23,6 +23,7 @@ source:
       - patches/0002-GH-37480-Python-Bump-pandas-version-that-contains-re.patch
       # backport https://github.com/apache/arrow/pull/38265
       - patches/0003-GH-38263-C-Prefer-to-call-string_view-data-instead-o.patch
+      - patches/0004-GH-38375-Python-Initialize-S3-on-first-use.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
