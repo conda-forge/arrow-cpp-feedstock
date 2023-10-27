@@ -18,13 +18,14 @@ source:
     patches:
       # backport https://github.com/apache/arrow/pull/38265
       - patches/0001-GH-38263-C-Prefer-to-call-string_view-data-instead-o.patch
+      - patches/0002-GH-38364-Python-Initialize-S3-on-first-use-38375.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
     folder: testing
 
 build:
-  number: 21
+  number: 22
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
