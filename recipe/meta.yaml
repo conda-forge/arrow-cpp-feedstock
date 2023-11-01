@@ -19,11 +19,8 @@ source:
   - url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
     sha256: 4eb0da50ec071baf15fc163cb48058931e006f1c862c8def0e180fd07d531021
     patches:
-      - patches/0001-GH-15017-Python-Harden-test_memory.py-for-use-with-A.patch
-      - patches/0002-GH-37480-Python-Bump-pandas-version-that-contains-re.patch
-      # backport https://github.com/apache/arrow/pull/38265
-      - patches/0003-GH-38263-C-Prefer-to-call-string_view-data-instead-o.patch
-      - patches/0004-GH-38375-Python-Initialize-S3-on-first-use.patch
+      # backport https://github.com/apache/arrow/pull/38375
+      - patches/0001-GH-38364-Python-Initialize-S3-on-first-use-38375.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
