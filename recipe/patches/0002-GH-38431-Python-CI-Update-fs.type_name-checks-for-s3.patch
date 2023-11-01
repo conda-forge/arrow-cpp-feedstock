@@ -1,7 +1,7 @@
 From b236e8a30b6bbad32649843fefd24fdfeb0034c1 Mon Sep 17 00:00:00 2001
 From: Alenka Frim <AlenkaF@users.noreply.github.com>
 Date: Thu, 26 Oct 2023 06:13:28 +0200
-Subject: [PATCH 2/2] GH-38431: [Python][CI] Update fs.type_name checks for
+Subject: [PATCH 2/3] GH-38431: [Python][CI] Update fs.type_name checks for
  s3fs tests (#38455)
 
 ### Rationale for this change
