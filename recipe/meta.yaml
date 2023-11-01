@@ -766,11 +766,11 @@ outputs:
         - cloudpickle
         - cython
         - fastparquet
-        - fsspec <2023.10.0a0
+        - fsspec
         - hypothesis
         - minio-server
         - pandas
-        - s3fs >=2023,<2023.10.0a0
+        - s3fs >=2023
         - scipy
         # these are generally (far) behind on migrating abseil/grpc/protobuf,
         # and using them as test dependencies blocks the migrator unnecessarily
