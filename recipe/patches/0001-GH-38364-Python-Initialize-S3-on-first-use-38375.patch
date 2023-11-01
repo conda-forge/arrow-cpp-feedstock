@@ -1,7 +1,7 @@
 From 71d8811b28961e3bbb119b94a1ea5262892cbe80 Mon Sep 17 00:00:00 2001
 From: Peter Andreas Entschev <peter@entschev.com>
 Date: Tue, 24 Oct 2023 17:42:06 +0200
-Subject: [PATCH] GH-38364: [Python] Initialize S3 on first use (#38375)
+Subject: [PATCH 1/2] GH-38364: [Python] Initialize S3 on first use (#38375)
 
 ### Rationale for this change
 

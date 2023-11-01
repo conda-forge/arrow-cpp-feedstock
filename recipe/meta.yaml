@@ -21,6 +21,8 @@ source:
     patches:
       # backport https://github.com/apache/arrow/pull/38375
       - patches/0001-GH-38364-Python-Initialize-S3-on-first-use-38375.patch
+      # backport https://github.com/apache/arrow/pull/38455
+      - patches/0002-GH-38431-Python-CI-Update-fs.type_name-checks-for-s3.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
