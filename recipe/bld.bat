@@ -62,10 +62,7 @@ cmake -G "Ninja" ^
       ..
 if %ERRORLEVEL% neq 0 exit 1
 
-cmake --build . --target install --config Release
+cmake --build . --config Release
 if %ERRORLEVEL% neq 0 exit 1
 
 popd
-
-:: clean up between builds (and to save space)
-rmdir /s /q cpp\build

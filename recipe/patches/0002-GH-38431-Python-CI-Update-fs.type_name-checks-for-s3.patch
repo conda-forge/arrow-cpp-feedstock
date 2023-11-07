@@ -1,0 +1,92 @@
+From b236e8a30b6bbad32649843fefd24fdfeb0034c1 Mon Sep 17 00:00:00 2001
+From: Alenka Frim <AlenkaF@users.noreply.github.com>
+Date: Thu, 26 Oct 2023 06:13:28 +0200
+Subject: [PATCH 2/3] GH-38431: [Python][CI] Update fs.type_name checks for
+ s3fs tests (#38455)
+
+### Rationale for this change
+
+Appveyor CI is failing https://ci.appveyor.com/project/ApacheSoftwareFoundation/arrow/builds/48347810. It seems the reason for the test failures is a change in the `type_name` (from `"py::fsspec+s3"` to `"py::fsspec+('s3', 's3a')"`) and due to it tests are not being skipped.
+
+### What changes are included in this PR?
+
+Update the check for `type_name` in case of `PyFileSystem(FSSpecHandler(s3fs.S3FileSystem()))`.
+* Closes: #38431
+
+Authored-by: AlenkaF <frim.alenka@gmail.com>
+Signed-off-by: Sutou Kouhei <kou@clear-code.com>
+---
+ ci/conda_env_python.txt         |  2 +-
+ python/pyarrow/tests/test_fs.py | 12 ++++++------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/ci/conda_env_python.txt b/ci/conda_env_python.txt
+index da52b5ea6..972034421 100644
+--- a/ci/conda_env_python.txt
++++ b/ci/conda_env_python.txt
+@@ -26,6 +26,6 @@ numpy>=1.16.6
+ pytest
+ pytest-faulthandler
+ pytest-lazy-fixture
+-s3fs>=2021.8.0
++s3fs>=2023.10.0
+ setuptools
+ setuptools_scm<8.0.0
+diff --git a/python/pyarrow/tests/test_fs.py b/python/pyarrow/tests/test_fs.py
+index 72545bf0c..c540bf968 100644
+--- a/python/pyarrow/tests/test_fs.py
++++ b/python/pyarrow/tests/test_fs.py
+@@ -463,7 +463,7 @@ def check_mtime_or_absent(file_info):
+ 
+ 
+ def skip_fsspec_s3fs(fs):
+-    if fs.type_name == "py::fsspec+s3":
++    if fs.type_name == "py::fsspec+('s3', 's3a')":
+         pytest.xfail(reason="Not working with fsspec's s3fs")
+ 
+ 
+@@ -631,7 +631,7 @@ def test_get_file_info(fs, pathfn):
+     assert aaa_info.path == aaa
+     assert 'aaa' in repr(aaa_info)
+     assert aaa_info.extension == ''
+-    if fs.type_name == "py::fsspec+s3":
++    if fs.type_name == "py::fsspec+('s3', 's3a')":
+         # s3fs doesn't create empty directories
+         assert aaa_info.type == FileType.NotFound
+     else:
+@@ -646,7 +646,7 @@ def test_get_file_info(fs, pathfn):
+     assert bb_info.type == FileType.File
+     assert 'FileType.File' in repr(bb_info)
+     assert bb_info.size == 0
+-    if fs.type_name not in ["py::fsspec+memory", "py::fsspec+s3"]:
++    if fs.type_name not in ["py::fsspec+memory", "py::fsspec+('s3', 's3a')"]:
+         check_mtime(bb_info)
+ 
+     assert c_info.path == str(c)
+@@ -655,7 +655,7 @@ def test_get_file_info(fs, pathfn):
+     assert c_info.type == FileType.File
+     assert 'FileType.File' in repr(c_info)
+     assert c_info.size == 4
+-    if fs.type_name not in ["py::fsspec+memory", "py::fsspec+s3"]:
++    if fs.type_name not in ["py::fsspec+memory", "py::fsspec+('s3', 's3a')"]:
+         check_mtime(c_info)
+ 
+     assert zzz_info.path == str(zzz)
+@@ -698,7 +698,7 @@ def test_get_file_info_with_selector(fs, pathfn):
+         assert selector.base_dir == base_dir
+ 
+         infos = fs.get_file_info(selector)
+-        if fs.type_name == "py::fsspec+s3":
++        if fs.type_name == "py::fsspec+('s3', 's3a')":
+             # s3fs only lists directories if they are not empty
+             len(infos) == 4
+         else:
+@@ -719,7 +719,7 @@ def test_get_file_info_with_selector(fs, pathfn):
+         selector = FileSelector(base_dir, recursive=False)
+ 
+         infos = fs.get_file_info(selector)
+-        if fs.type_name == "py::fsspec+s3":
++        if fs.type_name == "py::fsspec+('s3', 's3a')":
+             # s3fs only lists directories if they are not empty
+             assert len(infos) == 3
+         else:

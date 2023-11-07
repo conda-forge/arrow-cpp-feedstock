@@ -1,15 +1,7 @@
 #!/bin/bash
 set -ex
 
-# Copy the [de]activate scripts to $PREFIX/etc/conda/[de]activate.d, see
-# https://conda-forge.org/docs/maintainer/adding_pkgs.html#activate-scripts
-for CHANGE in "activate"
-do
-    mkdir -p "${PREFIX}/etc/conda/${CHANGE}.d"
-    cp "${RECIPE_DIR}/${CHANGE}.sh" "${PREFIX}/etc/conda/${CHANGE}.d/${PKG_NAME}_${CHANGE}.sh"
-done
-
-mkdir cpp/build
+mkdir -p cpp/build
 pushd cpp/build
 
 EXTRA_CMAKE_ARGS=""
@@ -30,7 +22,7 @@ fi
 # Enable CUDA support
 if [[ ! -z "${cuda_compiler_version+x}" && "${cuda_compiler_version}" != "None" ]]
 then
-    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=ON -DCUDA_TOOLKIT_ROOT_DIR=${CUDA_HOME} -DCMAKE_LIBRARY_PATH=${CONDA_BUILD_SYSROOT}/lib"
+    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=ON -DCUDAToolkit_ROOT=${CUDA_HOME} -DCMAKE_LIBRARY_PATH=${CONDA_BUILD_SYSROOT}/lib"
 else
     EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=OFF"
 fi
@@ -116,9 +108,7 @@ cmake -GNinja \
     ${EXTRA_CMAKE_ARGS} \
     ..
 
-cmake --build . --target install --config Release
+# Do not install arrow, only build.
+cmake --build . --config Release
 
 popd
-
-# clean up between builds (and to save space)
-rm -rf cpp/build
