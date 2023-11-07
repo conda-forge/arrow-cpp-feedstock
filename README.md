@@ -29,6 +29,78 @@ Home: http://github.com/apache/arrow
 
 Package license: Apache-2.0
 
+Summary: C++ libraries for Apache Arrow core
+
+About libarrow-acero
+--------------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: C++ libraries for Apache Arrow Acero
+
+About libarrow-flight
+---------------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: C++ libraries for Apache Arrow Flight
+
+About libarrow-gandiva
+----------------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: C++ libraries for Apache Arrow Gandiva
+
+About libparquet
+----------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: C++ libraries for Apache Parquet
+
+About libarrow-dataset
+----------------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: C++ libraries for Apache Arrow Dataset
+
+About libarrow-flight-sql
+-------------------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: C++ libraries for Apache Arrow Flight SQL
+
+About libarrow-substrait
+------------------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: C++ libraries for Apache Arrow Substrait
+
+About libarrow-all
+------------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
 Summary: C++ libraries for Apache Arrow
 
 About pyarrow
@@ -67,45 +139,45 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>linux_64_cuda_compiler_version11.2</td>
+              <td>linux_64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_cuda_compiler_version11.2" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_cuda_compiler_versionNone</td>
+              <td>linux_64_c_compiler_version12cuda_compiler_versionNonecxx_compiler_version12</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_cuda_compiler_versionNone" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_c_compiler_version12cuda_compiler_versionNonecxx_compiler_version12" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_cuda_compiler_version11.2</td>
+              <td>linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_version11.2" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_cuda_compiler_versionNone</td>
+              <td>linux_aarch64_c_compiler_version12cuda_compiler_versionNonecxx_compiler_version12</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_versionNone" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_compiler_version12cuda_compiler_versionNonecxx_compiler_version12" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_cuda_compiler_version11.2</td>
+              <td>linux_ppc64le_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compiler_version11.2" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_cuda_compiler_versionNone</td>
+              <td>linux_ppc64le_c_compiler_version12cuda_compiler_versionNonecxx_compiler_version12</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compiler_versionNone" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_c_compiler_version12cuda_compiler_versionNonecxx_compiler_version12" alt="variant">
                 </a>
               </td>
             </tr><tr>
@@ -123,17 +195,17 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_version11.2</td>
+              <td>win_64_cuda_compilerNonecuda_compiler_versionNone</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compiler_version11.2" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compilerNonecuda_compiler_versionNone" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compiler_versionNone</td>
+              <td>win_64_cuda_compilernvcccuda_compiler_version11.2</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compiler_versionNone" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compilernvcccuda_compiler_version11.2" alt="variant">
                 </a>
               </td>
             </tr>
@@ -150,9 +222,15 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-apache--arrow--proc-green.svg)](https://anaconda.org/conda-forge/apache-arrow-proc) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/apache-arrow-proc.svg)](https://anaconda.org/conda-forge/apache-arrow-proc) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/apache-arrow-proc.svg)](https://anaconda.org/conda-forge/apache-arrow-proc) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/apache-arrow-proc.svg)](https://anaconda.org/conda-forge/apache-arrow-proc) |
-| [![Conda Recipe](https://img.shields.io/badge/recipe-arrow--cpp-green.svg)](https://anaconda.org/conda-forge/arrow-cpp) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/arrow-cpp.svg)](https://anaconda.org/conda-forge/arrow-cpp) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/arrow-cpp.svg)](https://anaconda.org/conda-forge/arrow-cpp) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/arrow-cpp.svg)](https://anaconda.org/conda-forge/arrow-cpp) |
-| [![Conda Recipe](https://img.shields.io/badge/recipe-arrow--cpp--proc-green.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/arrow-cpp-proc.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/arrow-cpp-proc.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/arrow-cpp-proc.svg)](https://anaconda.org/conda-forge/arrow-cpp-proc) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow-green.svg)](https://anaconda.org/conda-forge/libarrow) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow.svg)](https://anaconda.org/conda-forge/libarrow) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow.svg)](https://anaconda.org/conda-forge/libarrow) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow.svg)](https://anaconda.org/conda-forge/libarrow) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--acero-green.svg)](https://anaconda.org/conda-forge/libarrow-acero) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-acero.svg)](https://anaconda.org/conda-forge/libarrow-acero) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-acero.svg)](https://anaconda.org/conda-forge/libarrow-acero) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-acero.svg)](https://anaconda.org/conda-forge/libarrow-acero) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--all-green.svg)](https://anaconda.org/conda-forge/libarrow-all) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-all.svg)](https://anaconda.org/conda-forge/libarrow-all) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-all.svg)](https://anaconda.org/conda-forge/libarrow-all) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-all.svg)](https://anaconda.org/conda-forge/libarrow-all) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--dataset-green.svg)](https://anaconda.org/conda-forge/libarrow-dataset) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-dataset.svg)](https://anaconda.org/conda-forge/libarrow-dataset) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-dataset.svg)](https://anaconda.org/conda-forge/libarrow-dataset) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-dataset.svg)](https://anaconda.org/conda-forge/libarrow-dataset) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--flight-green.svg)](https://anaconda.org/conda-forge/libarrow-flight) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-flight.svg)](https://anaconda.org/conda-forge/libarrow-flight) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-flight.svg)](https://anaconda.org/conda-forge/libarrow-flight) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-flight.svg)](https://anaconda.org/conda-forge/libarrow-flight) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--flight--sql-green.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-flight-sql.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-flight-sql.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-flight-sql.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--gandiva-green.svg)](https://anaconda.org/conda-forge/libarrow-gandiva) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-gandiva.svg)](https://anaconda.org/conda-forge/libarrow-gandiva) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-gandiva.svg)](https://anaconda.org/conda-forge/libarrow-gandiva) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-gandiva.svg)](https://anaconda.org/conda-forge/libarrow-gandiva) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--substrait-green.svg)](https://anaconda.org/conda-forge/libarrow-substrait) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-substrait.svg)](https://anaconda.org/conda-forge/libarrow-substrait) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-substrait.svg)](https://anaconda.org/conda-forge/libarrow-substrait) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-substrait.svg)](https://anaconda.org/conda-forge/libarrow-substrait) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libparquet-green.svg)](https://anaconda.org/conda-forge/libparquet) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libparquet.svg)](https://anaconda.org/conda-forge/libparquet) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libparquet.svg)](https://anaconda.org/conda-forge/libparquet) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libparquet.svg)](https://anaconda.org/conda-forge/libparquet) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-pyarrow-green.svg)](https://anaconda.org/conda-forge/pyarrow) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pyarrow.svg)](https://anaconda.org/conda-forge/pyarrow) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/pyarrow.svg)](https://anaconda.org/conda-forge/pyarrow) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/pyarrow.svg)](https://anaconda.org/conda-forge/pyarrow) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-pyarrow--tests-green.svg)](https://anaconda.org/conda-forge/pyarrow-tests) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pyarrow-tests.svg)](https://anaconda.org/conda-forge/pyarrow-tests) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/pyarrow-tests.svg)](https://anaconda.org/conda-forge/pyarrow-tests) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/pyarrow-tests.svg)](https://anaconda.org/conda-forge/pyarrow-tests) |
 
@@ -166,16 +244,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `apache-arrow-proc, arrow-cpp, arrow-cpp-proc, libarrow, pyarrow, pyarrow-tests` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `apache-arrow-proc, libarrow, libarrow-acero, libarrow-all, libarrow-dataset, libarrow-flight, libarrow-flight-sql, libarrow-gandiva, libarrow-substrait, libparquet, pyarrow, pyarrow-tests` can be installed with `conda`:
 
 ```
-conda install apache-arrow-proc arrow-cpp arrow-cpp-proc libarrow pyarrow pyarrow-tests
+conda install apache-arrow-proc libarrow libarrow-acero libarrow-all libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-substrait libparquet pyarrow pyarrow-tests
 ```
 
 or with `mamba`:
 
 ```
-mamba install apache-arrow-proc arrow-cpp arrow-cpp-proc libarrow pyarrow pyarrow-tests
+mamba install apache-arrow-proc libarrow libarrow-acero libarrow-all libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-substrait libparquet pyarrow pyarrow-tests
 ```
 
 It is possible to list all of the versions of `apache-arrow-proc` available on your platform with `conda`:
