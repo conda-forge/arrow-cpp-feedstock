@@ -1,7 +1,7 @@
 BUILD:
 - aarch64-conda_cos7-linux-gnu
 aws_crt_cpp:
-- 0.24.6
+- 0.24.7
 aws_sdk_cpp:
 - 1.11.182
 bzip2:
