@@ -1,7 +1,7 @@
 From 2caeef5e4ad232013e769e36fb957cf4f0c5992f Mon Sep 17 00:00:00 2001
 From: Dane Pitkin <48041712+danepitkin@users.noreply.github.com>
 Date: Thu, 31 Aug 2023 00:32:26 -0400
-Subject: [PATCH 2/3] GH-37480: [Python] Bump pandas version that contains
+Subject: [PATCH 2/6] GH-37480: [Python] Bump pandas version that contains
  regression for pandas issue 50127 (#37481)
 
 ### Rationale for this change
