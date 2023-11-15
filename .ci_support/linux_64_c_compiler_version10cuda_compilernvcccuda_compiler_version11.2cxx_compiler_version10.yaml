@@ -46,6 +46,7 @@ numpy:
 - '1.26'
 - '1.22'
 - '1.22'
+- '1.22'
 openssl:
 - '3'
 orc:
@@ -59,7 +60,15 @@ python:
 - 3.11.* *_cpython
 - 3.12.* *_cpython
 - 3.8.* *_cpython
+- 3.9.* *_73_pypy
 - 3.9.* *_cpython
+python_impl:
+- cpython
+- cpython
+- cpython
+- cpython
+- pypy
+- cpython
 re2:
 - 2023.06.02
 snappy:
@@ -81,6 +90,7 @@ zip_keys:
   - libprotobuf
 - - python
   - numpy
+  - python_impl
 zlib:
 - '1.2'
 zstd:
