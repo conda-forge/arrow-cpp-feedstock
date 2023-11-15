@@ -36,26 +36,10 @@ lz4_c:
 - 1.9.3
 macos_machine:
 - arm64-apple-darwin20.0.0
-numpy:
-- '1.22'
-- '1.23'
-- '1.26'
-- '1.22'
-- '1.22'
 openssl:
 - '3'
 orc:
 - 1.9.0
-pin_run_as_build:
-  python:
-    min_pin: x.x
-    max_pin: x.x
-python:
-- 3.10.* *_cpython
-- 3.11.* *_cpython
-- 3.12.* *_cpython
-- 3.8.* *_cpython
-- 3.9.* *_cpython
 re2:
 - 2023.06.02
 snappy:
@@ -69,8 +53,6 @@ zip_keys:
   - cxx_compiler_version
 - - libgrpc
   - libprotobuf
-- - python
-  - numpy
 zlib:
 - '1.2'
 zstd:
