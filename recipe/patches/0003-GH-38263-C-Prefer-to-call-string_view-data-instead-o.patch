@@ -1,7 +1,7 @@
 From 3c3727e6ad66ce3494e6c2cfe9905e3dfdf7ee00 Mon Sep 17 00:00:00 2001
 From: Felipe Oliveira Carvalho <felipekde@gmail.com>
 Date: Fri, 13 Oct 2023 18:15:39 -0300
-Subject: [PATCH 3/3] GH-38263 [C++]: Prefer to call string_view::data()
+Subject: [PATCH 3/6] GH-38263 [C++]: Prefer to call string_view::data()
  instead of begin() where a char pointer is expected
 
 * Use re2::StringPiece instead of std::string_view when using re2`

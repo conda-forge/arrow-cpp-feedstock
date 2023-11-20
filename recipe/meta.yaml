@@ -15,22 +15,25 @@ package:
 source:
   # arrow has the unfortunate habit of changing tags of X.0.0 in the
   # lead-up until release -> don't use github sources on main
-  # - url: https://github.com/apache/arrow/archive/refs/tags/apache-arrow-{{ version }}.tar.gz
-  - url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
-    sha256: 35dfda191262a756be934eef8afee8d09762cad25021daa626eb249e251ac9e6
+  - url: https://github.com/apache/arrow/archive/refs/tags/apache-arrow-{{ version }}.tar.gz
+    sha256: 99c27e6a517c750f29c3e6b264836e31251bb8e978dbbf11316680ca3eb8ebda
     patches:
       - patches/0001-GH-15017-Python-Harden-test_memory.py-for-use-with-A.patch
       - patches/0002-GH-37480-Python-Bump-pandas-version-that-contains-re.patch
       # backport https://github.com/apache/arrow/pull/38265
       - patches/0003-GH-38263-C-Prefer-to-call-string_view-data-instead-o.patch
-      - patches/0004-GH-38375-Python-Initialize-S3-on-first-use.patch
+      - patches/0004-GH-38364-Python-Initialize-S3-on-first-use-38375.patch
+      # backport https://github.com/apache/arrow/pull/38608 for CVE-2023-47248...
+      - patches/0005-GH-38607-Python-Disable-PyExtensionType-autoload-386.patch
+      # ... plus a patch for pandas' detection of whether the fix is present
+      - patches/0006-set-pyarrow._hotfix_installed-True.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
     folder: testing
 
 build:
-  number: 14
+  number: 15
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
