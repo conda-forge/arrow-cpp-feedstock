@@ -738,30 +738,7 @@ outputs:
 
   - name: pyarrow
     version: {{ version }}
-    build:
-      string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
-      ignore_run_exports_from:
-        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
-      track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
-      rpaths:
-        - lib/
-        - {{ SP_DIR }}/pyarrow
-      missing_dso_whitelist:
-        # not actually missing, but installed into SP_DIR, see tests
-        - '*/arrow_python.dll'                # [win]
-        - '*/arrow_python_flight.dll'         # [win]
     requirements:
-      build:
-        - {{ compiler("c") }}
-        - {{ compiler("cxx") }}
-        # pyarrow does not require nvcc but it needs to link against libraries in libarrow=*=*cuda
-        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
-        - python                                 # [build_platform != target_platform]
-        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - cython                                 # [build_platform != target_platform]
-        - numpy                                  # [build_platform != target_platform]
-        - cmake
-        - ninja
       host:
         - {{ pin_subpackage("libarrow-all", exact=True) }}
         - {{ pin_subpackage("pyarrow-base", exact=True) }}
