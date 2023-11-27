@@ -649,7 +649,6 @@ outputs:
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cython                                 # [build_platform != target_platform]
-        - {{ pin_subpackage("libarrow", exact=True) }}
         - numpy                                  # [build_platform != target_platform]
         - cmake
         - ninja
