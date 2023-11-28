@@ -640,6 +640,18 @@ outputs:
         # not actually missing, but installed into SP_DIR, see tests
         - '*/arrow_python.dll'                # [win]
         - '*/arrow_python_flight.dll'         # [win]
+        # pyarrow-base builds with the capabilities but we do not ship them
+        # to provide the smaller base.
+        - '*/libarrow_acero.so.*'        # [linux]
+        - '*/arrow_acero.dll'            # [win]
+        - '*/libarrow_dataset.so.*'      # [linux]
+        - '*/arrow_dataset.dll'          # [win]
+        - '*/libarrow_substrait.so.*'    # [linux]
+        - '*/arrow_substrait.dll'        # [win]
+        - '*/libgandiva.so.*'            # [linux]
+        - '*/gandiva.dll'                # [win]
+        - '*/libarrow_flight.so.*'       # [linux]
+        - '*/arrow_flight.dll'           # [win]
     requirements:
       build:
         - {{ compiler("c") }}
