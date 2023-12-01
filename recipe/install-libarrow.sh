@@ -12,6 +12,7 @@ if [[ "${PKG_NAME}" == "libarrow" ]]; then
     cp ./temp_prefix/lib/libarrow_cuda.* $PREFIX/lib || true
     cp ./temp_prefix/lib/pkgconfig/arrow.pc $PREFIX/lib/pkgconfig
     cp ./temp_prefix/lib/pkgconfig/arrow-compute.pc $PREFIX/lib/pkgconfig
+    cp ./temp_prefix/lib/pkgconfig/arrow-csv.pc $PREFIX/lib/pkgconfig
     cp ./temp_prefix/lib/pkgconfig/arrow-cuda.pc $PREFIX/lib/pkgconfig || true
     cp ./temp_prefix/lib/pkgconfig/arrow-filesystem.pc $PREFIX/lib/pkgconfig
     cp ./temp_prefix/lib/pkgconfig/arrow-json.pc $PREFIX/lib/pkgconfig
