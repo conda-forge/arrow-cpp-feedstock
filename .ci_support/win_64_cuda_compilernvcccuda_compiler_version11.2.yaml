@@ -11,9 +11,9 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- None
+- nvcc
 cuda_compiler_version:
-- None
+- '11.2'
 cuda_compiler_version_min:
 - '11.2'
 cxx_compiler:
@@ -32,6 +32,8 @@ libcurl:
 - '8'
 libgrpc:
 - '1.59'
+libopentelemetry_cpp:
+- '1.12'
 libprotobuf:
 - 4.24.4
 lz4_c:

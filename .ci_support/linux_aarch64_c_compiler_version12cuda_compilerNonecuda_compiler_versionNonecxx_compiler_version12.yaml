@@ -40,6 +40,8 @@ libabseil:
 - '20230802'
 libgrpc:
 - '1.59'
+libopentelemetry_cpp:
+- '1.12'
 libprotobuf:
 - 4.24.4
 lz4_c:

@@ -23,6 +23,8 @@ source:
       - patches/0001-GH-38364-Python-Initialize-S3-on-first-use-38375.patch
       # workaround for https://github.com/apache/arrow/issues/37692
       - patches/0002-fixture-teardown-should-not-fail-test.patch
+      - patches/0003-set-ARROW_EXPORT-for-arrow-internal-tracing-Re-Un-wr.patch
+      - patches/0004-don-t-override-opentelemetry-cpp_SOURCE-to-ignore-AR.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
@@ -70,7 +72,7 @@ requirements:
     # arrow uses a customized jemalloc, see #944
     # - jemalloc
     - libabseil
-    - libboost-headers
+    - libboost-devel
     - libutf8proc
     - lz4-c
     - nlohmann_json
@@ -186,15 +188,13 @@ outputs:
         - aws-sdk-cpp
         - brotli
         - bzip2
-        # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
-        # - cpp-opentelemetry-sdk
-        # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
         - glog
         - google-cloud-cpp
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
+        - libopentelemetry-cpp
         - libutf8proc
         - lz4-c
         - openssl    # [win]

@@ -1,0 +1,22 @@
+From 43f7c8de59c507a0886ac9d03894cbb31c4f4a7a Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Fri, 1 Dec 2023 13:53:57 +1100
+Subject: [PATCH 4/4] don't override opentelemetry-cpp_SOURCE to ignore
+ ARROW_DEPENDENCY_SOURCE=SYSTEM
+
+---
+ cpp/cmake_modules/ThirdpartyToolchain.cmake | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/cpp/cmake_modules/ThirdpartyToolchain.cmake b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+index 559ddf14f..6727ef1ff 100644
+--- a/cpp/cmake_modules/ThirdpartyToolchain.cmake
++++ b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+@@ -4649,7 +4649,6 @@ if(ARROW_WITH_OPENTELEMETRY)
+   # cURL is required whether we build from source or use an existing installation
+   # (OTel's cmake files do not call find_curl for you)
+   find_curl()
+-  set(opentelemetry-cpp_SOURCE "AUTO")
+   resolve_dependency(opentelemetry-cpp)
+   get_target_property(OPENTELEMETRY_INCLUDE_DIR opentelemetry-cpp::api
+                       INTERFACE_INCLUDE_DIRECTORIES)
