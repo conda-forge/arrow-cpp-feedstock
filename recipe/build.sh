@@ -103,6 +103,7 @@ cmake -GNinja \
     -DMAKE=$BUILD_PREFIX/bin/make \
     -DPARQUET_REQUIRE_ENCRYPTION=ON \
     -DPython3_EXECUTABLE=${PYTHON} \
+    -Dopentelemetry-cpp_DIR=$PREFIX/lib/cmake/opentelemetry-cpp \
     ${CMAKE_ARGS} \
     ..
 
