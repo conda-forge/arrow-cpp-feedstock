@@ -96,6 +96,8 @@ requirements:
     - gtest
     # https://github.com/apache/arrow/blob/apache-arrow-12.0.0/cpp/src/arrow/flight/sql/CMakeLists.txt#L86-L87
     - sqlite *
+    # required by s3fs tests
+    - minio-server
 
 outputs:
   - name: apache-arrow-proc
