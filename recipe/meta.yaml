@@ -77,7 +77,7 @@ requirements:
     # arrow uses a customized jemalloc, see #944
     # - jemalloc
     - libabseil
-    - libboost-headers
+    - libboost-devel *
     - libutf8proc
     - lz4-c
     - nlohmann_json
