@@ -76,7 +76,7 @@ requirements:
     # arrow uses a customized jemalloc, see #944
     # - jemalloc
     - libabseil
-    - libboost-headers
+    - libboost-devel *
     - libgoogle-cloud-devel
     - libgoogle-cloud-storage-devel
     - libgrpc
