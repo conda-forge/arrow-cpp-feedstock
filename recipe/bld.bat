@@ -60,6 +60,7 @@ cmake -G "Ninja" ^
       -DLLVM_TOOLS_BINARY_DIR="%LIBRARY_BIN%" ^
       -DPARQUET_REQUIRE_ENCRYPTION:BOOL=ON ^
       -DPython3_EXECUTABLE="%PYTHON%" ^
+      -Dopentelemetry-cpp_DIR=%LIBRARY_LIB%\cmake\opentelemetry-cpp ^
       %EXTRA_CMAKE_ARGS% ^
       ..
 if %ERRORLEVEL% neq 0 exit 1
