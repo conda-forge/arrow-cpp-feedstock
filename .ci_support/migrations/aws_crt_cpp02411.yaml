@@ -4,5 +4,5 @@ __migrator:
   migration_number: 1
   automerge: true
 aws_crt_cpp:
-- 0.24.9
-migrator_ts: 1701319601.41245
+- 0.24.11
+migrator_ts: 1702023945.1506987
