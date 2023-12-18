@@ -64,6 +64,7 @@ outputs:
       run_exports:
         - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
       ignore_run_exports_from:
+        - libboost-devel
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
         # arrow only uses headers, except for plasma
         - gflags                                 # [win]
@@ -105,7 +106,7 @@ outputs:
         - glog
         - google-cloud-cpp
         - libabseil
-        - libboost-headers
+        - libboost-devel
         - libgrpc
         - libprotobuf
         - clangdev {{ llvm_version }}
