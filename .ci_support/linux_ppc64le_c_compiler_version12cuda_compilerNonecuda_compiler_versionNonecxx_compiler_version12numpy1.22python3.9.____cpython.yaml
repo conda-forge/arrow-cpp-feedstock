@@ -33,7 +33,7 @@ glog:
 google_cloud_cpp:
 - '2.12'
 libabseil:
-- '20230125'
+- '20230802'
 libgrpc:
 - '1.56'
 libprotobuf:
