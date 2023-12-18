@@ -9,7 +9,7 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '12'
+- '10'
 cdt_arch:
 - aarch64
 cdt_name:
@@ -19,17 +19,17 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- None
+- nvcc
 cuda_compiler_version:
-- None
+- '11.2'
 cuda_compiler_version_min:
 - '11.2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '12'
+- '10'
 docker_image:
-- quay.io/condaforge/linux-anvil-cos7-x86_64
+- quay.io/condaforge/linux-anvil-cuda:11.2
 gflags:
 - '2.2'
 glog:
@@ -39,9 +39,9 @@ google_cloud_cpp:
 libabseil:
 - '20230802'
 libgrpc:
-- '1.58'
+- '1.59'
 libprotobuf:
-- 4.24.3
+- 4.24.4
 lz4_c:
 - 1.9.3
 numpy:
@@ -55,7 +55,7 @@ pin_run_as_build:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.10.* *_cpython
+- 3.9.* *_cpython
 re2:
 - 2023.06.02
 snappy:
