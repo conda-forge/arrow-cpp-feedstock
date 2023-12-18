@@ -99,13 +99,13 @@ outputs:
       host:
         - aws-crt-cpp  # [unix]
         - aws-sdk-cpp
-        - boost-cpp >=1.70
         - brotli
         - bzip2
         - gflags
         - glog
         - google-cloud-cpp
         - libabseil
+        - libboost-headers
         - libgrpc
         - libprotobuf
         - clangdev {{ llvm_version }}
