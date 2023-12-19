@@ -19,10 +19,8 @@ source:
   - url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
     sha256: 1304dedb41896008b89fe0738c71a95d9b81752efc77fa70f264cb1da15d9bc2
     patches:
-      # backport https://github.com/apache/arrow/pull/38375
-      - patches/0001-GH-38364-Python-Initialize-S3-on-first-use-38375.patch
       # workaround for https://github.com/apache/arrow/issues/37692
-      - patches/0002-fixture-teardown-should-not-fail-test.patch
+      - patches/0001-fixture-teardown-should-not-fail-test.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
