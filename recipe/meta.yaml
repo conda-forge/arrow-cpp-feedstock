@@ -851,4 +851,5 @@ extra:
     - nealrichardson
     - jakirkham
     - h-vetinari
+    - raulcd
   feedstock-name: arrow-cpp

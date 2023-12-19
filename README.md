@@ -359,6 +359,7 @@ Feedstock Maintainers
 * [@pcmoritz](https://github.com/pcmoritz/)
 * [@pearu](https://github.com/pearu/)
 * [@pitrou](https://github.com/pitrou/)
+* [@raulcd](https://github.com/raulcd/)
 * [@robertnishihara](https://github.com/robertnishihara/)
 * [@siddharthteotia](https://github.com/siddharthteotia/)
 * [@wesm](https://github.com/wesm/)
