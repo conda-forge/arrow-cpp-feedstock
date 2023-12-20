@@ -30,6 +30,8 @@ google_cloud_cpp:
 - '2.12'
 libabseil:
 - '20230802'
+libboost_devel:
+- '1.82'
 libgrpc:
 - '1.59'
 libprotobuf:

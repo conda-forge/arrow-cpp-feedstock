@@ -104,7 +104,7 @@ jobs:
         CONFIG: linux_ppc64le_c_compiler_version12cuda_compiler_versionNonecxx_compiler_version12numpy1.23python3.11.____cpython
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-    maxParallel: 12
+    maxParallel: 15
   timeoutInMinutes: 360
 
   steps:

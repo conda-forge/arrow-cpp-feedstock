@@ -32,7 +32,7 @@ jobs:
       osx_arm64_numpy1.23python3.11.____cpython:
         CONFIG: osx_arm64_numpy1.23python3.11.____cpython
         UPLOAD_PACKAGES: 'True'
-    maxParallel: 4
+    maxParallel: 5
   timeoutInMinutes: 360
 
   steps:
