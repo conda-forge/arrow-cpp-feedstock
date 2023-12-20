@@ -35,7 +35,7 @@ build:
   number: 50
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
-  skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
+  skip: true  # [win or cuda_compiler_version not in ("None", cuda_compiler_version_min)]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 
