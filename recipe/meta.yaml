@@ -1,4 +1,4 @@
-{% set version = "14.0.1" %}
+{% set version = "14.0.2" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -17,19 +17,17 @@ source:
   # lead-up until release -> don't use github sources on main
   # - url: https://github.com/apache/arrow/archive/refs/tags/apache-arrow-{{ version }}.tar.gz
   - url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
-    sha256: 5c70eafb1011f9d124bafb328afe54f62cc5b9280b7080e1e3d668f78c0e407e
+    sha256: 1304dedb41896008b89fe0738c71a95d9b81752efc77fa70f264cb1da15d9bc2
     patches:
-      # backport https://github.com/apache/arrow/pull/38375
-      - patches/0001-GH-38364-Python-Initialize-S3-on-first-use-38375.patch
       # workaround for https://github.com/apache/arrow/issues/37692
-      - patches/0002-fixture-teardown-should-not-fail-test.patch
+      - patches/0001-fixture-teardown-should-not-fail-test.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
     folder: testing
 
 build:
-  number: 10
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
