@@ -32,10 +32,10 @@ source:
 # [cuda_compiler_version_min == "something"]
 
 build:
-  number: 49
+  number: 50
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
-  skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
+  skip: true  # [win or cuda_compiler_version not in ("None", cuda_compiler_version_min)]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
 
@@ -64,6 +64,7 @@ outputs:
       run_exports:
         - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
       ignore_run_exports_from:
+        - libboost-devel
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
         # arrow only uses headers, except for plasma
         - gflags                                 # [win]
@@ -99,13 +100,13 @@ outputs:
       host:
         - aws-crt-cpp  # [unix]
         - aws-sdk-cpp
-        - boost-cpp >=1.70
         - brotli
         - bzip2
         - gflags
         - glog
         - google-cloud-cpp
         - libabseil
+        - libboost-devel
         - libgrpc
         - libprotobuf
         - clangdev {{ llvm_version }}
@@ -126,10 +127,9 @@ outputs:
         - xsimd 8.1.0
         - zlib
         - zstd
-        # since libgoogle-cloud & libgrpc are static on windows, see
+        # since libgoogle-cloud is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
-        # their host deps (which aren't yet covered above) leak into the build here
-        - c-ares     # [win]
+        # its host deps (which aren't yet covered above) leak into the build here
         - libcrc32c  # [win]
         - libcurl    # [win]
       run:
