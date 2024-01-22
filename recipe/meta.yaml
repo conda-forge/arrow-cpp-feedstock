@@ -1,4 +1,4 @@
-{% set version = "14.0.2" %}
+{% set version = "15.0.0" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -18,7 +18,7 @@ source:
   # - url: https://github.com/apache/arrow/archive/refs/tags/apache-arrow-{{ version }}.tar.gz
   - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
     fn: apache-arrow-{{ version }}.tar.gz
-    sha256: 1304dedb41896008b89fe0738c71a95d9b81752efc77fa70f264cb1da15d9bc2
+    sha256: 01dd3f70e85d9b5b933ec92c0db8a4ef504a5105f78d2d8622e84279fb45c25d
     patches:
       # workaround for https://github.com/apache/arrow/issues/37692
       - patches/0001-fixture-teardown-should-not-fail-test.patch
@@ -28,7 +28,7 @@ source:
     folder: testing
 
 build:
-  number: 3
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
