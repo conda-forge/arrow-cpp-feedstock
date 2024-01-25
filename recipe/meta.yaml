@@ -16,7 +16,7 @@ source:
   # arrow has the unfortunate habit of changing tags of X.0.0 in the
   # lead-up until release -> don't use github sources on main
   # - url: https://github.com/apache/arrow/archive/refs/tags/apache-arrow-{{ version }}.tar.gz
-  - url: https://dist.apache.org/repos/dist/release/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
+  - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
     sha256: 1304dedb41896008b89fe0738c71a95d9b81752efc77fa70f264cb1da15d9bc2
     patches:
       # workaround for https://github.com/apache/arrow/issues/37692
@@ -27,7 +27,7 @@ source:
     folder: testing
 
 build:
-  number: 2
+  number: 3
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
