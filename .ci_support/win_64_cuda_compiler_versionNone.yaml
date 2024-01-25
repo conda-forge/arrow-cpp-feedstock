@@ -11,11 +11,12 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- nvcc
+- None
 cuda_compiler_version:
-- '11.2'
+- None
 cuda_compiler_version_min:
 - '11.2'
+- '11.8'
 cxx_compiler:
 - vs2019
 gflags:
