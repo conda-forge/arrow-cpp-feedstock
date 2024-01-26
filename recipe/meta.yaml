@@ -17,6 +17,7 @@ source:
   # lead-up until release -> don't use github sources on main
   # - url: https://github.com/apache/arrow/archive/refs/tags/apache-arrow-{{ version }}.tar.gz
   - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
+    fn: apache-arrow-{{ version }}.tar.gz
     sha256: 1304dedb41896008b89fe0738c71a95d9b81752efc77fa70f264cb1da15d9bc2
     patches:
       # workaround for https://github.com/apache/arrow/issues/37692
