@@ -364,7 +364,7 @@ outputs:
         - fsspec <2023.10.0a0
         - hypothesis
         - minio-server
-        - pandas
+        - pandas <2.2
         - s3fs >=2023,<2023.10.0a0
         - scipy
         # these are generally (far) behind on migrating abseil/grpc/protobuf,
