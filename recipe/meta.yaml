@@ -353,7 +353,7 @@ outputs:
       requires:
         # test_cpp_extension_in_python requires a compiler
         - {{ compiler("cxx") }}  # [linux]
-        - pytest
+        - pytest <8
         - pytest-lazy-fixture
         - backports.zoneinfo     # [py<39]
         - boto3
