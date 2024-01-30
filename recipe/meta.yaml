@@ -797,7 +797,7 @@ outputs:
 
         {% set tests_to_skip = "_not_a_real_test" %}
         # we do not have GPUs in CI --> cannot test cuda
-        {% set tests_to_skip = tests_to_skip + " or test_cuda" + " or test_dlpack"%}
+        {% set tests_to_skip = tests_to_skip + " or test_cuda" + " or test_dlpack_cuda_not_supported"%}
         # skip tests that raise SIGINT and crash the test suite
         {% set tests_to_skip = tests_to_skip + " or (test_csv and test_cancellation)" %}  # [linux]
         {% set tests_to_skip = tests_to_skip + " or (test_flight and test_interrupt)" %}  # [linux]
