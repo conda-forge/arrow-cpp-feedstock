@@ -760,6 +760,8 @@ outputs:
       requires:
         # test_cpp_extension_in_python requires a compiler
         - {{ compiler("cxx") }}  # [linux]
+        # pytest-lazy-fixture fails with pytest 8
+        # See issue on Arrow repo: https://github.com/apache/arrow/issues/39849
         - pytest <8
         - pytest-lazy-fixture
         - backports.zoneinfo     # [py<39]
@@ -771,6 +773,7 @@ outputs:
         - fsspec
         - hypothesis
         - minio-server
+        # Pandas pin required due to: https://github.com/apache/arrow/issues/39732
         - pandas <2.2
         - s3fs >=2023
         - scipy
