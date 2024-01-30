@@ -33,7 +33,7 @@ source:
     folder: testing
 
 build:
-  number: 23
+  number: 24
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -353,7 +353,7 @@ outputs:
       requires:
         # test_cpp_extension_in_python requires a compiler
         - {{ compiler("cxx") }}  # [linux]
-        - pytest
+        - pytest <8
         - pytest-lazy-fixture
         - backports.zoneinfo     # [py<39]
         - boto3
@@ -364,7 +364,7 @@ outputs:
         - fsspec <2023.10.0a0
         - hypothesis
         - minio-server
-        - pandas
+        - pandas <2.2
         - s3fs >=2023,<2023.10.0a0
         - scipy
         # these are generally (far) behind on migrating abseil/grpc/protobuf,
