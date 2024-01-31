@@ -648,10 +648,12 @@ outputs:
         - '*/arrow_dataset.dll'          # [win]
         - '*/libarrow_substrait.so.*'    # [linux]
         - '*/arrow_substrait.dll'        # [win]
-        - '*/libgandiva.so.*'            # [linux]
-        - '*/gandiva.dll'                # [win]
         - '*/libarrow_flight.so.*'       # [linux]
         - '*/arrow_flight.dll'           # [win]
+        - '*/libparquet.so.*'            # [linux]
+        - '*/parquet.dll'                # [win]
+        - '*/libgandiva.so.*'            # [linux]
+        - '*/gandiva.dll'                # [win]
     requirements:
       build:
         - {{ compiler("c") }}
@@ -683,21 +685,17 @@ outputs:
         - setuptools_scm <8
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
-        - {{ pin_subpackage("libparquet", exact=True) }}
         - {{ pin_compatible('numpy') }}
         - python
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
 
     test:
-      files:
-        - test_read_parquet.py
       imports:
         - pyarrow
         # Compute can be imported but the underlying libarrow_acero is not present.
         - pyarrow.compute
         - pyarrow.orc      # [unix]
-        - pyarrow.parquet
         - pyarrow.fs
         - pyarrow._s3fs
         - pyarrow._hdfs
@@ -709,27 +707,25 @@ outputs:
         - pyarrow.cuda     # [cuda_compiler_version != "None" and not win]
       commands:
         # libraries that depend on python (and hence aren't in libarrow itself)
-        - test -f ${SP_DIR}/pyarrow/libarrow_python.so                            # [linux]
-        - test -f ${SP_DIR}/pyarrow/libarrow_python_flight.so                     # [linux]
-        - test -f ${SP_DIR}/pyarrow/libarrow_python.dylib                         # [osx]
-        - test -f ${SP_DIR}/pyarrow/libarrow_python_flight.dylib                  # [osx]
-        - if not exist %SP_DIR%\pyarrow\arrow_python.dll exit 1                   # [win]
-        - if not exist %SP_DIR%\pyarrow\arrow_python_flight.dll exit 1            # [win]
+        - test -f ${SP_DIR}/pyarrow/libarrow_python.so                             # [linux]
+        - test -f ${SP_DIR}/pyarrow/libarrow_python_flight.so                      # [linux]
+        - test -f ${SP_DIR}/pyarrow/libarrow_python_parquet_encryption.so          # [linux]
+        - test -f ${SP_DIR}/pyarrow/libarrow_python.dylib                          # [osx]
+        - test -f ${SP_DIR}/pyarrow/libarrow_python_flight.dylib                   # [osx]
+        - test -f ${SP_DIR}/pyarrow/libarrow_python_parquet_encryption.dylib       # [osx]
+        - if not exist %SP_DIR%\pyarrow\arrow_python.dll exit 1                    # [win]
+        - if not exist %SP_DIR%\pyarrow\arrow_python_flight.dll exit 1             # [win]
+        - if not exist %SP_DIR%\pyarrow\arrow_python_parquet_encryption.dll exit 1 # [win]
 
-        - test -f ${SP_DIR}/pyarrow/include/arrow/python/pyarrow.h                # [unix]
-        - if not exist %SP_DIR%\pyarrow\include\arrow\python\pyarrow.h exit 1     # [win]
+        - test -f ${SP_DIR}/pyarrow/include/arrow/python/pyarrow.h                 # [unix]
+        - if not exist %SP_DIR%\pyarrow\include\arrow\python\pyarrow.h exit 1      # [win]
 
         - test ! -f ${SP_DIR}/pyarrow/tests/test_array.py                         # [unix]
         - if exist %SP_DIR%/pyarrow/tests/test_array.py exit 1                    # [win]
         # Need to remove dot from PY_VER; %MYVAR:x=y% replaces "x" in %MYVAR% with "y"
         - if not exist %SP_DIR%/pyarrow/_cuda.cp%PY_VER:.=%-win_amd64.pyd exit 1  # [win and cuda_compiler_version != "None"]
-        - python test_read_parquet.py
 
         # shared libraries
-        - test -f $PREFIX/lib/libparquet.so                         # [linux]
-        - test -f $PREFIX/lib/libparquet.dylib                      # [osx]
-        - if not exist %LIBRARY_BIN%\parquet.dll exit 1             # [win]
-        - if not exist %LIBRARY_LIB%\parquet.lib exit 1             # [win]
         - test -f $PREFIX/lib/libarrow.so                           # [linux]
         - test -f $PREFIX/lib/libarrow.dylib                        # [osx]
         - if not exist %LIBRARY_BIN%\arrow.dll exit 1               # [win]
@@ -738,7 +734,8 @@ outputs:
         - test ! -f $PREFIX/lib/libarrow_acero.so                   # [unix]
         - test ! -f $PREFIX/lib/libarrow_dataset.so                 # [unix]
         - test ! -f $PREFIX/lib/libarrow_flight.so                  # [unix]
-        - test ! -f $PREFIX/lib/libarrow_gandiva.so                 # [unix]
+        - test ! -f $PREFIX/lib/libgandiva.so                       # [unix]
+        - test ! -f $PREFIX/lib/libparquet.so                       # [unix]
 
     about:
       home: http://github.com/apache/arrow
