@@ -1,7 +1,7 @@
 aws_crt_cpp:
 - 0.26.1
 aws_sdk_cpp:
-- 1.11.242
+- 1.11.267
 bzip2:
 - '1'
 c_compiler:
@@ -65,7 +65,7 @@ re2:
 snappy:
 - '1'
 target_platform:
-- linux-64
+- linux-ppc64le
 thrift_cpp:
 - 0.19.0
 ucx:
