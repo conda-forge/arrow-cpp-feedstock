@@ -229,6 +229,9 @@ outputs:
         # shared
         - test -f $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
         - test -f $PREFIX/lib/lib{{ each_lib }}.dylib              # [osx]
+        # Ensure symlinks are preserved
+        - test -L $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
+        - test -L $PREFIX/lib/lib{{ each_lib }}.dylib              # [osx]
         - if not exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1     # [win]
         - if not exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1     # [win]
 
