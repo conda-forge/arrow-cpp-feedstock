@@ -1,13 +1,13 @@
 aws_crt_cpp:
 - 0.26.2
 aws_sdk_cpp:
-- 1.11.242
+- 1.11.267
 bzip2:
 - '1'
 c_compiler:
 - gcc
 c_compiler_version:
-- '12'
+- '10'
 cdt_name:
 - cos7
 channel_sources:
@@ -15,17 +15,17 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- None
+- nvcc
 cuda_compiler_version:
-- None
+- '11.2'
 cuda_compiler_version_min:
 - '11.2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '12'
+- '10'
 docker_image:
-- quay.io/condaforge/linux-anvil-cos7-x86_64
+- quay.io/condaforge/linux-anvil-cuda:11.2
 gflags:
 - '2.2'
 glog:
