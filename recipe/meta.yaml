@@ -28,7 +28,7 @@ source:
     folder: testing
 
 build:
-  number: 2
+  number: 3
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -480,6 +480,7 @@ outputs:
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", max_pin="x") }}
+        - libabseil
         - libutf8proc
         # gandiva requires shared libllvm; needs to match version used at build time
         - llvm {{ llvm_version }}  # [unix]
