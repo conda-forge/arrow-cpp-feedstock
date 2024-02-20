@@ -19,6 +19,8 @@ source:
     patches:
       # workaround for https://github.com/apache/arrow/issues/37692
       - patches/0001-fixture-teardown-should-not-fail-test.patch
+      # backport https://github.com/apache/arrow/pull/40150 to unpin setuptools-scm
+      - patches/0002-Revert-GH-37803-CI-Dev-Python-Release-and-merge-scri.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: ad82a736c170e97b7c8c035ebd8a801c17eec170
