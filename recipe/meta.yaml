@@ -28,7 +28,7 @@ source:
     folder: testing
 
 build:
-  number: 3
+  number: 4
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -229,6 +229,9 @@ outputs:
         # shared
         - test -f $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
         - test -f $PREFIX/lib/lib{{ each_lib }}.dylib              # [osx]
+        # Ensure symlinks are preserved
+        - test -L $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
+        - test -L $PREFIX/lib/lib{{ each_lib }}.dylib              # [osx]
         - if not exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1     # [win]
         - if not exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1     # [win]
 
@@ -815,6 +818,8 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or (test_move_directory and S3FileSystem)" %}
         # XMinioInvalidObjectName on win: "Object name contains unsupported characters"
         {% set tests_to_skip = tests_to_skip + " or test_write_to_dataset_with_partitions_s3fs" %}  # [win]
+        # flaky test that fails regularly on aarch
+        {% set tests_to_skip = tests_to_skip + " or test_feather_format[serial]" %}                 # [aarch64]
         # gandiva tests are segfaulting on ppc
         {% set tests_to_skip = tests_to_skip + " or test_gandiva" %}                                # [ppc64le]
         # test failures on ppc (both failing with: Float value was truncated converting to int32)
