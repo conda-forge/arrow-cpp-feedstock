@@ -122,11 +122,12 @@ outputs:
         # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
         - glog
-        - google-cloud-cpp
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
         - libboost-headers
+        - libgoogle-cloud-devel
+        - libgoogle-cloud-storage-devel
         - libgrpc
         - libprotobuf
         - libutf8proc
@@ -144,7 +145,7 @@ outputs:
         - zlib
         - zstd
         - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
-        # since libgoogle-cloud is static on windows, see
+        # since libgoogle-cloud{,-storage} is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
         # its host deps (which aren't yet covered above) leak into the build here
         - libcrc32c  # [win]
