@@ -655,8 +655,7 @@ outputs:
         - numpy
         - python
         - setuptools
-        # see https://github.com/apache/arrow/issues/37931
-        - setuptools_scm <8
+        - setuptools-scm
       run:
         # full set of libs because run-exports from libarrow-all aren't picked up
         - {{ pin_subpackage("libarrow", exact=True) }}
@@ -747,8 +746,7 @@ outputs:
         - numpy
         - python
         - setuptools
-        # see https://github.com/apache/arrow/issues/37931
-        - setuptools_scm <8
+        - setuptools-scm
       run:
         - {{ pin_subpackage('pyarrow', exact=True) }}
         - python
