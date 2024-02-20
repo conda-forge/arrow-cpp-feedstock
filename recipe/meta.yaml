@@ -491,6 +491,7 @@ outputs:
         - openssl
         - re2
         - zlib  # [win]
+        - zstd  # [win]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
