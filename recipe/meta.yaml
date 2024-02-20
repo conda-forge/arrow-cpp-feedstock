@@ -13,9 +13,6 @@ package:
   version: {{ version }}
 
 source:
-  # arrow has the unfortunate habit of changing tags of X.0.0 in the
-  # lead-up until release -> don't use github sources on main
-  # - url: https://github.com/apache/arrow/archive/refs/tags/apache-arrow-{{ version }}.tar.gz
   - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
     fn: apache-arrow-{{ version }}.tar.gz
     sha256: 01dd3f70e85d9b5b933ec92c0db8a4ef504a5105f78d2d8622e84279fb45c25d
