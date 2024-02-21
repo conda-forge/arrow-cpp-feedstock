@@ -28,7 +28,7 @@ source:
     folder: testing
 
 build:
-  number: 6
+  number: 7
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -229,6 +229,9 @@ outputs:
         # shared
         - test -f $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
         - test -f $PREFIX/lib/lib{{ each_lib }}.dylib              # [osx]
+        # Ensure symlinks are preserved
+        - test -L $PREFIX/lib/lib{{ each_lib }}.so                 # [linux]
+        - test -L $PREFIX/lib/lib{{ each_lib }}.dylib              # [osx]
         - if not exist %LIBRARY_BIN%\{{ each_lib }}.dll exit 1     # [win]
         - if not exist %LIBRARY_LIB%\{{ each_lib }}.lib exit 1     # [win]
 
