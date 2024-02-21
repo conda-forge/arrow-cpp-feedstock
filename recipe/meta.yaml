@@ -3,7 +3,7 @@
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
 {% set proc_build_number = "0" %}
-{% set llvm_version = "15" %}
+{% set llvm_version = "16" %}
 
 # see https://github.com/apache/arrow/blob/apache-arrow-10.0.1/cpp/CMakeLists.txt#L88-L90
 {% set so_version = (version.split(".")[0] | int * 100 + version.split(".")[1] | int) ~ "." ~ version.split(".")[2] ~ ".0" %}
@@ -13,22 +13,21 @@ package:
   version: {{ version }}
 
 source:
-  # arrow has the unfortunate habit of changing tags of X.0.0 in the
-  # lead-up until release -> don't use github sources on main
-  # - url: https://github.com/apache/arrow/archive/refs/tags/apache-arrow-{{ version }}.tar.gz
   - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
     fn: apache-arrow-{{ version }}.tar.gz
     sha256: 01dd3f70e85d9b5b933ec92c0db8a4ef504a5105f78d2d8622e84279fb45c25d
     patches:
       # workaround for https://github.com/apache/arrow/issues/37692
       - patches/0001-fixture-teardown-should-not-fail-test.patch
+      # backport https://github.com/apache/arrow/pull/40150 to unpin setuptools-scm
+      - patches/0002-Revert-GH-37803-CI-Dev-Python-Release-and-merge-scri.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: ad82a736c170e97b7c8c035ebd8a801c17eec170
     folder: testing
 
 build:
-  number: 4
+  number: 5
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -65,11 +64,12 @@ requirements:
     # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
     - gflags
     - glog
-    - google-cloud-cpp
     # arrow uses a customized jemalloc, see #944
     # - jemalloc
     - libabseil
     - libboost-headers
+    - libgoogle-cloud-devel
+    - libgoogle-cloud-storage-devel
     - libgrpc
     - libutf8proc
     - lz4-c
@@ -191,10 +191,11 @@ outputs:
         # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
         - glog
-        - google-cloud-cpp
         # arrow uses a customized jemalloc, see #944
         # - jemalloc
         - libabseil
+        - libgoogle-cloud-devel
+        - libgoogle-cloud-storage-devel
         - libutf8proc
         - lz4-c
         - openssl    # [win]
@@ -204,7 +205,7 @@ outputs:
         - zlib
         - zstd
         - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
-        # since libgoogle-cloud is static on windows, see
+        # since libgoogle-cloud{,-storage} is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
         # its host deps (which aren't yet covered above) leak into the build here
         - libcrc32c  # [win]
@@ -490,6 +491,7 @@ outputs:
         - openssl
         - re2
         - zlib  # [win]
+        - zstd  # [win]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
@@ -656,8 +658,7 @@ outputs:
         - numpy
         - python
         - setuptools
-        # see https://github.com/apache/arrow/issues/37931
-        - setuptools_scm <8
+        - setuptools-scm
       run:
         # full set of libs because run-exports from libarrow-all aren't picked up
         - {{ pin_subpackage("libarrow", exact=True) }}
@@ -748,8 +749,7 @@ outputs:
         - numpy
         - python
         - setuptools
-        # see https://github.com/apache/arrow/issues/37931
-        - setuptools_scm <8
+        - setuptools-scm
       run:
         - {{ pin_subpackage('pyarrow', exact=True) }}
         - python

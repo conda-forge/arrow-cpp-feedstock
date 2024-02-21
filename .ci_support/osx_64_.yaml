@@ -9,7 +9,7 @@ bzip2:
 c_compiler:
 - clang
 c_compiler_version:
-- '15'
+- '16'
 channel_sources:
 - conda-forge
 channel_targets:
@@ -19,15 +19,17 @@ cuda_compiler_version:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '15'
+- '16'
 gflags:
 - '2.2'
 glog:
 - '0.6'
-google_cloud_cpp:
-- '2.12'
 libabseil:
 - '20230802'
+libgoogle_cloud_devel:
+- '2.17'
+libgoogle_cloud_storage_devel:
+- '2.17'
 libgrpc:
 - '1.60'
 libprotobuf:

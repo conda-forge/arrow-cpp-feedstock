@@ -22,14 +22,14 @@ gflags:
 - '2.2'
 glog:
 - '0.6'
-google_cloud_cpp:
-- '2.12'
 libabseil:
 - '20230802'
 libcrc32c:
 - '1.1'
-libcurl:
-- '8'
+libgoogle_cloud_devel:
+- '2.17'
+libgoogle_cloud_storage_devel:
+- '2.17'
 libgrpc:
 - '1.60'
 libprotobuf:
