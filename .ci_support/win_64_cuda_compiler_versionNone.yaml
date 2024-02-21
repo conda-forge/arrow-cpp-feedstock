@@ -21,11 +21,13 @@ cxx_compiler:
 gflags:
 - '2.2'
 glog:
-- '0.6'
+- '0.7'
 libabseil:
 - '20230802'
 libcrc32c:
 - '1.1'
+libcurl:
+- '8'
 libgoogle_cloud_devel:
 - '2.17'
 libgoogle_cloud_storage_devel:
