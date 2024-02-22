@@ -1,7 +1,7 @@
-From 9d78cbff867e02b391dec0fb6c7f95d0052854e3 Mon Sep 17 00:00:00 2001
+From 76a7c3d480150f7165a6349d28b4b5bff905d676 Mon Sep 17 00:00:00 2001
 From: Peter Andreas Entschev <peter@entschev.com>
 Date: Tue, 24 Oct 2023 17:42:06 +0200
-Subject: [PATCH 1/2] GH-38364: [Python] Initialize S3 on first use (#38375)
+Subject: [PATCH 2/4] GH-38364: [Python] Initialize S3 on first use (#38375)
 
 ### Rationale for this change
 
@@ -35,7 +35,7 @@ Signed-off-by: Antoine Pitrou <antoine@python.org>
  3 files changed, 16 insertions(+), 3 deletions(-)
 
 diff --git a/python/pyarrow/_s3fs.pyx b/python/pyarrow/_s3fs.pyx
-index 766caccd5..7979286ea 100644
+index 766cacc..7979286 100644
 --- a/python/pyarrow/_s3fs.pyx
 +++ b/python/pyarrow/_s3fs.pyx
 @@ -68,6 +68,13 @@ def finalize_s3():
@@ -62,7 +62,7 @@ index 766caccd5..7979286ea 100644
      with nogil:
          c_region = GetResultValue(ResolveS3BucketRegion(c_bucket))
 diff --git a/python/pyarrow/fs.py b/python/pyarrow/fs.py
-index 567bea8ac..7f60fa8bb 100644
+index 567bea8..7f60fa8 100644
 --- a/python/pyarrow/fs.py
 +++ b/python/pyarrow/fs.py
 @@ -54,13 +54,16 @@ try:
@@ -86,7 +86,7 @@ index 567bea8ac..7f60fa8bb 100644
  
  def __getattr__(name):
 diff --git a/python/pyarrow/includes/libarrow_fs.pxd b/python/pyarrow/includes/libarrow_fs.pxd
-index 0b683e613..892b652dd 100644
+index 0b683e6..892b652 100644
 --- a/python/pyarrow/includes/libarrow_fs.pxd
 +++ b/python/pyarrow/includes/libarrow_fs.pxd
 @@ -211,6 +211,7 @@ cdef extern from "arrow/filesystem/api.h" namespace "arrow::fs" nogil:
@@ -97,48 +97,3 @@ index 0b683e613..892b652dd 100644
  
      cdef CResult[c_string] ResolveS3BucketRegion(const c_string& bucket)
  
--- 
-2.42.0
-
-From 1f86050a4b9cc545d04dbea2700a143816a1dbb1 Mon Sep 17 00:00:00 2001
-From: Peter Andreas Entschev <peter@entschev.com>
-Date: Fri, 27 Oct 2023 01:54:00 -0700
-Subject: [PATCH 2/2] Adaptations for Arrow 12
-
----
- python/pyarrow/_s3fs.pyx | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
-
-diff --git a/python/pyarrow/_s3fs.pyx b/python/pyarrow/_s3fs.pyx
-index 7979286ea..2ad879dd9 100644
---- a/python/pyarrow/_s3fs.pyx
-+++ b/python/pyarrow/_s3fs.pyx
-@@ -261,6 +261,25 @@ cdef class S3FileSystem(FileSystem):
-                  load_frequency=900, proxy_options=None,
-                  allow_bucket_creation=False, allow_bucket_deletion=False,
-                  retry_strategy: S3RetryStrategy = AwsStandardS3RetryStrategy(max_attempts=3)):
-+        ensure_s3_initialized()
-+
-+        self._initialize_s3(access_key=access_key, secret_key=secret_key, session_token=session_token,
-+                            anonymous=anonymous, region=region, request_timeout=request_timeout,
-+                            connect_timeout=connect_timeout, scheme=scheme, endpoint_override=endpoint_override,
-+                            background_writes=background_writes, default_metadata=default_metadata,
-+                            role_arn=role_arn, session_name=session_name, external_id=external_id,
-+                            load_frequency=load_frequency, proxy_options=proxy_options,
-+                            allow_bucket_creation=allow_bucket_creation, allow_bucket_deletion=allow_bucket_deletion,
-+                            retry_strategy=retry_strategy)
-+
-+    def _initialize_s3(self, *, access_key=None, secret_key=None, session_token=None,
-+                       bint anonymous=False, region=None, request_timeout=None,
-+                       connect_timeout=None, scheme=None, endpoint_override=None,
-+                       bint background_writes=True, default_metadata=None,
-+                       role_arn=None, session_name=None, external_id=None,
-+                       load_frequency=900, proxy_options=None,
-+                       allow_bucket_creation=False, allow_bucket_deletion=False,
-+                       retry_strategy: S3RetryStrategy = AwsStandardS3RetryStrategy(max_attempts=3)):
-         cdef:
-             CS3Options options
-             shared_ptr[CS3FileSystem] wrapped
--- 
-2.42.0
-

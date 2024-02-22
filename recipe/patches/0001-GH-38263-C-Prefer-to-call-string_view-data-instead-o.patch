@@ -1,8 +1,8 @@
-From fe7604c601cc363cc8dd55e1c44da3e625ef9ec5 Mon Sep 17 00:00:00 2001
+From 4e8761ebad58f471fab3efdd2ea165fd6bd69254 Mon Sep 17 00:00:00 2001
 From: Felipe Oliveira Carvalho <felipekde@gmail.com>
 Date: Fri, 13 Oct 2023 18:15:39 -0300
-Subject: [PATCH] GH-38263 [C++]: Prefer to call string_view::data() instead of
- begin() where a char pointer is expected
+Subject: [PATCH 1/4] GH-38263 [C++]: Prefer to call string_view::data()
+ instead of begin() where a char pointer is expected
 
 * Use re2::StringPiece instead of std::string_view when using re2`
 
@@ -14,7 +14,7 @@ Subject: [PATCH] GH-38263 [C++]: Prefer to call string_view::data() instead of
  1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/cpp/src/arrow/compute/kernels/scalar_string_ascii.cc b/cpp/src/arrow/compute/kernels/scalar_string_ascii.cc
-index a90a7282b..90f5d40b9 100644
+index a90a728..90f5d40 100644
 --- a/cpp/src/arrow/compute/kernels/scalar_string_ascii.cc
 +++ b/cpp/src/arrow/compute/kernels/scalar_string_ascii.cc
 @@ -2063,12 +2063,12 @@ struct RegexSubstringReplacer {
