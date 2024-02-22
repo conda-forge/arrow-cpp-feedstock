@@ -27,6 +27,7 @@ source:
       - patches/0005-GH-38607-Python-Disable-PyExtensionType-autoload-386.patch
       # ... plus a patch for pandas' detection of whether the fix is present
       - patches/0006-set-pyarrow._hotfix_installed-True.patch
+      - patches/0007-Support-glog-0.7.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12

@@ -1,14 +1,14 @@
-From c443ae531b9fad3157a22091d66f696c235913ad Mon Sep 17 00:00:00 2001
+From fe8f64af155fc43ad1f660cba0c7641c64a7eb39 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Wed, 15 Nov 2023 10:06:16 +1100
-Subject: [PATCH 6/6] set pyarrow._hotfix_installed = True
+Subject: [PATCH 6/7] set pyarrow._hotfix_installed = True
 
 ---
  python/pyarrow/__init__.py | 4 ++++
  1 file changed, 4 insertions(+)
 
 diff --git a/python/pyarrow/__init__.py b/python/pyarrow/__init__.py
-index ee0d07bb2..4b4ad0714 100644
+index ee0d07b..4b4ad07 100644
 --- a/python/pyarrow/__init__.py
 +++ b/python/pyarrow/__init__.py
 @@ -66,6 +66,10 @@ import pyarrow.lib as _lib
