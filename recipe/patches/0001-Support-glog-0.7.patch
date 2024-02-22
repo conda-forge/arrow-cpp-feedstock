@@ -1,0 +1,57 @@
+From 4f227e89b006b26d8028216ee854fa9fb118b83b Mon Sep 17 00:00:00 2001
+From: "Uwe L. Korn" <uwe.korn@quantco.com>
+Date: Wed, 21 Feb 2024 12:02:01 +0100
+Subject: [PATCH] Support glog 0.7
+
+---
+ cpp/cmake_modules/FindGLOG.cmake | 5 +++++
+ cpp/src/arrow/util/logging.cc    | 6 +++---
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/cpp/cmake_modules/FindGLOG.cmake b/cpp/cmake_modules/FindGLOG.cmake
+index 61b7d06..8e6130b 100644
+--- a/cpp/cmake_modules/FindGLOG.cmake
++++ b/cpp/cmake_modules/FindGLOG.cmake
+@@ -21,6 +21,11 @@ if(GLOG_FOUND)
+   return()
+ endif()
+ 
++find_package(glog CONFIG)
++if(glog_FOUND)
++  return()
++endif()
++
+ find_package(PkgConfig QUIET)
+ pkg_check_modules(GLOG_PC libglog)
+ if(GLOG_PC_FOUND)
+diff --git a/cpp/src/arrow/util/logging.cc b/cpp/src/arrow/util/logging.cc
+index 9c68982..beedf16 100644
+--- a/cpp/src/arrow/util/logging.cc
++++ b/cpp/src/arrow/util/logging.cc
+@@ -114,7 +114,7 @@ static std::unique_ptr<std::string> log_dir_;
+ #ifdef ARROW_USE_GLOG
+ 
+ // Glog's severity map.
+-static int GetMappedSeverity(ArrowLogLevel severity) {
++static google::LogSeverity GetMappedSeverity(ArrowLogLevel severity) {
+   switch (severity) {
+     case ArrowLogLevel::ARROW_DEBUG:
+       return google::GLOG_INFO;
+@@ -146,7 +146,7 @@ void ArrowLog::StartArrowLog(const std::string& app_name,
+   app_name_.reset(new std::string(app_name));
+   log_dir_.reset(new std::string(log_dir));
+ #ifdef ARROW_USE_GLOG
+-  int mapped_severity_threshold = GetMappedSeverity(severity_threshold_);
++  google::LogSeverity mapped_severity_threshold = GetMappedSeverity(severity_threshold_);
+   google::SetStderrLogging(mapped_severity_threshold);
+   // Enable log file if log_dir is not empty.
+   if (!log_dir.empty()) {
+@@ -171,7 +171,7 @@ void ArrowLog::StartArrowLog(const std::string& app_name,
+     google::SetLogFilenameExtension(app_name_without_path.c_str());
+     for (int i = static_cast<int>(severity_threshold_);
+          i <= static_cast<int>(ArrowLogLevel::ARROW_FATAL); ++i) {
+-      int level = GetMappedSeverity(static_cast<ArrowLogLevel>(i));
++      google::LogSeverity level = GetMappedSeverity(static_cast<ArrowLogLevel>(i));
+       google::SetLogDestination(level, dir_ends_with_slash.c_str());
+     }
+   }
