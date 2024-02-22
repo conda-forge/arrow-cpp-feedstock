@@ -22,13 +22,14 @@ source:
     patches:
       # workaround for https://github.com/apache/arrow/issues/37692
       - patches/0001-fixture-teardown-should-not-fail-test.patch
+      - patches/0002-Support-glog-0.7.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
     folder: testing
 
 build:
-  number: 8
+  number: 9
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]

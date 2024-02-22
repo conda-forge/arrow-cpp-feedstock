@@ -1,14 +1,14 @@
-From 22be2a20e6a4b7fa7e8ac2b2723240c4d288e3ed Mon Sep 17 00:00:00 2001
+From 8d25c9c9ae4de1da2b4e51a8e6174a8fe419bd4d Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Wed, 13 Sep 2023 21:34:29 +1100
-Subject: [PATCH 3/3] fixture teardown should not fail test
+Subject: [PATCH 1/2] fixture teardown should not fail test
 
 ---
  python/pyarrow/tests/test_fs.py | 10 ++++++++--
  1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/python/pyarrow/tests/test_fs.py b/python/pyarrow/tests/test_fs.py
-index c540bf968..430fd7ece 100644
+index 6f91b7d..46db47a 100644
 --- a/python/pyarrow/tests/test_fs.py
 +++ b/python/pyarrow/tests/test_fs.py
 @@ -255,7 +255,10 @@ def s3fs(request, s3_server):
