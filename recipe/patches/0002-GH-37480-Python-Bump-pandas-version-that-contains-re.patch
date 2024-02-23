@@ -1,7 +1,7 @@
-From 2caeef5e4ad232013e769e36fb957cf4f0c5992f Mon Sep 17 00:00:00 2001
+From e836021579cb07dd6e01cf08dea0ea9284ac9f39 Mon Sep 17 00:00:00 2001
 From: Dane Pitkin <48041712+danepitkin@users.noreply.github.com>
 Date: Thu, 31 Aug 2023 00:32:26 -0400
-Subject: [PATCH 2/6] GH-37480: [Python] Bump pandas version that contains
+Subject: [PATCH 2/7] GH-37480: [Python] Bump pandas version that contains
  regression for pandas issue 50127 (#37481)
 
 ### Rationale for this change
@@ -28,7 +28,7 @@ Signed-off-by: Sutou Kouhei <kou@clear-code.com>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/python/pyarrow/tests/test_pandas.py b/python/pyarrow/tests/test_pandas.py
-index 8bdc7253a..88c1e8291 100644
+index 8bdc725..88c1e82 100644
 --- a/python/pyarrow/tests/test_pandas.py
 +++ b/python/pyarrow/tests/test_pandas.py
 @@ -457,7 +457,7 @@ class TestConvertMetadata:

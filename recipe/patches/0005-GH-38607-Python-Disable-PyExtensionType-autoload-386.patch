@@ -1,7 +1,7 @@
-From 3e10d168238471047781831dc7ea4765d10546c1 Mon Sep 17 00:00:00 2001
+From 12156936656cf3302e7cf2225734aaa46fe53b47 Mon Sep 17 00:00:00 2001
 From: Antoine Pitrou <antoine@python.org>
 Date: Mon, 6 Nov 2023 23:20:05 +0100
-Subject: [PATCH 5/6] GH-38607: [Python] Disable PyExtensionType autoload
+Subject: [PATCH 5/7] GH-38607: [Python] Disable PyExtensionType autoload
  (#38608)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -29,7 +29,7 @@ Signed-off-by: Raúl Cumplido <raulcumplido@gmail.com>
  5 files changed, 377 insertions(+), 245 deletions(-)
 
 diff --git a/docs/source/python/extending_types.rst b/docs/source/python/extending_types.rst
-index 53ce70e13..07a71d8a5 100644
+index 53ce70e..07a71d8 100644
 --- a/docs/source/python/extending_types.rst
 +++ b/docs/source/python/extending_types.rst
 @@ -59,34 +59,43 @@ message).
@@ -271,7 +271,7 @@ index 53ce70e13..07a71d8a5 100644
          def __arrow_ext_scalar_class__(self):
              return Point3DScalar
 diff --git a/python/pyarrow/tests/test_cffi.py b/python/pyarrow/tests/test_cffi.py
-index 9b0e24fa4..df4015d18 100644
+index 9b0e24f..df4015d 100644
 --- a/python/pyarrow/tests/test_cffi.py
 +++ b/python/pyarrow/tests/test_cffi.py
 @@ -16,6 +16,7 @@
@@ -380,7 +380,7 @@ index 9b0e24fa4..df4015d18 100644
  
  def _export_import_batch_reader(ptr_stream, reader_factory):
 diff --git a/python/pyarrow/tests/test_extension_type.py b/python/pyarrow/tests/test_extension_type.py
-index 009896fd6..86d4a0153 100644
+index 009896f..86d4a01 100644
 --- a/python/pyarrow/tests/test_extension_type.py
 +++ b/python/pyarrow/tests/test_extension_type.py
 @@ -15,6 +15,7 @@
@@ -878,7 +878,7 @@ index 009896fd6..86d4a0153 100644
 +            assert isinstance(batch.column(0).type, LegacyIntType)
 +            assert batch.column(0) == ext_arr
 diff --git a/python/pyarrow/tests/test_pandas.py b/python/pyarrow/tests/test_pandas.py
-index 88c1e8291..58aba92e5 100644
+index 88c1e82..58aba92 100644
 --- a/python/pyarrow/tests/test_pandas.py
 +++ b/python/pyarrow/tests/test_pandas.py
 @@ -4081,13 +4081,20 @@ def test_array_protocol():
@@ -926,7 +926,7 @@ index 88c1e8291..58aba92e5 100644
      def to_pandas_dtype(self):
          return pd.Int64Dtype()
 diff --git a/python/pyarrow/types.pxi b/python/pyarrow/types.pxi
-index fbd4f8a94..fa35f0567 100644
+index fbd4f8a..fa35f05 100644
 --- a/python/pyarrow/types.pxi
 +++ b/python/pyarrow/types.pxi
 @@ -1387,7 +1387,10 @@ cdef class ExtensionType(BaseExtensionType):

@@ -1,7 +1,7 @@
-From 13982419e8c1911acb13fa0280ac2e14e208431e Mon Sep 17 00:00:00 2001
+From e1a9a9851ee5e4790f3d7fc366f7650fe43618fe Mon Sep 17 00:00:00 2001
 From: Peter Andreas Entschev <peter@entschev.com>
 Date: Tue, 24 Oct 2023 17:42:06 +0200
-Subject: [PATCH 4/6] GH-38364: [Python] Initialize S3 on first use (#38375)
+Subject: [PATCH 4/7] GH-38364: [Python] Initialize S3 on first use (#38375)
 
 ### Rationale for this change
 
@@ -35,7 +35,7 @@ Signed-off-by: Antoine Pitrou <antoine@python.org>
  3 files changed, 16 insertions(+), 3 deletions(-)
 
 diff --git a/python/pyarrow/_s3fs.pyx b/python/pyarrow/_s3fs.pyx
-index e76c7b9ff..b4cc2b35e 100644
+index e76c7b9..b4cc2b3 100644
 --- a/python/pyarrow/_s3fs.pyx
 +++ b/python/pyarrow/_s3fs.pyx
 @@ -68,6 +68,13 @@ def finalize_s3():
@@ -62,7 +62,7 @@ index e76c7b9ff..b4cc2b35e 100644
      with nogil:
          c_region = GetResultValue(ResolveS3BucketRegion(c_bucket))
 diff --git a/python/pyarrow/fs.py b/python/pyarrow/fs.py
-index 567bea8ac..7f60fa8bb 100644
+index 567bea8..7f60fa8 100644
 --- a/python/pyarrow/fs.py
 +++ b/python/pyarrow/fs.py
 @@ -54,13 +54,16 @@ try:
@@ -86,7 +86,7 @@ index 567bea8ac..7f60fa8bb 100644
  
  def __getattr__(name):
 diff --git a/python/pyarrow/includes/libarrow_fs.pxd b/python/pyarrow/includes/libarrow_fs.pxd
-index 2727fc201..cb30f4e75 100644
+index 2727fc2..cb30f4e 100644
 --- a/python/pyarrow/includes/libarrow_fs.pxd
 +++ b/python/pyarrow/includes/libarrow_fs.pxd
 @@ -211,6 +211,7 @@ cdef extern from "arrow/filesystem/api.h" namespace "arrow::fs" nogil:
