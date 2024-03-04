@@ -825,6 +825,8 @@ outputs:
         # test failures on ppc (both failing with: Float value was truncated converting to int32)
         {% set tests_to_skip = tests_to_skip + " or test_safe_cast_from_float_with_nans_to_int" %}  # [ppc64le]
         {% set tests_to_skip = tests_to_skip + " or test_float_with_null_as_integer" %}             # [ppc64le]
+        # https://github.com/apache/arrow/issues/40337 Failing test_dateutil_tzinfo_to_string on win
+        {% set tests_to_skip = tests_to_skip + " or test_dateutil_tzinfo_to_string" %}              # [win]
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
         - pytest pyarrow/ -rfEs -k "not ({{ tests_to_skip }})"
     {% endif %}
