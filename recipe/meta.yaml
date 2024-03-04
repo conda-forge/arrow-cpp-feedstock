@@ -667,6 +667,12 @@ outputs:
         - cmake
         - ninja
       host:
+        # We add all libarrow package dependencies on host in order to build pyarrow
+        # once with all capabilities. We require the exact hash versions but we don't
+        # want those to be installed when running for pyarrow-core as we want a
+        # low memory footprint for the pyarrow-core package.
+        # We cannot use them on build as we want the exact hash version built on the 
+        # recipe to be linked, otherwise we get mismatching package errors.
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
         - {{ pin_subpackage("libarrow-dataset", exact=True) }}
