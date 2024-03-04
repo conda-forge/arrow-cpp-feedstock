@@ -409,6 +409,8 @@ outputs:
         # flaky tests that fail occasionally
         {% set tests_to_skip = tests_to_skip + " or test_total_bytes_allocated " %}       # [linux]
         {% set tests_to_skip = tests_to_skip + " or test_feather_format " %}              # [linux]
+        # https://github.com/apache/arrow/issues/40337 Failing test_dateutil_tzinfo_to_string on win
+        {% set tests_to_skip = tests_to_skip + " or test_dateutil_tzinfo_to_string" %}    # [win]
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
         - pytest -rfEs -k "not ({{ tests_to_skip }})"
     {% endif %}
