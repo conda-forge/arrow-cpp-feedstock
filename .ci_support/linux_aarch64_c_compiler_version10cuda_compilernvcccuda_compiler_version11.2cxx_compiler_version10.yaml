@@ -1,3 +1,5 @@
+BUILD:
+- aarch64-conda_cos7-linux-gnu
 aws_crt_cpp:
 - 0.26.2
 aws_sdk_cpp:
@@ -8,6 +10,8 @@ c_compiler:
 - gcc
 c_compiler_version:
 - '10'
+cdt_arch:
+- aarch64
 cdt_name:
 - cos7
 channel_sources:
@@ -33,9 +37,9 @@ glog:
 libabseil:
 - '20240116'
 libgoogle_cloud_devel:
-- '2.21'
+- '2.22'
 libgoogle_cloud_storage_devel:
-- '2.21'
+- '2.22'
 libgrpc:
 - '1.62'
 libprotobuf:
@@ -67,7 +71,7 @@ re2:
 snappy:
 - '1'
 target_platform:
-- linux-64
+- linux-aarch64
 thrift_cpp:
 - 0.19.0
 ucx:
