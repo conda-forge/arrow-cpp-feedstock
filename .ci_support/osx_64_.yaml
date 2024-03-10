@@ -27,13 +27,13 @@ glog:
 libabseil:
 - '20240116'
 libgoogle_cloud_devel:
-- '2.21'
+- '2.22'
 libgoogle_cloud_storage_devel:
-- '2.21'
+- '2.22'
 libgrpc:
-- '1.61'
+- '1.62'
 libprotobuf:
-- 4.25.2
+- 4.25.3
 lz4_c:
 - 1.9.3
 macos_machine:
@@ -57,7 +57,7 @@ python:
 - 3.8.* *_cpython
 - 3.9.* *_cpython
 re2:
-- 2023.06.02
+- 2023.09.01
 snappy:
 - '1'
 target_platform:
