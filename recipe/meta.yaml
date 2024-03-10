@@ -34,7 +34,7 @@ source:
     folder: testing
 
 build:
-  number: 29
+  number: 30
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -409,6 +409,8 @@ outputs:
         # test failures on ppc (both failing with: Float value was truncated converting to int32)
         {% set tests_to_skip = tests_to_skip + " or test_safe_cast_from_float_with_nans_to_int" %}  # [ppc64le]
         {% set tests_to_skip = tests_to_skip + " or test_float_with_null_as_integer" %}             # [ppc64le]
+        # https://github.com/apache/arrow/issues/40337 Failing test_dateutil_tzinfo_to_string on win
+        {% set tests_to_skip = tests_to_skip + " or test_dateutil_tzinfo_to_string" %}              # [win]
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
         - pytest pyarrow/ -rfEs -k "not ({{ tests_to_skip }})"
     {% endif %}
