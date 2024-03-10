@@ -1,7 +1,7 @@
 From 1c34f1ef9759cbad61546947f41e8f055cae20bb Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Tue, 20 Feb 2024 13:01:37 +1100
-Subject: [PATCH 2/2] Revert "GH-37803: [CI][Dev][Python] Release and merge
+Subject: [PATCH 2/4] Revert "GH-37803: [CI][Dev][Python] Release and merge
  script errors (#37819)"
 
 This reverts commit 79e49dbfb71efc70555417ba19cb612eb50924e8.
