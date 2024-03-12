@@ -46,7 +46,7 @@ numpy:
 openssl:
 - '3'
 orc:
-- 1.9.2
+- 2.0.0
 pin_run_as_build:
   python:
     min_pin: x.x
@@ -67,8 +67,6 @@ thrift_cpp:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-- - libgrpc
-  - libprotobuf
 - - python
   - numpy
 zlib:
