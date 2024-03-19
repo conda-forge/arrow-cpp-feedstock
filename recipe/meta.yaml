@@ -33,6 +33,8 @@ build:
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
+  # debug
+  skip: true  # [not win]
   # arrow promises API- & ABI-compatibility along SemVer, see #1096
 
 requirements:
@@ -685,7 +687,7 @@ outputs:
         - pyarrow.compute
         - pyarrow.flight
         - pyarrow.gandiva
-        - pyarrow.orc      # [unix]
+        - pyarrow.orc
         - pyarrow.parquet
         - pyarrow.fs
         - pyarrow._s3fs
@@ -828,7 +830,9 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or test_safe_cast_from_float_with_nans_to_int" %}  # [ppc64le]
         {% set tests_to_skip = tests_to_skip + " or test_float_with_null_as_integer" %}             # [ppc64le]
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
-        - pytest pyarrow/ -rfEs -k "not ({{ tests_to_skip }})"
+        # debug https://github.com/apache/arrow/issues/36026
+        - set "TZDIR=%CONDA_PREFIX%\share\zoneinfo"  # [win]
+        - pytest pyarrow/ -v -rfEs -k "not ({{ tests_to_skip }})"
     {% endif %}
 
     about:
