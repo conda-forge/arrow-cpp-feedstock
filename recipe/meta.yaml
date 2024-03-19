@@ -830,6 +830,8 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or test_safe_cast_from_float_with_nans_to_int" %}  # [ppc64le]
         {% set tests_to_skip = tests_to_skip + " or test_float_with_null_as_integer" %}             # [ppc64le]
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
+        # debug https://github.com/apache/arrow/issues/36026
+        - set "TZDIR=%CONDA_PREFIX%\share\zoneinfo"  # [win]
         - pytest pyarrow/ -v -rfEs -k "not ({{ tests_to_skip }})"
     {% endif %}
 
