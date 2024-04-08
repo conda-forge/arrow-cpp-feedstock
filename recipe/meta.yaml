@@ -34,7 +34,7 @@ source:
     folder: testing
 
 build:
-  number: 33
+  number: 34
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -95,6 +95,7 @@ outputs:
     requirements:
       build:
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
         # needs to run protoc & grpc_cpp_plugin
@@ -239,6 +240,7 @@ outputs:
     requirements:
       build:
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
         # pyarrow does not require nvcc but it needs to link against libraries in libarrow=*=*cuda
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
@@ -321,6 +323,7 @@ outputs:
     requirements:
       build:
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
         # pyarrow does not require nvcc but it needs to link against libraries in libarrow=*=*cuda
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
