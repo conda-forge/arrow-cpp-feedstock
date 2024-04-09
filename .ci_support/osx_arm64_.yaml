@@ -1,7 +1,7 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '11.0'
 aws_crt_cpp:
-- 0.26.4
+- 0.26.6
 aws_sdk_cpp:
 - 1.11.267
 bzip2:
@@ -10,6 +10,10 @@ c_compiler:
 - clang
 c_compiler_version:
 - '15'
+c_stdlib:
+- macosx_deployment_target
+c_stdlib_version:
+- '11.0'
 channel_sources:
 - conda-forge
 channel_targets:
@@ -59,7 +63,7 @@ python:
 re2:
 - 2023.09.01
 snappy:
-- '1'
+- '1.1'
 target_platform:
 - osx-arm64
 thrift_cpp:

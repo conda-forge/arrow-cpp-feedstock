@@ -1,11 +1,15 @@
 aws_crt_cpp:
-- 0.26.4
+- 0.26.6
 aws_sdk_cpp:
 - 1.11.267
 bzip2:
 - '1'
 c_compiler:
 - vs2019
+c_stdlib:
+- vs
+c_stdlib_version:
+- '2019'
 channel_sources:
 - conda-forge
 channel_targets:
@@ -59,7 +63,7 @@ python:
 re2:
 - 2023.09.01
 snappy:
-- '1'
+- '1.1'
 target_platform:
 - win-64
 thrift_cpp:
