@@ -32,7 +32,7 @@ source:
     folder: testing
 
 build:
-  number: 14
+  number: 15
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -41,6 +41,7 @@ build:
 requirements:
   build:
     - {{ compiler("c") }}
+    - {{ stdlib("c") }}
     - {{ compiler("cxx") }}
     - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
     # needs to run protoc & grpc_cpp_plugin
@@ -184,6 +185,7 @@ outputs:
         - ninja
         # for strong run-exports
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
       host:
@@ -290,6 +292,7 @@ outputs:
         - ninja
         # for strong run-exports
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
@@ -334,6 +337,7 @@ outputs:
         - ninja
         # for strong run-exports
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
@@ -382,6 +386,7 @@ outputs:
         - ninja
         # for strong run-exports
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
         # needs to run protoc & grpc_cpp_plugin
         - libgrpc                                # [build_platform != target_platform]
@@ -436,6 +441,7 @@ outputs:
         - ninja
         # for strong run-exports
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
         # needs to run protoc & grpc_cpp_plugin
         - libgrpc                                # [build_platform != target_platform]
@@ -486,6 +492,7 @@ outputs:
         - ninja
         # for strong run-exports
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", max_pin="x") }}
@@ -542,6 +549,7 @@ outputs:
         - libprotobuf                            # [build_platform != target_platform]
         # for strong run-exports
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
         - cmake
         - ninja
@@ -594,6 +602,7 @@ outputs:
         - ninja
         # for strong run-exports
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", max_pin="x") }}
@@ -645,6 +654,7 @@ outputs:
     requirements:
       build:
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
         # pyarrow does not require nvcc but it needs to link against libraries in libarrow=*=*cuda
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
@@ -736,6 +746,7 @@ outputs:
     requirements:
       build:
         - {{ compiler("c") }}
+        - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
         # pyarrow does not require nvcc but it needs to link against libraries in libarrow=*=*cuda
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
