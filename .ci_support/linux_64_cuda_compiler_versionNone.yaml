@@ -67,7 +67,7 @@ python:
 re2:
 - 2023.09.01
 snappy:
-- '1.1'
+- '1.2'
 target_platform:
 - linux-64
 thrift_cpp:
