@@ -674,6 +674,7 @@ outputs:
         - {{ pin_subpackage("libarrow-all", exact=True) }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
+        - zlib
         - cython
         - numpy
         - python
@@ -767,6 +768,7 @@ outputs:
         - {{ pin_subpackage('pyarrow', exact=True) }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
+        - zlib
         - cython
         - numpy
         - python
