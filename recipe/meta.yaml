@@ -26,13 +26,15 @@ source:
       - patches/0002-GH-40181-C-Support-glog-0.7-build-40230.patch
       # backport https://github.com/apache/arrow/pull/40387 for cython 3.0.9 compat
       - patches/0003-GH-40386-Python-Fix-except-clauses-40387.patch
+      # backport https://github.com/apache/arrow/pull/40412 to plug a python memory leak
+      - patches/0004-GH-37989-Plug-reference-leaks.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
     folder: testing
 
 build:
-  number: 17
+  number: 18
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
