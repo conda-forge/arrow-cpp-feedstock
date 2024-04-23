@@ -23,13 +23,15 @@ source:
       - patches/0002-Revert-GH-37803-CI-Dev-Python-Release-and-merge-scri.patch
       # backport https://github.com/apache/arrow/pull/40230 for glog 0.7 compat
       - patches/0003-GH-40181-C-Support-glog-0.7-build-40230.patch
+      # backport https://github.com/apache/arrow/pull/40412 to plug a python memory leak
+      - patches/0004-GH-37989-Plug-reference-leaks.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: ad82a736c170e97b7c8c035ebd8a801c17eec170
     folder: testing
 
 build:
-  number: 4
+  number: 5
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
