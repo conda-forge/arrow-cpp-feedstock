@@ -1,6 +1,13 @@
-# keep this in sync with llvm_version in meta.yaml;
-# don't rely on global pinning even if it matches
-c_compiler_version:            # [osx]
+# on osx, keep this in sync with llvm_version in meta.yaml.
+# linux-aarch hits a compiler bug with GCC 12, upgrade; needs override
+# for three versions on linux: one for non-CUDA & two for 11.2 & 11.8
+c_compiler_version:            # [unix]
   - 16                         # [osx]
-cxx_compiler_version:          # [osx]
+  - 13                         # [linux and aarch64]
+  - 10                         # [linux and aarch64]
+  - 11                         # [linux and aarch64]
+cxx_compiler_version:          # [unix]
   - 16                         # [osx]
+  - 13                         # [linux and aarch64]
+  - 10                         # [linux and aarch64]
+  - 11                         # [linux and aarch64]
