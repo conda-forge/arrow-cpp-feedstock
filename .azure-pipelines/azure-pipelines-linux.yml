@@ -20,8 +20,8 @@ jobs:
         CONFIG: linux_aarch64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
-      linux_aarch64_c_compiler_version12cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version12:
-        CONFIG: linux_aarch64_c_compiler_version12cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version12
+      linux_aarch64_c_compiler_version13cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13:
+        CONFIG: linux_aarch64_c_compiler_version13cuda_compilerNonecuda_compiler_versionNonecxx_compiler_version13
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
       linux_ppc64le_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10:
