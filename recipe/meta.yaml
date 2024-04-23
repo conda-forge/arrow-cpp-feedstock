@@ -34,7 +34,7 @@ source:
     folder: testing
 
 build:
-  number: 35
+  number: 36
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -81,8 +81,8 @@ outputs:
         - {{ pin_subpackage("libarrow", max_pin="x") }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
-        # arrow only uses headers, apparently
-        - gflags
+        # arrow only uses headers on osx/win, apparently
+        - gflags                                 # [not linux]
         # shared lib linked on unix, not on win
         - glog                                   # [win]
       ignore_run_exports:
@@ -254,6 +254,7 @@ outputs:
         - {{ pin_subpackage('libarrow', exact=True) }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
+        - zlib
         - cython <3
         - numpy
         - python
@@ -338,6 +339,7 @@ outputs:
         - {{ pin_subpackage('pyarrow', exact=True) }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
+        - zlib
         - cython <3
         - numpy
         - python
