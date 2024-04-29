@@ -637,7 +637,7 @@ outputs:
         - LICENSE.txt
       summary: C++ libraries for Apache Parquet
 
-  - name: pyarrow
+  - name: pyarrow-core
     script: build-pyarrow.sh   # [unix]
     script: build-pyarrow.bat  # [win]
     version: {{ version }}
@@ -653,6 +653,20 @@ outputs:
         # not actually missing, but installed into SP_DIR, see tests
         - '*/arrow_python.dll'                # [win]
         - '*/arrow_python_flight.dll'         # [win]
+        # pyarrow-core builds with the capabilities but we do not ship them
+        # to provide the smaller core functionality.
+        - 'lib/libarrow_acero.*'              # [unix]
+        - 'lib/libarrow_dataset.*'            # [unix]
+        - 'lib/libarrow_substrait.*'          # [unix]
+        - 'lib/libarrow_flight.*'             # [unix]
+        - 'lib/libparquet.*'                  # [unix]
+        - 'lib/libgandiva.*'                  # [unix]
+        - 'Library/lib/arrow_acero.dll'       # [win]
+        - 'Library/lib/arrow_dataset.dll'     # [win]
+        - 'Library/lib/arrow_substrait.dll'   # [win]
+        - 'Library/lib/arrow_flight.dll'      # [win]
+        - 'Library/lib/parquet.dll'           # [win]
+        - 'Library/lib/gandiva.dll'           # [win]
     requirements:
       build:
         - {{ compiler("c") }}
@@ -667,17 +681,10 @@ outputs:
         - cmake
         - ninja
       host:
-        - {{ pin_subpackage("libarrow-all", exact=True) }}
-        - clangdev {{ llvm_version }}
-        - llvmdev {{ llvm_version }}
-        - zlib
-        - cython
-        - numpy
-        - python
-        - setuptools
-        - setuptools-scm
-      run:
-        # full set of libs because run-exports from libarrow-all aren't picked up
+        # We add all libarrow package dependencies on host in order to build pyarrow
+        # once with all capabilities. We require the exact hash versions but we don't
+        # want those to be installed when running for pyarrow-core as we want a
+        # low memory footprint for the pyarrow-core package.
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
         - {{ pin_subpackage("libarrow-dataset", exact=True) }}
@@ -686,22 +693,26 @@ outputs:
         - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
         - {{ pin_subpackage("libarrow-substrait", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
+        - clangdev {{ llvm_version }}
+        - llvmdev {{ llvm_version }}
+        - cython
+        - numpy
+        - python
+        - setuptools
+        - setuptools_scm
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_compatible('numpy') }}
         - python
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
 
     test:
-      files:
-        - test_read_parquet.py
       imports:
         - pyarrow
-        - pyarrow.dataset
+        # Compute can be imported but the underlying libarrow_acero is not present.
         - pyarrow.compute
-        - pyarrow.flight
-        - pyarrow.gandiva
         - pyarrow.orc      # [unix]
-        - pyarrow.parquet
         - pyarrow.fs
         - pyarrow._s3fs
         - pyarrow._hdfs
@@ -713,20 +724,72 @@ outputs:
         - pyarrow.cuda     # [cuda_compiler_version != "None" and not win]
       commands:
         # libraries that depend on python (and hence aren't in libarrow itself)
-        - test -f ${SP_DIR}/pyarrow/libarrow_python.so                            # [linux]
-        - test -f ${SP_DIR}/pyarrow/libarrow_python_flight.so                     # [linux]
-        - test -f ${SP_DIR}/pyarrow/libarrow_python.dylib                         # [osx]
-        - test -f ${SP_DIR}/pyarrow/libarrow_python_flight.dylib                  # [osx]
-        - if not exist %SP_DIR%\pyarrow\arrow_python.dll exit 1                   # [win]
-        - if not exist %SP_DIR%\pyarrow\arrow_python_flight.dll exit 1            # [win]
+        - test -f ${SP_DIR}/pyarrow/libarrow_python.so                              # [linux]
+        - test -f ${SP_DIR}/pyarrow/libarrow_python_flight.so                       # [linux]
+        - test -f ${SP_DIR}/pyarrow/libarrow_python_parquet_encryption.so           # [linux]
+        - test -f ${SP_DIR}/pyarrow/libarrow_python.dylib                           # [osx]
+        - test -f ${SP_DIR}/pyarrow/libarrow_python_flight.dylib                    # [osx]
+        - test -f ${SP_DIR}/pyarrow/libarrow_python_parquet_encryption.dylib        # [osx]
+        - if not exist %SP_DIR%\pyarrow\arrow_python.dll exit 1                     # [win]
+        - if not exist %SP_DIR%\pyarrow\arrow_python_flight.dll exit 1              # [win]
+        - if not exist %SP_DIR%\pyarrow\arrow_python_parquet_encryption.dll exit 1  # [win]
 
-        - test -f ${SP_DIR}/pyarrow/include/arrow/python/pyarrow.h                # [unix]
-        - if not exist %SP_DIR%\pyarrow\include\arrow\python\pyarrow.h exit 1     # [win]
+        - test -f ${SP_DIR}/pyarrow/include/arrow/python/pyarrow.h                  # [unix]
+        - if not exist %SP_DIR%\pyarrow\include\arrow\python\pyarrow.h exit 1       # [win]
 
-        - test ! -f ${SP_DIR}/pyarrow/tests/test_array.py                         # [unix]
-        - if exist %SP_DIR%/pyarrow/tests/test_array.py exit 1                    # [win]
+        - test ! -f ${SP_DIR}/pyarrow/tests/test_array.py                           # [unix]
+        - if exist %SP_DIR%/pyarrow/tests/test_array.py exit 1                      # [win]
         # Need to remove dot from PY_VER; %MYVAR:x=y% replaces "x" in %MYVAR% with "y"
         - if not exist %SP_DIR%/pyarrow/_cuda.cp%PY_VER:.=%-win_amd64.pyd exit 1  # [win and cuda_compiler_version != "None"]
+
+        # Expected not included libraries
+        - test ! -f $PREFIX/lib/libarrow_acero${SHLIB_EXT}      # [unix]
+        - test ! -f $PREFIX/lib/libarrow_dataset${SHLIB_EXT}    # [unix]
+        - test ! -f $PREFIX/lib/libarrow_flight${SHLIB_EXT}     # [unix]
+        - test ! -f $PREFIX/lib/libgandiva${SHLIB_EXT}          # [unix]
+        - test ! -f $PREFIX/lib/libparquet${SHLIB_EXT}          # [unix]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: Python libraries for Apache Arrow Core
+
+  - name: pyarrow
+    version: {{ version }}
+    requirements:
+      host:
+        # only necessary for run-exports
+        - python
+        - numpy
+      run:
+        # Default set of libs because run-exports from libarrow-all aren't picked up
+        # Default doesn't contain flight, flight-sql and gandiva
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-dataset", exact=True) }}
+        - {{ pin_subpackage("libarrow-substrait", exact=True) }}
+        - {{ pin_subpackage("libparquet", exact=True) }}
+        - {{ pin_subpackage("pyarrow-core", exact=True) }}
+        - {{ pin_compatible('numpy') }}
+        - python
+      run_constrained:
+        - apache-arrow-proc =*={{ build_ext }}
+
+    test:
+      files:
+        - test_read_parquet.py
+      imports:
+        # pyarrow-all contains parquet
+        - pyarrow.dataset
+        - pyarrow.parquet
+      commands:
+        # Expected not included libraries
+        - test ! -f $PREFIX/lib/libarrow_flight${SHLIB_EXT}                        # [unix]
+        - test ! -f $PREFIX/lib/libgandiva${SHLIB_EXT}                             # [unix]
+
+        # Parquet is included in pyarrow
         - python test_read_parquet.py
 
     about:
@@ -734,7 +797,41 @@ outputs:
       license: Apache-2.0
       license_file:
         - LICENSE.txt
-      summary: Python libraries for Apache Arrow
+      summary: Python libraries for Apache Arrow with default capabilities
+
+  - name: pyarrow-all
+    version: {{ version }}
+    requirements:
+      host:
+        # only necessary for run-exports
+        - python
+        - numpy
+      run:
+        # full set of libs because run-exports from libarrow-all aren't picked up
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-dataset", exact=True) }}
+        - {{ pin_subpackage("libarrow-flight", exact=True) }}
+        - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
+        - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
+        - {{ pin_subpackage("libarrow-substrait", exact=True) }}
+        - {{ pin_subpackage("libparquet", exact=True) }}
+        - {{ pin_subpackage("pyarrow", exact=True) }}
+        - {{ pin_compatible('numpy') }}
+        - python
+      run_constrained:
+        - apache-arrow-proc =*={{ build_ext }}
+
+    test:
+      imports:
+        - pyarrow.flight
+        - pyarrow.gandiva
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: Python libraries for Apache Arrow with all capabilities
 
   - name: pyarrow-tests
     script: build-pyarrow.sh   # [unix]
@@ -760,7 +857,7 @@ outputs:
         - ninja
       host:
         - {{ pin_subpackage("libarrow-all", exact=True) }}
-        - {{ pin_subpackage('pyarrow', exact=True) }}
+        - {{ pin_subpackage('pyarrow-all', exact=True) }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
         - zlib
@@ -770,7 +867,7 @@ outputs:
         - setuptools
         - setuptools-scm
       run:
-        - {{ pin_subpackage('pyarrow', exact=True) }}
+        - {{ pin_subpackage('pyarrow-all', exact=True) }}
         - python
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}

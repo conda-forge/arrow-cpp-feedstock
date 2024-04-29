@@ -31,7 +31,7 @@ if "%cuda_compiler_version%"=="None" (
 if %ERRORLEVEL% neq 0 exit 1
 popd
 
-if [%PKG_NAME%] == [pyarrow] (
+if [%PKG_NAME%] NEQ [pyarrow-tests] (
     rd /s /q %SP_DIR%\pyarrow\tests
 )
 
