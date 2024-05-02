@@ -878,8 +878,7 @@ outputs:
         - fsspec
         - hypothesis
         - minio-server
-        # Pandas pin required due to: https://github.com/apache/arrow/issues/39732
-        - pandas <2.2
+        - pandas
         - s3fs >=2023
         - scipy
         # these are generally (far) behind on migrating abseil/grpc/protobuf,
