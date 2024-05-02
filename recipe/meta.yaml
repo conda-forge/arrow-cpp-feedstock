@@ -685,14 +685,7 @@ outputs:
         # once with all capabilities. We require the exact hash versions but we don't
         # want those to be installed when running for pyarrow-core as we want a
         # low memory footprint for the pyarrow-core package.
-        - {{ pin_subpackage("libarrow", exact=True) }}
-        - {{ pin_subpackage("libarrow-acero", exact=True) }}
-        - {{ pin_subpackage("libarrow-dataset", exact=True) }}
-        - {{ pin_subpackage("libarrow-flight", exact=True) }}
-        - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
-        - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
-        - {{ pin_subpackage("libarrow-substrait", exact=True) }}
-        - {{ pin_subpackage("libparquet", exact=True) }}
+        - {{ pin_subpackage("libarrow-all", exact=True) }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
         - cython
