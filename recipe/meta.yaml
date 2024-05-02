@@ -865,10 +865,7 @@ outputs:
       requires:
         # test_cpp_extension_in_python requires a compiler
         - {{ compiler("cxx") }}  # [linux]
-        # pytest-lazy-fixture fails with pytest 8
-        # See issue on Arrow repo: https://github.com/apache/arrow/issues/39849
-        - pytest <8
-        - pytest-lazy-fixture
+        - pytest
         - backports.zoneinfo     # [py<39]
         - boto3
         - cffi
