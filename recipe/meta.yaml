@@ -758,9 +758,7 @@ outputs:
         - python
         - numpy
       run:
-        # Default set of libs because run-exports from libarrow-all aren't picked up
         # Default doesn't contain flight, flight-sql and gandiva
-        - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
         - {{ pin_subpackage("libarrow-dataset", exact=True) }}
         - {{ pin_subpackage("libarrow-substrait", exact=True) }}
@@ -775,7 +773,7 @@ outputs:
       files:
         - test_read_parquet.py
       imports:
-        # pyarrow-all contains parquet
+        # default pyarrow contains parquet
         - pyarrow.dataset
         - pyarrow.parquet
       commands:
@@ -783,7 +781,6 @@ outputs:
         - test ! -f $PREFIX/lib/libarrow_flight${SHLIB_EXT}                        # [unix]
         - test ! -f $PREFIX/lib/libgandiva${SHLIB_EXT}                             # [unix]
 
-        # Parquet is included in pyarrow
         - python test_read_parquet.py
 
     about:
@@ -801,15 +798,9 @@ outputs:
         - python
         - numpy
       run:
-        # full set of libs because run-exports from libarrow-all aren't picked up
-        - {{ pin_subpackage("libarrow", exact=True) }}
-        - {{ pin_subpackage("libarrow-acero", exact=True) }}
-        - {{ pin_subpackage("libarrow-dataset", exact=True) }}
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
         - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
         - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
-        - {{ pin_subpackage("libarrow-substrait", exact=True) }}
-        - {{ pin_subpackage("libparquet", exact=True) }}
         - {{ pin_subpackage("pyarrow", exact=True) }}
         - {{ pin_compatible('numpy') }}
         - python
