@@ -558,7 +558,7 @@ outputs:
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
         - {{ pin_subpackage("libarrow-dataset", exact=True) }}
         - gflags     # [linux]
-        - libabseil  # [win]
+        - libabseil
         - libprotobuf
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
@@ -688,11 +688,12 @@ outputs:
         - {{ pin_subpackage("libarrow-all", exact=True) }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
+        - zlib
         - cython
         - numpy
         - python
         - setuptools
-        - setuptools_scm
+        - setuptools-scm
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_compatible('numpy') }}
