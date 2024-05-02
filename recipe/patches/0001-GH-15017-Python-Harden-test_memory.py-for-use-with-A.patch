@@ -1,7 +1,7 @@
-From 0b815d7925696eb01a225efbb7266e715168fb85 Mon Sep 17 00:00:00 2001
+From 0ff739a0d3c8c4df4b46625f0bb0bc87c6b0d29d Mon Sep 17 00:00:00 2001
 From: h-vetinari <h.vetinari@gmx.com>
 Date: Fri, 28 Jul 2023 13:31:01 +1100
-Subject: [PATCH 1/7] GH-15017: [Python] Harden test_memory.py for use with
+Subject: [PATCH 1/8] GH-15017: [Python] Harden test_memory.py for use with
  ARROW_USE_GLOG=ON (#36901)
 
 Accept output pattern for ARROW_USE_GLOG=ON too.
@@ -17,7 +17,7 @@ Signed-off-by: Sutou Kouhei <kou@clear-code.com>
  2 files changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/dev/tasks/conda-recipes/arrow-cpp/meta.yaml b/dev/tasks/conda-recipes/arrow-cpp/meta.yaml
-index 2f79bbe..24c0a6b 100644
+index 2f79bbe95..24c0a6ba7 100644
 --- a/dev/tasks/conda-recipes/arrow-cpp/meta.yaml
 +++ b/dev/tasks/conda-recipes/arrow-cpp/meta.yaml
 @@ -381,8 +381,6 @@ outputs:
@@ -30,7 +30,7 @@ index 2f79bbe..24c0a6b 100644
          {% set tests_to_skip = tests_to_skip + " or (test_misc and test_get_include)" %}  # [unix]
          # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
 diff --git a/python/pyarrow/tests/test_memory.py b/python/pyarrow/tests/test_memory.py
-index 092c50d..d9fdeb1 100644
+index 092c50de3..d9fdeb152 100644
 --- a/python/pyarrow/tests/test_memory.py
 +++ b/python/pyarrow/tests/test_memory.py
 @@ -134,8 +134,14 @@ def check_env_var(name, expected, *, expect_warning=False):

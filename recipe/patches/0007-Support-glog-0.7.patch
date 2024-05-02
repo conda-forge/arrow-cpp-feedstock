@@ -1,7 +1,7 @@
-From 397a06815891a96fb13cdd2bfc3dde3e5588abf8 Mon Sep 17 00:00:00 2001
+From f8b71f01c5fc30318dac96ccad9b090023f63b13 Mon Sep 17 00:00:00 2001
 From: "Uwe L. Korn" <uwe.korn@quantco.com>
 Date: Wed, 21 Feb 2024 12:02:01 +0100
-Subject: [PATCH 7/7] Support glog 0.7
+Subject: [PATCH 7/8] Support glog 0.7
 
 ---
  cpp/cmake_modules/FindGLOG.cmake | 5 +++++
@@ -9,7 +9,7 @@ Subject: [PATCH 7/7] Support glog 0.7
  2 files changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/cpp/cmake_modules/FindGLOG.cmake b/cpp/cmake_modules/FindGLOG.cmake
-index 61b7d06..8e6130b 100644
+index 61b7d0694..8e6130bb3 100644
 --- a/cpp/cmake_modules/FindGLOG.cmake
 +++ b/cpp/cmake_modules/FindGLOG.cmake
 @@ -21,6 +21,11 @@ if(GLOG_FOUND)
@@ -25,7 +25,7 @@ index 61b7d06..8e6130b 100644
  pkg_check_modules(GLOG_PC libglog)
  if(GLOG_PC_FOUND)
 diff --git a/cpp/src/arrow/util/logging.cc b/cpp/src/arrow/util/logging.cc
-index 04fcf3d..cbc9657 100644
+index 04fcf3d3e..cbc9657ed 100644
 --- a/cpp/src/arrow/util/logging.cc
 +++ b/cpp/src/arrow/util/logging.cc
 @@ -113,7 +113,7 @@ static std::unique_ptr<std::string> log_dir_;

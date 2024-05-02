@@ -28,6 +28,8 @@ source:
       # ... plus a patch for pandas' detection of whether the fix is present
       - patches/0006-set-pyarrow._hotfix_installed-True.patch
       - patches/0007-Support-glog-0.7.patch
+      # backport https://github.com/apache/arrow/pull/40418 to be able to compile against numpy 2.0
+      - patches/0008-GH-40376-Python-Update-for-NumPy-2.0-ABI-change-in-P.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
