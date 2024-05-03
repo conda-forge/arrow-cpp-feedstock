@@ -752,6 +752,8 @@ outputs:
 
   - name: pyarrow
     version: {{ version }}
+    build:
+      string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
     requirements:
       host:
         # only necessary for run-exports
@@ -792,6 +794,8 @@ outputs:
 
   - name: pyarrow-all
     version: {{ version }}
+    build:
+      string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
     requirements:
       host:
         # only necessary for run-exports
