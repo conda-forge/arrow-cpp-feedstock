@@ -3,9 +3,9 @@
 # for two versions on linux: one for non-CUDA & one for 11.8
 c_compiler_version:            # [unix]
   - 16                         # [osx]
-  - 13                         # [linux and aarch64]
-  - 11                         # [linux and aarch64]
+  - 13                         # [linux and (aarch64 or ppc64le)]
+  - 10                         # [linux and (aarch64 or ppc64le)]
 cxx_compiler_version:          # [unix]
   - 16                         # [osx]
-  - 13                         # [linux and aarch64]
-  - 11                         # [linux and aarch64]
+  - 13                         # [linux and (aarch64 or ppc64le)]
+  - 10                         # [linux and (aarch64 or ppc64le)]
