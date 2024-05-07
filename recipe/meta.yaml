@@ -1,4 +1,4 @@
-{% set version = "15.0.2" %}
+{% set version = "16.0.0" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -15,23 +15,17 @@ package:
 source:
   - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
     fn: apache-arrow-{{ version }}.tar.gz
-    sha256: abbf97176db6a9e8186fe005e93320dac27c64562755c77de50a882eb6179ac6
+    sha256: 9f4051ae9473c97991d9af801e2f94ae3455067719ca7f90b8137f9e9a700b8d
     patches:
-      # workaround for https://github.com/apache/arrow/issues/37692
-      - patches/0001-fixture-teardown-should-not-fail-test.patch
-      # backport https://github.com/apache/arrow/pull/40150 to unpin setuptools-scm
-      - patches/0002-Revert-GH-37803-CI-Dev-Python-Release-and-merge-scri.patch
-      # backport https://github.com/apache/arrow/pull/40230 for glog 0.7 compat
-      - patches/0003-GH-40181-C-Support-glog-0.7-build-40230.patch
-      # backport https://github.com/apache/arrow/pull/40412 to plug a python memory leak
-      - patches/0004-GH-37989-Plug-reference-leaks.patch
+      # backport https://github.com/apache/arrow/issues/41333 to find correct protobuf
+      - patches/0002-find-protobuf-config-instead-of-module.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
-    git_rev: ad82a736c170e97b7c8c035ebd8a801c17eec170
+    git_rev: 25d16511e8d42c2744a1d94d90169e3a36e92631
     folder: testing
 
 build:
-  number: 6
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -562,7 +556,7 @@ outputs:
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
         - {{ pin_subpackage("libarrow-dataset", exact=True) }}
         - gflags     # [linux]
-        - libabseil  # [win]
+        - libabseil
         - libprotobuf
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
@@ -641,230 +635,12 @@ outputs:
         - LICENSE.txt
       summary: C++ libraries for Apache Parquet
 
-  - name: pyarrow
-    script: build-pyarrow.sh   # [unix]
-    script: build-pyarrow.bat  # [win]
-    version: {{ version }}
-    build:
-      string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
-      ignore_run_exports_from:
-        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
-      track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
-      rpaths:
-        - lib/
-        - {{ SP_DIR }}/pyarrow
-      missing_dso_whitelist:
-        # not actually missing, but installed into SP_DIR, see tests
-        - '*/arrow_python.dll'                # [win]
-        - '*/arrow_python_flight.dll'         # [win]
-    requirements:
-      build:
-        - {{ compiler("c") }}
-        - {{ stdlib("c") }}
-        - {{ compiler("cxx") }}
-        # pyarrow does not require nvcc but it needs to link against libraries in libarrow=*=*cuda
-        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
-        - python                                 # [build_platform != target_platform]
-        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - cython                                 # [build_platform != target_platform]
-        - numpy                                  # [build_platform != target_platform]
-        - cmake
-        - ninja
-      host:
-        - {{ pin_subpackage("libarrow-all", exact=True) }}
-        - clangdev {{ llvm_version }}
-        - llvmdev {{ llvm_version }}
-        - zlib
-        - cython
-        - numpy
-        - python
-        - setuptools
-        - setuptools-scm
-      run:
-        # full set of libs because run-exports from libarrow-all aren't picked up
-        - {{ pin_subpackage("libarrow", exact=True) }}
-        - {{ pin_subpackage("libarrow-acero", exact=True) }}
-        - {{ pin_subpackage("libarrow-dataset", exact=True) }}
-        - {{ pin_subpackage("libarrow-flight", exact=True) }}
-        - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
-        - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
-        - {{ pin_subpackage("libarrow-substrait", exact=True) }}
-        - {{ pin_subpackage("libparquet", exact=True) }}
-        - {{ pin_compatible('numpy') }}
-        - python
-      run_constrained:
-        - apache-arrow-proc =*={{ build_ext }}
-
-    test:
-      files:
-        - test_read_parquet.py
-      imports:
-        - pyarrow
-        - pyarrow.dataset
-        - pyarrow.compute
-        - pyarrow.flight
-        - pyarrow.gandiva
-        - pyarrow.orc      # [unix]
-        - pyarrow.parquet
-        - pyarrow.fs
-        - pyarrow._s3fs
-        - pyarrow._hdfs
-        # We can only test importing cuda package but cannot run when a
-        # CUDA device is not available, for instance, when building from CI.
-        # On Windows, we cannot even do that due to `nvcuda.dll` not being found, see
-        # https://conda-forge.org/docs/maintainer/knowledge_base.html#nvcuda-dll-cannot-be-found-on-windows
-        # However, we check below for (at least) the presence of a correctly-compiled module
-        - pyarrow.cuda     # [cuda_compiler_version != "None" and not win]
-      commands:
-        # libraries that depend on python (and hence aren't in libarrow itself)
-        - test -f ${SP_DIR}/pyarrow/libarrow_python.so                            # [linux]
-        - test -f ${SP_DIR}/pyarrow/libarrow_python_flight.so                     # [linux]
-        - test -f ${SP_DIR}/pyarrow/libarrow_python.dylib                         # [osx]
-        - test -f ${SP_DIR}/pyarrow/libarrow_python_flight.dylib                  # [osx]
-        - if not exist %SP_DIR%\pyarrow\arrow_python.dll exit 1                   # [win]
-        - if not exist %SP_DIR%\pyarrow\arrow_python_flight.dll exit 1            # [win]
-
-        - test -f ${SP_DIR}/pyarrow/include/arrow/python/pyarrow.h                # [unix]
-        - if not exist %SP_DIR%\pyarrow\include\arrow\python\pyarrow.h exit 1     # [win]
-
-        - test ! -f ${SP_DIR}/pyarrow/tests/test_array.py                         # [unix]
-        - if exist %SP_DIR%/pyarrow/tests/test_array.py exit 1                    # [win]
-        # Need to remove dot from PY_VER; %MYVAR:x=y% replaces "x" in %MYVAR% with "y"
-        - if not exist %SP_DIR%/pyarrow/_cuda.cp%PY_VER:.=%-win_amd64.pyd exit 1  # [win and cuda_compiler_version != "None"]
-        - python test_read_parquet.py
-
-    about:
-      home: http://github.com/apache/arrow
-      license: Apache-2.0
-      license_file:
-        - LICENSE.txt
-      summary: Python libraries for Apache Arrow
-
-  - name: pyarrow-tests
-    script: build-pyarrow.sh   # [unix]
-    script: build-pyarrow.bat  # [win]
-    version: {{ version }}
-    build:
-      string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
-      ignore_run_exports_from:
-        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
-      track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
-    requirements:
-      build:
-        - {{ compiler("c") }}
-        - {{ stdlib("c") }}
-        - {{ compiler("cxx") }}
-        # pyarrow does not require nvcc but it needs to link against libraries in libarrow=*=*cuda
-        - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
-        - python                                 # [build_platform != target_platform]
-        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - cython                                 # [build_platform != target_platform]
-        - numpy                                  # [build_platform != target_platform]
-        - cmake
-        - ninja
-      host:
-        - {{ pin_subpackage("libarrow-all", exact=True) }}
-        - {{ pin_subpackage('pyarrow', exact=True) }}
-        - clangdev {{ llvm_version }}
-        - llvmdev {{ llvm_version }}
-        - zlib
-        - cython
-        - numpy
-        - python
-        - setuptools
-        - setuptools-scm
-      run:
-        - {{ pin_subpackage('pyarrow', exact=True) }}
-        - python
-      run_constrained:
-        - apache-arrow-proc =*={{ build_ext }}
-
-    {% if not (aarch64 or ppc64le) or py == 311 %}
-    # only run the full test suite for one python version when in emulation
-    # (each run can take up to ~45min); there's essentially zero divergence
-    # in behaviour across python versions anyway
-    test:
-      requires:
-        # test_cpp_extension_in_python requires a compiler
-        - {{ compiler("cxx") }}  # [linux]
-        # pytest-lazy-fixture fails with pytest 8
-        # See issue on Arrow repo: https://github.com/apache/arrow/issues/39849
-        - pytest <8
-        - pytest-lazy-fixture
-        - backports.zoneinfo     # [py<39]
-        - boto3
-        - cffi
-        - cloudpickle
-        - cython
-        - fastparquet
-        - fsspec
-        - hypothesis
-        - minio-server
-        # Pandas pin required due to: https://github.com/apache/arrow/issues/39732
-        - pandas <2.2
-        - s3fs >=2023
-        - scipy
-        # these are generally (far) behind on migrating abseil/grpc/protobuf,
-        # and using them as test dependencies blocks the migrator unnecessarily
-        # - pytorch
-        # - tensorflow
-        # we're not building java bindings
-        # - jpype1
-        # doesn't get picked up correctly
-        # - libhdfs3
-        # causes segfaults
-        # - sparse
-      source_files:
-        - testing/data
-      commands:
-        - cd ${SP_DIR}                                      # [unix]
-        - cd %SP_DIR%                                       # [win]
-        - export ARROW_TEST_DATA="${SRC_DIR}/testing/data"  # [unix]
-        - set "ARROW_TEST_DATA=%SRC_DIR%\testing\data"      # [win]
-
-        {% set tests_to_skip = "_not_a_real_test" %}
-        # we do not have GPUs in CI --> cannot test cuda
-        {% set tests_to_skip = tests_to_skip + " or test_cuda" + " or test_dlpack_cuda_not_supported"%}
-        # skip tests that raise SIGINT and crash the test suite
-        {% set tests_to_skip = tests_to_skip + " or (test_csv and test_cancellation)" %}  # [linux]
-        {% set tests_to_skip = tests_to_skip + " or (test_flight and test_interrupt)" %}  # [linux]
-        # skip tests that make invalid(-for-conda) assumptions about the compilers setup
-        {% set tests_to_skip = tests_to_skip + " or test_cython_api" %}                   # [unix]
-        {% set tests_to_skip = tests_to_skip + " or test_visit_strings" %}                # [unix]
-        # skip tests that cannot succeed in emulation
-        {% set tests_to_skip = tests_to_skip + " or test_debug_memory_pool_disabled" %}   # [aarch64 or ppc64le]
-        {% set tests_to_skip = tests_to_skip + " or test_env_var_io_thread_count" %}      # [aarch64 or ppc64le]
-        # vvvvvvv TESTS THAT SHOULDN'T HAVE TO BE SKIPPED vvvvvvv
-        # problems with minio
-        {% set tests_to_skip = tests_to_skip + " or (test_delete_dir and S3FileSystem)" %}
-        {% set tests_to_skip = tests_to_skip + " or (test_get_file_info and S3FileSystem)" %}
-        {% set tests_to_skip = tests_to_skip + " or (test_move_directory and S3FileSystem)" %}
-        # XMinioInvalidObjectName on win: "Object name contains unsupported characters"
-        {% set tests_to_skip = tests_to_skip + " or test_write_to_dataset_with_partitions_s3fs" %}  # [win]
-        # flaky test that fails regularly on aarch
-        {% set tests_to_skip = tests_to_skip + " or test_feather_format[serial]" %}                 # [aarch64]
-        # gandiva tests are segfaulting on ppc
-        {% set tests_to_skip = tests_to_skip + " or test_gandiva" %}                                # [ppc64le]
-        # test failures on ppc (both failing with: Float value was truncated converting to int32)
-        {% set tests_to_skip = tests_to_skip + " or test_safe_cast_from_float_with_nans_to_int" %}  # [ppc64le]
-        {% set tests_to_skip = tests_to_skip + " or test_float_with_null_as_integer" %}             # [ppc64le]
-        # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
-        - pytest pyarrow/ -rfEs -k "not ({{ tests_to_skip }})"
-    {% endif %}
-
-    about:
-      home: http://github.com/apache/arrow
-      license: Apache-2.0
-      license_file:
-        - LICENSE.txt
-      summary: Python test files for Apache Arrow
-
 about:
   home: http://github.com/apache/arrow
   license: Apache-2.0
   license_file:
     - LICENSE.txt
-  summary: C++ and Python libraries for Apache Arrow
+  summary: C++ libraries for Apache Arrow
 
 extra:
   recipe-maintainers:
