@@ -200,7 +200,6 @@ outputs:
         - libgoogle-cloud-storage-devel
         - libutf8proc
         - lz4-c
-        - openssl    # [win]
         - orc
         - re2
         - snappy
@@ -291,7 +290,6 @@ outputs:
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
-        - gflags    # [linux]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
@@ -339,7 +337,6 @@ outputs:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
-        - gflags    # [linux]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
@@ -390,7 +387,6 @@ outputs:
         - libprotobuf                            # [build_platform != target_platform]
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
-        - gflags       # [linux]
         - libabseil
         - libgrpc
         - libprotobuf
@@ -447,7 +443,6 @@ outputs:
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
-        - gflags        # [linux]
         - libprotobuf
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
@@ -495,7 +490,6 @@ outputs:
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", max_pin="x") }}
-        - gflags                   # [linux]
         - libutf8proc
         # gandiva requires shared libllvm; needs to match version used at build time
         - llvm {{ llvm_version }}  # [unix]
@@ -557,7 +551,6 @@ outputs:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
         - {{ pin_subpackage("libarrow-dataset", exact=True) }}
-        - gflags     # [linux]
         - libabseil
         - libprotobuf
       run:
@@ -607,7 +600,6 @@ outputs:
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", max_pin="x") }}
-        - gflags        # [linux]
         - openssl
         - thrift-cpp
       run:
