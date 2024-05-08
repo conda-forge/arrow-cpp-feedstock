@@ -8,26 +8,26 @@ jobs:
     vmImage: ubuntu-latest
   strategy:
     matrix:
-      linux_64_cuda_compiler_version11.2:
-        CONFIG: linux_64_cuda_compiler_version11.2
+      linux_64_cuda_compiler_version11.8:
+        CONFIG: linux_64_cuda_compiler_version11.8
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.8
       linux_64_cuda_compiler_versionNone:
         CONFIG: linux_64_cuda_compiler_versionNone
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_aarch64_cuda_compiler_version11.2:
-        CONFIG: linux_aarch64_cuda_compiler_version11.2
+      linux_aarch64_cuda_compiler_version11.8:
+        CONFIG: linux_aarch64_cuda_compiler_version11.8
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.8
       linux_aarch64_cuda_compiler_versionNone:
         CONFIG: linux_aarch64_cuda_compiler_versionNone
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_ppc64le_cuda_compiler_version11.2:
-        CONFIG: linux_ppc64le_cuda_compiler_version11.2
+      linux_ppc64le_cuda_compiler_version11.8:
+        CONFIG: linux_ppc64le_cuda_compiler_version11.8
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.8
       linux_ppc64le_cuda_compiler_versionNone:
         CONFIG: linux_ppc64le_cuda_compiler_versionNone
         UPLOAD_PACKAGES: 'True'
