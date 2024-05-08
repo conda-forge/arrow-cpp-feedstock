@@ -39,8 +39,8 @@ build:
 
 requirements:
   build:
-    - {{ compiler("c") }}
     - {{ stdlib("c") }}
+    - {{ compiler("c") }}
     - {{ compiler("cxx") }}
     - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
     # needs to run protoc & grpc_cpp_plugin
