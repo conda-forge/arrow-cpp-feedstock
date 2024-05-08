@@ -1,0 +1,64 @@
+From 7b76422991536850f3019dc76a8a6bcc616722af Mon Sep 17 00:00:00 2001
+From: Sutou Kouhei <kou@clear-code.com>
+Date: Fri, 26 Apr 2024 17:15:13 +0900
+Subject: [PATCH 1/2] GH-41333: [C++][CMake] Prefer protobuf-config.cmake to
+ FindProtobuf.cmake (#41360)
+
+### Rationale for this change
+
+`protobuf::libprotobuf` provided by `FindProtobuf.cmake` (provided by CMake) may not provide needed dependencies such as Abseil.
+
+### What changes are included in this PR?
+
+Try `protobuf-config.cmake` provided by Protobuf before `FindProtobuf.cmake`.
+`protobuf::libprotobuf` provided by `protobuf-config.cmake` must have needed dependencies.
+
+### Are these changes tested?
+
+Yes.
+
+### Are there any user-facing changes?
+
+Yes.
+* GitHub Issue: #41333
+
+Authored-by: Sutou Kouhei <kou@clear-code.com>
+Signed-off-by: Sutou Kouhei <kou@clear-code.com>
+---
+ cpp/cmake_modules/FindProtobufAlt.cmake | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
+
+diff --git a/cpp/cmake_modules/FindProtobufAlt.cmake b/cpp/cmake_modules/FindProtobufAlt.cmake
+index 15fe1b4f2..f343b42f2 100644
+--- a/cpp/cmake_modules/FindProtobufAlt.cmake
++++ b/cpp/cmake_modules/FindProtobufAlt.cmake
+@@ -28,12 +28,22 @@ endif()
+ if(ProtobufAlt_FIND_QUIETLY)
+   list(APPEND find_package_args QUIET)
+ endif()
+-find_package(Protobuf ${find_package_args})
+-set(ProtobufAlt_FOUND ${Protobuf_FOUND})
++find_package(protobuf CONFIG ${find_package_args})
++set(ProtobufAlt_FOUND ${protobuf_FOUND})
+ if(ProtobufAlt_FOUND)
+-  set(ProtobufAlt_VERSION ${Protobuf_VERSION})
+-  set(ProtobufAlt_VERSION_MAJOR ${Protobuf_VERSION_MAJOR})
+-  set(ProtobufAlt_VERSION_MINOR ${Protobuf_VERSION_MINOR})
+-  set(ProtobufAlt_VERSION_PATCH ${Protobuf_VERSION_PATCH})
+-  set(ProtobufAlt_VERSION_TWEEK ${Protobuf_VERSION_TWEEK})
++  set(ProtobufAlt_VERSION ${protobuf_VERSION})
++  set(ProtobufAlt_VERSION_MAJOR ${protobuf_VERSION_MAJOR})
++  set(ProtobufAlt_VERSION_MINOR ${protobuf_VERSION_MINOR})
++  set(ProtobufAlt_VERSION_PATCH ${protobuf_VERSION_PATCH})
++  set(ProtobufAlt_VERSION_TWEEK ${protobuf_VERSION_TWEEK})
++else()
++  find_package(Protobuf ${find_package_args})
++  set(ProtobufAlt_FOUND ${Protobuf_FOUND})
++  if(ProtobufAlt_FOUND)
++    set(ProtobufAlt_VERSION ${Protobuf_VERSION})
++    set(ProtobufAlt_VERSION_MAJOR ${Protobuf_VERSION_MAJOR})
++    set(ProtobufAlt_VERSION_MINOR ${Protobuf_VERSION_MINOR})
++    set(ProtobufAlt_VERSION_PATCH ${Protobuf_VERSION_PATCH})
++    set(ProtobufAlt_VERSION_TWEEK ${Protobuf_VERSION_TWEEK})
++  endif()
+ endif()

@@ -17,15 +17,17 @@ source:
     fn: apache-arrow-{{ version }}.tar.gz
     sha256: 9f4051ae9473c97991d9af801e2f94ae3455067719ca7f90b8137f9e9a700b8d
     patches:
-      # backport https://github.com/apache/arrow/issues/41333 to find correct protobuf
-      - patches/0002-find-protobuf-config-instead-of-module.patch
+      # backport https://github.com/apache/arrow/pull/41360 to find correct protobuf
+      - patches/0001-GH-41333-C-CMake-Prefer-protobuf-config.cmake-to-Fin.patch
+      # backport https://github.com/apache/arrow/pull/41582
+      - patches/0002-C-CMake-correctly-use-Protobuf_PROTOC_EXECUTABLE.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 25d16511e8d42c2744a1d94d90169e3a36e92631
     folder: testing
 
 build:
-  number: 0
+  number: 1
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -198,7 +200,6 @@ outputs:
         - libgoogle-cloud-storage-devel
         - libutf8proc
         - lz4-c
-        - openssl    # [win]
         - orc
         - re2
         - snappy
@@ -289,7 +290,6 @@ outputs:
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
-        - gflags    # [linux]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
@@ -337,7 +337,6 @@ outputs:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
-        - gflags    # [linux]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
@@ -388,7 +387,6 @@ outputs:
         - libprotobuf                            # [build_platform != target_platform]
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
-        - gflags       # [linux]
         - libabseil
         - libgrpc
         - libprotobuf
@@ -445,7 +443,6 @@ outputs:
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
-        - gflags        # [linux]
         - libprotobuf
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
@@ -493,7 +490,6 @@ outputs:
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", max_pin="x") }}
-        - gflags                   # [linux]
         - libutf8proc
         # gandiva requires shared libllvm; needs to match version used at build time
         - llvm {{ llvm_version }}  # [unix]
@@ -555,7 +551,6 @@ outputs:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
         - {{ pin_subpackage("libarrow-dataset", exact=True) }}
-        - gflags     # [linux]
         - libabseil
         - libprotobuf
       run:
@@ -605,7 +600,6 @@ outputs:
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", max_pin="x") }}
-        - gflags        # [linux]
         - openssl
         - thrift-cpp
       run:
