@@ -31,7 +31,7 @@ source:
     folder: testing
 
 build:
-  number: 6
+  number: 7
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -39,10 +39,22 @@ build:
 
 requirements:
   build:
-    - {{ compiler("c") }}
     - {{ stdlib("c") }}
+    {% if cuda_compiler_version == "None" %}
+    # on osx, keep this in sync with LLVM also needed in build
+    - {{ compiler("c") }} {{ llvm_version }}    # [osx]
+    - {{ compiler("cxx") }} {{ llvm_version }}  # [osx]
+    # linux-aarch hits a compiler bug with GCC 12, upgrade to 13
+    - {{ compiler("c") }} 13                    # [aarch64]
+    - {{ compiler("cxx") }} 13                  # [aarch64]
+    # all other cases use the C & C++ compilers as-is
+    - {{ compiler("c") }}                       # [not (osx or aarch64)]
+    - {{ compiler("cxx") }}                     # [not (osx or aarch64)]
+    {% else %}
+    - {{ compiler("c") }}
     - {{ compiler("cxx") }}
-    - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
+    - {{ compiler("cuda") }}
+    {% endif %}
     # needs to run protoc & grpc_cpp_plugin
     - libgrpc                                # [build_platform != target_platform]
     - libprotobuf                            # [build_platform != target_platform]
