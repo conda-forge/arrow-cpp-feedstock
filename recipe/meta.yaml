@@ -40,9 +40,21 @@ build:
 requirements:
   build:
     - {{ stdlib("c") }}
+    {% if cuda_compiler_version == "None" %}
+    # on osx, keep this in sync with LLVM also needed in build
+    - {{ c_compiler }}_{{ target_platform }} {{ llvm_version }}    # [osx]
+    - {{ cxx_compiler }}_{{ target_platform }} {{ llvm_version }}  # [osx]
+    # linux-aarch hits a compiler bug with GCC 12, upgrade to 13
+    - {{ c_compiler }}_{{ target_platform }} 13                    # [aarch64]
+    - {{ cxx_compiler }}_{{ target_platform }} 13                  # [aarch64]
+    # all other cases use the C & C++ compilers as-is
+    - {{ compiler("c") }}                                          # [not (osx or aarch64)]
+    - {{ compiler("cxx") }}                                        # [not (osx or aarch64)]
+    {% else %}
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
-    - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
+    - {{ compiler("cuda") }}
+    {% endif %}
     # needs to run protoc & grpc_cpp_plugin
     - libgrpc                                # [build_platform != target_platform]
     - libprotobuf                            # [build_platform != target_platform]
