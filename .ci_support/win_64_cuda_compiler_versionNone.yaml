@@ -13,9 +13,9 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- nvcc
+- None
 cuda_compiler_version:
-- '11.8'
+- None
 cuda_compiler_version_min:
 - '11.8'
 cxx_compiler:
@@ -63,7 +63,7 @@ python:
 re2:
 - 2023.09.01
 snappy:
-- '1.2'
+- '1.1'
 target_platform:
 - win-64
 thrift_cpp:
