@@ -11,9 +11,9 @@ c_compiler_version:
 c_stdlib:
 - sysroot
 c_stdlib_version:
-- '2.17'
+- '2.12'
 cdt_name:
-- cos7
+- cos6
 channel_sources:
 - conda-forge
 channel_targets:
@@ -69,9 +69,9 @@ python:
 re2:
 - 2023.09.01
 snappy:
-- '1.2'
+- '1.1'
 target_platform:
-- linux-ppc64le
+- linux-64
 thrift_cpp:
 - 0.19.0
 ucx:
