@@ -49,7 +49,7 @@ orc:
 re2:
 - 2023.09.01
 snappy:
-- '1.2'
+- '1.1'
 target_platform:
 - osx-64
 thrift_cpp:

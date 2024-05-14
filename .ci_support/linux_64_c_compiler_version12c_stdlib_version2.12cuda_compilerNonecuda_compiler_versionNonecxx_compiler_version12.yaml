@@ -7,29 +7,29 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '10'
+- '12'
 c_stdlib:
 - sysroot
 c_stdlib_version:
-- '2.17'
+- '2.12'
 cdt_name:
-- cos7
+- cos6
 channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- nvcc
+- None
 cuda_compiler_version:
-- '11.8'
+- None
 cuda_compiler_version_min:
 - '11.8'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '10'
+- '12'
 docker_image:
-- quay.io/condaforge/linux-anvil-cuda:11.8
+- quay.io/condaforge/linux-anvil-cos7-x86_64
 gflags:
 - '2.2'
 glog:
@@ -53,9 +53,9 @@ orc:
 re2:
 - 2023.09.01
 snappy:
-- '1.2'
+- '1.1'
 target_platform:
-- linux-ppc64le
+- linux-64
 thrift_cpp:
 - 0.19.0
 ucx:
