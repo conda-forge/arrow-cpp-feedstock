@@ -6,7 +6,6 @@ bot:
   - 15.x
   - 14.x
   - 13.x
-  - 12.x
 build_platform:
   linux_aarch64: linux_64
   linux_ppc64le: linux_64
