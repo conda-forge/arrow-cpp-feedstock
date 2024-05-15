@@ -104,7 +104,7 @@ outputs:
       summary: A meta-package to select Arrow build variant
 
   - name: libarrow-all
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -152,7 +152,7 @@ outputs:
       summary: C++ libraries for Apache Arrow
 
   - name: libarrow
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -271,7 +271,7 @@ outputs:
       summary: C++ libraries for Apache Arrow core
 
   - name: libarrow-acero
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -316,7 +316,7 @@ outputs:
       summary: C++ libraries for Apache Arrow Acero
 
   - name: libarrow-dataset
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -365,7 +365,7 @@ outputs:
       summary: C++ libraries for Apache Arrow Dataset
 
   - name: libarrow-flight
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -420,7 +420,7 @@ outputs:
       summary: C++ libraries for Apache Arrow Flight
 
   - name: libarrow-flight-sql
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -471,7 +471,7 @@ outputs:
       summary: C++ libraries for Apache Arrow Flight SQL
 
   - name: libarrow-gandiva
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -523,7 +523,7 @@ outputs:
       summary: C++ libraries for Apache Arrow Gandiva
 
   - name: libarrow-substrait
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -580,7 +580,7 @@ outputs:
       summary: C++ libraries for Apache Arrow Substrait
 
   - name: libparquet
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
