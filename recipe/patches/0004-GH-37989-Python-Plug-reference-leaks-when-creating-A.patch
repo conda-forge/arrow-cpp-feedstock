@@ -1,0 +1,156 @@
+From 6f771ab6d58243e8d73cbabdd53d4ef0df37ef75 Mon Sep 17 00:00:00 2001
+From: Chun Yang <Chuck.Yang@gmail.com>
+Date: Fri, 15 Mar 2024 08:33:00 -0700
+Subject: [PATCH 4/5] GH-37989: [Python] Plug reference leaks when creating
+ Arrow array from Python list of dicts (#40412)
+
+### Rationale for this change
+
+When creating Arrow arrays using `pa.array` from lists of dicts, memory usage is observed to increase over time despite the created arrays going out of scope. The issue appears to only happen for lists of dicts, as opposed to lists of numpy arrays or other types.
+
+### What changes are included in this PR?
+
+This PR makes two changes to _python_to_arrow.cc_, to ensure that new references created by [`PyDict_Items`](https://docs.python.org/3/c-api/dict.html#c.PyDict_Items) and [`PySequence_GetItem`](https://docs.python.org/3/c-api/sequence.html#c.PySequence_GetItem) are properly reference counted via `OwnedRef`.
+
+### Are these changes tested?
+
+The change was tested against the following reproduction script:
+```python
+"""Repro memory increase observed when creating pyarrow arrays."""
+
+# System imports
+import logging
+
+# Third-party imports
+import numpy as np
+import psutil
+import pyarrow as pa
+
+LIST_LENGTH = 5 * (2**20)
+LOGGER = logging.getLogger(__name__)
+
+def initialize_logging() -> None:
+    logging.basicConfig(
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+    )
+
+def get_rss_in_mib() -> float:
+    """Return the Resident Set Size of the current process in MiB."""
+    return psutil.Process().memory_info().rss / 1024 / 1024
+
+def main() -> None:
+    initialize_logging()
+
+    for idx in range(100):
+        data = np.random.randint(256, size=(LIST_LENGTH,), dtype=np.uint8)
+        # data = "a" * LIST_LENGTH
+        pa.array([{"data": data}])
+        if (idx + 1) % 10 == 0:
+            LOGGER.info(
+                "%d dict arrays created, RSS: %.2f MiB", idx + 1, get_rss_in_mib()
+            )
+
+    LOGGER.info("---------")
+
+    for idx in range(100):
+        pa.array(
+            [
+                np.random.randint(256, size=(LIST_LENGTH,), dtype=np.uint8).tobytes(),
+            ]
+        )
+        if (idx + 1) % 10 == 0:
+            LOGGER.info(
+                "%d non-dict arrays created, RSS: %.2f MiB", idx + 1, get_rss_in_mib()
+            )
+
+if __name__ == "__main__":
+    main()
+```
+
+Prior to this change, the reproduction script produces the following output:
+```
+2024-03-07 23:14:17,560 - __main__ - INFO - 10 dict arrays created, RSS: 121.05 MiB
+2024-03-07 23:14:17,698 - __main__ - INFO - 20 dict arrays created, RSS: 171.07 MiB
+2024-03-07 23:14:17,835 - __main__ - INFO - 30 dict arrays created, RSS: 221.09 MiB
+2024-03-07 23:14:17,971 - __main__ - INFO - 40 dict arrays created, RSS: 271.11 MiB
+2024-03-07 23:14:18,109 - __main__ - INFO - 50 dict arrays created, RSS: 320.86 MiB
+2024-03-07 23:14:18,245 - __main__ - INFO - 60 dict arrays created, RSS: 371.65 MiB
+2024-03-07 23:14:18,380 - __main__ - INFO - 70 dict arrays created, RSS: 422.18 MiB
+2024-03-07 23:14:18,516 - __main__ - INFO - 80 dict arrays created, RSS: 472.20 MiB
+2024-03-07 23:14:18,650 - __main__ - INFO - 90 dict arrays created, RSS: 522.21 MiB
+2024-03-07 23:14:18,788 - __main__ - INFO - 100 dict arrays created, RSS: 572.23 MiB
+2024-03-07 23:14:18,789 - __main__ - INFO - ---------
+2024-03-07 23:14:19,001 - __main__ - INFO - 10 non-dict arrays created, RSS: 567.61 MiB
+2024-03-07 23:14:19,211 - __main__ - INFO - 20 non-dict arrays created, RSS: 567.61 MiB
+2024-03-07 23:14:19,417 - __main__ - INFO - 30 non-dict arrays created, RSS: 567.61 MiB
+2024-03-07 23:14:19,623 - __main__ - INFO - 40 non-dict arrays created, RSS: 567.61 MiB
+2024-03-07 23:14:19,832 - __main__ - INFO - 50 non-dict arrays created, RSS: 567.61 MiB
+2024-03-07 23:14:20,047 - __main__ - INFO - 60 non-dict arrays created, RSS: 567.61 MiB
+2024-03-07 23:14:20,253 - __main__ - INFO - 70 non-dict arrays created, RSS: 567.61 MiB
+2024-03-07 23:14:20,499 - __main__ - INFO - 80 non-dict arrays created, RSS: 567.61 MiB
+2024-03-07 23:14:20,725 - __main__ - INFO - 90 non-dict arrays created, RSS: 567.61 MiB
+2024-03-07 23:14:20,950 - __main__ - INFO - 100 non-dict arrays created, RSS: 567.61 MiB
+```
+
+After this change, the output changes to the following. Notice that the Resident Set Size (RSS) no longer increases as more Arrow arrays are created from list of dict.
+```
+2024-03-07 23:14:47,246 - __main__ - INFO - 10 dict arrays created, RSS: 81.73 MiB
+2024-03-07 23:14:47,353 - __main__ - INFO - 20 dict arrays created, RSS: 76.53 MiB
+2024-03-07 23:14:47,445 - __main__ - INFO - 30 dict arrays created, RSS: 82.20 MiB
+2024-03-07 23:14:47,537 - __main__ - INFO - 40 dict arrays created, RSS: 86.59 MiB
+2024-03-07 23:14:47,634 - __main__ - INFO - 50 dict arrays created, RSS: 80.28 MiB
+2024-03-07 23:14:47,734 - __main__ - INFO - 60 dict arrays created, RSS: 85.44 MiB
+2024-03-07 23:14:47,827 - __main__ - INFO - 70 dict arrays created, RSS: 85.44 MiB
+2024-03-07 23:14:47,921 - __main__ - INFO - 80 dict arrays created, RSS: 85.44 MiB
+2024-03-07 23:14:48,024 - __main__ - INFO - 90 dict arrays created, RSS: 82.94 MiB
+2024-03-07 23:14:48,132 - __main__ - INFO - 100 dict arrays created, RSS: 87.84 MiB
+2024-03-07 23:14:48,132 - __main__ - INFO - ---------
+2024-03-07 23:14:48,229 - __main__ - INFO - 10 non-dict arrays created, RSS: 87.84 MiB
+2024-03-07 23:14:48,324 - __main__ - INFO - 20 non-dict arrays created, RSS: 87.84 MiB
+2024-03-07 23:14:48,420 - __main__ - INFO - 30 non-dict arrays created, RSS: 87.84 MiB
+2024-03-07 23:14:48,516 - __main__ - INFO - 40 non-dict arrays created, RSS: 87.84 MiB
+2024-03-07 23:14:48,613 - __main__ - INFO - 50 non-dict arrays created, RSS: 87.84 MiB
+2024-03-07 23:14:48,710 - __main__ - INFO - 60 non-dict arrays created, RSS: 87.84 MiB
+2024-03-07 23:14:48,806 - __main__ - INFO - 70 non-dict arrays created, RSS: 87.84 MiB
+2024-03-07 23:14:48,905 - __main__ - INFO - 80 non-dict arrays created, RSS: 87.84 MiB
+2024-03-07 23:14:49,009 - __main__ - INFO - 90 non-dict arrays created, RSS: 87.84 MiB
+2024-03-07 23:14:49,108 - __main__ - INFO - 100 non-dict arrays created, RSS: 87.84 MiB
+```
+
+When this change is tested against the reproduction script provided in https://github.com/apache/arrow/issues/37989#issue-1924129600, the reported memory increase is no longer observed.
+
+I have not added a unit test, but it may be possible to add one similar to the reproduction scripts used above, provided there's an accurate way to capture process memory usage on all the platforms that Arrow supports, and provided memory usage is not affected by concurrently running tests. If this code could be tested under valgrind, that may be an even better way to go.
+
+### Are there any user-facing changes?
+
+* GitHub Issue: #37989
+
+Authored-by: Chuck Yang <chuck.yang@getcruise.com>
+Signed-off-by: Joris Van den Bossche <jorisvandenbossche@gmail.com>
+---
+ python/pyarrow/src/arrow/python/python_to_arrow.cc | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/python/pyarrow/src/arrow/python/python_to_arrow.cc b/python/pyarrow/src/arrow/python/python_to_arrow.cc
+index 214312935..3907147dc 100644
+--- a/python/pyarrow/src/arrow/python/python_to_arrow.cc
++++ b/python/pyarrow/src/arrow/python/python_to_arrow.cc
+@@ -1037,7 +1037,8 @@ class PyStructConverter : public StructConverter<PyConverter, PyConverterTrait>
+       case KeyKind::BYTES:
+         return AppendDict(dict, bytes_field_names_.obj());
+       default:
+-        RETURN_NOT_OK(InferKeyKind(PyDict_Items(dict)));
++        OwnedRef item_ref(PyDict_Items(dict));
++        RETURN_NOT_OK(InferKeyKind(item_ref.obj()));
+         if (key_kind_ == KeyKind::UNKNOWN) {
+           // was unable to infer the type which means that all keys are absent
+           return AppendEmpty();
+@@ -1083,6 +1084,7 @@ class PyStructConverter : public StructConverter<PyConverter, PyConverterTrait>
+   Result<std::pair<PyObject*, PyObject*>> GetKeyValuePair(PyObject* seq, int index) {
+     PyObject* pair = PySequence_GetItem(seq, index);
+     RETURN_IF_PYERROR();
++    OwnedRef pair_ref(pair);  // ensure reference count is decreased at scope end
+     if (!PyTuple_Check(pair) || PyTuple_Size(pair) != 2) {
+       return internal::InvalidType(pair, "was expecting tuple of (key, value) pair");
+     }
