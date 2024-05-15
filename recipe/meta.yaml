@@ -694,6 +694,8 @@ outputs:
         - {{ pin_subpackage("libparquet", exact=True) }}
         - {{ pin_compatible('numpy') }}
         - python
+        # orc>=2.0.1 will look in $CONDA_PREFIX/share/zoneinfo
+        - tzdata
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
 
