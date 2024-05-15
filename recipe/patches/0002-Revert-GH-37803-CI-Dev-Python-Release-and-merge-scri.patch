@@ -1,7 +1,7 @@
-From 1c34f1ef9759cbad61546947f41e8f055cae20bb Mon Sep 17 00:00:00 2001
+From 083c7a83bde9e4f6bbfd8a669d2dda2a99a310b6 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Tue, 20 Feb 2024 13:01:37 +1100
-Subject: [PATCH 2/4] Revert "GH-37803: [CI][Dev][Python] Release and merge
+Subject: [PATCH 2/5] Revert "GH-37803: [CI][Dev][Python] Release and merge
  script errors (#37819)"
 
 This reverts commit 79e49dbfb71efc70555417ba19cb612eb50924e8.
@@ -42,11 +42,11 @@ index 59b799720..347294650 100644
 +setuptools_scm
  toolz
 diff --git a/ci/conda_env_python.txt b/ci/conda_env_python.txt
-index 972034421..4018ed200 100644
+index 59e2def1b..19e94d7d3 100644
 --- a/ci/conda_env_python.txt
 +++ b/ci/conda_env_python.txt
-@@ -28,4 +28,4 @@ pytest-faulthandler
- pytest-lazy-fixture
+@@ -27,4 +27,4 @@ pytest<8
+ pytest-faulthandler
  s3fs>=2023.10.0
  setuptools
 -setuptools_scm<8.0.0
@@ -65,7 +65,7 @@ index 2ecc72e04..02a8b3429 100755
                          'setuptools_scm'],
      'docker': ['ruamel.yaml', 'python-dotenv'],
 diff --git a/dev/tasks/conda-recipes/arrow-cpp/meta.yaml b/dev/tasks/conda-recipes/arrow-cpp/meta.yaml
-index b8ffbfdb7..8ceada1af 100644
+index 367445c59..10ee9c28f 100644
 --- a/dev/tasks/conda-recipes/arrow-cpp/meta.yaml
 +++ b/dev/tasks/conda-recipes/arrow-cpp/meta.yaml
 @@ -240,7 +240,7 @@ outputs:
@@ -121,7 +121,7 @@ index f42ee4a01..6043d2ffb 100644
  setuptools>=58
  wheel
 diff --git a/python/setup.py b/python/setup.py
-index eb9f72ac3..49e2dea15 100755
+index 5a3cbbc61..d36edd395 100755
 --- a/python/setup.py
 +++ b/python/setup.py
 @@ -492,7 +492,7 @@ setup(
