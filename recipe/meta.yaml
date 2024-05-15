@@ -803,6 +803,7 @@ outputs:
         - pandas
         - s3fs >=2023
         - scipy
+        - sparse
         # these are generally (far) behind on migrating abseil/grpc/protobuf,
         # and using them as test dependencies blocks the migrator unnecessarily
         # - pytorch
@@ -811,8 +812,6 @@ outputs:
         # - jpype1
         # doesn't get picked up correctly
         # - libhdfs3
-        # causes segfaults
-        # - sparse
       source_files:
         - testing/data
       commands:
