@@ -25,7 +25,7 @@ source:
     folder: testing
 
 build:
-  number: 0
+  number: 1
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -110,14 +110,14 @@ outputs:
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       run_exports:
-        - {{ pin_subpackage("libarrow", max_pin="x") }}
-        - {{ pin_subpackage("libarrow-acero", max_pin="x") }}
-        - {{ pin_subpackage("libarrow-dataset", max_pin="x") }}
-        - {{ pin_subpackage("libarrow-flight", max_pin="x") }}
-        - {{ pin_subpackage("libarrow-flight-sql", max_pin="x") }}
-        - {{ pin_subpackage("libarrow-gandiva", max_pin="x") }}
-        - {{ pin_subpackage("libarrow-substrait", max_pin="x") }}
-        - {{ pin_subpackage("libparquet", max_pin="x") }}
+        - {{ pin_subpackage("libarrow", max_pin="x.x") }}
+        - {{ pin_subpackage("libarrow-acero", max_pin="x.x") }}
+        - {{ pin_subpackage("libarrow-dataset", max_pin="x.x") }}
+        - {{ pin_subpackage("libarrow-flight", max_pin="x.x") }}
+        - {{ pin_subpackage("libarrow-flight-sql", max_pin="x.x") }}
+        - {{ pin_subpackage("libarrow-gandiva", max_pin="x.x") }}
+        - {{ pin_subpackage("libarrow-substrait", max_pin="x.x") }}
+        - {{ pin_subpackage("libparquet", max_pin="x.x") }}
     requirements:
       build:
         - cmake
@@ -158,7 +158,7 @@ outputs:
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       run_exports:
-        - {{ pin_subpackage("libarrow", max_pin="x") }}
+        - {{ pin_subpackage("libarrow", max_pin="x.x") }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
         # arrow only uses headers on osx/win, apparently
@@ -277,7 +277,7 @@ outputs:
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       run_exports:
-        - {{ pin_subpackage("libarrow-acero", max_pin="x") }}
+        - {{ pin_subpackage("libarrow-acero", max_pin="x.x") }}
     requirements:
       build:
         - cmake
@@ -322,7 +322,7 @@ outputs:
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       run_exports:
-        - {{ pin_subpackage("libarrow-dataset", max_pin="x") }}
+        - {{ pin_subpackage("libarrow-dataset", max_pin="x.x") }}
     requirements:
       build:
         - cmake
@@ -371,7 +371,7 @@ outputs:
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       run_exports:
-        - {{ pin_subpackage("libarrow-flight", max_pin="x") }}
+        - {{ pin_subpackage("libarrow-flight", max_pin="x.x") }}
     requirements:
       build:
         - cmake
@@ -426,7 +426,7 @@ outputs:
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       run_exports:
-        - {{ pin_subpackage("libarrow-flight-sql", max_pin="x") }}
+        - {{ pin_subpackage("libarrow-flight-sql", max_pin="x.x") }}
     requirements:
       build:
         - cmake
@@ -477,7 +477,7 @@ outputs:
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       run_exports:
-        - {{ pin_subpackage("libarrow-gandiva", max_pin="x") }}
+        - {{ pin_subpackage("libarrow-gandiva", max_pin="x.x") }}
     requirements:
       build:
         - cmake
@@ -487,7 +487,7 @@ outputs:
         - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
       host:
-        - {{ pin_subpackage("libarrow", max_pin="x") }}
+        - {{ pin_subpackage("libarrow", exact=True) }}
         - libutf8proc
         # gandiva requires shared libllvm; needs to match version used at build time
         - llvm {{ llvm_version }}  # [unix]
@@ -529,7 +529,7 @@ outputs:
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       run_exports:
-        - {{ pin_subpackage("libarrow-substrait", max_pin="x") }}
+        - {{ pin_subpackage("libarrow-substrait", max_pin="x.x") }}
     requirements:
       build:
         - cmake
@@ -586,7 +586,7 @@ outputs:
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       run_exports:
-        - {{ pin_subpackage("libparquet", max_pin="x") }}
+        - {{ pin_subpackage("libparquet", max_pin="x.x") }}
     requirements:
       build:
         - cmake
@@ -596,7 +596,7 @@ outputs:
         - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
       host:
-        - {{ pin_subpackage("libarrow", max_pin="x") }}
+        - {{ pin_subpackage("libarrow", exact=True) }}
         - openssl
         - thrift-cpp
       run:
