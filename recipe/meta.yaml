@@ -2,7 +2,7 @@
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
-{% set proc_build_number = "1" %}
+{% set proc_build_number = "0" %}
 {% set llvm_version = "16" %}
 
 # see https://github.com/apache/arrow/blob/apache-arrow-10.0.1/cpp/CMakeLists.txt#L88-L90
@@ -487,7 +487,7 @@ outputs:
         - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
       host:
-        - {{ pin_subpackage("libarrow", max_pin="x") }}
+        - {{ pin_subpackage("libarrow", exact=True) }}
         - libutf8proc
         # gandiva requires shared libllvm; needs to match version used at build time
         - llvm {{ llvm_version }}  # [unix]
@@ -596,7 +596,7 @@ outputs:
         - {{ stdlib("c") }}
         - {{ compiler("cxx") }}
       host:
-        - {{ pin_subpackage("libarrow", max_pin="x") }}
+        - {{ pin_subpackage("libarrow", exact=True) }}
         - openssl
         - thrift-cpp
       run:
