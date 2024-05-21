@@ -33,7 +33,7 @@ source:
     folder: testing
 
 build:
-  number: 9
+  number: 10
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -694,6 +694,8 @@ outputs:
         - {{ pin_subpackage("libparquet", exact=True) }}
         - {{ pin_compatible('numpy') }}
         - python
+        # orc>=2.0.1 will look in $CONDA_PREFIX/share/zoneinfo
+        - tzdata
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
 
@@ -706,7 +708,7 @@ outputs:
         - pyarrow.compute
         - pyarrow.flight
         - pyarrow.gandiva
-        - pyarrow.orc      # [unix]
+        - pyarrow.orc
         - pyarrow.parquet
         - pyarrow.fs
         - pyarrow._s3fs
