@@ -1,0 +1,20 @@
+From ed4501ce6b52b37ae6deb910804ba9acde69b91f Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Mon, 27 May 2024 10:58:45 +1100
+Subject: [PATCH 2/2] ensure orc version gets set correctly
+
+Suggested-By: Sutou Kouhei <kou@clear-code.com>
+---
+ cpp/cmake_modules/FindorcAlt.cmake | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/cpp/cmake_modules/FindorcAlt.cmake b/cpp/cmake_modules/FindorcAlt.cmake
+index 289416678..ce8cd11b4 100644
+--- a/cpp/cmake_modules/FindorcAlt.cmake
++++ b/cpp/cmake_modules/FindorcAlt.cmake
+@@ -71,4 +71,5 @@ if(orcAlt_FOUND)
+                           PROPERTIES IMPORTED_LOCATION "${ORC_STATIC_LIB}"
+                                      INTERFACE_INCLUDE_DIRECTORIES "${ORC_INCLUDE_DIR}")
+   endif()
++  set(orcAlt_VERSION ${ORC_VERSION})
+ endif()

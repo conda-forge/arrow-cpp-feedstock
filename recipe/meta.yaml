@@ -20,7 +20,7 @@ source:
       # backport https://github.com/apache/arrow/pull/41582
       - patches/0001-C-CMake-correctly-use-Protobuf_PROTOC_EXECUTABLE.patch
       # fix for https://github.com/apache/arrow/issues/41755
-      - patches/0002-teach-CheckTimeZoneDatabaseAvailability-how-to-inspe.patch
+      - patches/0002-ensure-orc-version-gets-set-correctly.patch
       # workaround for https://github.com/apache/arrow/issues/37692
       - patches/0001-fixture-teardown-should-not-fail-test.patch
       # backport https://github.com/apache/arrow/pull/41754
