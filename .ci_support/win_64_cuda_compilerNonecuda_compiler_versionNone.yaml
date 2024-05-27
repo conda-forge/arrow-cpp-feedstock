@@ -26,6 +26,11 @@ glog:
 - '0.7'
 libabseil:
 - '20240116'
+libarrow_all:
+- '13'
+- '14'
+- '15'
+- '16.1'
 libcrc32c:
 - '1.1'
 libcurl:
@@ -40,10 +45,26 @@ libprotobuf:
 - 4.25.3
 lz4_c:
 - 1.9.3
+numpy:
+- '1.22'
+- '1.23'
+- '1.26'
+- '1.22'
+- '1.22'
 openssl:
 - '3'
 orc:
 - 2.0.1
+pin_run_as_build:
+  python:
+    min_pin: x.x
+    max_pin: x.x
+python:
+- 3.10.* *_cpython
+- 3.11.* *_cpython
+- 3.12.* *_cpython
+- 3.8.* *_cpython
+- 3.9.* *_cpython
 re2:
 - 2023.09.01
 snappy:
@@ -55,6 +76,8 @@ thrift_cpp:
 zip_keys:
 - - cuda_compiler
   - cuda_compiler_version
+- - python
+  - numpy
 zlib:
 - '1.2'
 zstd:
