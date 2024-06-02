@@ -17,7 +17,7 @@ c_stdlib:
 c_stdlib_version:
 - '10.13'
 channel_sources:
-- conda-forge
+- conda-forge/label/numpy_rc,conda-forge
 channel_targets:
 - conda-forge main
 cuda_compiler_version:
@@ -45,11 +45,11 @@ lz4_c:
 macos_machine:
 - x86_64-apple-darwin13.4.0
 numpy:
+- '2.0'
+- '2.0'
+- '2.0'
 - '1.22'
-- '1.23'
-- '1.26'
-- '1.22'
-- '1.22'
+- '2.0'
 openssl:
 - '3'
 orc:
