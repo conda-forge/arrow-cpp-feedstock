@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.26.9
+- 0.26.10
 aws_sdk_cpp:
 - 1.11.329
 bzip2:
@@ -87,6 +87,6 @@ zip_keys:
 - - python
   - numpy
 zlib:
-- '1.2'
+- '1'
 zstd:
 - '1.5'
