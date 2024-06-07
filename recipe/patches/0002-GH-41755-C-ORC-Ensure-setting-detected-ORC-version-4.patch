@@ -1,0 +1,29 @@
+From 46e9404a3c506626b7b89d5b4f10cd40f86f2e75 Mon Sep 17 00:00:00 2001
+From: h-vetinari <h.vetinari@gmx.com>
+Date: Mon, 27 May 2024 18:59:52 +1100
+Subject: [PATCH 2/2] GH-41755: [C++][ORC] Ensure setting detected ORC version
+ (#41767)
+
+`FindorcAlt.cmake` doesn't set `orcAlt_VERSION` when it finds ORC by `find_library()`/`find_path()`. If `orcAlt_VERSION` isn't set, ORC version detection by caller is failed.
+
+`cpp/src/arrow/adapters/orc/adapter.cc` uses detected ORC version. If detected ORC version isn't correct, needless time zone database check is used.
+
+Deployed in conda-forge through https://github.com/conda-forge/arrow-cpp-feedstock/pull/1424 and confirmed as working in https://github.com/conda-forge/pyarrow-feedstock/pull/122
+* GitHub Issue: #41755
+
+Authored-by: H. Vetinari <h.vetinari@gmx.com>
+Signed-off-by: Sutou Kouhei <kou@clear-code.com>
+---
+ cpp/cmake_modules/FindorcAlt.cmake | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/cpp/cmake_modules/FindorcAlt.cmake b/cpp/cmake_modules/FindorcAlt.cmake
+index 289416678..ce8cd11b4 100644
+--- a/cpp/cmake_modules/FindorcAlt.cmake
++++ b/cpp/cmake_modules/FindorcAlt.cmake
+@@ -71,4 +71,5 @@ if(orcAlt_FOUND)
+                           PROPERTIES IMPORTED_LOCATION "${ORC_STATIC_LIB}"
+                                      INTERFACE_INCLUDE_DIRECTORIES "${ORC_INCLUDE_DIR}")
+   endif()
++  set(orcAlt_VERSION ${ORC_VERSION})
+ endif()
