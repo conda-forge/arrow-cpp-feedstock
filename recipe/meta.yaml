@@ -28,6 +28,8 @@ source:
       - patches/0004-GH-48593-C-C-20-use-standard-calendar-timezone-APIs.patch
       # disable gandiva tests that are "unmaintained" and failing on windows
       - patches/0005-disable-some-gandiva-tests-related-to-tzdb-handling.patch      # [win]
+      # possible fix for https://github.com/apache/arrow/issues/41990
+      - patches/0006-avoid-std-unique_ptr-Impl-in-azurefs.cc.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
@@ -70,12 +72,10 @@ requirements:
     - llvmdev {{ llvm_version }}
     - aws-crt-cpp
     - aws-sdk-cpp
-    # azure filesystem dependencies, currently broken on windows, see
-    # https://github.com/apache/arrow/issues/41990
-    - azure-core-cpp                    # [unix]
-    - azure-identity-cpp                # [unix]
-    - azure-storage-blobs-cpp           # [unix]
-    - azure-storage-files-datalake-cpp  # [unix]
+    - azure-core-cpp
+    - azure-identity-cpp
+    - azure-storage-blobs-cpp
+    - azure-storage-files-datalake-cpp
     - brotli
     - bzip2
     - gflags
@@ -223,10 +223,10 @@ outputs:
       host:
         - aws-crt-cpp
         - aws-sdk-cpp
-        - azure-core-cpp                    # [unix]
-        - azure-identity-cpp                # [unix]
-        - azure-storage-blobs-cpp           # [unix]
-        - azure-storage-files-datalake-cpp  # [unix]
+        - azure-core-cpp
+        - azure-identity-cpp
+        - azure-storage-blobs-cpp
+        - azure-storage-files-datalake-cpp
         - brotli
         - bzip2
         - gflags
