@@ -1,7 +1,7 @@
-From 66a9cf9de4991c3e48c553772763b2eda5a7b6de Mon Sep 17 00:00:00 2001
+From be7e069caf23dfd012fcfaeb22ea37bf8265a543 Mon Sep 17 00:00:00 2001
 From: David Li <li.davidm96@gmail.com>
 Date: Sun, 12 Jan 2025 20:16:43 -0500
-Subject: [PATCH 3/3] MINOR: [C++] Disable Flight test
+Subject: [PATCH 3/4] MINOR: [C++] Disable Flight test
 
 ---
  cpp/src/arrow/flight/test_definitions.h | 3 ++-
