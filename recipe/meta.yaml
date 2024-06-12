@@ -16,6 +16,9 @@ source:
   - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
     fn: apache-arrow-{{ version }}.tar.gz
     sha256: 9d280d8042e7cf526f8c28d170d93bfab65e50f94569f6a790982a878d8d898d
+    patches:
+      # possible fix for https://github.com/apache/arrow/issues/41990
+      - patches/0001-avoid-std-unique_ptr-Impl-in-azurefs.cc.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 735ae7128d571398dd798d7ff004adebeb342883
@@ -53,12 +56,10 @@ requirements:
     - llvmdev {{ llvm_version }}
     - aws-crt-cpp
     - aws-sdk-cpp
-    # azure filesystem dependencies, currently broken on windows, see
-    # https://github.com/apache/arrow/issues/41990
-    - azure-core-cpp                    # [unix]
-    - azure-identity-cpp                # [unix]
-    - azure-storage-blobs-cpp           # [unix]
-    - azure-storage-files-datalake-cpp  # [unix]
+    - azure-core-cpp
+    - azure-identity-cpp
+    - azure-storage-blobs-cpp
+    - azure-storage-files-datalake-cpp
     - brotli
     - bzip2
     # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
@@ -186,10 +187,10 @@ outputs:
       host:
         - aws-crt-cpp
         - aws-sdk-cpp
-        - azure-core-cpp                    # [unix]
-        - azure-identity-cpp                # [unix]
-        - azure-storage-blobs-cpp           # [unix]
-        - azure-storage-files-datalake-cpp  # [unix]
+        - azure-core-cpp
+        - azure-identity-cpp
+        - azure-storage-blobs-cpp
+        - azure-storage-files-datalake-cpp
         - brotli
         - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
