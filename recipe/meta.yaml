@@ -29,6 +29,8 @@ source:
       - patches/0005-MINOR-Python-try-harder-to-set-up-s3_server-fixture-.patch
       # backport https://github.com/apache/arrow/pull/40418 to be able to compile against numpy 2.0
       - patches/0006-GH-40376-Python-Update-for-NumPy-2.0-ABI-change-in-P.patch
+      # backport https://github.com/apache/arrow/pull/42099
+      - patches/0007-GH-41924-Python-Fix-tests-when-using-NumPy-2.0-on-Wi.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: ad82a736c170e97b7c8c035ebd8a801c17eec170

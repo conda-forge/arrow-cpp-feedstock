@@ -1,0 +1,51 @@
+From 3f2604a947fb6b445eff65d51fc469ff0729c03f Mon Sep 17 00:00:00 2001
+From: Joris Van den Bossche <jorisvandenbossche@gmail.com>
+Date: Tue, 11 Jun 2024 12:09:08 +0200
+Subject: [PATCH 7/7] GH-41924: [Python] Fix tests when using NumPy 2.0 on
+ Windows
+
+---
+ python/pyarrow/tests/parquet/common.py | 2 +-
+ python/pyarrow/tests/test_pandas.py    | 2 +-
+ python/scripts/test_leak.py            | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/python/pyarrow/tests/parquet/common.py b/python/pyarrow/tests/parquet/common.py
+index 8365ed5b28..c3094ee20b 100644
+--- a/python/pyarrow/tests/parquet/common.py
++++ b/python/pyarrow/tests/parquet/common.py
+@@ -83,7 +83,7 @@ def _random_integers(size, dtype):
+     iinfo = np.iinfo(dtype)
+     return np.random.randint(max(iinfo.min, platform_int_info.min),
+                              min(iinfo.max, platform_int_info.max),
+-                             size=size).astype(dtype)
++                             size=size, dtype=dtype)
+ 
+ 
+ def _range_integers(size, dtype):
+diff --git a/python/pyarrow/tests/test_pandas.py b/python/pyarrow/tests/test_pandas.py
+index 8fd4b3041b..3d5928889e 100644
+--- a/python/pyarrow/tests/test_pandas.py
++++ b/python/pyarrow/tests/test_pandas.py
+@@ -762,7 +762,7 @@ class TestConvertPrimitiveTypes:
+             info = np.iinfo(dtype)
+             values = np.random.randint(max(info.min, np.iinfo(np.int_).min),
+                                        min(info.max, np.iinfo(np.int_).max),
+-                                       size=num_values)
++                                       size=num_values, dtype=dtype)
+             data[dtype] = values.astype(dtype)
+             fields.append(pa.field(dtype, arrow_dtype))
+ 
+diff --git a/python/scripts/test_leak.py b/python/scripts/test_leak.py
+index f2bbe8d051..86a87f5e74 100644
+--- a/python/scripts/test_leak.py
++++ b/python/scripts/test_leak.py
+@@ -98,7 +98,7 @@ def test_leak3():
+ 
+ 
+ def test_ARROW_8801():
+-    x = pd.to_datetime(np.random.randint(0, 2**32, size=2**20),
++    x = pd.to_datetime(np.random.randint(0, 2**32, size=2**20, dtype=np.int64),
+                        unit='ms', utc=True)
+     table = pa.table(pd.DataFrame({'x': x}))
+ 
