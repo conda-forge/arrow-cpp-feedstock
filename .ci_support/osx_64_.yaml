@@ -33,9 +33,9 @@ glog:
 libabseil:
 - '20240116'
 libgoogle_cloud_devel:
-- '2.24'
+- '2.25'
 libgoogle_cloud_storage_devel:
-- '2.24'
+- '2.25'
 libgrpc:
 - '1.62'
 libprotobuf:
