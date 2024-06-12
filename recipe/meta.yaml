@@ -68,12 +68,10 @@ requirements:
     - llvmdev {{ llvm_version }}
     - aws-crt-cpp
     - aws-sdk-cpp
-    # azure filesystem dependencies, currently broken on windows, see
-    # https://github.com/apache/arrow/issues/41990
-    - azure-core-cpp                    # [unix]
-    - azure-identity-cpp                # [unix]
-    - azure-storage-blobs-cpp           # [unix]
-    - azure-storage-files-datalake-cpp  # [unix]
+    - azure-core-cpp
+    - azure-identity-cpp
+    - azure-storage-blobs-cpp
+    - azure-storage-files-datalake-cpp
     - brotli
     - bzip2
     - gflags
@@ -221,10 +219,10 @@ outputs:
       host:
         - aws-crt-cpp
         - aws-sdk-cpp
-        - azure-core-cpp                    # [unix]
-        - azure-identity-cpp                # [unix]
-        - azure-storage-blobs-cpp           # [unix]
-        - azure-storage-files-datalake-cpp  # [unix]
+        - azure-core-cpp
+        - azure-identity-cpp
+        - azure-storage-blobs-cpp
+        - azure-storage-files-datalake-cpp
         - brotli
         - bzip2
         - gflags
