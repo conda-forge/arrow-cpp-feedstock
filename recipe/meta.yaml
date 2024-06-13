@@ -696,7 +696,6 @@ outputs:
         - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
         - {{ pin_subpackage("libarrow-substrait", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
-        - {{ pin_compatible('numpy') }}
         - python
         # orc>=2.0.1 will look in $CONDA_PREFIX/share/zoneinfo
         - tzdata
