@@ -219,6 +219,7 @@ outputs:
     script: build-pyarrow.bat  # [win]
     version: {{ version }}
     build:
+      skip: true  # [py>=312]
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
@@ -309,6 +310,7 @@ outputs:
     script: build-pyarrow.bat  # [win]
     version: {{ version }}
     build:
+      skip: true  # [py>=312]
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
