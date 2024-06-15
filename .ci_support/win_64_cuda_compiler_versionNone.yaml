@@ -1,7 +1,7 @@
 aws_crt_cpp:
-- 0.26.8
+- 0.26.12
 aws_sdk_cpp:
-- 1.11.267
+- 1.11.329
 bzip2:
 - '1'
 c_compiler:
@@ -31,9 +31,9 @@ libcrc32c:
 libcurl:
 - '8'
 libgoogle_cloud_devel:
-- '2.23'
+- '2.25'
 libgoogle_cloud_storage_devel:
-- '2.23'
+- '2.25'
 libgrpc:
 - '1.62'
 libprotobuf:
@@ -43,12 +43,13 @@ lz4_c:
 numpy:
 - '1.22'
 - '1.23'
+- '1.26'
 - '1.22'
 - '1.22'
 openssl:
 - '3'
 orc:
-- 2.0.0
+- 2.0.1
 pin_run_as_build:
   python:
     min_pin: x.x
@@ -56,6 +57,7 @@ pin_run_as_build:
 python:
 - 3.10.* *_cpython
 - 3.11.* *_cpython
+- 3.12.* *_cpython
 - 3.8.* *_cpython
 - 3.9.* *_cpython
 re2:
@@ -72,6 +74,6 @@ zip_keys:
 - - python
   - numpy
 zlib:
-- '1.2'
+- '1'
 zstd:
 - '1.5'
