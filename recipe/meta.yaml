@@ -27,7 +27,7 @@ source:
     folder: testing
 
 build:
-  number: 49
+  number: 50
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -219,6 +219,7 @@ outputs:
     script: build-pyarrow.bat  # [win]
     version: {{ version }}
     build:
+      skip: true  # [py>=312]
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
@@ -309,6 +310,7 @@ outputs:
     script: build-pyarrow.bat  # [win]
     version: {{ version }}
     build:
+      skip: true  # [py>=312]
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
