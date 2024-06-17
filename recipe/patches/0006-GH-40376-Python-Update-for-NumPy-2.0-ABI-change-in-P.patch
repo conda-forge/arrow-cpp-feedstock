@@ -1,0 +1,202 @@
+From 689853c59ab255baffd791eb737a536c3aca0851 Mon Sep 17 00:00:00 2001
+From: Joris Van den Bossche <jorisvandenbossche@gmail.com>
+Date: Wed, 13 Mar 2024 08:55:59 +0100
+Subject: [PATCH 6/7] GH-40376: [Python] Update for NumPy 2.0 ABI change in
+ PyArray_Descr->elsize (#40418)
+
+NumPy 2.0 is changing some ABI, see the issue description and https://github.com/numpy/numpy/pull/25946 for more details.
+
+The changes here should make our code compatible both with current numpy 1.x and future numpy 2.x
+
+* GitHub Issue: #40376
+
+Lead-authored-by: Joris Van den Bossche <jorisvandenbossche@gmail.com>
+Co-authored-by: Sebastian Berg <sebastianb@nvidia.com>
+Signed-off-by: Joris Van den Bossche <jorisvandenbossche@gmail.com>
+---
+ python/CMakeLists.txt                         |  3 +++
+ .../src/arrow/python/arrow_to_pandas.cc       | 10 +++++----
+ .../pyarrow/src/arrow/python/numpy_convert.cc |  6 +++---
+ .../pyarrow/src/arrow/python/numpy_interop.h  |  7 +++++++
+ .../src/arrow/python/numpy_to_arrow.cc        | 21 +++++++++++--------
+ 5 files changed, 31 insertions(+), 16 deletions(-)
+
+diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
+index b6d82e4b09..e3ed49dca7 100644
+--- a/python/CMakeLists.txt
++++ b/python/CMakeLists.txt
+@@ -260,6 +260,9 @@ set(EXECUTABLE_OUTPUT_PATH "${BUILD_OUTPUT_ROOT_DIRECTORY}")
+ 
+ # Python and Numpy libraries
+ find_package(Python3Alt REQUIRED)
++message(STATUS "Found NumPy version: ${Python3_NumPy_VERSION}")
++message(STATUS "NumPy include dir: ${NUMPY_INCLUDE_DIRS}")
++
+ include(UseCython)
+ 
+ # PyArrow C++
+diff --git a/python/pyarrow/src/arrow/python/arrow_to_pandas.cc b/python/pyarrow/src/arrow/python/arrow_to_pandas.cc
+index e979342b88..ae78669ecc 100644
+--- a/python/pyarrow/src/arrow/python/arrow_to_pandas.cc
++++ b/python/pyarrow/src/arrow/python/arrow_to_pandas.cc
+@@ -241,7 +241,8 @@ Status SetBufferBase(PyArrayObject* arr, const std::shared_ptr<Buffer>& buffer)
+ }
+ 
+ inline void set_numpy_metadata(int type, const DataType* datatype, PyArray_Descr* out) {
+-  auto metadata = reinterpret_cast<PyArray_DatetimeDTypeMetaData*>(out->c_metadata);
++  auto metadata =
++      reinterpret_cast<PyArray_DatetimeDTypeMetaData*>(PyDataType_C_METADATA(out));
+   if (type == NPY_DATETIME) {
+     if (datatype->id() == Type::TIMESTAMP) {
+       const auto& timestamp_type = checked_cast<const TimestampType&>(*datatype);
+@@ -262,7 +263,7 @@ Status PyArray_NewFromPool(int nd, npy_intp* dims, PyArray_Descr* descr, MemoryP
+   //
+   // * Track allocations
+   // * Get better performance through custom allocators
+-  int64_t total_size = descr->elsize;
++  int64_t total_size = PyDataType_ELSIZE(descr);
+   for (int i = 0; i < nd; ++i) {
+     total_size *= dims[i];
+   }
+@@ -523,8 +524,9 @@ class PandasWriter {
+ 
+   void SetDatetimeUnit(NPY_DATETIMEUNIT unit) {
+     PyAcquireGIL lock;
+-    auto date_dtype = reinterpret_cast<PyArray_DatetimeDTypeMetaData*>(
+-        PyArray_DESCR(reinterpret_cast<PyArrayObject*>(block_arr_.obj()))->c_metadata);
++    auto date_dtype =
++        reinterpret_cast<PyArray_DatetimeDTypeMetaData*>(PyDataType_C_METADATA(
++            PyArray_DESCR(reinterpret_cast<PyArrayObject*>(block_arr_.obj()))));
+     date_dtype->meta.base = unit;
+   }
+ 
+diff --git a/python/pyarrow/src/arrow/python/numpy_convert.cc b/python/pyarrow/src/arrow/python/numpy_convert.cc
+index dfee88c092..5fd2cb511f 100644
+--- a/python/pyarrow/src/arrow/python/numpy_convert.cc
++++ b/python/pyarrow/src/arrow/python/numpy_convert.cc
+@@ -46,7 +46,7 @@ NumPyBuffer::NumPyBuffer(PyObject* ao) : Buffer(nullptr, 0) {
+     PyArrayObject* ndarray = reinterpret_cast<PyArrayObject*>(ao);
+     auto ptr = reinterpret_cast<uint8_t*>(PyArray_DATA(ndarray));
+     data_ = const_cast<const uint8_t*>(ptr);
+-    size_ = PyArray_SIZE(ndarray) * PyArray_DESCR(ndarray)->elsize;
++    size_ = PyArray_NBYTES(ndarray);
+     capacity_ = size_;
+     is_mutable_ = !!(PyArray_FLAGS(ndarray) & NPY_ARRAY_WRITEABLE);
+   }
+@@ -150,7 +150,7 @@ Result<std::shared_ptr<DataType>> NumPyDtypeToArrow(PyArray_Descr* descr) {
+     TO_ARROW_TYPE_CASE(UNICODE, utf8);
+     case NPY_DATETIME: {
+       auto date_dtype =
+-          reinterpret_cast<PyArray_DatetimeDTypeMetaData*>(descr->c_metadata);
++          reinterpret_cast<PyArray_DatetimeDTypeMetaData*>(PyDataType_C_METADATA(descr));
+       switch (date_dtype->meta.base) {
+         case NPY_FR_s:
+           return timestamp(TimeUnit::SECOND);
+@@ -170,7 +170,7 @@ Result<std::shared_ptr<DataType>> NumPyDtypeToArrow(PyArray_Descr* descr) {
+     } break;
+     case NPY_TIMEDELTA: {
+       auto timedelta_dtype =
+-          reinterpret_cast<PyArray_DatetimeDTypeMetaData*>(descr->c_metadata);
++          reinterpret_cast<PyArray_DatetimeDTypeMetaData*>(PyDataType_C_METADATA(descr));
+       switch (timedelta_dtype->meta.base) {
+         case NPY_FR_s:
+           return duration(TimeUnit::SECOND);
+diff --git a/python/pyarrow/src/arrow/python/numpy_interop.h b/python/pyarrow/src/arrow/python/numpy_interop.h
+index ce7baed259..7ea7d6e16f 100644
+--- a/python/pyarrow/src/arrow/python/numpy_interop.h
++++ b/python/pyarrow/src/arrow/python/numpy_interop.h
+@@ -67,6 +67,13 @@
+ #define NPY_INT32_IS_INT 0
+ #endif
+ 
++// Backported NumPy 2 API (can be removed if numpy 2 is required)
++#if NPY_ABI_VERSION < 0x02000000
++#define PyDataType_ELSIZE(descr) ((descr)->elsize)
++#define PyDataType_C_METADATA(descr) ((descr)->c_metadata)
++#define PyDataType_FIELDS(descr) ((descr)->fields)
++#endif
++
+ namespace arrow {
+ namespace py {
+ 
+diff --git a/python/pyarrow/src/arrow/python/numpy_to_arrow.cc b/python/pyarrow/src/arrow/python/numpy_to_arrow.cc
+index 8903df31be..460b1d0ce3 100644
+--- a/python/pyarrow/src/arrow/python/numpy_to_arrow.cc
++++ b/python/pyarrow/src/arrow/python/numpy_to_arrow.cc
+@@ -196,7 +196,7 @@ class NumPyConverter {
+       mask_ = reinterpret_cast<PyArrayObject*>(mo);
+     }
+     length_ = static_cast<int64_t>(PyArray_SIZE(arr_));
+-    itemsize_ = static_cast<int>(PyArray_DESCR(arr_)->elsize);
++    itemsize_ = static_cast<int64_t>(PyArray_ITEMSIZE(arr_));
+     stride_ = static_cast<int64_t>(PyArray_STRIDES(arr_)[0]);
+   }
+ 
+@@ -296,7 +296,7 @@ class NumPyConverter {
+   PyArrayObject* mask_;
+   int64_t length_;
+   int64_t stride_;
+-  int itemsize_;
++  int64_t itemsize_;
+ 
+   bool from_pandas_;
+   compute::CastOptions cast_options_;
+@@ -478,7 +478,8 @@ inline Status NumPyConverter::ConvertData<Date32Type>(std::shared_ptr<Buffer>* d
+ 
+   RETURN_NOT_OK(PrepareInputData<Date32Type>(data));
+ 
+-  auto date_dtype = reinterpret_cast<PyArray_DatetimeDTypeMetaData*>(dtype_->c_metadata);
++  auto date_dtype =
++      reinterpret_cast<PyArray_DatetimeDTypeMetaData*>(PyDataType_C_METADATA(dtype_));
+   if (dtype_->type_num == NPY_DATETIME) {
+     // If we have inbound datetime64[D] data, this needs to be downcasted
+     // separately here from int64_t to int32_t, because this data is not
+@@ -514,7 +515,8 @@ inline Status NumPyConverter::ConvertData<Date64Type>(std::shared_ptr<Buffer>* d
+ 
+   RETURN_NOT_OK(PrepareInputData<Date64Type>(data));
+ 
+-  auto date_dtype = reinterpret_cast<PyArray_DatetimeDTypeMetaData*>(dtype_->c_metadata);
++  auto date_dtype =
++      reinterpret_cast<PyArray_DatetimeDTypeMetaData*>(PyDataType_C_METADATA(dtype_));
+   if (dtype_->type_num == NPY_DATETIME) {
+     // If we have inbound datetime64[D] data, this needs to be downcasted
+     // separately here from int64_t to int32_t, because this data is not
+@@ -628,11 +630,11 @@ namespace {
+ // NumPy unicode is UCS4/UTF32 always
+ constexpr int kNumPyUnicodeSize = 4;
+ 
+-Status AppendUTF32(const char* data, int itemsize, int byteorder,
++Status AppendUTF32(const char* data, int64_t itemsize, int byteorder,
+                    ::arrow::internal::ChunkedStringBuilder* builder) {
+   // The binary \x00\x00\x00\x00 indicates a nul terminator in NumPy unicode,
+   // so we need to detect that here to truncate if necessary. Yep.
+-  int actual_length = 0;
++  Py_ssize_t actual_length = 0;
+   for (; actual_length < itemsize / kNumPyUnicodeSize; ++actual_length) {
+     const char* code_point = data + actual_length * kNumPyUnicodeSize;
+     if ((*code_point == '\0') && (*(code_point + 1) == '\0') &&
+@@ -705,7 +707,7 @@ Status NumPyConverter::Visit(const StringType& type) {
+   auto AppendNonNullValue = [&](const uint8_t* data) {
+     if (is_binary_type) {
+       if (ARROW_PREDICT_TRUE(util::ValidateUTF8(data, itemsize_))) {
+-        return builder.Append(data, itemsize_);
++        return builder.Append(data, static_cast<int32_t>(itemsize_));
+       } else {
+         return Status::Invalid("Encountered non-UTF8 binary value: ",
+                                HexEncode(data, itemsize_));
+@@ -750,12 +752,13 @@ Status NumPyConverter::Visit(const StructType& type) {
+     PyAcquireGIL gil_lock;
+ 
+     // Create converters for each struct type field
+-    if (dtype_->fields == NULL || !PyDict_Check(dtype_->fields)) {
++    if (PyDataType_FIELDS(dtype_) == NULL || !PyDict_Check(PyDataType_FIELDS(dtype_))) {
+       return Status::TypeError("Expected struct array");
+     }
+ 
+     for (auto field : type.fields()) {
+-      PyObject* tup = PyDict_GetItemString(dtype_->fields, field->name().c_str());
++      PyObject* tup =
++          PyDict_GetItemString(PyDataType_FIELDS(dtype_), field->name().c_str());
+       if (tup == NULL) {
+         return Status::Invalid("Missing field '", field->name(), "' in struct array");
+       }
