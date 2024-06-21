@@ -27,7 +27,7 @@ source:
     folder: testing
 
 build:
-  number: 9
+  number: 10
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -58,6 +58,12 @@ requirements:
     - llvmdev {{ llvm_version }}
     - aws-crt-cpp
     - aws-sdk-cpp
+    # azure filesystem dependencies, currently broken on windows, see
+    # https://github.com/apache/arrow/issues/41990
+    - azure-core-cpp                    # [unix]
+    - azure-identity-cpp                # [unix]
+    - azure-storage-blobs-cpp           # [unix]
+    - azure-storage-files-datalake-cpp  # [unix]
     - brotli
     - bzip2
     # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
@@ -186,6 +192,10 @@ outputs:
       host:
         - aws-crt-cpp
         - aws-sdk-cpp
+        - azure-core-cpp                    # [unix]
+        - azure-identity-cpp                # [unix]
+        - azure-storage-blobs-cpp           # [unix]
+        - azure-storage-files-datalake-cpp  # [unix]
         - brotli
         - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
