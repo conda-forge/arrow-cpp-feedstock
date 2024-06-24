@@ -26,7 +26,7 @@ source:
     git_rev: 25d16511e8d42c2744a1d94d90169e3a36e92631
     folder: testing
   - git_url: https://github.com/apache/parquet-testing.git
-    git_rev: b2e7cc755159196e3a068c8594f7acbaecfdaaac
+    git_rev: 74278bc4a1122d74945969e6dec405abd1533ec3
     folder: cpp/submodules/parquet-testing
 
 build:
