@@ -29,7 +29,8 @@ build:
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
-  # arrow promises API- & ABI-compatibility along SemVer, see #1096
+  # debug
+  skip: true  # [not win]
 
 requirements:
   build:
