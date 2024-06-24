@@ -25,12 +25,19 @@ source:
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 25d16511e8d42c2744a1d94d90169e3a36e92631
     folder: testing
+  - git_url: https://github.com/apache/parquet-testing.git
+    git_rev: 74278bc4a1122d74945969e6dec405abd1533ec3
+    folder: cpp/submodules/parquet-testing
 
 build:
   number: 10
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
+  # debug: only native compilation
+  skip: true  # [build_platform != target_platform]
+  # debug: cannot run CUDA-enabled libarrow tests without GPU
+  skip: true  # [cuda_compiler_version != "None"]
   # arrow promises API- & ABI-compatibility along SemVer, see #1096
 
 requirements:
@@ -51,6 +58,8 @@ requirements:
     # necessary for vendored jemalloc
     - autoconf     # [linux]
     - make         # [linux]
+    # for orc to find tzdb (looks in CONDA_PREFIX, which equals BUILD_PREFIX here)
+    - tzdata
   host:
     # for required dependencies, see
     # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
@@ -74,7 +83,7 @@ requirements:
     # arrow uses a customized jemalloc, see #944
     # - jemalloc
     - libabseil
-    - libboost-headers
+    - libboost-devel *
     - libgoogle-cloud-devel
     - libgoogle-cloud-storage-devel
     - libgrpc
@@ -90,6 +99,13 @@ requirements:
     - xsimd
     - zlib
     - zstd
+    # test requirements, c.f.
+    # https://github.com/apache/arrow/blob/apache-arrow-12.0.0/cpp/CMakeLists.txt#L842-L846
+    - gtest
+    # https://github.com/apache/arrow/blob/apache-arrow-12.0.0/cpp/src/arrow/flight/sql/CMakeLists.txt#L86-L87
+    - sqlite *
+    # required by s3fs tests
+    - minio-server
 
 outputs:
   - name: apache-arrow-proc

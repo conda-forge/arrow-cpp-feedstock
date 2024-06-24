@@ -9,3 +9,8 @@ cxx_compiler_version:          # [unix]
   - 16                         # [osx]
   - 13                         # [linux and (aarch64 or ppc64le)]
   - 10                         # [linux and (aarch64 or ppc64le)]
+
+# zipped with c{,xx}_compiler_version for cuda-enabled recipes --> match length
+c_stdlib_version:   # [linux]
+  - 2.17            # [linux]
+  - 2.17            # [linux]
