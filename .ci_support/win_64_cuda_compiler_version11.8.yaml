@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.26.12
+- 0.27.1
 aws_sdk_cpp:
 - 1.11.329
 bzip2:
