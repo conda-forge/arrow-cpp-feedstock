@@ -17,7 +17,7 @@ c_stdlib:
 c_stdlib_version:
 - '11.0'
 channel_sources:
-- conda-forge/label/numpy_rc,conda-forge
+- conda-forge
 channel_targets:
 - conda-forge main
 cuda_compiler_version:
@@ -33,9 +33,9 @@ glog:
 libabseil:
 - '20240116'
 libgoogle_cloud_devel:
-- '2.25'
+- '2.26'
 libgoogle_cloud_storage_devel:
-- '2.25'
+- '2.26'
 libgrpc:
 - '1.62'
 libprotobuf:
