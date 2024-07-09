@@ -697,13 +697,6 @@ outputs:
         - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
-        # need new enough orc for using our own tzdb
-        - orc >=2.0.1
-        # need libarrow builds from that have azure bindings built, i.e.
-        # https://github.com/conda-forge/arrow-cpp-feedstock/pull/1431 or later;
-        # to ensure a new enough library is selected, enforce most recently done
-        # migration as a run-constraint (can be dropped for v17)
-        - aws-crt-cpp >=0.26.12
 
     test:
       imports:
