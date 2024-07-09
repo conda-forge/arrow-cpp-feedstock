@@ -1027,6 +1027,7 @@ outputs:
         - pyarrow-all {{ version }} *_{{ PKG_BUILDNUM }}
         - python
 
+    {% if (build_platform == target_platform) or py == 311 %}
     test:
       requires:
         # test_cpp_extension_in_python requires a compiler
@@ -1100,6 +1101,7 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or test_fastparquet_cross_compatibility" %}
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
         - pytest pyarrow/ -rfEs -k "not ({{ tests_to_skip }})"
+    {% endif %}
 
     about:
       home: http://github.com/apache/arrow
