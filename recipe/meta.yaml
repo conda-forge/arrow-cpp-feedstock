@@ -815,7 +815,6 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
-        - libarrow-all
         # we don't need numpy at runtime, just to build
         - numpy
       rpaths:
@@ -855,7 +854,7 @@ outputs:
       host:
         # We add all libarrow package dependencies on host in order
         # to build pyarrow once with all capabilities.
-        - libarrow-all {{ version }}.* *{{ build_ext }}
+        - {{ pin_subpackage("libarrow-all", exact=True) }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
         - zlib
@@ -868,9 +867,9 @@ outputs:
         # We ignore the run-exports from libarrow-all and restrict to only
         # libarrow, as we don't want the other libraries to be installed when
         # running for pyarrow-core, where the aim is a low storage footprint.
-        - libarrow {{ version }}.* *{{ build_ext }}
+        - {{ pin_subpackage("libarrow", exact=True) }}
         # compute is necessary even for a basic `import pyarrow`
-        - libarrow-compute {{ version }}.* *{{ build_ext }}
+        - {{ pin_subpackage("libarrow-compute", exact=True) }}
         - python
         # this is redundant with libarrow, but we want smithy to pick up that
         # cuda_compiler_version_min is present, to populate the CI configs
@@ -937,13 +936,13 @@ outputs:
         # only necessary for run-exports
         - python
       run:
+        # Default doesn't contain flight, flight-sql and gandiva
+        - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-dataset", exact=True) }}
+        - {{ pin_subpackage("libarrow-substrait", exact=True) }}
+        - {{ pin_subpackage("libparquet", exact=True) }}
         # do not use pin_compatible because pyarrow-core has CUDA/non-CUDA variants
         - pyarrow-core {{ version }} *_{{ PKG_BUILDNUM }}_*
-        # Default doesn't contain flight, flight-sql and gandiva
-        - libarrow-acero {{ version }}.*
-        - libarrow-dataset {{ version }}.*
-        - libarrow-substrait {{ version }}.*
-        - libparquet {{ version }}.*
         - python
 
     test:
@@ -974,10 +973,10 @@ outputs:
         # only necessary for run-exports
         - python
       run:
+        - {{ pin_subpackage("libarrow-flight", exact=True) }}
+        - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
+        - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
         - pyarrow {{ version }} *_{{ PKG_BUILDNUM }}
-        - libarrow-flight {{ version }}.*
-        - libarrow-flight-sql {{ version }}.*
-        - libarrow-gandiva {{ version }}.*
         - python
 
     test:
@@ -1009,10 +1008,8 @@ outputs:
         - cmake
         - ninja
       host:
+        - {{ pin_subpackage("libarrow-all", exact=True) }}
         - pyarrow-all {{ version }} *_{{ PKG_BUILDNUM }}
-        - libarrow-all {{ version }}.*
-        # only for helping resolver
-        - libarrow {{ version }}.* *{{ build_ext }}
         - clangdev {{ llvm_version }}
         - llvmdev {{ llvm_version }}
         - zlib
@@ -1025,6 +1022,7 @@ outputs:
         - pyarrow-all {{ version }} *_{{ PKG_BUILDNUM }}
         - python
 
+    {% if not (aarch64 or ppc64le) or py == 311 %}
     test:
       requires:
         # test_cpp_extension_in_python requires a compiler
@@ -1094,6 +1092,7 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or test_gandiva" %}                                # [ppc64le]
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
         - pytest pyarrow/ -rfEs -k "not ({{ tests_to_skip }})"
+    {% endif %}
 
     about:
       home: http://github.com/apache/arrow
