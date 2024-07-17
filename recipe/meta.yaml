@@ -81,7 +81,6 @@ requirements:
     - re2
     - snappy
     - thrift-cpp
-    - ucx          # [linux]
     - xsimd
     - zlib
     - zstd
@@ -395,7 +394,6 @@ outputs:
         - libabseil
         - libgrpc
         - libprotobuf
-        - ucx          # [linux]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
@@ -415,9 +413,6 @@ outputs:
         # absence of static libraries
         - test ! -f $PREFIX/lib/libarrow_flight.a                   # [unix]
         - if exist %LIBRARY_LIB%\arrow_flight_static.lib exit 1     # [win]
-
-        # Only check UCX on Linux
-        - test -f $PREFIX/lib/libarrow_flight_transport_ucx.so      # [linux]
 
     about:
       home: http://github.com/apache/arrow
