@@ -1,4 +1,4 @@
-{% set version = "16.1.0" %}
+{% set version = "17.0.0" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -15,19 +15,14 @@ package:
 source:
   - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
     fn: apache-arrow-{{ version }}.tar.gz
-    sha256: c9e60c7e87e59383d21b20dc874b17153729ee153264af6d21654b7dff2c60d7
-    patches:
-      # backport https://github.com/apache/arrow/pull/41582
-      - patches/0001-C-CMake-correctly-use-Protobuf_PROTOC_EXECUTABLE.patch
-      # backport https://github.com/apache/arrow/pull/41767
-      - patches/0002-GH-41755-C-ORC-Ensure-setting-detected-ORC-version-4.patch
+    sha256: 9d280d8042e7cf526f8c28d170d93bfab65e50f94569f6a790982a878d8d898d
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
-    git_rev: 25d16511e8d42c2744a1d94d90169e3a36e92631
+    git_rev: 735ae7128d571398dd798d7ff004adebeb342883
     folder: testing
 
 build:
-  number: 14
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -86,7 +81,6 @@ requirements:
     - re2
     - snappy
     - thrift-cpp
-    - ucx          # [linux]
     - xsimd
     - zlib
     - zstd
@@ -112,7 +106,7 @@ outputs:
       summary: A meta-package to select Arrow build variant
 
   - name: libarrow-all
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -160,7 +154,7 @@ outputs:
       summary: C++ libraries for Apache Arrow
 
   - name: libarrow
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -283,7 +277,7 @@ outputs:
       summary: C++ libraries for Apache Arrow core
 
   - name: libarrow-acero
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -328,7 +322,7 @@ outputs:
       summary: C++ libraries for Apache Arrow Acero
 
   - name: libarrow-dataset
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -377,7 +371,7 @@ outputs:
       summary: C++ libraries for Apache Arrow Dataset
 
   - name: libarrow-flight
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -400,7 +394,6 @@ outputs:
         - libabseil
         - libgrpc
         - libprotobuf
-        - ucx          # [linux]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
@@ -421,9 +414,6 @@ outputs:
         - test ! -f $PREFIX/lib/libarrow_flight.a                   # [unix]
         - if exist %LIBRARY_LIB%\arrow_flight_static.lib exit 1     # [win]
 
-        # Only check UCX on Linux
-        - test -f $PREFIX/lib/libarrow_flight_transport_ucx.so      # [linux]
-
     about:
       home: http://github.com/apache/arrow
       license: Apache-2.0
@@ -432,7 +422,7 @@ outputs:
       summary: C++ libraries for Apache Arrow Flight
 
   - name: libarrow-flight-sql
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -483,7 +473,7 @@ outputs:
       summary: C++ libraries for Apache Arrow Flight SQL
 
   - name: libarrow-gandiva
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -535,7 +525,7 @@ outputs:
       summary: C++ libraries for Apache Arrow Gandiva
 
   - name: libarrow-substrait
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
@@ -592,7 +582,7 @@ outputs:
       summary: C++ libraries for Apache Arrow Substrait
 
   - name: libparquet
-    script: install-libarrow.sh   # [unix]
+    script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
