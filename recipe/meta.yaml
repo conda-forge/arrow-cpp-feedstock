@@ -36,7 +36,7 @@ source:
     folder: testing
 
 build:
-  number: 30
+  number: 31
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -797,6 +797,8 @@ outputs:
         - {{ compiler("cxx") }}  # [linux]
         - pytest <8
         - pytest-lazy-fixture
+        # work around https://github.com/conda-forge/setuptools-feedstock/issues/351
+        - backports.tarfile      # [py<39]
         - backports.zoneinfo     # [py<39]
         - boto3
         - cffi
@@ -846,6 +848,11 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or (test_move_directory and S3FileSystem)" %}
         # XMinioInvalidObjectName on win: "Object name contains unsupported characters"
         {% set tests_to_skip = tests_to_skip + " or test_write_to_dataset_with_partitions_s3fs" %}  # [win]
+        # https://github.com/apache/arrow/issues/43356
+        {% set tests_to_skip = tests_to_skip + " or (test_compute and test_assume_timezone)" %}     # [aarch64 or ppc64le]
+        {% set tests_to_skip = tests_to_skip + " or (test_compute and test_strftime)" %}            # [aarch64 or ppc64le]
+        {% set tests_to_skip = tests_to_skip + " or (test_compute and test_round_temporal)" %}      # [aarch64 or ppc64le]
+        {% set tests_to_skip = tests_to_skip + " or test_extract_datetime_components " %}           # [aarch64 or ppc64le]
         # flaky test that fails regularly on aarch
         {% set tests_to_skip = tests_to_skip + " or test_feather_format[serial]" %}                 # [aarch64]
         # gandiva tests are segfaulting on ppc
