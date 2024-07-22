@@ -846,6 +846,11 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or (test_move_directory and S3FileSystem)" %}
         # XMinioInvalidObjectName on win: "Object name contains unsupported characters"
         {% set tests_to_skip = tests_to_skip + " or test_write_to_dataset_with_partitions_s3fs" %}  # [win]
+        # https://github.com/apache/arrow/issues/43356
+        {% set tests_to_skip = tests_to_skip + " or (test_compute and test_assume_timezone)" %}     # [aarch64 or ppc64le]
+        {% set tests_to_skip = tests_to_skip + " or (test_compute and test_strftime)" %}            # [aarch64 or ppc64le]
+        {% set tests_to_skip = tests_to_skip + " or (test_compute and test_round_temporal)" %}      # [aarch64 or ppc64le]
+        {% set tests_to_skip = tests_to_skip + " or test_extract_datetime_components " %}           # [aarch64 or ppc64le]
         # flaky test that fails regularly on aarch
         {% set tests_to_skip = tests_to_skip + " or test_feather_format[serial]" %}                 # [aarch64]
         # gandiva tests are segfaulting on ppc
