@@ -34,7 +34,7 @@ source:
     folder: testing
 
 build:
-  number: 48
+  number: 49
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -364,6 +364,8 @@ outputs:
         - {{ compiler("cxx") }}  # [linux]
         - pytest <8
         - pytest-lazy-fixture
+        # work around https://github.com/conda-forge/setuptools-feedstock/issues/351
+        - backports.tarfile      # [py<39]
         - backports.zoneinfo     # [py<39]
         - boto3
         - cffi
@@ -411,6 +413,11 @@ outputs:
         # vvvvvvv TESTS THAT SHOULDN'T HAVE TO BE SKIPPED vvvvvvv
         # new fsspec changed behaviour, see https://github.com/apache/arrow/issues/37555
         {% set tests_to_skip = tests_to_skip + " or test_get_file_info_with_selector" %}
+        # https://github.com/apache/arrow/issues/43356
+        {% set tests_to_skip = tests_to_skip + " or (test_compute and test_assume_timezone)" %}     # [aarch64 or ppc64le]
+        {% set tests_to_skip = tests_to_skip + " or (test_compute and test_strftime)" %}            # [aarch64 or ppc64le]
+        {% set tests_to_skip = tests_to_skip + " or (test_compute and test_round_temporal)" %}      # [aarch64 or ppc64le]
+        {% set tests_to_skip = tests_to_skip + " or test_extract_datetime_components " %}           # [aarch64 or ppc64le]
         # gandiva tests are segfaulting on ppc
         {% set tests_to_skip = tests_to_skip + " or test_gandiva" %}                      # [ppc64le]
         # test failures on ppc (both failing with: Float value was truncated converting to int32)
