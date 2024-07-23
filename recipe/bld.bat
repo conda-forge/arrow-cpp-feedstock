@@ -17,7 +17,7 @@ set "READ_RECIPE_META_YAML_WHY_NOT=OFF"
 :: https://github.com/apache/arrow/blame/apache-arrow-12.0.0/cpp/cmake_modules/DefineOptions.cmake
 cmake -G "Ninja" ^
       -DARROW_ACERO=ON ^
-      -DARROW_AZURE=%READ_RECIPE_META_YAML_WHY_NOT% ^
+      -DARROW_AZURE=ON ^
       -DARROW_BOOST_USE_SHARED:BOOL=ON ^
       -DARROW_BUILD_STATIC:BOOL=OFF ^
       -DARROW_BUILD_TESTS:BOOL=OFF ^
@@ -55,7 +55,7 @@ cmake -G "Ninja" ^
       -DCMAKE_BUILD_TYPE=release ^
       -DCMAKE_CXX_STANDARD=17 ^
       -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
-      -DCMAKE_UNITY_BUILD=ON ^
+      -DCMAKE_UNITY_BUILD=OFF ^
       -DLLVM_TOOLS_BINARY_DIR="%LIBRARY_BIN%" ^
       -DPARQUET_REQUIRE_ENCRYPTION:BOOL=ON ^
       -DPython3_EXECUTABLE="%PYTHON%" ^

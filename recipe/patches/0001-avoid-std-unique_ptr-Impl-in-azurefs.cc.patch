@@ -1,0 +1,81 @@
+From d3745dfa3937a5a695a54a9b06e6142f85e8b48e Mon Sep 17 00:00:00 2001
+From: Sutou Kouhei <kou@clear-code.com>
+Date: Wed, 12 Jun 2024 23:30:55 +1100
+Subject: [PATCH] avoid std::unique_ptr<Impl>&& in azurefs.cc
+
+---
+ cpp/src/arrow/filesystem/azurefs.cc | 27 +++++++++++++--------------
+ cpp/src/arrow/filesystem/azurefs.h  |  3 ++-
+ 2 files changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/cpp/src/arrow/filesystem/azurefs.cc b/cpp/src/arrow/filesystem/azurefs.cc
+index a3aa2c8e83..151e0ce4fb 100644
+--- a/cpp/src/arrow/filesystem/azurefs.cc
++++ b/cpp/src/arrow/filesystem/azurefs.cc
+@@ -1453,19 +1453,14 @@ class AzureFileSystem::Impl {
+   std::unique_ptr<Blobs::BlobServiceClient> blob_service_client_;
+   HNSSupport cached_hns_support_ = HNSSupport::kUnknown;
+ 
++ public:
+   Impl(AzureOptions options, io::IOContext io_context)
+       : io_context_(std::move(io_context)), options_(std::move(options)) {}
+ 
+- public:
+-  static Result<std::unique_ptr<AzureFileSystem::Impl>> Make(AzureOptions options,
+-                                                             io::IOContext io_context) {
+-    auto self = std::unique_ptr<AzureFileSystem::Impl>(
+-        new AzureFileSystem::Impl(std::move(options), std::move(io_context)));
+-    ARROW_ASSIGN_OR_RAISE(self->blob_service_client_,
+-                          self->options_.MakeBlobServiceClient());
+-    ARROW_ASSIGN_OR_RAISE(self->datalake_service_client_,
+-                          self->options_.MakeDataLakeServiceClient());
+-    return self;
++  Status Init() {
++    ARROW_ASSIGN_OR_RAISE(blob_service_client_, options_.MakeBlobServiceClient());
++    ARROW_ASSIGN_OR_RAISE(datalake_service_client_, options_.MakeDataLakeServiceClient());
++    return Status::OK();
+   }
+ 
+   io::IOContext& io_context() { return io_context_; }
+@@ -2960,19 +2955,23 @@ class AzureFileSystem::Impl {
+ std::atomic<LeaseGuard::SteadyClock::time_point> LeaseGuard::latest_known_expiry_time_ =
+     SteadyClock::time_point{SteadyClock::duration::zero()};
+ 
+-AzureFileSystem::AzureFileSystem(std::unique_ptr<Impl>&& impl)
+-    : FileSystem(impl->io_context()), impl_(std::move(impl)) {
++AzureFileSystem::AzureFileSystem(const AzureOptions& options,
++                                 const io::IOContext& io_context)
++    : FileSystem(io_context), impl_(std::make_unique<Impl>(options, io_context)) {
+   default_async_is_sync_ = false;
+ }
+ 
++Status AzureFileSystem::Init() { return impl_->Init(); }
++
+ void AzureFileSystem::ForceCachedHierarchicalNamespaceSupport(int hns_support) {
+   impl_->ForceCachedHierarchicalNamespaceSupport(hns_support);
+ }
+ 
+ Result<std::shared_ptr<AzureFileSystem>> AzureFileSystem::Make(
+     const AzureOptions& options, const io::IOContext& io_context) {
+-  ARROW_ASSIGN_OR_RAISE(auto impl, AzureFileSystem::Impl::Make(options, io_context));
+-  return std::shared_ptr<AzureFileSystem>(new AzureFileSystem(std::move(impl)));
++  std::shared_ptr<AzureFileSystem> filesystem(new AzureFileSystem(options, io_context));
++  ARROW_RETURN_NOT_OK(filesystem->Init());
++  return filesystem;
+ }
+ 
+ const AzureOptions& AzureFileSystem::options() const { return impl_->options(); }
+diff --git a/cpp/src/arrow/filesystem/azurefs.h b/cpp/src/arrow/filesystem/azurefs.h
+index 93d6ec2f94..683f5998da 100644
+--- a/cpp/src/arrow/filesystem/azurefs.h
++++ b/cpp/src/arrow/filesystem/azurefs.h
+@@ -246,7 +246,8 @@ class ARROW_EXPORT AzureFileSystem : public FileSystem {
+   class Impl;
+   std::unique_ptr<Impl> impl_;
+ 
+-  explicit AzureFileSystem(std::unique_ptr<Impl>&& impl);
++  explicit AzureFileSystem(const AzureOptions& options, const io::IOContext& io_context);
++  Status Init();
+ 
+   friend class TestAzureFileSystem;
+   void ForceCachedHierarchicalNamespaceSupport(int hns_support);
