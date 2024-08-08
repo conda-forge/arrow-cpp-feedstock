@@ -5,7 +5,7 @@ MACOSX_SDK_VERSION:
 aws_crt_cpp:
 - 0.27.3
 aws_sdk_cpp:
-- 1.11.329
+- 1.11.379
 bzip2:
 - '1'
 c_compiler:
