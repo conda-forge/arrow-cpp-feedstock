@@ -37,9 +37,9 @@ glog:
 libabseil:
 - '20240116'
 libgoogle_cloud_devel:
-- '2.26'
+- '2.28'
 libgoogle_cloud_storage_devel:
-- '2.26'
+- '2.28'
 libgrpc:
 - '1.62'
 libprotobuf:
@@ -71,7 +71,7 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- linux-ppc64le
+- linux-64
 thrift_cpp:
 - 0.19.0
 ucx:
