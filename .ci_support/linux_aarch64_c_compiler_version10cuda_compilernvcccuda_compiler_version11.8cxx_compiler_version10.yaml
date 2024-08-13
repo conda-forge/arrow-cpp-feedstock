@@ -77,7 +77,7 @@ snappy:
 target_platform:
 - linux-aarch64
 thrift_cpp:
-- 0.19.0
+- 0.20.0
 ucx:
 - 1.16.0
 zip_keys:
