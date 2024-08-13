@@ -15,7 +15,7 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '13'
+- '12'
 c_stdlib:
 - sysroot
 c_stdlib_version:
@@ -35,7 +35,7 @@ cuda_compiler_version_min:
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '13'
+- '12'
 docker_image:
 - quay.io/condaforge/linux-anvil-cos7-x86_64
 gflags:
@@ -63,9 +63,9 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- linux-ppc64le
+- linux-64
 thrift_cpp:
-- 0.19.0
+- 0.20.0
 ucx:
 - 1.16.0
 zip_keys:
