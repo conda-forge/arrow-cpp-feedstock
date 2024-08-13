@@ -63,7 +63,7 @@ snappy:
 target_platform:
 - osx-arm64
 thrift_cpp:
-- 0.19.0
+- 0.20.0
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
