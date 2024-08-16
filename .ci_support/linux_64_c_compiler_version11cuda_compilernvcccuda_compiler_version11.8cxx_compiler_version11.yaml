@@ -55,7 +55,7 @@ numpy:
 openssl:
 - '3'
 orc:
-- 2.0.1
+- 2.0.2
 pin_run_as_build:
   python:
     min_pin: x.x
@@ -71,7 +71,7 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- linux-ppc64le
+- linux-64
 thrift_cpp:
 - 0.20.0
 ucx:
