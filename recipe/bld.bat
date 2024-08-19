@@ -67,6 +67,7 @@ if %ERRORLEVEL% neq 0 exit 1
 cmake --build . --config Release
 if %ERRORLEVEL% neq 0 exit 1
 
+npm install -g azurite
 set ARROW_TEST_DATA=%SRC_DIR%\testing\data
 set PARQUET_TEST_DATA=%SRC_DIR%\cpp\submodules\parquet-testing\data
 ctest --progress --output-on-failure

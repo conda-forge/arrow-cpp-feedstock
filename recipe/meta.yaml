@@ -98,6 +98,8 @@ requirements:
     - sqlite *
     # required by s3fs tests
     - minio-server
+    # for npm, to install azurite
+    - nodejs *
 
 outputs:
   - name: apache-arrow-proc
