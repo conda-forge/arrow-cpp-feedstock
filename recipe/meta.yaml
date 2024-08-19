@@ -53,6 +53,8 @@ requirements:
     # necessary for vendored jemalloc
     - autoconf     # [unix]
     - make         # [unix]
+    # where orc ends up looking (because during build, CONDA_PREFIX==BUILD_PREFIX)
+    - tzdata
   host:
     # for required dependencies, see
     # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
