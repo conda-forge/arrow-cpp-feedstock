@@ -13,9 +13,9 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- nvcc
+- None
 cuda_compiler_version:
-- '11.8'
+- None
 cuda_compiler_version_min:
 - '11.8'
 cxx_compiler:
@@ -26,6 +26,8 @@ glog:
 - '0.7'
 libabseil:
 - '20240116'
+libboost_headers:
+- '1.86'
 libcrc32c:
 - '1.1'
 libcurl:
