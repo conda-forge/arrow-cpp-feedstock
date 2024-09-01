@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.28.1
+- 0.28.2
 aws_sdk_cpp:
 - 1.11.379
 bzip2:
@@ -52,7 +52,6 @@ numpy:
 - '2.0'
 - '2.0'
 - '2.0'
-- '1.22'
 - '2.0'
 openssl:
 - '3'
@@ -66,7 +65,6 @@ python:
 - 3.10.* *_cpython
 - 3.11.* *_cpython
 - 3.12.* *_cpython
-- 3.8.* *_cpython
 - 3.9.* *_cpython
 re2:
 - 2023.09.01
