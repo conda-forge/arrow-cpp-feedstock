@@ -1,7 +1,7 @@
-From 3f2604a947fb6b445eff65d51fc469ff0729c03f Mon Sep 17 00:00:00 2001
+From 611e24636770b31b169048c1680a0a9d7eee58e2 Mon Sep 17 00:00:00 2001
 From: Joris Van den Bossche <jorisvandenbossche@gmail.com>
 Date: Tue, 11 Jun 2024 12:09:08 +0200
-Subject: [PATCH 7/7] GH-41924: [Python] Fix tests when using NumPy 2.0 on
+Subject: [PATCH 7/8] GH-41924: [Python] Fix tests when using NumPy 2.0 on
  Windows
 
 ---
@@ -11,7 +11,7 @@ Subject: [PATCH 7/7] GH-41924: [Python] Fix tests when using NumPy 2.0 on
  3 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/python/pyarrow/tests/parquet/common.py b/python/pyarrow/tests/parquet/common.py
-index 8365ed5b28..c3094ee20b 100644
+index 8365ed5..c3094ee 100644
 --- a/python/pyarrow/tests/parquet/common.py
 +++ b/python/pyarrow/tests/parquet/common.py
 @@ -83,7 +83,7 @@ def _random_integers(size, dtype):
@@ -24,7 +24,7 @@ index 8365ed5b28..c3094ee20b 100644
  
  def _range_integers(size, dtype):
 diff --git a/python/pyarrow/tests/test_pandas.py b/python/pyarrow/tests/test_pandas.py
-index 8fd4b3041b..3d5928889e 100644
+index 8fd4b30..3d59288 100644
 --- a/python/pyarrow/tests/test_pandas.py
 +++ b/python/pyarrow/tests/test_pandas.py
 @@ -762,7 +762,7 @@ class TestConvertPrimitiveTypes:
@@ -37,7 +37,7 @@ index 8fd4b3041b..3d5928889e 100644
              fields.append(pa.field(dtype, arrow_dtype))
  
 diff --git a/python/scripts/test_leak.py b/python/scripts/test_leak.py
-index f2bbe8d051..86a87f5e74 100644
+index f2bbe8d..86a87f5 100644
 --- a/python/scripts/test_leak.py
 +++ b/python/scripts/test_leak.py
 @@ -98,7 +98,7 @@ def test_leak3():
