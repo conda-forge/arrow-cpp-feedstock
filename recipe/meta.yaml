@@ -31,13 +31,14 @@ source:
       - patches/0006-GH-40376-Python-Update-for-NumPy-2.0-ABI-change-in-P.patch
       # backport https://github.com/apache/arrow/pull/42099
       - patches/0007-GH-41924-Python-Fix-tests-when-using-NumPy-2.0-on-Wi.patch
+      - patches/0008-Extend-numpy-pin-to-3.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: ad82a736c170e97b7c8c035ebd8a801c17eec170
     folder: testing
 
 build:
-  number: 29
+  number: 30
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -703,6 +704,8 @@ outputs:
         - apache-arrow-proc =*={{ build_ext }}
 
     test:
+      requires:
+        - pip
       files:
         - test_read_parquet.py
       imports:
@@ -739,6 +742,7 @@ outputs:
         # Need to remove dot from PY_VER; %MYVAR:x=y% replaces "x" in %MYVAR% with "y"
         - if not exist %SP_DIR%/pyarrow/_cuda.cp%PY_VER:.=%-win_amd64.pyd exit 1  # [win and cuda_compiler_version != "None"]
         - python test_read_parquet.py
+        - pip check
 
     about:
       home: http://github.com/apache/arrow

@@ -1,5 +1,7 @@
 azure:
   free_disk_space: true
+  settings_linux:
+    swapfile_size: 15GiB
   max_parallel: 20
 bot:
   abi_migration_branches:

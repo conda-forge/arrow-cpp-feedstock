@@ -1,7 +1,7 @@
-From 689853c59ab255baffd791eb737a536c3aca0851 Mon Sep 17 00:00:00 2001
+From 0a436a7016f5c3afe6238be29d190bf4aaa4df35 Mon Sep 17 00:00:00 2001
 From: Joris Van den Bossche <jorisvandenbossche@gmail.com>
 Date: Wed, 13 Mar 2024 08:55:59 +0100
-Subject: [PATCH 6/7] GH-40376: [Python] Update for NumPy 2.0 ABI change in
+Subject: [PATCH 6/8] GH-40376: [Python] Update for NumPy 2.0 ABI change in
  PyArray_Descr->elsize (#40418)
 
 NumPy 2.0 is changing some ABI, see the issue description and https://github.com/numpy/numpy/pull/25946 for more details.
@@ -22,7 +22,7 @@ Signed-off-by: Joris Van den Bossche <jorisvandenbossche@gmail.com>
  5 files changed, 31 insertions(+), 16 deletions(-)
 
 diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
-index b6d82e4b09..e3ed49dca7 100644
+index b6d82e4..e3ed49d 100644
 --- a/python/CMakeLists.txt
 +++ b/python/CMakeLists.txt
 @@ -260,6 +260,9 @@ set(EXECUTABLE_OUTPUT_PATH "${BUILD_OUTPUT_ROOT_DIRECTORY}")
@@ -36,7 +36,7 @@ index b6d82e4b09..e3ed49dca7 100644
  
  # PyArrow C++
 diff --git a/python/pyarrow/src/arrow/python/arrow_to_pandas.cc b/python/pyarrow/src/arrow/python/arrow_to_pandas.cc
-index e979342b88..ae78669ecc 100644
+index e979342..ae78669 100644
 --- a/python/pyarrow/src/arrow/python/arrow_to_pandas.cc
 +++ b/python/pyarrow/src/arrow/python/arrow_to_pandas.cc
 @@ -241,7 +241,8 @@ Status SetBufferBase(PyArrayObject* arr, const std::shared_ptr<Buffer>& buffer)
@@ -71,7 +71,7 @@ index e979342b88..ae78669ecc 100644
    }
  
 diff --git a/python/pyarrow/src/arrow/python/numpy_convert.cc b/python/pyarrow/src/arrow/python/numpy_convert.cc
-index dfee88c092..5fd2cb511f 100644
+index dfee88c..5fd2cb5 100644
 --- a/python/pyarrow/src/arrow/python/numpy_convert.cc
 +++ b/python/pyarrow/src/arrow/python/numpy_convert.cc
 @@ -46,7 +46,7 @@ NumPyBuffer::NumPyBuffer(PyObject* ao) : Buffer(nullptr, 0) {
@@ -102,7 +102,7 @@ index dfee88c092..5fd2cb511f 100644
          case NPY_FR_s:
            return duration(TimeUnit::SECOND);
 diff --git a/python/pyarrow/src/arrow/python/numpy_interop.h b/python/pyarrow/src/arrow/python/numpy_interop.h
-index ce7baed259..7ea7d6e16f 100644
+index ce7baed..7ea7d6e 100644
 --- a/python/pyarrow/src/arrow/python/numpy_interop.h
 +++ b/python/pyarrow/src/arrow/python/numpy_interop.h
 @@ -67,6 +67,13 @@
@@ -120,7 +120,7 @@ index ce7baed259..7ea7d6e16f 100644
  namespace py {
  
 diff --git a/python/pyarrow/src/arrow/python/numpy_to_arrow.cc b/python/pyarrow/src/arrow/python/numpy_to_arrow.cc
-index 8903df31be..460b1d0ce3 100644
+index 8903df3..460b1d0 100644
 --- a/python/pyarrow/src/arrow/python/numpy_to_arrow.cc
 +++ b/python/pyarrow/src/arrow/python/numpy_to_arrow.cc
 @@ -196,7 +196,7 @@ class NumPyConverter {

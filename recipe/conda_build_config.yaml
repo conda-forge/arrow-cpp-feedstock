@@ -4,8 +4,6 @@
 c_compiler_version:            # [unix]
   - 16                         # [osx]
   - 13                         # [linux and aarch64]
-  - 10                         # [linux and aarch64]
 cxx_compiler_version:          # [unix]
   - 16                         # [osx]
   - 13                         # [linux and aarch64]
-  - 10                         # [linux and aarch64]
