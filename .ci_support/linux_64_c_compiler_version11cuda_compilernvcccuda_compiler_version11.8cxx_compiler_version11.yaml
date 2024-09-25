@@ -43,7 +43,7 @@ gflags:
 glog:
 - '0.7'
 libabseil:
-- '20240116'
+- '20240722'
 libboost_headers:
 - '1.86'
 libgoogle_cloud_devel:
@@ -51,9 +51,9 @@ libgoogle_cloud_devel:
 libgoogle_cloud_storage_devel:
 - '2.29'
 libgrpc:
-- '1.62'
+- '1.65'
 libprotobuf:
-- 4.25.3
+- 5.27.5
 lz4_c:
 - 1.9.3
 openssl:
