@@ -28,6 +28,8 @@ channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
+cuda_compiler:
+- None
 cuda_compiler_version:
 - None
 cxx_compiler:
@@ -65,7 +67,7 @@ snappy:
 target_platform:
 - osx-64
 thrift_cpp:
-- 0.20.0
+- 0.21.0
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
