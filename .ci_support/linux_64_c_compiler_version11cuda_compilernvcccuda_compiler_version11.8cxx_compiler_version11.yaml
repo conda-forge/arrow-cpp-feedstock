@@ -15,7 +15,7 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '13'
+- '11'
 c_stdlib:
 - sysroot
 c_stdlib_version:
@@ -27,23 +27,23 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- None
+- nvcc
 cuda_compiler_version:
-- None
+- '11.8'
 cuda_compiler_version_min:
 - '11.8'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '13'
+- '11'
 docker_image:
-- quay.io/condaforge/linux-anvil-cos7-x86_64
+- quay.io/condaforge/linux-anvil-cuda:11.8
 gflags:
 - '2.2'
 glog:
 - '0.7'
 libabseil:
-- '20240116'
+- '20240722'
 libboost_headers:
 - '1.86'
 libgoogle_cloud_devel:
@@ -51,9 +51,9 @@ libgoogle_cloud_devel:
 libgoogle_cloud_storage_devel:
 - '2.29'
 libgrpc:
-- '1.62'
+- '1.65'
 libprotobuf:
-- 4.25.3
+- 5.27.5
 lz4_c:
 - 1.9.3
 openssl:
