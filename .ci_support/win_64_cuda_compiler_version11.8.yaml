@@ -5,9 +5,7 @@ aws_sdk_cpp:
 bzip2:
 - '1'
 c_compiler:
-- clang
-c_compiler_version:
-- '18'
+- vs2022
 c_stdlib:
 - vs
 channel_sources:
@@ -21,9 +19,7 @@ cuda_compiler_version:
 cuda_compiler_version_min:
 - '11.8'
 cxx_compiler:
-- clangxx
-cxx_compiler_version:
-- '18'
+- vs2022
 gflags:
 - '2.2'
 glog:
