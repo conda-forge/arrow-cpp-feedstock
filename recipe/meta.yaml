@@ -21,6 +21,7 @@ source:
       - patches/0001-C-CMake-correctly-use-Protobuf_PROTOC_EXECUTABLE.patch
       # backport https://github.com/apache/arrow/pull/41767
       - patches/0002-GH-41755-C-ORC-Ensure-setting-detected-ORC-version-4.patch
+      - patches/a708fabfe6f90a890978d8f026c70cdf18caf251.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 25d16511e8d42c2744a1d94d90169e3a36e92631
