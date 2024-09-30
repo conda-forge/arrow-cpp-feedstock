@@ -75,7 +75,7 @@ target_platform:
 thrift_cpp:
 - 0.20.0
 ucx:
-- 1.16.0
+- '1.17'
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
