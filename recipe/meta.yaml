@@ -32,6 +32,7 @@ source:
       # backport https://github.com/apache/arrow/pull/42099
       - patches/0007-GH-41924-Python-Fix-tests-when-using-NumPy-2.0-on-Wi.patch
       - patches/0008-Extend-numpy-pin-to-3.patch
+      - patches/a708fabfe6f90a890978d8f026c70cdf18caf251.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: ad82a736c170e97b7c8c035ebd8a801c17eec170
