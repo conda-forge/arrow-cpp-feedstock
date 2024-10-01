@@ -19,7 +19,7 @@ bzip2:
 c_compiler:
 - clang
 c_compiler_version:
-- '17'
+- '18'
 c_stdlib:
 - macosx_deployment_target
 c_stdlib_version:
@@ -28,14 +28,12 @@ channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
-cuda_compiler:
-- None
 cuda_compiler_version:
 - None
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '17'
+- '18'
 gflags:
 - '2.2'
 glog:
