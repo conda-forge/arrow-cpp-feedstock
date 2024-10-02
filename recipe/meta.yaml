@@ -869,7 +869,7 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or test_safe_cast_from_float_with_nans_to_int" %}  # [ppc64le]
         {% set tests_to_skip = tests_to_skip + " or test_float_with_null_as_integer" %}             # [ppc64le]
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
-        - pytest pyarrow/ -rfEs -k "not ({{ tests_to_skip }})"
+        - pytest pyarrow/ -rfEsv -k "not ({{ tests_to_skip }})"
     {% endif %}
 
     about:
