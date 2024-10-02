@@ -11,7 +11,7 @@ bzip2:
 c_compiler:
 - clang
 c_compiler_version:
-- '16'
+- '17'
 c_stdlib:
 - macosx_deployment_target
 c_stdlib_version:
@@ -25,13 +25,13 @@ cuda_compiler_version:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '16'
+- '17'
 gflags:
 - '2.2'
 glog:
 - '0.7'
 libabseil:
-- '20240116'
+- '20240722'
 libboost_headers:
 - '1.86'
 libgoogle_cloud_devel:
@@ -39,9 +39,9 @@ libgoogle_cloud_devel:
 libgoogle_cloud_storage_devel:
 - '2.29'
 libgrpc:
-- '1.62'
+- '1.65'
 libprotobuf:
-- 4.25.3
+- 5.27.5
 lz4_c:
 - 1.9.3
 macos_machine:

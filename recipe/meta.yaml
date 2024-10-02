@@ -3,7 +3,7 @@
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
 {% set proc_build_number = "0" %}
-{% set llvm_version = "16" %}
+{% set llvm_version = "17" %}
 
 # see https://github.com/apache/arrow/blob/apache-arrow-10.0.1/cpp/CMakeLists.txt#L88-L90
 {% set so_version = (version.split(".")[0] | int * 100 + version.split(".")[1] | int) ~ "." ~ version.split(".")[2] ~ ".0" %}
@@ -32,13 +32,14 @@ source:
       # backport https://github.com/apache/arrow/pull/42099
       - patches/0007-GH-41924-Python-Fix-tests-when-using-NumPy-2.0-on-Wi.patch
       - patches/0008-Extend-numpy-pin-to-3.patch
+      - patches/a708fabfe6f90a890978d8f026c70cdf18caf251.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: ad82a736c170e97b7c8c035ebd8a801c17eec170
     folder: testing
 
 build:
-  number: 33
+  number: 34
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -868,7 +869,7 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or test_safe_cast_from_float_with_nans_to_int" %}  # [ppc64le]
         {% set tests_to_skip = tests_to_skip + " or test_float_with_null_as_integer" %}             # [ppc64le]
         # ^^^^^^^ TESTS THAT SHOULDN'T HAVE TO BE SKIPPED ^^^^^^^
-        - pytest pyarrow/ -rfEs -k "not ({{ tests_to_skip }})"
+        - pytest pyarrow/ -rfEsv -k "not ({{ tests_to_skip }})"
     {% endif %}
 
     about:
