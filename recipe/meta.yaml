@@ -28,8 +28,10 @@ source:
       - patches/0003-GH-40386-Python-Fix-except-clauses-40387.patch
       # backport https://github.com/apache/arrow/pull/40412 to plug a python memory leak
       - patches/0004-GH-37989-Python-Plug-reference-leaks-when-creating-A.patch
-      # workaround for https://github.com/conda-forge/pyarrow-feedstock/issues/117
-      - patches/0005-try-harder-to-set-up-s3_server-fixture.patch
+      # backport https://github.com/apache/arrow/pull/41754
+      - patches/0005-MINOR-Python-try-harder-to-set-up-s3_server-fixture-.patch
+      # backport https://github.com/apache/arrow/pull/36595
+      - patches/0006-GH-36594-C-Don-t-use-MSVC_VERSION-to-determin-fms-co.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12

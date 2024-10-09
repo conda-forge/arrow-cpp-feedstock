@@ -1,0 +1,84 @@
+From 15c69003bf33a29b5cbdd22b9f0be58bef0c814f Mon Sep 17 00:00:00 2001
+From: Sutou Kouhei <kou@clear-code.com>
+Date: Thu, 19 Oct 2023 10:39:18 +0900
+Subject: [PATCH 6/6] GH-36594: [C++] Don't use MSVC_VERSION to determin
+ -fms-compatibility-version (#36595)
+
+### Rationale for this change
+
+`MSVC_VERSION` isn't used correctly.
+
+### What changes are included in this PR?
+
+* Remove MSVC 2013 or earlier check because it reached EOL
+* Don't change `-fms-compatibility-version` depending on `MSVC_VERSION`
+   * Always use the lowest supported Visual Studio version for it
+
+### Are these changes tested?
+
+Yes.
+
+### Are there any user-facing changes?
+
+Yes.
+* Closes: #36594
+
+Authored-by: Sutou Kouhei <kou@clear-code.com>
+Signed-off-by: Sutou Kouhei <kou@clear-code.com>
+---
+ cpp/cmake_modules/SetupCxxFlags.cmake      |  5 -----
+ cpp/src/gandiva/precompiled/CMakeLists.txt | 22 ++++++++--------------
+ 2 files changed, 8 insertions(+), 19 deletions(-)
+
+diff --git a/cpp/cmake_modules/SetupCxxFlags.cmake b/cpp/cmake_modules/SetupCxxFlags.cmake
+index e90c00612c..8e8f687d06 100644
+--- a/cpp/cmake_modules/SetupCxxFlags.cmake
++++ b/cpp/cmake_modules/SetupCxxFlags.cmake
+@@ -177,11 +177,6 @@ if(WIN32)
+   add_definitions(-D_ENABLE_EXTENDED_ALIGNED_STORAGE)
+ 
+   if(MSVC)
+-    if(MSVC_VERSION VERSION_LESS 19)
+-      message(FATAL_ERROR "Only MSVC 2015 (Version 19.0) and later are supported
+-      by Arrow. Found version ${CMAKE_CXX_COMPILER_VERSION}.")
+-    endif()
+-
+     # ARROW-1931 See https://github.com/google/googletest/issues/1318
+     #
+     # This is added to CMAKE_CXX_FLAGS instead of CXX_COMMON_FLAGS since only the
+diff --git a/cpp/src/gandiva/precompiled/CMakeLists.txt b/cpp/src/gandiva/precompiled/CMakeLists.txt
+index 4ca5cc655b..3e41640861 100644
+--- a/cpp/src/gandiva/precompiled/CMakeLists.txt
++++ b/cpp/src/gandiva/precompiled/CMakeLists.txt
+@@ -30,23 +30,17 @@ set(PRECOMPILED_SRCS
+     timestamp_arithmetic.cc
+     ../../arrow/util/basic_decimal.cc)
+ 
++set(PLATFORM_CLANG_OPTIONS -std=c++17)
+ if(MSVC)
+-  # clang pretends to be a particular version of MSVC. Thestandard
+-  # library uses C++14 features, so we have to use that -std version
+-  # to get the IR compilation to work.
++  # "19.20" means that it's compatible with Visual Studio 16 2019.
++  # We can update this to "19.30" when we dropped support for Visual
++  # Studio 16 2019.
++  #
+   # See https://cmake.org/cmake/help/latest/variable/MSVC_VERSION.html
+   # for MSVC_VERSION and Visual Studio version.
+-  if(MSVC_VERSION LESS 1930)
+-    set(FMS_COMPATIBILITY 19.20)
+-  elseif(MSVC_VERSION LESS 1920)
+-    set(FMS_COMPATIBILITY 19.10)
+-  else()
+-    message(FATAL_ERROR "Unsupported MSVC_VERSION=${MSVC_VERSION}")
+-  endif()
+-  set(PLATFORM_CLANG_OPTIONS -std=c++17 -fms-compatibility
+-                             -fms-compatibility-version=${FMS_COMPATIBILITY})
+-else()
+-  set(PLATFORM_CLANG_OPTIONS -std=c++17)
++  set(FMS_COMPATIBILITY 19.20)
++  list(APPEND PLATFORM_CLANG_OPTIONS -fms-compatibility
++       -fms-compatibility-version=${FMS_COMPATIBILITY})
+ endif()
+ 
+ # Create bitcode for each of the source files.
