@@ -1,16 +1,8 @@
 # on osx, keep this in sync with llvm_version in meta.yaml.
-# linux-aarch hits a compiler bug with GCC 12, upgrade; needs override
-# for three versions on linux: one for non-CUDA & two for CUDA 11.8 / 12.0
-c_compiler_version:            # [unix]
+c_compiler_version:            # [osx]
   - 18                         # [osx]
-  - 13                         # [linux and (aarch64 or ppc64le)]
-  - 10                         # [linux and (aarch64 or ppc64le)]
-  - 12                         # [linux and (aarch64 or ppc64le)]
-cxx_compiler_version:          # [unix]
+cxx_compiler_version:          # [osx]
   - 18                         # [osx]
-  - 13                         # [linux and (aarch64 or ppc64le)]
-  - 10                         # [linux and (aarch64 or ppc64le)]
-  - 12                         # [linux and (aarch64 or ppc64le)]
 c_compiler:            # [win]
   - vs2022             # [win]
 cxx_compiler:          # [win]
