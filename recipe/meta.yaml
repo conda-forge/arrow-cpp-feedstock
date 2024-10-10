@@ -44,8 +44,8 @@ requirements:
     - cmake
     - ninja
     # necessary for vendored jemalloc
-    - autoconf     # [linux]
-    - make         # [linux]
+    - autoconf     # [unix]
+    - make         # [unix]
   host:
     # for required dependencies, see
     # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
