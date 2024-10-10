@@ -28,7 +28,7 @@ source:
     folder: testing
 
 build:
-  number: 31
+  number: 32
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -50,8 +50,8 @@ requirements:
     - cmake
     - ninja
     # necessary for vendored jemalloc
-    - autoconf     # [linux]
-    - make         # [linux]
+    - autoconf     # [unix]
+    - make         # [unix]
   host:
     # for required dependencies, see
     # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
