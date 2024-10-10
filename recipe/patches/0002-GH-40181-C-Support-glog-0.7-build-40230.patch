@@ -1,7 +1,7 @@
 From 8b40e819cf101c6c80573d556b93bed132033247 Mon Sep 17 00:00:00 2001
 From: "Uwe L. Korn" <xhochy@users.noreply.github.com>
 Date: Tue, 27 Feb 2024 21:41:29 +0100
-Subject: [PATCH 2/6] GH-40181: [C++] Support glog 0.7 build (#40230)
+Subject: [PATCH 2/7] GH-40181: [C++] Support glog 0.7 build (#40230)
 
 Fixes #40181
 

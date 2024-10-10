@@ -1,7 +1,7 @@
 From ad91da8867f5a2b45c921f21bd0be56a4c074a08 Mon Sep 17 00:00:00 2001
 From: h-vetinari <h.vetinari@gmx.com>
 Date: Fri, 24 May 2024 02:18:29 +1100
-Subject: [PATCH 5/6] MINOR: [Python] try harder to set up s3_server fixture
+Subject: [PATCH 5/7] MINOR: [Python] try harder to set up s3_server fixture
  (#41754)
 
 In conda-forge, when running the aarch tests in emulation, we regularly run into the [issue](https://github.com/conda-forge/pyarrow-feedstock/issues/117) that the fixture setup fails. Extending the timeouts fixes this. Since it only happens once per session, it doesn't hurt to take a little bit more time.

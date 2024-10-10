@@ -32,6 +32,8 @@ source:
       - patches/0005-MINOR-Python-try-harder-to-set-up-s3_server-fixture-.patch
       # backport https://github.com/apache/arrow/pull/36595
       - patches/0006-GH-36594-C-Don-t-use-MSVC_VERSION-to-determin-fms-co.patch
+      # backport https://github.com/apache/arrow/pull/42004
+      - patches/0007-MINOR-C-Include-string-before-using-std-string-42004.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12

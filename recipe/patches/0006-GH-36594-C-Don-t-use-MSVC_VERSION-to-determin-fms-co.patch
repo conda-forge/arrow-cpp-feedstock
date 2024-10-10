@@ -1,7 +1,7 @@
 From 15c69003bf33a29b5cbdd22b9f0be58bef0c814f Mon Sep 17 00:00:00 2001
 From: Sutou Kouhei <kou@clear-code.com>
 Date: Thu, 19 Oct 2023 10:39:18 +0900
-Subject: [PATCH 6/6] GH-36594: [C++] Don't use MSVC_VERSION to determin
+Subject: [PATCH 6/7] GH-36594: [C++] Don't use MSVC_VERSION to determin
  -fms-compatibility-version (#36595)
 
 ### Rationale for this change
