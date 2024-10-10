@@ -1,7 +1,7 @@
 From 8b40e819cf101c6c80573d556b93bed132033247 Mon Sep 17 00:00:00 2001
 From: "Uwe L. Korn" <xhochy@users.noreply.github.com>
 Date: Tue, 27 Feb 2024 21:41:29 +0100
-Subject: [PATCH 2/5] GH-40181: [C++] Support glog 0.7 build (#40230)
+Subject: [PATCH 2/7] GH-40181: [C++] Support glog 0.7 build (#40230)
 
 Fixes #40181
 
@@ -18,7 +18,7 @@ Signed-off-by: Sutou Kouhei <kou@clear-code.com>
  2 files changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/cpp/cmake_modules/FindGLOG.cmake b/cpp/cmake_modules/FindGLOG.cmake
-index 61b7d0694..62b235ee9 100644
+index 61b7d0694e..62b235ee91 100644
 --- a/cpp/cmake_modules/FindGLOG.cmake
 +++ b/cpp/cmake_modules/FindGLOG.cmake
 @@ -17,6 +17,11 @@
@@ -42,7 +42,7 @@ index 61b7d0694..62b235ee9 100644
 +                                   INTERFACE_COMPILE_DEFINITIONS "GLOG_USE_GLOG_EXPORT")
  endif()
 diff --git a/cpp/src/arrow/util/logging.cc b/cpp/src/arrow/util/logging.cc
-index 6d275fa28..8aaa5a568 100644
+index 6d275fa286..8aaa5a5681 100644
 --- a/cpp/src/arrow/util/logging.cc
 +++ b/cpp/src/arrow/util/logging.cc
 @@ -114,7 +114,7 @@ static std::unique_ptr<std::string> log_dir_;

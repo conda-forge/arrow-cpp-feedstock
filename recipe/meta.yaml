@@ -3,7 +3,7 @@
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
 {% set proc_build_number = "0" %}
-{% set llvm_version = "16" %}
+{% set llvm_version = "17" %}
 
 # see https://github.com/apache/arrow/blob/apache-arrow-10.0.1/cpp/CMakeLists.txt#L88-L90
 {% set so_version = (version.split(".")[0] | int * 100 + version.split(".")[1] | int) ~ "." ~ version.split(".")[2] ~ ".0" %}
@@ -28,15 +28,19 @@ source:
       - patches/0003-GH-40386-Python-Fix-except-clauses-40387.patch
       # backport https://github.com/apache/arrow/pull/40412 to plug a python memory leak
       - patches/0004-GH-37989-Python-Plug-reference-leaks-when-creating-A.patch
-      # workaround for https://github.com/conda-forge/pyarrow-feedstock/issues/117
-      - patches/0005-try-harder-to-set-up-s3_server-fixture.patch
+      # backport https://github.com/apache/arrow/pull/41754
+      - patches/0005-MINOR-Python-try-harder-to-set-up-s3_server-fixture-.patch
+      # backport https://github.com/apache/arrow/pull/36595
+      - patches/0006-GH-36594-C-Don-t-use-MSVC_VERSION-to-determin-fms-co.patch
+      # backport https://github.com/apache/arrow/pull/42004
+      - patches/0007-MINOR-C-Include-string-before-using-std-string-42004.patch
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 47f7b56b25683202c1fd957668e13f2abafc0f12
     folder: testing
 
 build:
-  number: 44
+  number: 45
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -58,8 +62,8 @@ requirements:
     - cmake
     - ninja
     # necessary for vendored jemalloc
-    - autoconf     # [linux]
-    - make         # [linux]
+    - autoconf     # [unix]
+    - make         # [unix]
   host:
     # for required dependencies, see
     # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75

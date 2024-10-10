@@ -1,7 +1,7 @@
 From f6b4298567c5b9c94655748ba1a9e5355f7c5a37 Mon Sep 17 00:00:00 2001
 From: Vyas Ramasubramani <vyas.ramasubramani@gmail.com>
 Date: Wed, 6 Mar 2024 13:51:34 -0800
-Subject: [PATCH 3/5] GH-40386: [Python] Fix except clauses (#40387)
+Subject: [PATCH 3/7] GH-40386: [Python] Fix except clauses (#40387)
 
 ### Rationale for this change
 
@@ -28,7 +28,7 @@ Signed-off-by: Felipe Oliveira Carvalho <felipekde@gmail.com>
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/python/pyarrow/types.pxi b/python/pyarrow/types.pxi
-index a0ddf09d6..3d99fb607 100644
+index a0ddf09d69..3d99fb607a 100644
 --- a/python/pyarrow/types.pxi
 +++ b/python/pyarrow/types.pxi
 @@ -5239,7 +5239,7 @@ cdef void pycapsule_schema_deleter(object schema_capsule) noexcept:
