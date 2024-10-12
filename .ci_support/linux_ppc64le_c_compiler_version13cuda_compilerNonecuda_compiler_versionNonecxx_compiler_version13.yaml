@@ -67,7 +67,7 @@ python:
 - 3.12.* *_cpython
 - 3.9.* *_cpython
 re2:
-- 2023.09.01
+- 2024.07.02
 snappy:
 - '1.2'
 target_platform:
