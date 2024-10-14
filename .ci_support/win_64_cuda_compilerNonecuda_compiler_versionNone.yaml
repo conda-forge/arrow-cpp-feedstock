@@ -47,7 +47,7 @@ openssl:
 orc:
 - 2.0.2
 re2:
-- 2024.07.02
+- 2023.09.01
 snappy:
 - '1.2'
 target_platform:
