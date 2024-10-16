@@ -107,12 +107,6 @@ if /i "%CI%" == "azure" (
     set "TEMP=%UPLOAD_TEMP%"
 )
 
-:: Validate
-call :start_group "Validating outputs"
-validate_recipe_outputs "%FEEDSTOCK_NAME%"
-if !errorlevel! neq 0 exit /b !errorlevel!
-call :end_group
-
 if /i "%UPLOAD_PACKAGES%" == "true" (
     if /i "%IS_PR_BUILD%" == "false" (
         call :start_group "Uploading packages"
