@@ -60,10 +60,24 @@ libprotobuf:
 - 5.27.5
 lz4_c:
 - 1.9.3
+numpy:
+- '2.0'
+- '2.0'
+- '2.0'
+- '2.0'
 openssl:
 - '3'
 orc:
 - 2.0.2
+pin_run_as_build:
+  python:
+    min_pin: x.x
+    max_pin: x.x
+python:
+- 3.10.* *_cpython
+- 3.11.* *_cpython
+- 3.12.* *_cpython
+- 3.9.* *_cpython
 re2:
 - 2023.09.01
 snappy:
@@ -80,6 +94,8 @@ zip_keys:
   - cuda_compiler
   - cuda_compiler_version
   - docker_image
+- - python
+  - numpy
 zlib:
 - '1'
 zstd:
