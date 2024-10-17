@@ -29,7 +29,6 @@ build:
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
-  # arrow promises API- & ABI-compatibility along SemVer, see #1096
 
 requirements:
   build:
@@ -173,7 +172,6 @@ outputs:
       ignore_run_exports:
         # we don't need all of brotli's run-exports
         - libbrotlicommon
-      track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
       missing_dso_whitelist:
         - '*/libcuda.so.*'    # [linux]
         - '*/nvcuda.dll'      # [win]
@@ -639,7 +637,6 @@ outputs:
       string: py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
-      track_features: {{ "[arrow-cuda]" if cuda_enabled else "" }}
       rpaths:
         - lib/
         - {{ SP_DIR }}/pyarrow
