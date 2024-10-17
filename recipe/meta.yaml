@@ -19,10 +19,13 @@ source:
     patches:
       # workaround for https://github.com/apache/arrow/issues/37692
       - patches/0001-fixture-teardown-should-not-fail-test.patch
-  # testing-submodule not part of release tarball
+  # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 4d209492d514c2d3cb2d392681b9aa00e6d8da1c
     folder: testing
+  - git_url: https://github.com/apache/parquet-testing.git
+    git_rev: cb7a9674142c137367bf75a01b79c6e214a73199
+    folder: cpp/submodules/parquet-testing
 
 build:
   number: 0
@@ -872,12 +875,15 @@ outputs:
         # doesn't get picked up correctly
         # - libhdfs3
       source_files:
+        - cpp/submodules/parquet-testing/data
         - testing/data
       commands:
         - cd ${SP_DIR}                                      # [unix]
         - cd %SP_DIR%                                       # [win]
         - export ARROW_TEST_DATA="${SRC_DIR}/testing/data"  # [unix]
         - set "ARROW_TEST_DATA=%SRC_DIR%\testing\data"      # [win]
+        - export PARQUET_TEST_DATA="${SRC_DIR}/cpp/submodules/parquet-testing/data"  # [unix]
+        - set "PARQUET_TEST_DATA=%SRC_DIR%\cpp\submodules\parquet-testing\data"      # [win]
 
         {% set tests_to_skip = "_not_a_real_test" %}
         # we do not have GPUs in CI --> cannot test cuda
