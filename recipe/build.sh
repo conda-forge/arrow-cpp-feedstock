@@ -14,6 +14,7 @@ else
   # See https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk
   CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
   ARROW_GANDIVA_PC_CXX_FLAGS="-D_LIBCPP_DISABLE_AVAILABILITY"
+  EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DCMAKE_SYSTEM_NAME=Darwin"
 fi
 
 # Enable CUDA support
