@@ -875,6 +875,8 @@ outputs:
         - set "ARROW_TEST_DATA=%SRC_DIR%\testing\data"      # [win]
         - export PARQUET_TEST_DATA="${SRC_DIR}/cpp/submodules/parquet-testing/data"  # [unix]
         - set "PARQUET_TEST_DATA=%SRC_DIR%\cpp\submodules\parquet-testing\data"      # [win]
+        # https://github.com/apache/arrow/issues/44455
+        - set "PYARROW_TZDATA_PATH=%PREFIX%\share\zoneinfo"                          # [win]
 
         {% set tests_to_skip = "_not_a_real_test" %}
         # we do not have GPUs in CI --> cannot test cuda
