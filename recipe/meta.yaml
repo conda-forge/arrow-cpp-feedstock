@@ -852,14 +852,14 @@ outputs:
         - cffi
         - cloudpickle
         - cython
-        - fastparquet
+        - fastparquet   # [py<313]
         - fsspec
         - hypothesis
         - minio-server
         - pandas
         - s3fs >=2023
         - scipy
-        - sparse
+        - sparse        # [py<313]
         # these are generally (far) behind on migrating abseil/grpc/protobuf,
         # and using them as test dependencies blocks the migrator unnecessarily
         # - pytorch
