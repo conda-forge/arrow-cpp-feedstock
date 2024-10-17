@@ -24,6 +24,8 @@ workflow_settings:
   free_disk_space:
   - os: linux
     value: quick
+  pagefile_size:
+  - value: 16
   tools_install_dir:
   - os: win
     value: C:\Miniforge
