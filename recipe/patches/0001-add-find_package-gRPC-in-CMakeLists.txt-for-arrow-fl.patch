@@ -1,0 +1,22 @@
+From dee899619b52c60dc8c98c7cd1bdb74e39f06b74 Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Fri, 18 Oct 2024 16:42:32 +1100
+Subject: [PATCH] add find_package(gRPC) in CMakeLists.txt for arrow flight
+
+---
+ cpp/src/arrow/flight/CMakeLists.txt | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/cpp/src/arrow/flight/CMakeLists.txt b/cpp/src/arrow/flight/CMakeLists.txt
+index b12476ac38..d22928424c 100644
+--- a/cpp/src/arrow/flight/CMakeLists.txt
++++ b/cpp/src/arrow/flight/CMakeLists.txt
+@@ -19,6 +19,8 @@ add_custom_target(arrow_flight)
+ 
+ arrow_install_all_headers("arrow/flight")
+ 
++find_package(gRPC REQUIRED)
++
+ set(ARROW_FLIGHT_LINK_LIBS gRPC::grpc++ ${ARROW_PROTOBUF_LIBPROTOBUF})
+ if(ARROW_WITH_OPENTELEMETRY)
+   list(APPEND ARROW_FLIGHT_LINK_LIBS ${ARROW_OPENTELEMETRY_LIBS})
