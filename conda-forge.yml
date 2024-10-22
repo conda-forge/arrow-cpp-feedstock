@@ -1,6 +1,10 @@
 azure:
   free_disk_space: true
   max_parallel: 20
+  settings_win:
+    variables:
+      CONDA_BLD_PATH: C:\\bld\\
+      MINIFORGE_HOME: C:\\Miniforge
 bot:
   abi_migration_branches:
   - 13.x
