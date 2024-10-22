@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.28.3
+- 0.28.5
 aws_sdk_cpp:
 - 1.11.407
 azure_core_cpp:
@@ -61,7 +61,7 @@ openssl:
 orc:
 - 2.0.2
 re2:
-- 2023.09.01
+- 2024.07.02
 snappy:
 - '1.2'
 target_platform:
