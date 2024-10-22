@@ -16,6 +16,9 @@ source:
   - url: https://github.com/apache/arrow/releases/download/apache-arrow-{{ version }}-rc0/apache-arrow-{{ version }}.tar.gz
     fn: apache-arrow-{{ version }}.tar.gz
     sha256: abcf1934cd0cdddd33664e9f2d9a251d6c55239d1122ad0ed223b13a583c82a9
+    patches:
+      # backport https://github.com/apache/arrow/pull/44482
+      - patches/0001-GH-44455-C-Update-vendored-date-to-3.0.3.patch
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 4d209492d514c2d3cb2d392681b9aa00e6d8da1c
