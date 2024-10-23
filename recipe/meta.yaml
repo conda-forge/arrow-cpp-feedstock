@@ -40,7 +40,7 @@ source:
     folder: testing
 
 build:
-  number: 47
+  number: 48
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -801,9 +801,6 @@ outputs:
         - {{ compiler("cxx") }}  # [linux]
         - pytest <8
         - pytest-lazy-fixture
-        # work around https://github.com/conda-forge/setuptools-feedstock/issues/351
-        - backports.tarfile      # [py<39]
-        - backports.zoneinfo     # [py<39]
         - boto3
         - cffi
         - cloudpickle
@@ -815,6 +812,9 @@ outputs:
         - pandas <2.2
         - s3fs >=2023
         - scipy
+        - zstandard             # [py<310]
+        # disable until numba is rebuilt for numpy 2.0
+        # - sparse
         # these are generally (far) behind on migrating abseil/grpc/protobuf,
         # and using them as test dependencies blocks the migrator unnecessarily
         # - pytorch
