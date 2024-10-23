@@ -803,9 +803,6 @@ outputs:
         # See issue on Arrow repo: https://github.com/apache/arrow/issues/39849
         - pytest <8
         - pytest-lazy-fixture
-        # work around https://github.com/conda-forge/setuptools-feedstock/issues/351
-        - backports.tarfile      # [py<39]
-        - backports.zoneinfo     # [py<39]
         - boto3
         - cffi
         - cloudpickle
