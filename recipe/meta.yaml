@@ -19,6 +19,8 @@ source:
     patches:
       # backport https://github.com/apache/arrow/pull/44482
       - patches/0001-GH-44455-C-Update-vendored-date-to-3.0.3.patch
+      # backport https://github.com/apache/arrow/pull/44507
+      - patches/0002-GH-44448-C-Add-support-for-overriding-grpc_cpp_plugi.patch
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 4d209492d514c2d3cb2d392681b9aa00e6d8da1c
