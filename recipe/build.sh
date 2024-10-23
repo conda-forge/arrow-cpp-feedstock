@@ -32,7 +32,6 @@ if [[ "${build_platform}" != "${target_platform}" ]]; then
     CMAKE_ARGS="${CMAKE_ARGS} -DLLVM_LINK_EXECUTABLE=${BUILD_PREFIX}/bin/llvm-link"
     CMAKE_ARGS="${CMAKE_ARGS} -DARROW_JEMALLOC_LG_PAGE=16"
     CMAKE_ARGS="${CMAKE_ARGS} -DARROW_GRPC_CPP_PLUGIN=${BUILD_PREFIX}/bin/grpc_cpp_plugin"
-    sed -ie "s;protoc-gen-grpc.*$;protoc-gen-grpc=${BUILD_PREFIX}/bin/grpc_cpp_plugin\";g" ../src/arrow/flight/CMakeLists.txt
 fi
 
 # disable -fno-plt, which causes problems with GCC on PPC
