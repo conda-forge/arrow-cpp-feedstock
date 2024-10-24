@@ -56,10 +56,26 @@ lz4_c:
 - 1.9.3
 macos_machine:
 - x86_64-apple-darwin13.4.0
+numpy:
+- '2.0'
+- '2.0'
+- '2.0'
+- '2'
+- '2.0'
 openssl:
 - '3'
 orc:
 - 2.0.2
+pin_run_as_build:
+  python:
+    min_pin: x.x
+    max_pin: x.x
+python:
+- 3.10.* *_cpython
+- 3.11.* *_cpython
+- 3.12.* *_cpython
+- 3.13.* *_cp313
+- 3.9.* *_cpython
 re2:
 - 2024.07.02
 snappy:
@@ -71,6 +87,8 @@ thrift_cpp:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
+- - python
+  - numpy
 zlib:
 - '1'
 zstd:

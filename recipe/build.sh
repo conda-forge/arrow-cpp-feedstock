@@ -4,8 +4,6 @@ set -ex
 mkdir -p cpp/build
 pushd cpp/build
 
-EXTRA_CMAKE_ARGS=""
-
 # Include g++'s system headers
 if [ "$(uname)" == "Linux" ]; then
   SYSTEM_INCLUDES=$(echo | ${CXX} -E -Wp,-v -xc++ - 2>&1 | grep '^ ' | awk '{print "-isystem;" substr($1, 1)}' | tr '\n' ';')
@@ -19,21 +17,21 @@ fi
 # Enable CUDA support
 if [[ ! -z "${cuda_compiler_version+x}" && "${cuda_compiler_version}" != "None" ]]
 then
-    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=ON -DCUDAToolkit_ROOT=${CUDA_HOME} -DCMAKE_LIBRARY_PATH=${CONDA_BUILD_SYSROOT}/lib"
+    CMAKE_ARGS="${CMAKE_ARGS} -DARROW_CUDA=ON -DCUDAToolkit_ROOT=${CUDA_HOME} -DCMAKE_LIBRARY_PATH=${CONDA_BUILD_SYSROOT}/lib"
 else
-    EXTRA_CMAKE_ARGS=" ${EXTRA_CMAKE_ARGS} -DARROW_CUDA=OFF"
+    CMAKE_ARGS="${CMAKE_ARGS} -DARROW_CUDA=OFF"
 fi
 
 if [[ "${build_platform}" != "${target_platform}" ]]; then
     # point to a usable protoc/grpc_cpp_plugin if we're cross-compiling
-    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DProtobuf_PROTOC_EXECUTABLE=$BUILD_PREFIX/bin/protoc"
+    CMAKE_ARGS="${CMAKE_ARGS} -DProtobuf_PROTOC_EXECUTABLE=$BUILD_PREFIX/bin/protoc"
     if [[ ! -f ${BUILD_PREFIX}/bin/${CONDA_TOOLCHAIN_HOST}-clang ]]; then
         ln -sf ${BUILD_PREFIX}/bin/clang ${BUILD_PREFIX}/bin/${CONDA_TOOLCHAIN_HOST}-clang
     fi
-    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DCLANG_EXECUTABLE=${BUILD_PREFIX}/bin/${CONDA_TOOLCHAIN_HOST}-clang"
-    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DLLVM_LINK_EXECUTABLE=${BUILD_PREFIX}/bin/llvm-link"
-    EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DARROW_JEMALLOC_LG_PAGE=16"
-    sed -ie "s;protoc-gen-grpc.*$;protoc-gen-grpc=${BUILD_PREFIX}/bin/grpc_cpp_plugin\";g" ../src/arrow/flight/CMakeLists.txt
+    CMAKE_ARGS="${CMAKE_ARGS} -DCLANG_EXECUTABLE=${BUILD_PREFIX}/bin/${CONDA_TOOLCHAIN_HOST}-clang"
+    CMAKE_ARGS="${CMAKE_ARGS} -DLLVM_LINK_EXECUTABLE=${BUILD_PREFIX}/bin/llvm-link"
+    CMAKE_ARGS="${CMAKE_ARGS} -DARROW_JEMALLOC_LG_PAGE=16"
+    CMAKE_ARGS="${CMAKE_ARGS} -DARROW_GRPC_CPP_PLUGIN=${BUILD_PREFIX}/bin/grpc_cpp_plugin"
 fi
 
 # disable -fno-plt, which causes problems with GCC on PPC
@@ -104,7 +102,7 @@ cmake -GNinja \
     -DMAKE=$BUILD_PREFIX/bin/make \
     -DPARQUET_REQUIRE_ENCRYPTION=ON \
     -DPython3_EXECUTABLE=${PYTHON} \
-    ${EXTRA_CMAKE_ARGS} \
+    ${CMAKE_ARGS} \
     ..
 
 # Do not install arrow, only build.
