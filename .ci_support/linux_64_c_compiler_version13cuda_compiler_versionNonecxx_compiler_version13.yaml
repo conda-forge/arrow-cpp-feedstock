@@ -1,7 +1,5 @@
-BUILD:
-- aarch64-conda_cos7-linux-gnu
 aws_crt_cpp:
-- 0.28.5
+- 0.29.0
 aws_sdk_cpp:
 - 1.11.407
 azure_core_cpp:
@@ -22,8 +20,6 @@ c_stdlib:
 - sysroot
 c_stdlib_version:
 - '2.17'
-cdt_arch:
-- aarch64
 cdt_name:
 - cos7
 channel_sources:
@@ -85,7 +81,7 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- linux-aarch64
+- linux-64
 thrift_cpp:
 - 0.21.0
 zip_keys:
