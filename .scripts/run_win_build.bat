@@ -49,6 +49,9 @@ set "CONDA_SOLVER=libmamba"
 if !errorlevel! neq 0 exit /b !errorlevel!
 set "CONDA_LIBMAMBA_SOLVER_NO_CHANNELS_FROM_INSTALLED=1"
 
+:: Workaround for openssl errors with git when using micromamba v2+
+set "GIT_SSL_NO_VERIFY=true"
+
 :: Set basic configuration
 echo Setting up configuration
 setup_conda_rc .\ ".\recipe" .\.ci_support\%CONFIG%.yaml
