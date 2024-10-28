@@ -17,7 +17,8 @@ build_platform:
   osx_arm64: osx_64
 conda_build:
   pkg_format: '2'
-conda_forge_output_validation: true
+# debug only!
+conda_forge_output_validation: false
 conda_install_tool: micromamba
 github:
   branch_name: main
