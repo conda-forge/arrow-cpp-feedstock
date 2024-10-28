@@ -7,6 +7,7 @@ azure:
       MINIFORGE_HOME: C:\\Miniforge
 bot:
   abi_migration_branches:
+  - 17.x
   - 16.x
   - 15.x
   - 14.x
