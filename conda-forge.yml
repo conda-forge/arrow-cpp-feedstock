@@ -2,6 +2,9 @@ azure:
   free_disk_space: true
   settings_linux:
     swapfile_size: 8GiB
+  settings_win:
+    CONDA_BLD_PATH: C:\bld\
+    MINIFORGE_HOME: C:\miniforge\
 bot:
   abi_migration_branches:
   - 16.x
