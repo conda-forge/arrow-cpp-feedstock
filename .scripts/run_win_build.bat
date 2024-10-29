@@ -17,7 +17,7 @@ if "%MINIFORGE_HOME%"=="" set "MINIFORGE_HOME=%USERPROFILE%\Miniforge3"
 if "%MINIFORGE_HOME:~-1%"=="\" set "MINIFORGE_HOME=%MINIFORGE_HOME:~0,-1%"
 call :start_group "Provisioning base env with micromamba"
 set "MAMBA_ROOT_PREFIX=%MINIFORGE_HOME%-micromamba-%RANDOM%"
-set "MICROMAMBA_VERSION=2.0.2-2"
+set "MICROMAMBA_VERSION=1.5.10-0"
 set "MICROMAMBA_URL=https://github.com/mamba-org/micromamba-releases/releases/download/%MICROMAMBA_VERSION%/micromamba-win-64"
 set "MICROMAMBA_TMPDIR=%TMP%\micromamba-%RANDOM%"
 set "MICROMAMBA_EXE=%MICROMAMBA_TMPDIR%\micromamba.exe"
@@ -28,12 +28,10 @@ certutil -urlcache -split -f "%MICROMAMBA_URL%" "%MICROMAMBA_EXE%"
 if !errorlevel! neq 0 exit /b !errorlevel!
 
 echo Creating environment
-set "CONDA_PKGS_DIRS=%MINIFORGE_HOME%\pkgs"
 call "%MICROMAMBA_EXE%" create --yes --root-prefix "%MAMBA_ROOT_PREFIX%" --prefix "%MINIFORGE_HOME%" ^
     --channel conda-forge ^
     pip python=3.12 conda-build conda-forge-ci-setup=4 "conda-build>=24.1"
 if !errorlevel! neq 0 exit /b !errorlevel!
-set "CONDA_PKGS_DIRS="
 echo Removing %MAMBA_ROOT_PREFIX%
 del /S /Q "%MAMBA_ROOT_PREFIX%"
 del /S /Q "%MICROMAMBA_TMPDIR%"
@@ -47,9 +45,6 @@ call "%MINIFORGE_HOME%\Scripts\activate.bat"
 set "CONDA_SOLVER=libmamba"
 if !errorlevel! neq 0 exit /b !errorlevel!
 set "CONDA_LIBMAMBA_SOLVER_NO_CHANNELS_FROM_INSTALLED=1"
-
-:: Workaround for openssl errors with git when using micromamba v2+
-set "GIT_SSL_NO_VERIFY=true"
 
 :: Set basic configuration
 echo Setting up configuration
