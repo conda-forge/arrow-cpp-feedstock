@@ -28,13 +28,12 @@ certutil -urlcache -split -f "%MICROMAMBA_URL%" "%MICROMAMBA_EXE%"
 if !errorlevel! neq 0 exit /b !errorlevel!
 
 echo Creating environment
+set "CONDA_PKGS_DIRS=%MINIFORGE_HOME%\pkgs"
 call "%MICROMAMBA_EXE%" create --yes --root-prefix "%MAMBA_ROOT_PREFIX%" --prefix "%MINIFORGE_HOME%" ^
     --channel conda-forge ^
     pip python=3.12 conda-build conda-forge-ci-setup=4 "conda-build>=24.1"
 if !errorlevel! neq 0 exit /b !errorlevel!
-@REM echo Moving pkgs cache from %MAMBA_ROOT_PREFIX% to %MINIFORGE_HOME%
-@REM move /Y "%MAMBA_ROOT_PREFIX%\pkgs" "%MINIFORGE_HOME%"
-@REM if !errorlevel! neq 0 exit /b !errorlevel!
+set "CONDA_PKGS_DIRS="
 echo Removing %MAMBA_ROOT_PREFIX%
 del /S /Q "%MAMBA_ROOT_PREFIX%"
 del /S /Q "%MICROMAMBA_TMPDIR%"
