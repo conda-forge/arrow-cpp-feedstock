@@ -32,9 +32,6 @@ call "%MICROMAMBA_EXE%" create --yes --root-prefix "%MAMBA_ROOT_PREFIX%" --prefi
     --channel conda-forge ^
     pip python=3.12 conda-build conda-forge-ci-setup=4 "conda-build>=24.1"
 if !errorlevel! neq 0 exit /b !errorlevel!
-echo Moving pkgs cache from %MAMBA_ROOT_PREFIX% to %MINIFORGE_HOME%
-move /Y "%MAMBA_ROOT_PREFIX%\pkgs" "%MINIFORGE_HOME%"
-if !errorlevel! neq 0 exit /b !errorlevel!
 echo Removing %MAMBA_ROOT_PREFIX%
 del /S /Q "%MAMBA_ROOT_PREFIX%"
 del /S /Q "%MICROMAMBA_TMPDIR%"
@@ -108,17 +105,13 @@ if /i "%CI%" == "azure" (
 )
 
 :: Validate
-call :start_group "Validating outputs"
-validate_recipe_outputs "%FEEDSTOCK_NAME%"
-if !errorlevel! neq 0 exit /b !errorlevel!
-call :end_group
 
 if /i "%UPLOAD_PACKAGES%" == "true" (
     if /i "%IS_PR_BUILD%" == "false" (
         call :start_group "Uploading packages"
         if not exist "%TEMP%\" md "%TEMP%"
         set "TMP=%TEMP%"
-        upload_package --validate --feedstock-name="%FEEDSTOCK_NAME%" .\ ".\recipe" .ci_support\%CONFIG%.yaml
+        upload_package  .\ ".\recipe" .ci_support\%CONFIG%.yaml
         if !errorlevel! neq 0 exit /b !errorlevel!
         call :end_group
     )
