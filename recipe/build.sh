@@ -53,7 +53,7 @@ export READ_RECIPE_META_YAML_WHY_NOT=OFF
 # for available switches see
 # https://github.com/apache/arrow/blame/apache-arrow-12.0.0/cpp/cmake_modules/DefineOptions.cmake
 # placeholder in ARROW_GDB_INSTALL_DIR must match _la_placeholder in activate.sh
-cmake -GNinja \
+cmake ${CMAKE_ARGS} -GNinja \
     -DARROW_ACERO=ON \
     -DARROW_AZURE=ON \
     -DARROW_BOOST_USE_SHARED=ON \
