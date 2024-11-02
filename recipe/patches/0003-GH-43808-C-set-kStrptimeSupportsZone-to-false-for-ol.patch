@@ -1,0 +1,24 @@
+From 9c482984116a6e6dcce7e9f91af453aa51b966ee Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Sat, 2 Nov 2024 15:29:20 +1100
+Subject: [PATCH 3/4] GH-43808: [C++] set kStrptimeSupportsZone to false for
+ old glibc
+
+---
+ cpp/src/arrow/util/value_parsing.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/cpp/src/arrow/util/value_parsing.h b/cpp/src/arrow/util/value_parsing.h
+index 609906052c..d6a615f6f6 100644
+--- a/cpp/src/arrow/util/value_parsing.h
++++ b/cpp/src/arrow/util/value_parsing.h
+@@ -790,6 +790,9 @@ static inline bool ParseTimestampISO8601(const char* s, size_t length,
+ 
+ #if defined(_WIN32) || defined(ARROW_WITH_MUSL)
+ static constexpr bool kStrptimeSupportsZone = false;
++#elif defined(__GLIBC__) && defined(__GLIBC_MINOR__) && (__GLIBC__ == 2) && (__GLIBC_MINOR__ < 28)
++// see https://github.com/apache/arrow/issues/43808
++static constexpr bool kStrptimeSupportsZone = false;
+ #else
+ static constexpr bool kStrptimeSupportsZone = true;
+ #endif

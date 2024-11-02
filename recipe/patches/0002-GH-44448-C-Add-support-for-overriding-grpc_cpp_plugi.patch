@@ -1,7 +1,7 @@
 From 3d00b553ffd302ada8d74b5b77b71128c594c0b4 Mon Sep 17 00:00:00 2001
 From: Sutou Kouhei <kou@clear-code.com>
 Date: Wed, 23 Oct 2024 10:30:33 +0900
-Subject: [PATCH 2/2] GH-44448: [C++] Add support for overriding
+Subject: [PATCH 2/4] GH-44448: [C++] Add support for overriding
  grpc_cpp_plugin path for cross-compiling
 
 ---
