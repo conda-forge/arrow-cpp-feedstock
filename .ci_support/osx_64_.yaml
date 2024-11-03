@@ -49,9 +49,9 @@ libgoogle_cloud_devel:
 libgoogle_cloud_storage_devel:
 - '2.30'
 libgrpc:
-- '1.65'
+- '1.67'
 libprotobuf:
-- 5.27.5
+- 5.28.2
 lz4_c:
 - 1.9.3
 macos_machine:
