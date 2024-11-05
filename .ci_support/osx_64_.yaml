@@ -3,7 +3,7 @@ MACOSX_DEPLOYMENT_TARGET:
 MACOSX_SDK_VERSION:
 - '10.13'
 aws_crt_cpp:
-- 0.29.0
+- 0.29.1
 aws_sdk_cpp:
 - 1.11.407
 azure_core_cpp:
