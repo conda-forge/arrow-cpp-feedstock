@@ -43,9 +43,9 @@ libabseil:
 libboost_headers:
 - '1.86'
 libgoogle_cloud_devel:
-- '2.30'
+- '2.31'
 libgoogle_cloud_storage_devel:
-- '2.30'
+- '2.31'
 libgrpc:
 - '1.67'
 libprotobuf:
