@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.29.4
+- 0.29.5
 aws_sdk_cpp:
 - 1.11.449
 azure_core_cpp:
