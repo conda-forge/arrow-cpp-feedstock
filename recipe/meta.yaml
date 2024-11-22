@@ -552,7 +552,6 @@ outputs:
         - {{ pin_subpackage("libarrow-substrait", max_pin="x") }}
     requirements:
       build:
-      build:
         - cmake
         - ninja
         # for strong run-exports
