@@ -21,8 +21,8 @@ source:
       - patches/0001-GH-44455-C-Update-vendored-date-to-3.0.3.patch
       # backport https://github.com/apache/arrow/pull/44507
       - patches/0002-GH-44448-C-Add-support-for-overriding-grpc_cpp_plugi.patch
-      # fix for https://github.com/apache/arrow/issues/43808
-      - patches/0003-GH-43808-C-set-kStrptimeSupportsZone-to-false-for-ol.patch
+      # backport https://github.com/apache/arrow/pull/44621
+      - patches/0003-GH-43808-C-skip-0117-in-StrptimeZoneOffset-for-old-g.patch
       # skip gcsfs tests due to missing `storage-testbench`
       - patches/0004-disable-gcsfs_test.patch
   # testing-submodules not part of release tarball

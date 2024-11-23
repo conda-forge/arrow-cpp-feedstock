@@ -25,7 +25,7 @@ date to parse it.
  create mode 100755 cpp/src/arrow/vendored/datetime/update.sh
 
 diff --git a/ci/appveyor-cpp-build.bat b/ci/appveyor-cpp-build.bat
-index 08a052e82f..084117f387 100644
+index 08a052e82..084117f38 100644
 --- a/ci/appveyor-cpp-build.bat
 +++ b/ci/appveyor-cpp-build.bat
 @@ -139,7 +139,7 @@ set PARQUET_HOME=%CONDA_PREFIX%\Library
@@ -38,7 +38,7 @@ index 08a052e82f..084117f387 100644
  tar --extract --file tzdata.tar.gz --directory %USERPROFILE%\Downloads\test\tzdata
  curl https://raw.githubusercontent.com/unicode-org/cldr/master/common/supplemental/windowsZones.xml ^
 diff --git a/cpp/src/arrow/CMakeLists.txt b/cpp/src/arrow/CMakeLists.txt
-index c911f0f4e9..5f6b568460 100644
+index c911f0f4e..5f6b56846 100644
 --- a/cpp/src/arrow/CMakeLists.txt
 +++ b/cpp/src/arrow/CMakeLists.txt
 @@ -460,7 +460,7 @@ endif()
@@ -61,7 +61,7 @@ index c911f0f4e9..5f6b568460 100644
  arrow_add_object_library(ARROW_VENDORED ${ARROW_VENDORED_SRCS})
 diff --git a/cpp/src/arrow/vendored/datetime.cpp b/cpp/src/arrow/vendored/datetime.cpp
 new file mode 100644
-index 0000000000..0f0bd12c7e
+index 000000000..0f0bd12c7
 --- /dev/null
 +++ b/cpp/src/arrow/vendored/datetime.cpp
 @@ -0,0 +1,19 @@
@@ -85,7 +85,7 @@ index 0000000000..0f0bd12c7e
 +#include "datetime/visibility.h"
 +#include "datetime/tz.cpp"
 diff --git a/cpp/src/arrow/vendored/datetime.h b/cpp/src/arrow/vendored/datetime.h
-index e437cdcbc2..aea31ebe77 100644
+index e437cdcbc..aea31ebe7 100644
 --- a/cpp/src/arrow/vendored/datetime.h
 +++ b/cpp/src/arrow/vendored/datetime.h
 @@ -17,10 +17,11 @@
@@ -104,7 +104,7 @@ index e437cdcbc2..aea31ebe77 100644
 +#  undef NOEXCEPT
  #endif
 diff --git a/cpp/src/arrow/vendored/datetime/README.md b/cpp/src/arrow/vendored/datetime/README.md
-index 5a0993b7b4..89132d9cba 100644
+index 5a0993b7b..89132d9cb 100644
 --- a/cpp/src/arrow/vendored/datetime/README.md
 +++ b/cpp/src/arrow/vendored/datetime/README.md
 @@ -17,12 +17,16 @@ copies or substantial portions of the Software.
@@ -129,7 +129,7 @@ index 5a0993b7b4..89132d9cba 100644
 +$ ./update.sh 3.0.3
 +```
 diff --git a/cpp/src/arrow/vendored/datetime/date.h b/cpp/src/arrow/vendored/datetime/date.h
-index 75e2624296..c17d6f3f7a 100644
+index 75e262429..c17d6f3f7 100644
 --- a/cpp/src/arrow/vendored/datetime/date.h
 +++ b/cpp/src/arrow/vendored/datetime/date.h
 @@ -84,9 +84,7 @@
@@ -154,7 +154,7 @@ index 75e2624296..c17d6f3f7a 100644
  #ifdef _MSC_VER
  #   pragma warning(pop)
 diff --git a/cpp/src/arrow/vendored/datetime/ios.h b/cpp/src/arrow/vendored/datetime/ios.h
-index acad28d13b..d018e799a8 100644
+index acad28d13..d018e799a 100644
 --- a/cpp/src/arrow/vendored/datetime/ios.h
 +++ b/cpp/src/arrow/vendored/datetime/ios.h
 @@ -32,9 +32,7 @@
@@ -179,7 +179,7 @@ index acad28d13b..d018e799a8 100644
  # endif  // TARGET_OS_IPHONE
  #else   // !__APPLE__
 diff --git a/cpp/src/arrow/vendored/datetime/ios.mm b/cpp/src/arrow/vendored/datetime/ios.mm
-index 22b7ce6c30..70ba2adf0e 100644
+index 22b7ce6c3..70ba2adf0 100644
 --- a/cpp/src/arrow/vendored/datetime/ios.mm
 +++ b/cpp/src/arrow/vendored/datetime/ios.mm
 @@ -47,9 +47,7 @@
@@ -203,7 +203,7 @@ index 22b7ce6c30..70ba2adf0e 100644
  
  #endif  // TARGET_OS_IPHONE
 diff --git a/cpp/src/arrow/vendored/datetime/tz.cpp b/cpp/src/arrow/vendored/datetime/tz.cpp
-index 44c627775f..2cf6c62a84 100644
+index 44c627775..2cf6c62a8 100644
 --- a/cpp/src/arrow/vendored/datetime/tz.cpp
 +++ b/cpp/src/arrow/vendored/datetime/tz.cpp
 @@ -30,10 +30,6 @@
@@ -1009,7 +1009,7 @@ index 44c627775f..2cf6c62a84 100644
  #if defined(__GNUC__) && __GNUC__ < 5
  # pragma GCC diagnostic pop
 diff --git a/cpp/src/arrow/vendored/datetime/tz.h b/cpp/src/arrow/vendored/datetime/tz.h
-index df6d1a851a..61ab3df106 100644
+index df6d1a851..61ab3df10 100644
 --- a/cpp/src/arrow/vendored/datetime/tz.h
 +++ b/cpp/src/arrow/vendored/datetime/tz.h
 @@ -43,19 +43,13 @@
@@ -1124,7 +1124,7 @@ index df6d1a851a..61ab3df106 100644
  
  #endif  // TZ_H
 diff --git a/cpp/src/arrow/vendored/datetime/tz_private.h b/cpp/src/arrow/vendored/datetime/tz_private.h
-index a6bb8fd30a..1d7f858971 100644
+index a6bb8fd30..1d7f85897 100644
 --- a/cpp/src/arrow/vendored/datetime/tz_private.h
 +++ b/cpp/src/arrow/vendored/datetime/tz_private.h
 @@ -34,9 +34,7 @@
@@ -1150,7 +1150,7 @@ index a6bb8fd30a..1d7f858971 100644
  #include "tz.h"
 diff --git a/cpp/src/arrow/vendored/datetime/update.sh b/cpp/src/arrow/vendored/datetime/update.sh
 new file mode 100755
-index 0000000000..b4580c0426
+index 000000000..b4580c042
 --- /dev/null
 +++ b/cpp/src/arrow/vendored/datetime/update.sh
 @@ -0,0 +1,53 @@
@@ -1208,7 +1208,7 @@ index 0000000000..b4580c0426
 +rm *.bak
 +popd
 diff --git a/cpp/src/arrow/vendored/datetime/visibility.h b/cpp/src/arrow/vendored/datetime/visibility.h
-index ae031238d8..780c00d70b 100644
+index ae031238d..780c00d70 100644
 --- a/cpp/src/arrow/vendored/datetime/visibility.h
 +++ b/cpp/src/arrow/vendored/datetime/visibility.h
 @@ -17,10 +17,14 @@
@@ -1229,7 +1229,7 @@ index ae031238d8..780c00d70b 100644
 +#  define DATE_USE_DLL
  #endif
 diff --git a/cpp/src/gandiva/precompiled/CMakeLists.txt b/cpp/src/gandiva/precompiled/CMakeLists.txt
-index c2bc7fc027..e1427e25fb 100644
+index c2bc7fc02..e1427e25f 100644
 --- a/cpp/src/gandiva/precompiled/CMakeLists.txt
 +++ b/cpp/src/gandiva/precompiled/CMakeLists.txt
 @@ -63,7 +63,7 @@ add_gandiva_test(precompiled-test

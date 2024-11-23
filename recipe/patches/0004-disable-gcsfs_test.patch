@@ -1,4 +1,4 @@
-From 43e073eb4821d1e940915add71553c84028f3358 Mon Sep 17 00:00:00 2001
+From a828c478993de3369729011e9f433953ea823622 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sat, 2 Nov 2024 15:41:34 +1100
 Subject: [PATCH 4/4] disable gcsfs_test
@@ -11,7 +11,7 @@ hard to fit this into our migration patterns
  1 file changed, 8 deletions(-)
 
 diff --git a/cpp/src/arrow/filesystem/CMakeLists.txt b/cpp/src/arrow/filesystem/CMakeLists.txt
-index 7afdf566f2..b22a48a0c9 100644
+index 7afdf566f..b22a48a0c 100644
 --- a/cpp/src/arrow/filesystem/CMakeLists.txt
 +++ b/cpp/src/arrow/filesystem/CMakeLists.txt
 @@ -42,14 +42,6 @@ if(ARROW_BUILD_BENCHMARKS)
