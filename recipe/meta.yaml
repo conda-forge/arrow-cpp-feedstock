@@ -25,6 +25,9 @@ source:
       - patches/0003-GH-43808-C-skip-0117-in-StrptimeZoneOffset-for-old-g.patch
       # skip gcsfs tests due to missing `storage-testbench`
       - patches/0004-disable-gcsfs_test.patch
+      # upstream problems on with s3 tests on osx, see
+      # https://github.com/apache/arrow/issues/35587
+      - patches/0005-skip-NonExistentBucket-test-on-osx.patch
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 4d209492d514c2d3cb2d392681b9aa00e6d8da1c

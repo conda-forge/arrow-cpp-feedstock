@@ -1,7 +1,7 @@
 From d774a80949599d58d4726aaa2d78cc64208ab300 Mon Sep 17 00:00:00 2001
 From: Sutou Kouhei <kou@clear-code.com>
 Date: Mon, 21 Oct 2024 16:41:27 +0900
-Subject: [PATCH 1/4] GH-44455: [C++] Update vendored date to 3.0.3
+Subject: [PATCH 1/5] GH-44455: [C++] Update vendored date to 3.0.3
 
 IANA tzdata changed its data format. So we need to update vendored
 date to parse it.
