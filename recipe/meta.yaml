@@ -28,6 +28,8 @@ source:
       # upstream problems on with s3 tests on osx, see
       # https://github.com/apache/arrow/issues/35587
       - patches/0005-skip-NonExistentBucket-test-on-osx.patch
+      - patches/0006-set-ARROW_EXPORT-for-arrow-internal-tracing-Re-Un-wr.patch
+      - patches/0007-don-t-override-opentelemetry-cpp_SOURCE-to-ignore-AR.patch
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 4d209492d514c2d3cb2d392681b9aa00e6d8da1c
@@ -216,9 +218,6 @@ outputs:
         - azure-storage-files-datalake-cpp  # [unix]
         - brotli
         - bzip2
-        # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
-        # - cpp-opentelemetry-sdk
-        # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
         - glog
         # arrow uses a customized jemalloc, see #944
@@ -226,6 +225,7 @@ outputs:
         - libabseil
         - libgoogle-cloud-devel
         - libgoogle-cloud-storage-devel
+        - libopentelemetry-cpp
         - libutf8proc
         - lz4-c
         - orc

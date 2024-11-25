@@ -89,7 +89,7 @@ cmake -GNinja \
     -DARROW_WITH_BZ2=ON \
     -DARROW_WITH_LZ4=ON \
     -DARROW_WITH_NLOHMANN_JSON=ON \
-    -DARROW_WITH_OPENTELEMETRY=${READ_RECIPE_META_YAML_WHY_NOT} \
+    -DARROW_WITH_OPENTELEMETRY=ON \
     -DARROW_WITH_SNAPPY=ON \
     -DARROW_WITH_UCX=OFF \
     -DARROW_WITH_ZLIB=ON \
@@ -103,6 +103,7 @@ cmake -GNinja \
     -DMAKE=$BUILD_PREFIX/bin/make \
     -DPARQUET_REQUIRE_ENCRYPTION=ON \
     -DPython3_EXECUTABLE=${PYTHON} \
+    -Dopentelemetry-cpp_DIR=$PREFIX/lib/cmake/opentelemetry-cpp \
     ${CMAKE_ARGS} \
     ..
 
