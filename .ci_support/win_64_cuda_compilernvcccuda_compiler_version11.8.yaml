@@ -26,8 +26,6 @@ glog:
 - '0.7'
 libabseil:
 - '20240722'
-libboost_headers:
-- '1.86'
 libcrc32c:
 - '1.1'
 libcurl:
