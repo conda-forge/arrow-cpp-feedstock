@@ -1,4 +1,4 @@
-{% set version = "18.0.0" %}
+{% set version = "18.1.0" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -15,19 +15,15 @@ package:
 source:
   - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
     fn: apache-arrow-{{ version }}.tar.gz
-    sha256: abcf1934cd0cdddd33664e9f2d9a251d6c55239d1122ad0ed223b13a583c82a9
+    sha256: 2dc8da5f8796afe213ecc5e5aba85bb82d91520eff3cf315784a52d0fa61d7fc
     patches:
-      # backport https://github.com/apache/arrow/pull/44482
-      - patches/0001-GH-44455-C-Update-vendored-date-to-3.0.3.patch
-      # backport https://github.com/apache/arrow/pull/44507
-      - patches/0002-GH-44448-C-Add-support-for-overriding-grpc_cpp_plugi.patch
       # backport https://github.com/apache/arrow/pull/44621
-      - patches/0003-GH-43808-C-skip-0117-in-StrptimeZoneOffset-for-old-g.patch
+      - patches/0001-GH-43808-C-skip-0117-in-StrptimeZoneOffset-for-old-g.patch
       # skip gcsfs tests due to missing `storage-testbench`
-      - patches/0004-disable-gcsfs_test.patch
+      - patches/0002-disable-gcsfs_test.patch
       # upstream problems on with s3 tests on osx, see
       # https://github.com/apache/arrow/issues/35587
-      - patches/0005-skip-NonExistentBucket-test-on-osx.patch
+      - patches/0003-skip-NonExistentBucket-test-on-osx.patch
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 4d209492d514c2d3cb2d392681b9aa00e6d8da1c
@@ -37,7 +33,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 9
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
