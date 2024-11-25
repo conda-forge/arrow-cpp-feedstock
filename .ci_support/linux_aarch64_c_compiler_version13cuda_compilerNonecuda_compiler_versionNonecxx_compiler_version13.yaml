@@ -41,7 +41,7 @@ cxx_compiler:
 cxx_compiler_version:
 - '13'
 docker_image:
-- quay.io/condaforge/linux-anvil-cos7-x86_64
+- quay.io/condaforge/linux-anvil-x86_64:alma9
 gflags:
 - '2.2'
 glog:
@@ -77,7 +77,6 @@ ucx:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-  - c_stdlib_version
   - cuda_compiler
   - cuda_compiler_version
   - docker_image
