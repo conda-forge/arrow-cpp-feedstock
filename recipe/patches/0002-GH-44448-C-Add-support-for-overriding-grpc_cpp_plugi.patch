@@ -1,7 +1,7 @@
 From 3d00b553ffd302ada8d74b5b77b71128c594c0b4 Mon Sep 17 00:00:00 2001
 From: Sutou Kouhei <kou@clear-code.com>
 Date: Wed, 23 Oct 2024 10:30:33 +0900
-Subject: [PATCH 2/2] GH-44448: [C++] Add support for overriding
+Subject: [PATCH 2/5] GH-44448: [C++] Add support for overriding
  grpc_cpp_plugin path for cross-compiling
 
 ---
@@ -10,7 +10,7 @@ Subject: [PATCH 2/2] GH-44448: [C++] Add support for overriding
  2 files changed, 13 insertions(+)
 
 diff --git a/cpp/cmake_modules/DefineOptions.cmake b/cpp/cmake_modules/DefineOptions.cmake
-index d823444cf7..a7bf9e59f8 100644
+index d823444cf..a7bf9e59f 100644
 --- a/cpp/cmake_modules/DefineOptions.cmake
 +++ b/cpp/cmake_modules/DefineOptions.cmake
 @@ -640,6 +640,11 @@ Always OFF if building binaries" OFF)
@@ -26,7 +26,7 @@ index d823444cf7..a7bf9e59f8 100644
    set_option_category("Advanced developer")
  
 diff --git a/cpp/cmake_modules/ThirdpartyToolchain.cmake b/cpp/cmake_modules/ThirdpartyToolchain.cmake
-index db151b4e0f..0b215b5b25 100644
+index db151b4e0..0b215b5b2 100644
 --- a/cpp/cmake_modules/ThirdpartyToolchain.cmake
 +++ b/cpp/cmake_modules/ThirdpartyToolchain.cmake
 @@ -4223,6 +4223,14 @@ if(ARROW_WITH_GRPC)

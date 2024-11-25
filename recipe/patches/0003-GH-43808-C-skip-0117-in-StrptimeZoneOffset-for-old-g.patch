@@ -1,0 +1,62 @@
+From acf75c664b813f49eff275e74c0026af5ba90e84 Mon Sep 17 00:00:00 2001
+From: h-vetinari <h.vetinari@gmx.com>
+Date: Fri, 15 Nov 2024 19:38:40 +1100
+Subject: [PATCH 3/5] GH-43808: [C++] skip `-0117` in StrptimeZoneOffset for
+ old glibc (#44621)
+
+### Rationale for this change
+
+Enable tests for libarrow in conda-forge: https://github.com/apache/arrow/issues/35587
+
+### What changes are included in this PR?
+
+old glibc does not actually support timezones like `-0117` (used in `StrptimeZoneOffset` test). The exact lower bound for glibc is hard for me to determine; I know that it passes with 2.28 and that it fails with 2.17. Anything in between is an open question. I went with the conservative option here.
+
+### Are these changes tested?
+
+Tested in https://github.com/conda-forge/arrow-cpp-feedstock/pull/1058
+
+### Are there any user-facing changes?
+
+* GitHub Issue: #43808
+
+Lead-authored-by: H. Vetinari <h.vetinari@gmx.com>
+Co-authored-by: Sutou Kouhei <kou@cozmixng.org>
+Signed-off-by: Sutou Kouhei <kou@clear-code.com>
+---
+ cpp/src/arrow/util/value_parsing_test.cc | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/cpp/src/arrow/util/value_parsing_test.cc b/cpp/src/arrow/util/value_parsing_test.cc
+index 7cd1ab1e2..a833d266a 100644
+--- a/cpp/src/arrow/util/value_parsing_test.cc
++++ b/cpp/src/arrow/util/value_parsing_test.cc
+@@ -838,12 +838,25 @@ TEST(TimestampParser, StrptimeZoneOffset) {
+   std::string format = "%Y-%d-%m %H:%M:%S%z";
+   auto parser = TimestampParser::MakeStrptime(format);
+ 
++  std::vector<std::string> values = {
++    "2018-01-01 00:00:00+0000",
++    "2018-01-01 00:00:00+0100",
++#if defined(__GLIBC__) && defined(__GLIBC_MINOR__)
++// glibc < 2.28 doesn't support "-0117" timezone offset.
++// See also: https://github.com/apache/arrow/issues/43808
++#  if ((__GLIBC__ == 2) && (__GLIBC_MINOR__ >= 28)) || (__GLIBC__ >= 3)
++    "2018-01-01 00:00:00-0117",
++#  endif
++#else
++    "2018-01-01 00:00:00-0117",
++#endif
++    "2018-01-01 00:00:00+0130"
++  };
++
+   // N.B. GNU %z supports ISO8601 format while BSD %z supports only
+   // +HHMM or -HHMM and POSIX doesn't appear to define %z at all
+   for (auto unit : TimeUnit::values()) {
+-    for (const std::string value :
+-         {"2018-01-01 00:00:00+0000", "2018-01-01 00:00:00+0100",
+-          "2018-01-01 00:00:00+0130", "2018-01-01 00:00:00-0117"}) {
++    for (const std::string& value : values) {
+       SCOPED_TRACE(value);
+       int64_t converted = 0;
+       int64_t expected = 0;

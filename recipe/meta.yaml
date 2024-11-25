@@ -21,13 +21,23 @@ source:
       - patches/0001-GH-44455-C-Update-vendored-date-to-3.0.3.patch
       # backport https://github.com/apache/arrow/pull/44507
       - patches/0002-GH-44448-C-Add-support-for-overriding-grpc_cpp_plugi.patch
-  # testing-submodule not part of release tarball
+      # backport https://github.com/apache/arrow/pull/44621
+      - patches/0003-GH-43808-C-skip-0117-in-StrptimeZoneOffset-for-old-g.patch
+      # skip gcsfs tests due to missing `storage-testbench`
+      - patches/0004-disable-gcsfs_test.patch
+      # upstream problems on with s3 tests on osx, see
+      # https://github.com/apache/arrow/issues/35587
+      - patches/0005-skip-NonExistentBucket-test-on-osx.patch
+  # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 4d209492d514c2d3cb2d392681b9aa00e6d8da1c
     folder: testing
+  - git_url: https://github.com/apache/parquet-testing.git
+    git_rev: cb7a9674142c137367bf75a01b79c6e214a73199
+    folder: cpp/submodules/parquet-testing
 
 build:
-  number: 8
+  number: 9
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -50,6 +60,8 @@ requirements:
     # necessary for vendored jemalloc
     - autoconf     # [unix]
     - make         # [unix]
+    # where orc ends up looking (because during build, CONDA_PREFIX==BUILD_PREFIX)
+    - tzdata
   host:
     # for required dependencies, see
     # https://github.com/apache/arrow/blob/apache-arrow-11.0.0/cpp/cmake_modules/ThirdpartyToolchain.cmake#L46-L75
@@ -73,7 +85,7 @@ requirements:
     # arrow uses a customized jemalloc, see #944
     # - jemalloc
     - libabseil
-    - libboost-headers
+    - libboost-devel *
     - libgoogle-cloud-devel
     - libgoogle-cloud-storage-devel
     - libgrpc
@@ -88,6 +100,15 @@ requirements:
     - xsimd
     - zlib
     - zstd
+    # test requirements, c.f.
+    # https://github.com/apache/arrow/blob/apache-arrow-12.0.0/cpp/CMakeLists.txt#L842-L846
+    - gtest
+    # https://github.com/apache/arrow/blob/apache-arrow-12.0.0/cpp/src/arrow/flight/sql/CMakeLists.txt#L86-L87
+    - sqlite *
+    # required by s3fs tests
+    - minio-server
+    # for npm, to install azurite
+    - nodejs *
 
 outputs:
   - name: apache-arrow-proc

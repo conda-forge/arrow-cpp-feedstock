@@ -57,13 +57,14 @@ cmake -GNinja \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
     -DARROW_BUILD_STATIC=OFF \
-    -DARROW_BUILD_TESTS=OFF \
+    -DARROW_BUILD_TESTS=ON \
     -DARROW_BUILD_UTILITIES=OFF \
     -DARROW_COMPUTE=ON \
     -DARROW_CSV=ON \
     -DARROW_CXXFLAGS="${CXXFLAGS}" \
     -DARROW_DATASET=ON \
     -DARROW_DEPENDENCY_SOURCE=SYSTEM \
+    -DARROW_ENABLE_TIMING_TESTS=OFF \
     -DARROW_FILESYSTEM=ON \
     -DARROW_FLIGHT=ON \
     -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS=ON \
@@ -107,5 +108,12 @@ cmake -GNinja \
 
 # Do not install arrow, only build.
 cmake --build . --config Release
+
+if [[ "$CONDA_BUILD_CROSS_COMPILATION" != 1 && "$cuda_compiler_version" == "None" ]]; then
+    npm install -g azurite
+    export ARROW_TEST_DATA=$SRC_DIR/testing/data
+    export PARQUET_TEST_DATA=$SRC_DIR/cpp/submodules/parquet-testing/data
+    ctest --progress --output-on-failure
+fi
 
 popd
