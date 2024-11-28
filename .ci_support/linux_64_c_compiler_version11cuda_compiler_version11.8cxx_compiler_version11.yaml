@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.29.5
+- 0.29.6
 aws_sdk_cpp:
 - 1.11.449
 azure_core_cpp:
@@ -44,6 +44,11 @@ glog:
 - '0.7'
 libabseil:
 - '20240722'
+libarrow:
+- '15'
+- '16.1'
+- '17.0'
+- '18.0'
 libgoogle_cloud_devel:
 - '2.31'
 libgoogle_cloud_storage_devel:
@@ -52,6 +57,8 @@ libgrpc:
 - '1.67'
 libprotobuf:
 - 5.28.2
+libutf8proc:
+- '2.8'
 lz4_c:
 - 1.9.3
 openssl:
@@ -63,7 +70,7 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- linux-ppc64le
+- linux-64
 thrift_cpp:
 - 0.21.0
 zip_keys:
