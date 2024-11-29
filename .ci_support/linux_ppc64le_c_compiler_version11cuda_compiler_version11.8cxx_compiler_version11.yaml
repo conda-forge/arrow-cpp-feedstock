@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.29.5
+- 0.29.6
 aws_sdk_cpp:
 - 1.11.449
 azure_core_cpp:
@@ -15,7 +15,7 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '13'
+- '11'
 c_stdlib:
 - sysroot
 c_stdlib_version:
@@ -27,23 +27,28 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- None
+- nvcc
 cuda_compiler_version:
-- None
+- '11.8'
 cuda_compiler_version_min:
 - '11.8'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '13'
+- '11'
 docker_image:
-- quay.io/condaforge/linux-anvil-cos7-x86_64
+- quay.io/condaforge/linux-anvil-x86_64-cuda11.8:ubi8
 gflags:
 - '2.2'
 glog:
 - '0.7'
 libabseil:
 - '20240722'
+libarrow:
+- '15'
+- '16.1'
+- '17.0'
+- '18.0'
 libboost_headers:
 - '1.86'
 libgoogle_cloud_devel:
@@ -71,7 +76,6 @@ thrift_cpp:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-  - c_stdlib_version
   - cuda_compiler
   - cuda_compiler_version
   - docker_image
