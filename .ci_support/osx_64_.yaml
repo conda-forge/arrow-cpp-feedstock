@@ -3,7 +3,7 @@ MACOSX_DEPLOYMENT_TARGET:
 MACOSX_SDK_VERSION:
 - '10.13'
 aws_crt_cpp:
-- 0.29.5
+- 0.29.6
 aws_sdk_cpp:
 - 1.11.449
 azure_core_cpp:
@@ -28,8 +28,6 @@ channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
-cuda_compiler:
-- None
 cuda_compiler_version:
 - None
 cxx_compiler:
@@ -42,6 +40,11 @@ glog:
 - '0.7'
 libabseil:
 - '20240722'
+libarrow:
+- '15'
+- '16.1'
+- '17.0'
+- '18.0'
 libboost_headers:
 - '1.86'
 libgoogle_cloud_devel:
