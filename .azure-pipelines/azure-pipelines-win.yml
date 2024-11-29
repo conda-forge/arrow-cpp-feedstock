@@ -8,11 +8,11 @@ jobs:
     vmImage: windows-2022
   strategy:
     matrix:
-      win_64_cuda_compiler_version11.8:
-        CONFIG: win_64_cuda_compiler_version11.8
+      win_64_cuda_compilerNonecuda_compiler_versionNone:
+        CONFIG: win_64_cuda_compilerNonecuda_compiler_versionNone
         UPLOAD_PACKAGES: 'True'
-      win_64_cuda_compiler_versionNone:
-        CONFIG: win_64_cuda_compiler_versionNone
+      win_64_cuda_compilernvcccuda_compiler_version11.8:
+        CONFIG: win_64_cuda_compilernvcccuda_compiler_version11.8
         UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 360
   variables:
@@ -27,6 +27,7 @@ jobs:
       displayName: Run Windows build
       env:
         MINIFORGE_HOME: $(MINIFORGE_HOME)
+        CONDA_BLD_PATH: $(CONDA_BLD_PATH)
         PYTHONUNBUFFERED: 1
         CONFIG: $(CONFIG)
         CI: azure
