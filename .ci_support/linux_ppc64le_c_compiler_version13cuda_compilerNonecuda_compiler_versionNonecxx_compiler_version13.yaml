@@ -62,7 +62,7 @@ libprotobuf:
 libutf8proc:
 - '2.9'
 lz4_c:
-- 1.9.3
+- '1.10'
 openssl:
 - '3'
 orc:
@@ -72,7 +72,7 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- linux-64
+- linux-ppc64le
 thrift_cpp:
 - 0.21.0
 zip_keys:
