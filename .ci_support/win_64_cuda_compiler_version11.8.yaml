@@ -1,7 +1,7 @@
 aws_crt_cpp:
-- 0.29.5
+- 0.29.7
 aws_sdk_cpp:
-- 1.11.449
+- 1.11.458
 bzip2:
 - '1'
 c_compiler:
@@ -26,6 +26,8 @@ glog:
 - '0.7'
 libabseil:
 - '20240722'
+libarrow:
+- '*'
 libboost_headers:
 - '1.86'
 libcrc32c:
@@ -40,8 +42,10 @@ libgrpc:
 - '1.67'
 libprotobuf:
 - 5.28.2
+libutf8proc:
+- '2.9'
 lz4_c:
-- 1.9.3
+- '1.10'
 numpy:
 - '2.0'
 - '2.0'

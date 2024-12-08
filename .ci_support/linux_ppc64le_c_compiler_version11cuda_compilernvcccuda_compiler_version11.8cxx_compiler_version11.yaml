@@ -1,7 +1,7 @@
 aws_crt_cpp:
-- 0.29.5
+- 0.29.7
 aws_sdk_cpp:
-- 1.11.449
+- 1.11.458
 bzip2:
 - '1'
 c_compiler:
@@ -29,13 +29,15 @@ cxx_compiler:
 cxx_compiler_version:
 - '11'
 docker_image:
-- quay.io/condaforge/linux-anvil-cuda:11.8
+- quay.io/condaforge/linux-anvil-x86_64-cuda11.8:ubi8
 gflags:
 - '2.2'
 glog:
 - '0.7'
 libabseil:
 - '20240722'
+libarrow:
+- '*'
 libboost_headers:
 - '1.86'
 libgoogle_cloud_devel:
@@ -46,8 +48,10 @@ libgrpc:
 - '1.67'
 libprotobuf:
 - 5.28.2
+libutf8proc:
+- '2.9'
 lz4_c:
-- 1.9.3
+- '1.10'
 numpy:
 - '2.0'
 - '2.0'
@@ -79,7 +83,6 @@ ucx:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-  - c_stdlib_version
   - cuda_compiler
   - cuda_compiler_version
   - docker_image
