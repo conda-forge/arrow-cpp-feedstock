@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.29.6
+- 0.29.7
 aws_sdk_cpp:
 - 1.11.458
 azure_core_cpp:
@@ -62,7 +62,7 @@ libprotobuf:
 libutf8proc:
 - '2.9'
 lz4_c:
-- 1.9.3
+- '1.10'
 openssl:
 - '3'
 orc:
