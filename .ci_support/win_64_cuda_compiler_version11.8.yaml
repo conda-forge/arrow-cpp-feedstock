@@ -46,7 +46,7 @@ libprotobuf:
 libutf8proc:
 - '2.9'
 lz4_c:
-- 1.9.3
+- '1.10'
 openssl:
 - '3'
 orc:
