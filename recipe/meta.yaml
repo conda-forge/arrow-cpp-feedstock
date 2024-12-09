@@ -677,6 +677,8 @@ outputs:
         - numpy                                  # [build_platform != target_platform]
         - cmake
         - ninja
+        # where orc ends up looking (because during build, CONDA_PREFIX==BUILD_PREFIX)
+        - tzdata
       host:
         - {{ pin_subpackage("libarrow-all", exact=True) }}
         - clangdev {{ llvm_version }}
@@ -773,6 +775,8 @@ outputs:
         - numpy                                  # [build_platform != target_platform]
         - cmake
         - ninja
+        # where orc ends up looking (because during build, CONDA_PREFIX==BUILD_PREFIX)
+        - tzdata
       host:
         - {{ pin_subpackage("libarrow-all", exact=True) }}
         - {{ pin_subpackage('pyarrow', exact=True) }}
