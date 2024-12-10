@@ -45,14 +45,11 @@ glog:
 libabseil:
 - '20240722'
 libarrow:
-- '15'
-- '16.1'
-- '17.0'
-- '18.0'
+- '*'
 libgoogle_cloud_devel:
-- '2.31'
+- '2.32'
 libgoogle_cloud_storage_devel:
-- '2.31'
+- '2.32'
 libgrpc:
 - '1.67'
 libprotobuf:
@@ -70,7 +67,7 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- linux-64
+- linux-aarch64
 thrift_cpp:
 - 0.21.0
 zip_keys:
