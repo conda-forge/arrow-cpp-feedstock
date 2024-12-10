@@ -167,7 +167,14 @@ outputs:
         - {{ pin_subpackage("libparquet", exact=True) }}
     test:
       commands:
-        - echo "tested in other outputs"
+        # absence of test bits
+        - test ! -f $PREFIX/lib/libarrow_testing.so                 # [unix]
+        - test ! -d $PREFIX/lib/cmake/ArrowTesting                  # [unix]
+        - test ! -f $PREFIX/lib/pkgconfig/arrow-testing.pc          # [unix]
+        - if exist %LIBRARY_BIN%\arrow_testing.dll exit 1           # [win]
+        - if exist %LIBRARY_LIB%\arrow_testing.lib exit 1           # [win]
+        - if exist %LIBRARY_LIB%\cmake\ArrowTesting exit 1          # [win]
+        - if exist %LIBRARY_LIB%\pkgconfig\arrow-testing.pc exit 1  # [win]
 
     about:
       home: http://github.com/apache/arrow
