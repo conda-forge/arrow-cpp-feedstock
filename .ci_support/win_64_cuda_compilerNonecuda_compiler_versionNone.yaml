@@ -27,18 +27,15 @@ glog:
 libabseil:
 - '20240722'
 libarrow:
-- '15'
-- '16.1'
-- '17.0'
-- '18.0'
+- '*'
 libcrc32c:
 - '1.1'
 libcurl:
 - '8'
 libgoogle_cloud_devel:
-- '2.31'
+- '2.32'
 libgoogle_cloud_storage_devel:
-- '2.31'
+- '2.32'
 libgrpc:
 - '1.67'
 libprotobuf:
