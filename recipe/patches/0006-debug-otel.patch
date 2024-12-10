@@ -1,0 +1,23 @@
+From 65be11b7a26ff2f3cee249a6252e235145ee5241 Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Tue, 10 Dec 2024 13:08:48 +1100
+Subject: [PATCH 6/6] debug otel
+
+---
+ cpp/cmake_modules/ThirdpartyToolchain.cmake | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/cpp/cmake_modules/ThirdpartyToolchain.cmake b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+index 762e30814..6ad0ab069 100644
+--- a/cpp/cmake_modules/ThirdpartyToolchain.cmake
++++ b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+@@ -4966,7 +4966,9 @@ if(ARROW_WITH_OPENTELEMETRY)
+   # cURL is required whether we build from source or use an existing installation
+   # (OTel's cmake files do not call find_curl for you)
+   find_curl()
++  set(CMAKE_FIND_DEBUG_MODE TRUE)
+   resolve_dependency(opentelemetry-cpp)
++  set(CMAKE_FIND_DEBUG_MODE FALSE)
+   set(ARROW_OPENTELEMETRY_LIBS
+       opentelemetry-cpp::trace
+       opentelemetry-cpp::logs

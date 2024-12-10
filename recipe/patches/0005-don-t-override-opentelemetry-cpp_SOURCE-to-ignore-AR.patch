@@ -1,7 +1,7 @@
 From 051da5daba2bea0c9487b7ebf282a06910360abc Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Fri, 1 Dec 2023 13:53:57 +1100
-Subject: [PATCH 5/5] don't override opentelemetry-cpp_SOURCE to ignore
+Subject: [PATCH 5/6] don't override opentelemetry-cpp_SOURCE to ignore
  ARROW_DEPENDENCY_SOURCE=SYSTEM
 
 ---

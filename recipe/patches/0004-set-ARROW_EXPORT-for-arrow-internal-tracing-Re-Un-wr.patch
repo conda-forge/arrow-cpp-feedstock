@@ -1,7 +1,7 @@
 From f58974b5b0564399cb23d5fce069a8bf8dda41a5 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sat, 13 May 2023 11:13:51 +1100
-Subject: [PATCH 4/5] set ARROW_EXPORT for
+Subject: [PATCH 4/6] set ARROW_EXPORT for
  arrow::internal::tracing::{Re,Un}wrapSpan
 
 ---
