@@ -1,7 +1,7 @@
-From d6e3d63fd4f54b02953973c83385a8c736541c03 Mon Sep 17 00:00:00 2001
+From 4a881cb37be32b14f4a9ba6edab75a62699e9e58 Mon Sep 17 00:00:00 2001
 From: Chun Yang <Chuck.Yang@gmail.com>
 Date: Fri, 15 Mar 2024 08:33:00 -0700
-Subject: [PATCH 4/8] GH-37989: [Python] Plug reference leaks when creating
+Subject: [PATCH 4/9] GH-37989: [Python] Plug reference leaks when creating
  Arrow array from Python list of dicts (#40412)
 
 ### Rationale for this change
@@ -133,7 +133,7 @@ Signed-off-by: Joris Van den Bossche <jorisvandenbossche@gmail.com>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/python/pyarrow/src/arrow/python/python_to_arrow.cc b/python/pyarrow/src/arrow/python/python_to_arrow.cc
-index d1d94ac..5da3b56 100644
+index d1d94ac17..5da3b561b 100644
 --- a/python/pyarrow/src/arrow/python/python_to_arrow.cc
 +++ b/python/pyarrow/src/arrow/python/python_to_arrow.cc
 @@ -1041,7 +1041,8 @@ class PyStructConverter : public StructConverter<PyConverter, PyConverterTrait>

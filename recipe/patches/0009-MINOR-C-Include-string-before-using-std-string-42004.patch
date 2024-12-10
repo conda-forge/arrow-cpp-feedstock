@@ -1,0 +1,48 @@
+From 4f4ef2bf839ae871ccce27f8fc050bcfc8cd13b9 Mon Sep 17 00:00:00 2001
+From: "Stephan T. Lavavej" <stl@microsoft.com>
+Date: Thu, 6 Jun 2024 19:25:36 -0700
+Subject: [PATCH 9/9] MINOR: [C++] Include `<string>` before using
+ `std::string` (#42004)
+
+### Rationale for this change
+
+I work on MSVC's STL, and we regularly build popular open-source projects, including yours, with development builds of the MSVC toolset. This allows us to find and fix toolset regressions before they affect users, and also allows us to provide advance notice of breaking changes, which is the case here.
+
+We recently merged https://github.com/microsoft/STL/pull/4633 which will ship in VS 2022 17.11 Preview 3. This improved build throughput by refactoring `<string_view>` so that it no longer drags in `std::string`. It's also a source-breaking change for code that wasn't properly including `<string>`. Your `cpp/src/arrow/json/object_writer.h` declares `std::string Serialize();` without including `<string>`. When built with our updated STL, this will emit a compiler error:
+
+```
+C:\gitP\apache\arrow\cpp\src\arrow/json/object_writer.h(39): error C2039: 'string': is not a member of 'std'
+```
+
+### What changes are included in this PR?
+
+The fix is simple and portable: include the necessary header.
+
+### Are these changes tested?
+
+Nope, I'm totally YOLOing it. If it builds, it's good.
+
+(This will be tested in MSVC's internal "Real World Code" test infrastructure. Also, after VS 2022 17.11 ships, your existing build/test coverage will ensure that this keeps compiling.)
+
+### Are there any user-facing changes?
+
+No.
+
+Authored-by: Stephan T. Lavavej <stl@microsoft.com>
+Signed-off-by: Sutou Kouhei <kou@clear-code.com>
+---
+ cpp/src/arrow/json/object_writer.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/cpp/src/arrow/json/object_writer.h b/cpp/src/arrow/json/object_writer.h
+index b15b09dbd..cf1ce6219 100644
+--- a/cpp/src/arrow/json/object_writer.h
++++ b/cpp/src/arrow/json/object_writer.h
+@@ -18,6 +18,7 @@
+ #pragma once
+ 
+ #include <memory>
++#include <string>
+ #include <string_view>
+ 
+ #include "arrow/util/visibility.h"

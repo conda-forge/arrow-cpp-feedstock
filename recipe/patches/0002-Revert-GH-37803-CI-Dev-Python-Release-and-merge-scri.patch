@@ -1,7 +1,7 @@
-From 541350fa09d3f9fed30894f27a7688f1048ac465 Mon Sep 17 00:00:00 2001
+From 083c7a83bde9e4f6bbfd8a669d2dda2a99a310b6 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Tue, 20 Feb 2024 13:01:37 +1100
-Subject: [PATCH 2/8] Revert "GH-37803: [CI][Dev][Python] Release and merge
+Subject: [PATCH 2/9] Revert "GH-37803: [CI][Dev][Python] Release and merge
  script errors (#37819)"
 
 This reverts commit 79e49dbfb71efc70555417ba19cb612eb50924e8.
@@ -18,7 +18,7 @@ This reverts commit 79e49dbfb71efc70555417ba19cb612eb50924e8.
  9 files changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/ci/conda_env_archery.txt b/ci/conda_env_archery.txt
-index 40875e0..ace7a42 100644
+index 40875e0a5..ace7a42ac 100644
 --- a/ci/conda_env_archery.txt
 +++ b/ci/conda_env_archery.txt
 @@ -25,7 +25,7 @@ jira
@@ -31,7 +31,7 @@ index 40875e0..ace7a42 100644
  
  # benchmark
 diff --git a/ci/conda_env_crossbow.txt b/ci/conda_env_crossbow.txt
-index 59b7997..3472946 100644
+index 59b799720..347294650 100644
 --- a/ci/conda_env_crossbow.txt
 +++ b/ci/conda_env_crossbow.txt
 @@ -21,5 +21,5 @@ jinja2
@@ -42,7 +42,7 @@ index 59b7997..3472946 100644
 +setuptools_scm
  toolz
 diff --git a/ci/conda_env_python.txt b/ci/conda_env_python.txt
-index 59e2def..19e94d7 100644
+index 59e2def1b..19e94d7d3 100644
 --- a/ci/conda_env_python.txt
 +++ b/ci/conda_env_python.txt
 @@ -27,4 +27,4 @@ pytest<8
@@ -52,7 +52,7 @@ index 59e2def..19e94d7 100644
 -setuptools_scm<8.0.0
 +setuptools_scm
 diff --git a/dev/archery/setup.py b/dev/archery/setup.py
-index 2ecc72e..02a8b34 100755
+index 2ecc72e04..02a8b3429 100755
 --- a/dev/archery/setup.py
 +++ b/dev/archery/setup.py
 @@ -30,7 +30,7 @@ jinja_req = 'jinja2>=2.11'
@@ -65,7 +65,7 @@ index 2ecc72e..02a8b34 100755
                          'setuptools_scm'],
      'docker': ['ruamel.yaml', 'python-dotenv'],
 diff --git a/dev/tasks/conda-recipes/arrow-cpp/meta.yaml b/dev/tasks/conda-recipes/arrow-cpp/meta.yaml
-index 367445c..10ee9c2 100644
+index 367445c59..10ee9c28f 100644
 --- a/dev/tasks/conda-recipes/arrow-cpp/meta.yaml
 +++ b/dev/tasks/conda-recipes/arrow-cpp/meta.yaml
 @@ -240,7 +240,7 @@ outputs:
@@ -87,7 +87,7 @@ index 367445c..10ee9c2 100644
          - {{ pin_subpackage('pyarrow', exact=True) }}
          - python
 diff --git a/python/pyproject.toml b/python/pyproject.toml
-index 437de10..fe8c938 100644
+index 437de105a..fe8c938a9 100644
 --- a/python/pyproject.toml
 +++ b/python/pyproject.toml
 @@ -19,7 +19,7 @@
@@ -100,7 +100,7 @@ index 437de10..fe8c938 100644
      "wheel"
  ]
 diff --git a/python/requirements-build.txt b/python/requirements-build.txt
-index 56e9d47..507e908 100644
+index 56e9d479e..507e90813 100644
 --- a/python/requirements-build.txt
 +++ b/python/requirements-build.txt
 @@ -1,4 +1,4 @@
@@ -110,7 +110,7 @@ index 56e9d47..507e908 100644
 +setuptools_scm
  setuptools>=38.6.0
 diff --git a/python/requirements-wheel-build.txt b/python/requirements-wheel-build.txt
-index f42ee4a..6043d2f 100644
+index f42ee4a01..6043d2ffb 100644
 --- a/python/requirements-wheel-build.txt
 +++ b/python/requirements-wheel-build.txt
 @@ -1,5 +1,5 @@
@@ -121,7 +121,7 @@ index f42ee4a..6043d2f 100644
  setuptools>=58
  wheel
 diff --git a/python/setup.py b/python/setup.py
-index 5a3cbbc..d36edd3 100755
+index 5a3cbbc61..d36edd395 100755
 --- a/python/setup.py
 +++ b/python/setup.py
 @@ -492,7 +492,7 @@ setup(
