@@ -1,0 +1,31 @@
+From f58974b5b0564399cb23d5fce069a8bf8dda41a5 Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Sat, 13 May 2023 11:13:51 +1100
+Subject: [PATCH 4/5] set ARROW_EXPORT for
+ arrow::internal::tracing::{Re,Un}wrapSpan
+
+---
+ cpp/src/arrow/util/tracing_internal.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/cpp/src/arrow/util/tracing_internal.h b/cpp/src/arrow/util/tracing_internal.h
+index 6ed731599..79907cf0c 100644
+--- a/cpp/src/arrow/util/tracing_internal.h
++++ b/cpp/src/arrow/util/tracing_internal.h
+@@ -122,13 +122,13 @@ struct Scope {
+   opentelemetry::trace::Scope scope_impl;
+ };
+ 
+-opentelemetry::nostd::shared_ptr<opentelemetry::trace::Span>& UnwrapSpan(
++ARROW_EXPORT opentelemetry::nostd::shared_ptr<opentelemetry::trace::Span>& UnwrapSpan(
+     ::arrow::util::tracing::SpanDetails* span);
+ 
+-const opentelemetry::nostd::shared_ptr<opentelemetry::trace::Span>& UnwrapSpan(
++ARROW_EXPORT const opentelemetry::nostd::shared_ptr<opentelemetry::trace::Span>& UnwrapSpan(
+     const ::arrow::util::tracing::SpanDetails* span);
+ 
+-opentelemetry::nostd::shared_ptr<opentelemetry::trace::Span>& RewrapSpan(
++ARROW_EXPORT opentelemetry::nostd::shared_ptr<opentelemetry::trace::Span>& RewrapSpan(
+     ::arrow::util::tracing::SpanDetails* span,
+     opentelemetry::nostd::shared_ptr<opentelemetry::trace::Span> ot_span);
+ 
