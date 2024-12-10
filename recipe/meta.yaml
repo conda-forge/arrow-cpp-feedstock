@@ -227,6 +227,7 @@ outputs:
         - libgoogle-cloud-devel
         - libgoogle-cloud-storage-devel
         - libopentelemetry-cpp
+        - libprotobuf
         - libutf8proc
         - lz4-c
         - orc
@@ -468,6 +469,7 @@ outputs:
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
+        - libabseil
         - libprotobuf
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
