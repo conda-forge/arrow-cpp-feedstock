@@ -1,7 +1,7 @@
 From 46e9404a3c506626b7b89d5b4f10cd40f86f2e75 Mon Sep 17 00:00:00 2001
 From: h-vetinari <h.vetinari@gmx.com>
 Date: Mon, 27 May 2024 18:59:52 +1100
-Subject: [PATCH 2/2] GH-41755: [C++][ORC] Ensure setting detected ORC version
+Subject: [PATCH 2/3] GH-41755: [C++][ORC] Ensure setting detected ORC version
  (#41767)
 
 `FindorcAlt.cmake` doesn't set `orcAlt_VERSION` when it finds ORC by `find_library()`/`find_path()`. If `orcAlt_VERSION` isn't set, ORC version detection by caller is failed.
