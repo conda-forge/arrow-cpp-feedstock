@@ -39,7 +39,7 @@ source:
     folder: testing
 
 build:
-  number: 47
+  number: 48
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -677,6 +677,8 @@ outputs:
         - numpy                                  # [build_platform != target_platform]
         - cmake
         - ninja
+        # where orc ends up looking (because during build, CONDA_PREFIX==BUILD_PREFIX)
+        - tzdata
       host:
         - {{ pin_subpackage("libarrow-all", exact=True) }}
         - clangdev {{ llvm_version }}
@@ -773,6 +775,8 @@ outputs:
         - numpy                                  # [build_platform != target_platform]
         - cmake
         - ninja
+        # where orc ends up looking (because during build, CONDA_PREFIX==BUILD_PREFIX)
+        - tzdata
       host:
         - {{ pin_subpackage("libarrow-all", exact=True) }}
         - {{ pin_subpackage('pyarrow', exact=True) }}
