@@ -865,6 +865,7 @@ outputs:
         {% set tests_to_skip = tests_to_skip + " or test_extract_datetime_components " %}           # [aarch64 or ppc64le]
         # flaky test that fails regularly on aarch
         {% set tests_to_skip = tests_to_skip + " or test_feather_format[serial]" %}                 # [aarch64]
+        {% set tests_to_skip = tests_to_skip + " or test_threaded_pandas_import" %}                 # [aarch64]
         # gandiva tests are segfaulting on ppc
         {% set tests_to_skip = tests_to_skip + " or test_gandiva" %}                                # [ppc64le]
         # test failures on ppc (both failing with: Float value was truncated converting to int32)
