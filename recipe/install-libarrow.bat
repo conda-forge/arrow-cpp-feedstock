@@ -12,6 +12,7 @@ if [%PKG_NAME%] == [libarrow] (
     move .\temp_prefix\bin\arrow_cuda.dll %LIBRARY_BIN% || true
     copy .\temp_prefix\lib\pkgconfig\arrow.pc %LIBRARY_LIB%\pkgconfig
     copy .\temp_prefix\lib\pkgconfig\arrow-compute.pc %LIBRARY_LIB%\pkgconfig
+    copy .\temp_prefix\lib\pkgconfig\arrow-csv.pc %LIBRARY_LIB%\pkgconfig
     copy .\temp_prefix\lib\pkgconfig\arrow-cuda.pc %LIBRARY_LIB%\pkgconfig || true
     copy .\temp_prefix\lib\pkgconfig\arrow-filesystem.pc %LIBRARY_LIB%\pkgconfig
     copy .\temp_prefix\lib\pkgconfig\arrow-json.pc %LIBRARY_LIB%\pkgconfig
@@ -76,6 +77,17 @@ if [%PKG_NAME%] == [libarrow] (
     REM libarrow-all: install everything else (whatever ends up in this output
     REM should generally be installed into the appropriate libarrow-<flavour>).
     cmake --install .\cpp\build --prefix=%LIBRARY_PREFIX%
+    REM remove testing bits, c.f. https://github.com/apache/arrow/issues/44993
+    for %%F in (arrow_testing arrow_flight_testing) do (
+        del /s /q "%LIBRARY_LIB%\%%F.lib"
+        del /s /q "%LIBRARY_BIN%\%%F.dll"
+    )
+    for %%F in (ArrowTesting ArrowFlightTesting) do (
+        rmdir /s /q "%LIBRARY_LIB%\cmake\%%F"
+    )
+    for %%F in (arrow-testing arrow-flight-testing) do (
+        del /s /q "%LIBRARY_LIB%\pkgconfig\%%F.pc"
+    )
 ) else (
     REM shouldn't happen
     exit 1

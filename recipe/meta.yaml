@@ -24,6 +24,8 @@ source:
       # upstream problems on with s3 tests on osx, see
       # https://github.com/apache/arrow/issues/35587
       - patches/0003-skip-NonExistentBucket-test-on-osx.patch
+      - patches/0004-set-ARROW_EXPORT-for-arrow-internal-tracing-Re-Un-wr.patch
+      - patches/0005-don-t-override-opentelemetry-cpp_SOURCE-to-ignore-AR.patch
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 4d209492d514c2d3cb2d392681b9aa00e6d8da1c
@@ -33,7 +35,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 6
+  number: 7
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -73,18 +75,17 @@ requirements:
     - azure-storage-files-datalake-cpp  # [unix]
     - brotli
     - bzip2
-    # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
-    # - cpp-opentelemetry-sdk
-    # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
     - gflags
     - glog
     # arrow uses a customized jemalloc, see #944
     # - jemalloc
     - libabseil
-    - libboost-devel *
+    - libboost-devel
     - libgoogle-cloud-devel
     - libgoogle-cloud-storage-devel
     - libgrpc
+    # see https://github.com/apache/arrow/issues/45033
+    - libopentelemetry-cpp          # [unix]
     - libutf8proc
     - lz4-c
     - nlohmann_json
@@ -165,7 +166,14 @@ outputs:
         - {{ pin_subpackage("libparquet", exact=True) }}
     test:
       commands:
-        - echo "tested in other outputs"
+        # absence of test bits
+        - test ! -f $PREFIX/lib/libarrow_testing.so                 # [unix]
+        - test ! -d $PREFIX/lib/cmake/ArrowTesting                  # [unix]
+        - test ! -f $PREFIX/lib/pkgconfig/arrow-testing.pc          # [unix]
+        - if exist %LIBRARY_BIN%\arrow_testing.dll exit 1           # [win]
+        - if exist %LIBRARY_LIB%\arrow_testing.lib exit 1           # [win]
+        - if exist %LIBRARY_LIB%\cmake\ArrowTesting exit 1          # [win]
+        - if exist %LIBRARY_LIB%\pkgconfig\arrow-testing.pc exit 1  # [win]
 
     about:
       home: http://github.com/apache/arrow
@@ -212,9 +220,6 @@ outputs:
         - azure-storage-files-datalake-cpp  # [unix]
         - brotli
         - bzip2
-        # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
-        # - cpp-opentelemetry-sdk
-        # - proto-opentelemetry-proto =={{ cpp_opentelemetry_sdk }}
         - gflags
         - glog
         # arrow uses a customized jemalloc, see #944
@@ -222,6 +227,8 @@ outputs:
         - libabseil
         - libgoogle-cloud-devel
         - libgoogle-cloud-storage-devel
+        - libopentelemetry-cpp              # [unix]
+        - libprotobuf
         - libutf8proc
         - lz4-c
         - orc
@@ -463,6 +470,7 @@ outputs:
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
+        - libabseil
         - libprotobuf
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
