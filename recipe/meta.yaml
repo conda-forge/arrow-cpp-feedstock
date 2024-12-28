@@ -191,8 +191,7 @@ outputs:
         - {{ pin_subpackage("libarrow", max_pin="x.x") }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
-        # arrow only uses headers on osx/win, apparently
-        - gflags                                 # [not linux]
+        - gflags
         # shared lib linked on unix, not on win
         - glog                                   # [win]
       ignore_run_exports:
