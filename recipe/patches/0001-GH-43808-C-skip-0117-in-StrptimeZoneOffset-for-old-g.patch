@@ -1,7 +1,7 @@
-From c085cc3f17955415de7b7f7e883b4b3b92737abf Mon Sep 17 00:00:00 2001
+From b43fe5fba8ae2d1508a970d7e8b2f548ff8bf1be Mon Sep 17 00:00:00 2001
 From: h-vetinari <h.vetinari@gmx.com>
 Date: Fri, 15 Nov 2024 19:38:40 +1100
-Subject: [PATCH 1/3] GH-43808: [C++] skip `-0117` in StrptimeZoneOffset for
+Subject: [PATCH 1/4] GH-43808: [C++] skip `-0117` in StrptimeZoneOffset for
  old glibc (#44621)
 
 ### Rationale for this change

@@ -73,6 +73,10 @@ elif [[ "${PKG_NAME}" == "libarrow-all" ]]; then
     # libarrow-all: install everything else (whatever ends up in this output
     # should generally be installed into the appropriate libarrow-<flavour>).
     cmake --install ./cpp/build --prefix=$PREFIX
+    # remove testing bits, c.f. https://github.com/apache/arrow/issues/44993
+    rm -f $PREFIX/lib/{libarrow_testing,libarrow_flight_testing}.*
+    rm -f $PREFIX/lib/pkgconfig/{arrow-testing,arrow-flight-testing}.pc
+    rm -rf $PREFIX/lib/cmake/{ArrowTesting,ArrowFlightTesting}
 else
     # shouldn't happen
     exit 1

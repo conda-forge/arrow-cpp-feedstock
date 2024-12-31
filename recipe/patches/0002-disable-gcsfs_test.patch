@@ -1,7 +1,7 @@
-From b950c9f10abc6381e152e0e9481e00012db53cd4 Mon Sep 17 00:00:00 2001
+From a65aece6fa1332e64722b8abc228003941c4f384 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sat, 2 Nov 2024 15:41:34 +1100
-Subject: [PATCH 2/3] disable gcsfs_test
+Subject: [PATCH 2/4] disable gcsfs_test
 
 it cannot work unless we package https://github.com/googleapis/storage-testbench,
 which however has extremely tight dependencies on protobuf etc., making it very

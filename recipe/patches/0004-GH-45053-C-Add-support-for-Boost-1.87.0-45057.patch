@@ -1,0 +1,49 @@
+From 48d6ad09905945f1beb8c3a3c15d5b32a697428c Mon Sep 17 00:00:00 2001
+From: Sutou Kouhei <kou@clear-code.com>
+Date: Wed, 18 Dec 2024 14:38:09 +0900
+Subject: [PATCH 4/4] GH-45053: [C++] Add support for Boost 1.87.0 (#45057)
+
+### Rationale for this change
+
+Boost 1.87.0 removed `BOOST_PROCESS_V2_ASIO_NAMESPACE`:
+https://github.com/boostorg/process/commit/e827d145424ede0f912b10d4e2800e1da9a2867d
+
+### What changes are included in this PR?
+
+Use `BOOST_PROCESS_V2_NAMESPACE::net` instead.
+
+### Are these changes tested?
+
+Yes.
+
+### Are there any user-facing changes?
+
+No.
+* GitHub Issue: #45053
+
+Authored-by: Sutou Kouhei <kou@clear-code.com>
+Signed-off-by: Sutou Kouhei <kou@clear-code.com>
+---
+ cpp/src/arrow/testing/process.cc | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/cpp/src/arrow/testing/process.cc b/cpp/src/arrow/testing/process.cc
+index 133768ff0..57df0196c 100644
+--- a/cpp/src/arrow/testing/process.cc
++++ b/cpp/src/arrow/testing/process.cc
+@@ -85,9 +85,14 @@
+ #  include <thread>
+ 
+ #  ifdef BOOST_PROCESS_USE_V2
+-namespace asio = BOOST_PROCESS_V2_ASIO_NAMESPACE;
+ namespace process = BOOST_PROCESS_V2_NAMESPACE;
+ namespace filesystem = process::filesystem;
++// For Boost < 1.87.0
++#    ifdef BOOST_PROCESS_V2_ASIO_NAMESPACE
++namespace asio = BOOST_PROCESS_V2_ASIO_NAMESPACE;
++#    else
++namespace asio = process::net;
++#    endif
+ #  elif defined(BOOST_PROCESS_HAVE_V1)
+ namespace process = boost::process::v1;
+ namespace filesystem = boost::process::v1::filesystem;
