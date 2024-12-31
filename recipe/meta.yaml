@@ -80,6 +80,7 @@ requirements:
     - libgoogle-cloud-devel
     - libgoogle-cloud-storage-devel
     - libgrpc
+    - libprotobuf
     - libutf8proc
     - lz4-c
     - nlohmann_json
