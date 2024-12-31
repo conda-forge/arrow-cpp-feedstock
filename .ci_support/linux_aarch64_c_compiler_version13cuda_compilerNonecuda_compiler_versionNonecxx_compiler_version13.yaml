@@ -55,7 +55,7 @@ libgoogle_cloud_storage_devel:
 libgrpc:
 - '1.67'
 libprotobuf:
-- 5.28.2
+- 5.28.3
 libutf8proc:
 - '2.9'
 lz4_c:
@@ -69,7 +69,7 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- linux-64
+- linux-aarch64
 thrift_cpp:
 - 0.21.0
 ucx:

@@ -2,12 +2,26 @@ aws_crt_cpp:
 - 0.29.7
 aws_sdk_cpp:
 - 1.11.458
+azure_core_cpp:
+- 1.14.0
+azure_identity_cpp:
+- 1.10.0
+azure_storage_blobs_cpp:
+- 12.13.0
+azure_storage_files_datalake_cpp:
+- 12.12.0
 bzip2:
 - '1'
 c_compiler:
-- vs2022
+- gcc
+c_compiler_version:
+- '13'
 c_stdlib:
-- vs
+- sysroot
+c_stdlib_version:
+- '2.17'
+cdt_name:
+- conda
 channel_sources:
 - conda-forge
 channel_targets:
@@ -19,7 +33,11 @@ cuda_compiler_version:
 cuda_compiler_version_min:
 - '11.8'
 cxx_compiler:
-- vs2022
+- gxx
+cxx_compiler_version:
+- '13'
+docker_image:
+- quay.io/condaforge/linux-anvil-x86_64:alma9
 gflags:
 - '2.2'
 glog:
@@ -30,10 +48,6 @@ libarrow:
 - '*'
 libboost_headers:
 - '1.86'
-libcrc32c:
-- '1.1'
-libcurl:
-- '8'
 libgoogle_cloud_devel:
 - '2.32'
 libgoogle_cloud_storage_devel:
@@ -41,7 +55,7 @@ libgoogle_cloud_storage_devel:
 libgrpc:
 - '1.67'
 libprotobuf:
-- 5.28.2
+- 5.28.3
 libutf8proc:
 - '2.9'
 lz4_c:
@@ -55,12 +69,17 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- win-64
+- linux-ppc64le
 thrift_cpp:
 - 0.21.0
+ucx:
+- '1.17'
 zip_keys:
-- - cuda_compiler
+- - c_compiler_version
+  - cxx_compiler_version
+  - cuda_compiler
   - cuda_compiler_version
+  - docker_image
 zlib:
 - '1'
 zstd:

@@ -13,9 +13,9 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- nvcc
+- None
 cuda_compiler_version:
-- '11.8'
+- None
 cuda_compiler_version_min:
 - '11.8'
 cxx_compiler:
@@ -41,7 +41,7 @@ libgoogle_cloud_storage_devel:
 libgrpc:
 - '1.67'
 libprotobuf:
-- 5.28.2
+- 5.28.3
 libutf8proc:
 - '2.9'
 lz4_c:
