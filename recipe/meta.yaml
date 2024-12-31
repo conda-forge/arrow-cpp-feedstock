@@ -472,6 +472,7 @@ outputs:
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
+        - libabseil
         - libprotobuf
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
