@@ -43,7 +43,7 @@ libgoogle_cloud_storage_devel:
 libgrpc:
 - '1.67'
 libprotobuf:
-- 5.28.2
+- 5.28.3
 libutf8proc:
 - '2.9'
 lz4_c:
