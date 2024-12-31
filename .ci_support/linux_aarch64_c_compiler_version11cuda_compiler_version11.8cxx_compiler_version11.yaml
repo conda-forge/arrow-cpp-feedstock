@@ -41,9 +41,9 @@ libarrow:
 libboost_headers:
 - '1.86'
 libgoogle_cloud_devel:
-- '2.32'
+- '2.33'
 libgoogle_cloud_storage_devel:
-- '2.32'
+- '2.33'
 libgrpc:
 - '1.67'
 libprotobuf:
@@ -75,7 +75,7 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- linux-64
+- linux-aarch64
 thrift_cpp:
 - 0.21.0
 ucx:
