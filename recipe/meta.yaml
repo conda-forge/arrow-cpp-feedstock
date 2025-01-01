@@ -40,7 +40,7 @@ source:
     folder: testing
 
 build:
-  number: 49
+  number: 50
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -85,6 +85,7 @@ requirements:
     - libgoogle-cloud-devel
     - libgoogle-cloud-storage-devel
     - libgrpc
+    - libprotobuf
     - libutf8proc
     - lz4-c
     - nlohmann_json
