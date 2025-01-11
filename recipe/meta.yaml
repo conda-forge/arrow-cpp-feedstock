@@ -818,7 +818,7 @@ outputs:
         - minio-server
         - pandas
         - s3fs >=2023
-        - scipy
+        - scipy <1.15
         - zstandard             # [py<310]
         # disable until numba is rebuilt for numpy 2.0
         # - sparse
