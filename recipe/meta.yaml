@@ -17,21 +17,17 @@ source:
     fn: apache-arrow-{{ version }}.tar.gz
     sha256: f89b93f39954740f7184735ff1e1d3b5be2640396febc872c4955274a011f56b
     patches:
-      # backport https://github.com/apache/arrow/pull/44621
-      - patches/0001-GH-43808-C-skip-0117-in-StrptimeZoneOffset-for-old-g.patch
       # skip gcsfs tests due to missing `storage-testbench`
-      - patches/0002-disable-gcsfs_test.patch
+      - patches/0001-disable-gcsfs_test.patch
       # upstream problems on with s3 tests on osx, see
       # https://github.com/apache/arrow/issues/35587
-      - patches/0003-skip-NonExistentBucket-test-on-osx.patch
-      # backport https://github.com/apache/arrow/pull/45057
-      - patches/0004-GH-45053-C-Add-support-for-Boost-1.87.0-45057.patch
+      - patches/0002-skip-NonExistentBucket-test-on-osx.patch
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 4d209492d514c2d3cb2d392681b9aa00e6d8da1c
     folder: testing
   - git_url: https://github.com/apache/parquet-testing.git
-    git_rev: cb7a9674142c137367bf75a01b79c6e214a73199
+    git_rev: c7cf1374cf284c0c73024cd1437becea75558bf8
     folder: cpp/submodules/parquet-testing
 
 build:
