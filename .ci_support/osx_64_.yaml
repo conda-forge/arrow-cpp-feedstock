@@ -3,7 +3,7 @@ MACOSX_DEPLOYMENT_TARGET:
 MACOSX_SDK_VERSION:
 - '10.13'
 aws_crt_cpp:
-- 0.29.7
+- 0.29.8
 aws_sdk_cpp:
 - 1.11.458
 bzip2:

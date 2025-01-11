@@ -40,7 +40,7 @@ source:
     folder: testing
 
 build:
-  number: 50
+  number: 51
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -818,7 +818,7 @@ outputs:
         - minio-server
         - pandas
         - s3fs >=2023
-        - scipy
+        - scipy <1.15
         - zstandard             # [py<310]
         # disable until numba is rebuilt for numpy 2.0
         # - sparse
