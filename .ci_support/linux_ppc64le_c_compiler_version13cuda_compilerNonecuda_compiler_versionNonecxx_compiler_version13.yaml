@@ -58,16 +58,32 @@ libutf8proc:
 - '2.9'
 lz4_c:
 - '1.10'
+numpy:
+- '2.0'
+- '2.0'
+- '2.0'
+- '2'
+- '2.0'
 openssl:
 - '3'
 orc:
 - 2.0.3
+pin_run_as_build:
+  python:
+    min_pin: x.x
+    max_pin: x.x
+python:
+- 3.10.* *_cpython
+- 3.11.* *_cpython
+- 3.12.* *_cpython
+- 3.13.* *_cp313
+- 3.9.* *_cpython
 re2:
 - 2024.07.02
 snappy:
 - '1.2'
 target_platform:
-- linux-aarch64
+- linux-ppc64le
 thrift_cpp:
 - 0.21.0
 zip_keys:
@@ -76,6 +92,8 @@ zip_keys:
   - cuda_compiler
   - cuda_compiler_version
   - docker_image
+- - python
+  - numpy
 zlib:
 - '1'
 zstd:
