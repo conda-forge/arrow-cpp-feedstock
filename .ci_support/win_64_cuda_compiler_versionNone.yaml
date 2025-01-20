@@ -1,7 +1,7 @@
 aws_crt_cpp:
 - 0.29.9
 aws_sdk_cpp:
-- 1.11.488
+- 1.11.458
 bzip2:
 - '1'
 c_compiler:
@@ -41,7 +41,7 @@ libgrpc:
 libprotobuf:
 - 5.28.3
 libutf8proc:
-- '2.9'
+- '2.10'
 lz4_c:
 - '1.10'
 openssl:
