@@ -24,6 +24,8 @@ source:
       - patches/0002-skip-NonExistentBucket-test-on-osx.patch
       # backport https://github.com/apache/arrow/pull/45232
       - patches/0003-MINOR-C-Disable-Flight-test.patch
+      # possible fix for https://github.com/apache/arrow/issues/41990
+      - patches/0004-avoid-std-unique_ptr-Impl-in-azurefs.cc.patch
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 4d209492d514c2d3cb2d392681b9aa00e6d8da1c
@@ -37,6 +39,8 @@ build:
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
+  # debug
+  skip: true  # [not win]
 
 requirements:
   build:
@@ -65,12 +69,10 @@ requirements:
     - llvmdev {{ llvm_version }}
     - aws-crt-cpp
     - aws-sdk-cpp
-    # azure filesystem dependencies, currently broken on windows, see
-    # https://github.com/apache/arrow/issues/41990
-    - azure-core-cpp                    # [unix]
-    - azure-identity-cpp                # [unix]
-    - azure-storage-blobs-cpp           # [unix]
-    - azure-storage-files-datalake-cpp  # [unix]
+    - azure-core-cpp
+    - azure-identity-cpp
+    - azure-storage-blobs-cpp
+    - azure-storage-files-datalake-cpp
     - brotli
     - bzip2
     # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
@@ -214,10 +216,10 @@ outputs:
       host:
         - aws-crt-cpp
         - aws-sdk-cpp
-        - azure-core-cpp                    # [unix]
-        - azure-identity-cpp                # [unix]
-        - azure-storage-blobs-cpp           # [unix]
-        - azure-storage-files-datalake-cpp  # [unix]
+        - azure-core-cpp
+        - azure-identity-cpp
+        - azure-storage-blobs-cpp
+        - azure-storage-files-datalake-cpp
         - brotli
         - bzip2
         # not yet: https://github.com/conda-forge/cpp-opentelemetry-sdk-feedstock/issues/38
