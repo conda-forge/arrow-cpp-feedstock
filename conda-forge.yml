@@ -10,7 +10,6 @@ bot:
   - 18.x
   - 17.x
   - 16.x
-  - 15.x
 build_platform:
   linux_aarch64: linux_64
   linux_ppc64le: linux_64
