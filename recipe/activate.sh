@@ -6,7 +6,7 @@
 
 # doesn't come with a deactivate script, because the symlink
 # is benign and doesn't need to be deleted.
-
+CF_LIBARROW_ACTIVATE_LOGGING=1
 _la_log() {
     if [ "${CF_LIBARROW_ACTIVATE_LOGGING:-}" = "1" ]; then
         # The following loop is necessary to handle multi-line strings
@@ -22,7 +22,7 @@ _la_log() {
 # Otherwise, the symlinks will be included in packages built with libarrow as a host dependency.
 # <https://github.com/prefix-dev/rattler-build/issues/979#issuecomment-2243070530>
 if [ -n "$CONDA_BUILD" ]; then
-    _la_log "CONDA_BUILD is set, skipping libarrow activation."
+    _la_log "CONDA_BUILD is set to $CONDA_BUILD, skipping libarrow activation."
     return 0
 fi
 
