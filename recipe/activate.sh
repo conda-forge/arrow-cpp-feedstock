@@ -18,6 +18,14 @@ _la_log() {
     fi
 }
 
+# Skip activation if CONDA_BUILD environment variable is set.
+# Otherwise, the symlinks will be included in packages built with libarrow as a host dependency.
+# <https://github.com/prefix-dev/rattler-build/issues/979#issuecomment-2243070530>
+if [ -n "$CONDA_BUILD" ]; then
+    _la_log "CONDA_BUILD is set, skipping libarrow activation."
+    return 0
+fi
+
 _la_log "Beginning libarrow activation."
 
 # where the GDB wrappers get installed
