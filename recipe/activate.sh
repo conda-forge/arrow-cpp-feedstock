@@ -21,7 +21,7 @@ _la_log() {
 # Skip activation if CONDA_BUILD environment variable is set.
 # (CONDA_BUILD is also set in the test stage, and we don't want to skip there.)
 # Otherwise, the symlinks will be included in packages built with libarrow as a host dependency.
-# https://github.com/prefix-dev/rattler-build/issues/979#issuecomment-2243070530
+# see https://github.com/conda-forge/arrow-cpp-feedstock/issues/1478
 if [ -n "$CONDA_BUILD" ] && [ "${CONDA_BUILD_STATE:-0}" != "TEST" ]; then
     _la_log "CONDA_BUILD is set to $CONDA_BUILD (and CONDA_BUILD_STATE != \"TEST\"), skipping libarrow activation."
     return 0
