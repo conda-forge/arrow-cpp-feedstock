@@ -22,7 +22,7 @@ _la_log() {
 # (CONDA_BUILD is also set in the test stage, and we don't want to skip there.)
 # Otherwise, the symlinks will be included in packages built with libarrow as a host dependency.
 # see https://github.com/conda-forge/arrow-cpp-feedstock/issues/1478
-if [ -n "$CONDA_BUILD" ] && [ "${CONDA_BUILD_STATE:-0}" != "TEST" ]; then
+if [ -n "${CONDA_BUILD:-}" ] && [ "${CONDA_BUILD_STATE:-0}" != "TEST" ]; then
     _la_log "CONDA_BUILD is set to $CONDA_BUILD (and CONDA_BUILD_STATE != \"TEST\"), skipping libarrow activation."
     return 0
 fi
