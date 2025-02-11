@@ -335,4 +335,3 @@ Feedstock Maintainers
 * [@siddharthteotia](https://github.com/siddharthteotia/)
 * [@wesm](https://github.com/wesm/)
 * [@xhochy](https://github.com/xhochy/)
-
