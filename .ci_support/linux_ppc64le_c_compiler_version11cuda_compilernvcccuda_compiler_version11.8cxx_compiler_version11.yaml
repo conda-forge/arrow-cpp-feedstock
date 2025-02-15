@@ -49,9 +49,9 @@ libarrow:
 libboost_headers:
 - '1.86'
 libgoogle_cloud_devel:
-- '2.34'
+- '2.35'
 libgoogle_cloud_storage_devel:
-- '2.34'
+- '2.35'
 libgrpc:
 - '1.67'
 libprotobuf:
@@ -63,13 +63,13 @@ lz4_c:
 openssl:
 - '3'
 orc:
-- 2.0.3
+- 2.1.0
 re2:
 - 2024.07.02
 snappy:
 - '1.2'
 target_platform:
-- linux-aarch64
+- linux-ppc64le
 thrift_cpp:
 - 0.21.0
 zip_keys:
