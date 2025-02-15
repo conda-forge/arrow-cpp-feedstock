@@ -47,9 +47,9 @@ libabseil:
 libarrow:
 - '*'
 libgoogle_cloud_devel:
-- '2.34'
+- '2.35'
 libgoogle_cloud_storage_devel:
-- '2.34'
+- '2.35'
 libgrpc:
 - '1.67'
 libprotobuf:
@@ -67,7 +67,7 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- linux-aarch64
+- linux-ppc64le
 thrift_cpp:
 - 0.21.0
 zip_keys:
