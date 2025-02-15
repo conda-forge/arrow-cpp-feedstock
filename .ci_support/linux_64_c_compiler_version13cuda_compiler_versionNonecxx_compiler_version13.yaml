@@ -47,9 +47,9 @@ libabseil:
 libarrow:
 - '*'
 libgoogle_cloud_devel:
-- '2.34'
+- '2.35'
 libgoogle_cloud_storage_devel:
-- '2.34'
+- '2.35'
 libgrpc:
 - '1.67'
 libopentelemetry_cpp:
@@ -69,7 +69,7 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- linux-ppc64le
+- linux-64
 thrift_cpp:
 - 0.21.0
 zip_keys:
