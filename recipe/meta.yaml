@@ -1,4 +1,4 @@
-{% set version = "19.0.0" %}
+{% set version = "19.0.1" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -15,7 +15,7 @@ package:
 source:
   - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
     fn: apache-arrow-{{ version }}.tar.gz
-    sha256: f89b93f39954740f7184735ff1e1d3b5be2640396febc872c4955274a011f56b
+    sha256: acb76266e8b0c2fbb7eb15d542fbb462a73b3fd1e32b80fad6c2fafd95a51160
     patches:
       # skip gcsfs tests due to missing `storage-testbench`
       - patches/0001-disable-gcsfs_test.patch
@@ -33,7 +33,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 9
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
