@@ -1,14 +1,14 @@
-From 25e8e519725d4b9219721b7d48105ae649e5792b Mon Sep 17 00:00:00 2001
+From f9e6ab1ac71c1bc69905adc397302d14bf0e92f1 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sun, 24 Nov 2024 20:22:35 +1100
-Subject: [PATCH 2/3] skip NonExistentBucket test on osx
+Subject: [PATCH 2/2] skip NonExistentBucket test on osx
 
 ---
  cpp/src/arrow/filesystem/s3fs_test.cc | 4 ++++
  1 file changed, 4 insertions(+)
 
 diff --git a/cpp/src/arrow/filesystem/s3fs_test.cc b/cpp/src/arrow/filesystem/s3fs_test.cc
-index 3082ecb78..ce910e8d1 100644
+index 370f3b2685..45ed73d420 100644
 --- a/cpp/src/arrow/filesystem/s3fs_test.cc
 +++ b/cpp/src/arrow/filesystem/s3fs_test.cc
 @@ -431,6 +431,10 @@ TEST_F(S3RegionResolutionTest, RestrictedBucket) {
