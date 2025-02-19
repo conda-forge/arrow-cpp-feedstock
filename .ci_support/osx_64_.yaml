@@ -25,7 +25,7 @@ c_stdlib:
 c_stdlib_version:
 - '10.13'
 channel_sources:
-- conda-forge
+- conda-forge/label/orc_dev,conda-forge
 channel_targets:
 - conda-forge main
 cuda_compiler_version:
@@ -61,7 +61,7 @@ macos_machine:
 openssl:
 - '3'
 orc:
-- 2.0.3
+- 2.1.0
 re2:
 - 2024.07.02
 snappy:
