@@ -4,6 +4,9 @@ libarrow:
 libarrow_all:
   - "*"
 
+channel_sources:
+  - conda-forge/label/orc_dev,conda-forge
+
 # on osx, keep this in sync with llvm_version in meta.yaml.
 c_compiler_version:            # [osx]
   - 18                         # [osx]
