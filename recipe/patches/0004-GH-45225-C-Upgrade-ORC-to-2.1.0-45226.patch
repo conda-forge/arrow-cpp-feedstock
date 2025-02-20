@@ -1,0 +1,106 @@
+From 935e3f20df52b07a1e6f9e33af178266b568f7cc Mon Sep 17 00:00:00 2001
+From: Gang Wu <ustcwg@gmail.com>
+Date: Tue, 14 Jan 2025 10:25:08 +0800
+Subject: [PATCH 4/4] GH-45225: [C++] Upgrade ORC to 2.1.0 (#45226)
+
+Apache ORC has just released 2.1.0: https://orc.apache.org/news/2025/01/09/ORC-2.1.0/
+
+We need to upgrade it to avoid occasional download failures of orc-format.
+
+Bump Apache ORC to its latest version 2.1.0.
+
+Pass CIs.
+
+No.
+* GitHub Issue: #45225
+
+Lead-authored-by: Gang Wu <ustcwg@gmail.com>
+Co-authored-by: Sutou Kouhei <kou@cozmixng.org>
+Signed-off-by: Gang Wu <ustcwg@gmail.com>
+
+[Cherry-pick note: restricted to test changes only]
+---
+ cpp/src/arrow/adapters/orc/adapter_test.cc | 8 ++++----
+ python/pyarrow/tests/test_orc.py           | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/cpp/src/arrow/adapters/orc/adapter_test.cc b/cpp/src/arrow/adapters/orc/adapter_test.cc
+index b9d6c53215..b3c314fccc 100644
+--- a/cpp/src/arrow/adapters/orc/adapter_test.cc
++++ b/cpp/src/arrow/adapters/orc/adapter_test.cc
+@@ -235,7 +235,7 @@ void AssertTableWriteReadEqual(const std::vector<std::shared_ptr<Table>>& input_
+   write_options.compression = Compression::UNCOMPRESSED;
+ #endif
+   write_options.file_version = adapters::orc::FileVersion(0, 11);
+-  write_options.compression_block_size = 32768;
++  write_options.compression_block_size = 64 * 1024;
+   write_options.row_index_stride = 5000;
+   EXPECT_OK_AND_ASSIGN(auto writer, adapters::orc::ORCFileWriter::Open(
+                                         buffer_output_stream.get(), write_options));
+@@ -272,7 +272,7 @@ void AssertBatchWriteReadEqual(
+   write_options.compression = Compression::UNCOMPRESSED;
+ #endif
+   write_options.file_version = adapters::orc::FileVersion(0, 11);
+-  write_options.compression_block_size = 32768;
++  write_options.compression_block_size = 64 * 1024;
+   write_options.row_index_stride = 5000;
+   EXPECT_OK_AND_ASSIGN(auto writer, adapters::orc::ORCFileWriter::Open(
+                                         buffer_output_stream.get(), write_options));
+@@ -330,7 +330,7 @@ std::unique_ptr<liborc::Writer> CreateWriter(uint64_t stripe_size,
+                                              liborc::OutputStream* stream) {
+   liborc::WriterOptions options;
+   options.setStripeSize(stripe_size);
+-  options.setCompressionBlockSize(1024);
++  options.setCompressionBlockSize(64 * 1024);
+   options.setMemoryPool(liborc::getDefaultPool());
+   options.setRowIndexStride(0);
+   return liborc::createWriter(type, stream, options);
+@@ -668,7 +668,7 @@ TEST_F(TestORCWriterTrivialNoWrite, noWrite) {
+   write_options.compression = Compression::UNCOMPRESSED;
+ #endif
+   write_options.file_version = adapters::orc::FileVersion(0, 11);
+-  write_options.compression_block_size = 32768;
++  write_options.compression_block_size = 64 * 1024;
+   write_options.row_index_stride = 5000;
+   EXPECT_OK_AND_ASSIGN(auto writer, adapters::orc::ORCFileWriter::Open(
+                                         buffer_output_stream.get(), write_options));
+diff --git a/python/pyarrow/tests/test_orc.py b/python/pyarrow/tests/test_orc.py
+index 1b467d5233..d9e076ad24 100644
+--- a/python/pyarrow/tests/test_orc.py
++++ b/python/pyarrow/tests/test_orc.py
+@@ -278,7 +278,7 @@ def test_buffer_readwrite_with_writeoptions():
+         compression='snappy',
+         file_version='0.11',
+         row_index_stride=5000,
+-        compression_block_size=32768,
++        compression_block_size=65536,
+     )
+     buffer_reader = pa.BufferReader(buffer_output_stream.getvalue())
+     orc_file = orc.ORCFile(buffer_reader)
+@@ -288,7 +288,7 @@ def test_buffer_readwrite_with_writeoptions():
+     assert orc_file.compression == 'SNAPPY'
+     assert orc_file.file_version == '0.11'
+     assert orc_file.row_index_stride == 5000
+-    assert orc_file.compression_size == 32768
++    assert orc_file.compression_size == 65536
+ 
+     # deprecated keyword order
+     buffer_output_stream = pa.BufferOutputStream()
+@@ -299,7 +299,7 @@ def test_buffer_readwrite_with_writeoptions():
+             compression='uncompressed',
+             file_version='0.11',
+             row_index_stride=20000,
+-            compression_block_size=16384,
++            compression_block_size=65536,
+         )
+     buffer_reader = pa.BufferReader(buffer_output_stream.getvalue())
+     orc_file = orc.ORCFile(buffer_reader)
+@@ -309,7 +309,7 @@ def test_buffer_readwrite_with_writeoptions():
+     assert orc_file.compression == 'UNCOMPRESSED'
+     assert orc_file.file_version == '0.11'
+     assert orc_file.row_index_stride == 20000
+-    assert orc_file.compression_size == 16384
++    assert orc_file.compression_size == 65536
+ 
+ 
+ def test_buffer_readwrite_with_bad_writeoptions():

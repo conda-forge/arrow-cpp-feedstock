@@ -23,6 +23,9 @@ source:
       - patches/0002-GH-41755-C-ORC-Ensure-setting-detected-ORC-version-4.patch
       # backport https://github.com/apache/arrow/pull/42004
       - patches/0003-MINOR-C-Include-string-before-using-std-string-42004.patch
+      # backport https://github.com/apache/arrow/pull/45226
+      - patches/0004-GH-45225-C-Upgrade-ORC-to-2.1.0-45226.patch
+
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 25d16511e8d42c2744a1d94d90169e3a36e92631
