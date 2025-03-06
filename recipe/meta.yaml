@@ -516,6 +516,7 @@ outputs:
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
+        - libabseil
         - libutf8proc
         # gandiva requires shared libllvm; needs to match version used at build time
         - llvm {{ llvm_version }}  # [unix]
