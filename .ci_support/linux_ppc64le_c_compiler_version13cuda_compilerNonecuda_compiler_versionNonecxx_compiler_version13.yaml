@@ -63,13 +63,13 @@ lz4_c:
 openssl:
 - '3'
 orc:
-- 2.0.3
+- 2.1.1
 re2:
 - 2024.07.02
 snappy:
 - '1.2'
 target_platform:
-- linux-aarch64
+- linux-ppc64le
 thrift_cpp:
 - 0.21.0
 zip_keys:
