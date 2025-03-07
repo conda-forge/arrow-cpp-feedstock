@@ -1,7 +1,7 @@
-From cbf3a7776be0b7396733766365e526d8706a6b52 Mon Sep 17 00:00:00 2001
+From 0eee4ddd93e8e744d27dbf94b205159f8824badb Mon Sep 17 00:00:00 2001
 From: "Stephan T. Lavavej" <stl@microsoft.com>
 Date: Thu, 6 Jun 2024 19:25:36 -0700
-Subject: [PATCH 3/3] MINOR: [C++] Include `<string>` before using
+Subject: [PATCH 3/4] MINOR: [C++] Include `<string>` before using
  `std::string` (#42004)
 
 ### Rationale for this change
@@ -35,7 +35,7 @@ Signed-off-by: Sutou Kouhei <kou@clear-code.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/cpp/src/arrow/json/object_writer.h b/cpp/src/arrow/json/object_writer.h
-index b15b09dbd..cf1ce6219 100644
+index b15b09dbda..cf1ce62194 100644
 --- a/cpp/src/arrow/json/object_writer.h
 +++ b/cpp/src/arrow/json/object_writer.h
 @@ -18,6 +18,7 @@
