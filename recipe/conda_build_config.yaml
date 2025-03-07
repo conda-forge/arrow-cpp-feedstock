@@ -4,10 +4,6 @@ libarrow:
 libarrow_all:
   - "*"
 
-# 2.1.0 is currently broken, see https://github.com/conda-forge/arrow-cpp-feedstock/pull/1697
-orc:
-  - 2.0.3
-
 # on osx, keep this in sync with llvm_version in meta.yaml.
 c_compiler_version:            # [osx]
   - 18                         # [osx]

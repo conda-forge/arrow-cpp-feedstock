@@ -24,6 +24,8 @@ source:
       - patches/0002-skip-NonExistentBucket-test-on-osx.patch
       # missing `<array>` include
       - patches/0003-add-missing-include-in-cpp-src-parquet-size_statisti.patch
+      # backport https://github.com/apache/arrow/pull/45226
+      - patches/0004-GH-45225-C-Upgrade-ORC-to-2.1.0-45226.patch
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 4d209492d514c2d3cb2d392681b9aa00e6d8da1c
@@ -33,7 +35,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 1
+  number: 2
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
