@@ -1,0 +1,171 @@
+From a9ddd7c34a4821fe0fbae6f82c18d44ed2035283 Mon Sep 17 00:00:00 2001
+From: Gang Wu <ustcwg@gmail.com>
+Date: Tue, 14 Jan 2025 10:25:08 +0800
+Subject: [PATCH 5/5] GH-45225: [C++] Upgrade ORC to 2.1.0 (#45226)
+
+Apache ORC has just released 2.1.0: https://orc.apache.org/news/2025/01/09/ORC-2.1.0/
+
+We need to upgrade it to avoid occasional download failures of orc-format.
+
+Bump Apache ORC to its latest version 2.1.0.
+
+Pass CIs.
+
+No.
+* GitHub Issue: #45225
+
+Lead-authored-by: Gang Wu <ustcwg@gmail.com>
+Co-authored-by: Sutou Kouhei <kou@cozmixng.org>
+Signed-off-by: Gang Wu <ustcwg@gmail.com>
+
+[Cherry-pick note: dropped changes related to
+  * patching with cpp/cmake_modules/orc.diff
+  * changes in cpp/thirdparty/versions.txt
+]
+---
+ cpp/cmake_modules/ThirdpartyToolchain.cmake | 19 ++++++++-----------
+ cpp/src/arrow/adapters/orc/adapter_test.cc  |  8 ++++----
+ python/pyarrow/tests/test_orc.py            |  8 ++++----
+ 3 files changed, 16 insertions(+), 19 deletions(-)
+
+diff --git a/cpp/cmake_modules/ThirdpartyToolchain.cmake b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+index 35ad4089e7..a87c247f23 100644
+--- a/cpp/cmake_modules/ThirdpartyToolchain.cmake
++++ b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+@@ -4630,16 +4630,10 @@ function(build_orc)
+         OFF
+         CACHE BOOL "" FORCE)
+ 
+-    # We can remove this with ORC 2.0.2 or later.
+-    list(PREPEND CMAKE_MODULE_PATH
+-         ${CMAKE_CURRENT_BINARY_DIR}/_deps/orc-src/cmake_modules)
+-
+     fetchcontent_makeavailable(orc)
+ 
+     add_library(orc::orc INTERFACE IMPORTED)
+     target_link_libraries(orc::orc INTERFACE orc)
+-    target_include_directories(orc::orc INTERFACE "${orc_BINARY_DIR}/c++/include"
+-                                                  "${orc_SOURCE_DIR}/c++/include")
+ 
+     list(APPEND ARROW_BUNDLED_STATIC_LIBS orc)
+   else()
+@@ -4664,6 +4658,9 @@ function(build_orc)
+     get_target_property(ORC_ZSTD_ROOT ${ARROW_ZSTD_LIBZSTD} INTERFACE_INCLUDE_DIRECTORIES)
+     get_filename_component(ORC_ZSTD_ROOT "${ORC_ZSTD_ROOT}" DIRECTORY)
+ 
++    get_target_property(ORC_ZLIB_ROOT ZLIB::ZLIB INTERFACE_INCLUDE_DIRECTORIES)
++    get_filename_component(ORC_ZLIB_ROOT "${ORC_ZLIB_ROOT}" DIRECTORY)
++
+     set(ORC_CMAKE_ARGS
+         ${EP_COMMON_CMAKE_ARGS}
+         "-DCMAKE_INSTALL_PREFIX=${ORC_PREFIX}"
+@@ -4673,7 +4670,6 @@ function(build_orc)
+         -DBUILD_TOOLS=OFF
+         -DBUILD_CPP_TESTS=OFF
+         -DINSTALL_VENDORED_LIBS=OFF
+-        "-DLZ4_HOME=${ORC_LZ4_ROOT}"
+         "-DPROTOBUF_EXECUTABLE=$<TARGET_FILE:${ARROW_PROTOBUF_PROTOC}>"
+         "-DPROTOBUF_HOME=${ORC_PROTOBUF_ROOT}"
+         "-DPROTOBUF_INCLUDE_DIR=$<TARGET_PROPERTY:${ARROW_PROTOBUF_LIBPROTOBUF},INTERFACE_INCLUDE_DIRECTORIES>"
+@@ -4681,16 +4677,17 @@ function(build_orc)
+         "-DPROTOC_LIBRARY=$<TARGET_FILE:${ARROW_PROTOBUF_LIBPROTOC}>"
+         "-DSNAPPY_HOME=${ORC_SNAPPY_ROOT}"
+         "-DSNAPPY_LIBRARY=$<TARGET_FILE:${Snappy_TARGET}>"
++        "-DLZ4_HOME=${ORC_LZ4_ROOT}"
+         "-DLZ4_LIBRARY=$<TARGET_FILE:LZ4::lz4>"
+         "-DLZ4_STATIC_LIB=$<TARGET_FILE:LZ4::lz4>"
+         "-DLZ4_INCLUDE_DIR=${ORC_LZ4_ROOT}/include"
+         "-DSNAPPY_INCLUDE_DIR=${ORC_SNAPPY_INCLUDE_DIR}"
+         "-DZSTD_HOME=${ORC_ZSTD_ROOT}"
+         "-DZSTD_INCLUDE_DIR=$<TARGET_PROPERTY:${ARROW_ZSTD_LIBZSTD},INTERFACE_INCLUDE_DIRECTORIES>"
+-        "-DZSTD_LIBRARY=$<TARGET_FILE:${ARROW_ZSTD_LIBZSTD}>")
+-    if(ZLIB_ROOT)
+-      set(ORC_CMAKE_ARGS ${ORC_CMAKE_ARGS} "-DZLIB_HOME=${ZLIB_ROOT}")
+-    endif()
++        "-DZSTD_LIBRARY=$<TARGET_FILE:${ARROW_ZSTD_LIBZSTD}>"
++        "-DZLIB_HOME=${ORC_ZLIB_ROOT}"
++        "-DZLIB_INCLUDE_DIR=$<TARGET_PROPERTY:ZLIB::ZLIB,INTERFACE_INCLUDE_DIRECTORIES>"
++        "-DZLIB_LIBRARY=$<TARGET_FILE:ZLIB::ZLIB>")
+ 
+     # Work around CMake bug
+     file(MAKE_DIRECTORY ${ORC_INCLUDE_DIR})
+diff --git a/cpp/src/arrow/adapters/orc/adapter_test.cc b/cpp/src/arrow/adapters/orc/adapter_test.cc
+index b9d6c53215..b3c314fccc 100644
+--- a/cpp/src/arrow/adapters/orc/adapter_test.cc
++++ b/cpp/src/arrow/adapters/orc/adapter_test.cc
+@@ -235,7 +235,7 @@ void AssertTableWriteReadEqual(const std::vector<std::shared_ptr<Table>>& input_
+   write_options.compression = Compression::UNCOMPRESSED;
+ #endif
+   write_options.file_version = adapters::orc::FileVersion(0, 11);
+-  write_options.compression_block_size = 32768;
++  write_options.compression_block_size = 64 * 1024;
+   write_options.row_index_stride = 5000;
+   EXPECT_OK_AND_ASSIGN(auto writer, adapters::orc::ORCFileWriter::Open(
+                                         buffer_output_stream.get(), write_options));
+@@ -272,7 +272,7 @@ void AssertBatchWriteReadEqual(
+   write_options.compression = Compression::UNCOMPRESSED;
+ #endif
+   write_options.file_version = adapters::orc::FileVersion(0, 11);
+-  write_options.compression_block_size = 32768;
++  write_options.compression_block_size = 64 * 1024;
+   write_options.row_index_stride = 5000;
+   EXPECT_OK_AND_ASSIGN(auto writer, adapters::orc::ORCFileWriter::Open(
+                                         buffer_output_stream.get(), write_options));
+@@ -330,7 +330,7 @@ std::unique_ptr<liborc::Writer> CreateWriter(uint64_t stripe_size,
+                                              liborc::OutputStream* stream) {
+   liborc::WriterOptions options;
+   options.setStripeSize(stripe_size);
+-  options.setCompressionBlockSize(1024);
++  options.setCompressionBlockSize(64 * 1024);
+   options.setMemoryPool(liborc::getDefaultPool());
+   options.setRowIndexStride(0);
+   return liborc::createWriter(type, stream, options);
+@@ -668,7 +668,7 @@ TEST_F(TestORCWriterTrivialNoWrite, noWrite) {
+   write_options.compression = Compression::UNCOMPRESSED;
+ #endif
+   write_options.file_version = adapters::orc::FileVersion(0, 11);
+-  write_options.compression_block_size = 32768;
++  write_options.compression_block_size = 64 * 1024;
+   write_options.row_index_stride = 5000;
+   EXPECT_OK_AND_ASSIGN(auto writer, adapters::orc::ORCFileWriter::Open(
+                                         buffer_output_stream.get(), write_options));
+diff --git a/python/pyarrow/tests/test_orc.py b/python/pyarrow/tests/test_orc.py
+index 1b467d5233..d9e076ad24 100644
+--- a/python/pyarrow/tests/test_orc.py
++++ b/python/pyarrow/tests/test_orc.py
+@@ -278,7 +278,7 @@ def test_buffer_readwrite_with_writeoptions():
+         compression='snappy',
+         file_version='0.11',
+         row_index_stride=5000,
+-        compression_block_size=32768,
++        compression_block_size=65536,
+     )
+     buffer_reader = pa.BufferReader(buffer_output_stream.getvalue())
+     orc_file = orc.ORCFile(buffer_reader)
+@@ -288,7 +288,7 @@ def test_buffer_readwrite_with_writeoptions():
+     assert orc_file.compression == 'SNAPPY'
+     assert orc_file.file_version == '0.11'
+     assert orc_file.row_index_stride == 5000
+-    assert orc_file.compression_size == 32768
++    assert orc_file.compression_size == 65536
+ 
+     # deprecated keyword order
+     buffer_output_stream = pa.BufferOutputStream()
+@@ -299,7 +299,7 @@ def test_buffer_readwrite_with_writeoptions():
+             compression='uncompressed',
+             file_version='0.11',
+             row_index_stride=20000,
+-            compression_block_size=16384,
++            compression_block_size=65536,
+         )
+     buffer_reader = pa.BufferReader(buffer_output_stream.getvalue())
+     orc_file = orc.ORCFile(buffer_reader)
+@@ -309,7 +309,7 @@ def test_buffer_readwrite_with_writeoptions():
+     assert orc_file.compression == 'UNCOMPRESSED'
+     assert orc_file.file_version == '0.11'
+     assert orc_file.row_index_stride == 20000
+-    assert orc_file.compression_size == 16384
++    assert orc_file.compression_size == 65536
+ 
+ 
+ def test_buffer_readwrite_with_bad_writeoptions():

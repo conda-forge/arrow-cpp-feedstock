@@ -1,7 +1,7 @@
-From 48d6ad09905945f1beb8c3a3c15d5b32a697428c Mon Sep 17 00:00:00 2001
+From 1b31ab4fcafb0f8acf607d61385c5a012a3e570c Mon Sep 17 00:00:00 2001
 From: Sutou Kouhei <kou@clear-code.com>
 Date: Wed, 18 Dec 2024 14:38:09 +0900
-Subject: [PATCH 4/4] GH-45053: [C++] Add support for Boost 1.87.0 (#45057)
+Subject: [PATCH 4/5] GH-45053: [C++] Add support for Boost 1.87.0 (#45057)
 
 ### Rationale for this change
 
@@ -28,7 +28,7 @@ Signed-off-by: Sutou Kouhei <kou@clear-code.com>
  1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/cpp/src/arrow/testing/process.cc b/cpp/src/arrow/testing/process.cc
-index 133768ff0..57df0196c 100644
+index 133768ff01..57df0196c1 100644
 --- a/cpp/src/arrow/testing/process.cc
 +++ b/cpp/src/arrow/testing/process.cc
 @@ -85,9 +85,14 @@
