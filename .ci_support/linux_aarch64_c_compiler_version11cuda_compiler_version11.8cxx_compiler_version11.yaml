@@ -47,9 +47,9 @@ libabseil:
 libarrow:
 - '*'
 libgoogle_cloud_devel:
-- '2.35'
+- '2.36'
 libgoogle_cloud_storage_devel:
-- '2.35'
+- '2.36'
 libgrpc:
 - '1.67'
 libopentelemetry_cpp:

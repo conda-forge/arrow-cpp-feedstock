@@ -33,7 +33,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 0
+  number: 1
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -516,6 +516,7 @@ outputs:
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
+        - libabseil
         - libutf8proc
         # gandiva requires shared libllvm; needs to match version used at build time
         - llvm {{ llvm_version }}  # [unix]
