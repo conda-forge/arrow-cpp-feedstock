@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.29.9
+- 0.31.0
 aws_sdk_cpp:
 - 1.11.489
 bzip2:
@@ -13,9 +13,9 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- None
+- nvcc
 cuda_compiler_version:
-- None
+- '11.8'
 cuda_compiler_version_min:
 - '11.8'
 cxx_compiler:
