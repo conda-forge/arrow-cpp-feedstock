@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.29.9
+- 0.31.0
 aws_sdk_cpp:
 - 1.11.489
 azure_core_cpp:
@@ -69,7 +69,7 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- linux-aarch64
+- linux-64
 thrift_cpp:
 - 0.21.0
 zip_keys:
