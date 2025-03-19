@@ -1,7 +1,7 @@
 From cf86fabb1dda76ba45b97e84d0566540e3bcc242 Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Mon, 17 Feb 2025 11:56:43 +1100
-Subject: [PATCH 3/4] add missing include in cpp/src/parquet/size_statistics.cc
+Subject: [PATCH 3/5] add missing include in cpp/src/parquet/size_statistics.cc
 
 Suggested-By: Bryce Mecum <petridish@gmail.com>
 ---
