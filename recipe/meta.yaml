@@ -26,6 +26,9 @@ source:
       - patches/0003-add-missing-include-in-cpp-src-parquet-size_statisti.patch
       # backport https://github.com/apache/arrow/pull/45226
       - patches/0004-GH-45225-C-Upgrade-ORC-to-2.1.0-45226.patch
+      # backport https://github.com/apache/arrow/pull/45859
+      - patches/0005-MINOR-C-Fix-OTel-1.19-compat-after-silent-breaking-c.patch
+
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
     git_rev: 4d209492d514c2d3cb2d392681b9aa00e6d8da1c
