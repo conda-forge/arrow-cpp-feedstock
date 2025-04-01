@@ -212,8 +212,8 @@ outputs:
         - cmake <4
         - ninja
         # for strong run-exports
-        - {{ compiler("c") }}
         - {{ stdlib("c") }}
+        - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
       host:
@@ -322,8 +322,8 @@ outputs:
         - cmake <4
         - ninja
         # for strong run-exports
-        - {{ compiler("c") }}
         - {{ stdlib("c") }}
+        - {{ compiler("c") }}
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
@@ -367,8 +367,8 @@ outputs:
         - cmake <4
         - ninja
         # for strong run-exports
-        - {{ compiler("c") }}
         - {{ stdlib("c") }}
+        - {{ compiler("c") }}
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
@@ -416,8 +416,8 @@ outputs:
         - cmake <4
         - ninja
         # for strong run-exports
-        - {{ compiler("c") }}
         - {{ stdlib("c") }}
+        - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         # needs to run protoc & grpc_cpp_plugin
         - libgrpc                                # [build_platform != target_platform]
@@ -467,8 +467,8 @@ outputs:
         - cmake <4
         - ninja
         # for strong run-exports
-        - {{ compiler("c") }}
         - {{ stdlib("c") }}
+        - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         # needs to run protoc & grpc_cpp_plugin
         - libgrpc                                # [build_platform != target_platform]
@@ -519,8 +519,8 @@ outputs:
         - cmake <4
         - ninja
         # for strong run-exports
-        - {{ compiler("c") }}
         - {{ stdlib("c") }}
+        - {{ compiler("c") }}
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
@@ -572,15 +572,10 @@ outputs:
         - cmake <4
         - ninja
         # for strong run-exports
+        - {{ stdlib("c") }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - libprotobuf                            # [build_platform != target_platform]
-        # for strong run-exports
-        - {{ compiler("c") }}
-        - {{ stdlib("c") }}
-        - {{ compiler("cxx") }}
-        - cmake
-        - ninja
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
@@ -629,8 +624,8 @@ outputs:
         - cmake <4
         - ninja
         # for strong run-exports
-        - {{ compiler("c") }}
         - {{ stdlib("c") }}
+        - {{ compiler("c") }}
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
