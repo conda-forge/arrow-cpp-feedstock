@@ -38,7 +38,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 5
+  number: 6
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -56,7 +56,7 @@ requirements:
     - clangdev {{ llvm_version }}            # [build_platform != target_platform]
     - llvmdev {{ llvm_version }}             # [build_platform != target_platform]
     - gnuconfig                              # [build_platform != target_platform]
-    - cmake
+    - cmake <4
     - ninja
     # necessary for vendored jemalloc
     - autoconf     # [unix]
@@ -148,7 +148,7 @@ outputs:
         - {{ pin_subpackage("libparquet", max_pin="x.x") }}
     requirements:
       build:
-        - cmake
+        - cmake <4
         - ninja
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
@@ -207,11 +207,11 @@ outputs:
         - '*/nvcuda.dll'      # [win]
     requirements:
       build:
-        - cmake
+        - cmake <4
         - ninja
         # for strong run-exports
-        - {{ compiler("c") }}
         - {{ stdlib("c") }}
+        - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
       host:
@@ -316,11 +316,11 @@ outputs:
         - {{ pin_subpackage("libarrow-acero", max_pin="x.x") }}
     requirements:
       build:
-        - cmake
+        - cmake <4
         - ninja
         # for strong run-exports
-        - {{ compiler("c") }}
         - {{ stdlib("c") }}
+        - {{ compiler("c") }}
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
@@ -361,11 +361,11 @@ outputs:
         - {{ pin_subpackage("libarrow-dataset", max_pin="x.x") }}
     requirements:
       build:
-        - cmake
+        - cmake <4
         - ninja
         # for strong run-exports
-        - {{ compiler("c") }}
         - {{ stdlib("c") }}
+        - {{ compiler("c") }}
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
@@ -410,11 +410,11 @@ outputs:
         - {{ pin_subpackage("libarrow-flight", max_pin="x.x") }}
     requirements:
       build:
-        - cmake
+        - cmake <4
         - ninja
         # for strong run-exports
-        - {{ compiler("c") }}
         - {{ stdlib("c") }}
+        - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         # needs to run protoc & grpc_cpp_plugin
         - libgrpc                                # [build_platform != target_platform]
@@ -461,11 +461,11 @@ outputs:
         - {{ pin_subpackage("libarrow-flight-sql", max_pin="x.x") }}
     requirements:
       build:
-        - cmake
+        - cmake <4
         - ninja
         # for strong run-exports
-        - {{ compiler("c") }}
         - {{ stdlib("c") }}
+        - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         # needs to run protoc & grpc_cpp_plugin
         - libgrpc                                # [build_platform != target_platform]
@@ -513,11 +513,11 @@ outputs:
         - {{ pin_subpackage("libarrow-gandiva", max_pin="x.x") }}
     requirements:
       build:
-        - cmake
+        - cmake <4
         - ninja
         # for strong run-exports
-        - {{ compiler("c") }}
         - {{ stdlib("c") }}
+        - {{ compiler("c") }}
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
@@ -566,18 +566,13 @@ outputs:
         - {{ pin_subpackage("libarrow-substrait", max_pin="x.x") }}
     requirements:
       build:
-        - cmake
+        - cmake <4
         - ninja
         # for strong run-exports
+        - {{ stdlib("c") }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - libprotobuf                            # [build_platform != target_platform]
-        # for strong run-exports
-        - {{ compiler("c") }}
-        - {{ stdlib("c") }}
-        - {{ compiler("cxx") }}
-        - cmake
-        - ninja
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
@@ -623,11 +618,11 @@ outputs:
         - {{ pin_subpackage("libparquet", max_pin="x.x") }}
     requirements:
       build:
-        - cmake
+        - cmake <4
         - ninja
         # for strong run-exports
-        - {{ compiler("c") }}
         - {{ stdlib("c") }}
+        - {{ compiler("c") }}
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
