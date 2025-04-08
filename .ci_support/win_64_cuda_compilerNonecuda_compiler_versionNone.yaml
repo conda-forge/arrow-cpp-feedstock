@@ -13,9 +13,9 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- nvcc
+- None
 cuda_compiler_version:
-- '11.8'
+- None
 cuda_compiler_version_min:
 - '11.8'
 cxx_compiler:
@@ -44,10 +44,26 @@ libutf8proc:
 - '2.10'
 lz4_c:
 - '1.10'
+numpy:
+- '2.0'
+- '2.0'
+- '2.0'
+- '2'
+- '2.0'
 openssl:
 - '3'
 orc:
 - 2.1.1
+pin_run_as_build:
+  python:
+    min_pin: x.x
+    max_pin: x.x
+python:
+- 3.10.* *_cpython
+- 3.11.* *_cpython
+- 3.12.* *_cpython
+- 3.13.* *_cp313
+- 3.9.* *_cpython
 re2:
 - 2024.07.02
 snappy:
@@ -59,6 +75,8 @@ thrift_cpp:
 zip_keys:
 - - cuda_compiler
   - cuda_compiler_version
+- - python
+  - numpy
 zlib:
 - '1'
 zstd:
