@@ -28,6 +28,8 @@ libabseil:
 - '20250127'
 libarrow:
 - '*'
+libboost_devel:
+- '1.86'
 libcrc32c:
 - '1.1'
 libcurl:

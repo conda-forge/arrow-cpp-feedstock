@@ -46,6 +46,8 @@ libabseil:
 - '20250127'
 libarrow:
 - '*'
+libboost_devel:
+- '1.86'
 libgoogle_cloud_devel:
 - '2.36'
 libgoogle_cloud_storage_devel:
@@ -69,7 +71,7 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- linux-aarch64
+- linux-ppc64le
 thrift_cpp:
 - 0.21.0
 zip_keys:
