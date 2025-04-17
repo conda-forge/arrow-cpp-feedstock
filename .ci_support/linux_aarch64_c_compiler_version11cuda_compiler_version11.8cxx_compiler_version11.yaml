@@ -46,6 +46,8 @@ libabseil:
 - '20250127'
 libarrow:
 - '*'
+libboost_devel:
+- '1.86'
 libgoogle_cloud_devel:
 - '2.36'
 libgoogle_cloud_storage_devel:
