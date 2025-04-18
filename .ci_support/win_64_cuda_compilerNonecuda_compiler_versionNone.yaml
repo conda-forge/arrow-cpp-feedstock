@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.31.1
+- 0.32.4
 aws_sdk_cpp:
 - 1.11.510
 bzip2:
@@ -28,6 +28,8 @@ libabseil:
 - '20250127'
 libarrow:
 - '*'
+libboost_devel:
+- '1.86'
 libcrc32c:
 - '1.1'
 libcurl:

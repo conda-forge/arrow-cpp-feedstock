@@ -38,7 +38,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 7
+  number: 8
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -83,7 +83,7 @@ requirements:
     # arrow uses a customized jemalloc, see #944
     # - jemalloc
     - libabseil
-    - libboost-devel *
+    - libboost-devel
     - libgoogle-cloud-devel
     - libgoogle-cloud-storage-devel
     - libgrpc
