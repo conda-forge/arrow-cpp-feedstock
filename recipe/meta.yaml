@@ -1,4 +1,4 @@
-{% set version = "20.0.0.rc0" %}
+{% set version = "20.0.0" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -13,8 +13,9 @@ package:
   version: {{ version }}
 
 source:
-  - url: https://github.com/apache/arrow/archive/refs/tags/apache-arrow-{{ version.replace(".rc", "-rc") }}.tar.gz
-    sha256: a639495268a1a08d273afa45719e837f08ee596be3e7d95d922089e6360f281d
+  - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
+    fn: apache-arrow-{{ version }}.tar.gz
+    sha256: 89efbbf852f5a1f79e9c99ab4c217e2eb7f991837c005cba2d4a2fbd35fad212
     patches:
       # skip gcsfs tests due to missing `storage-testbench`
       - patches/0001-disable-gcsfs_test.patch
