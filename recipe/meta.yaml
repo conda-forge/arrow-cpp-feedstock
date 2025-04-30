@@ -1,4 +1,4 @@
-{% set version = "19.0.1" %}
+{% set version = "20.0.0" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -15,30 +15,26 @@ package:
 source:
   - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
     fn: apache-arrow-{{ version }}.tar.gz
-    sha256: acb76266e8b0c2fbb7eb15d542fbb462a73b3fd1e32b80fad6c2fafd95a51160
+    sha256: 89efbbf852f5a1f79e9c99ab4c217e2eb7f991837c005cba2d4a2fbd35fad212
     patches:
       # skip gcsfs tests due to missing `storage-testbench`
       - patches/0001-disable-gcsfs_test.patch
       # upstream problems on with s3 tests on osx, see
       # https://github.com/apache/arrow/issues/35587
       - patches/0002-skip-NonExistentBucket-test-on-osx.patch
-      # missing `<array>` include
-      - patches/0003-add-missing-include-in-cpp-src-parquet-size_statisti.patch
-      # backport https://github.com/apache/arrow/pull/45226
-      - patches/0004-GH-45225-C-Upgrade-ORC-to-2.1.0-45226.patch
       # backport https://github.com/apache/arrow/pull/45859
-      - patches/0005-MINOR-C-Fix-OTel-1.19-compat-after-silent-breaking-c.patch
+      - patches/0003-MINOR-C-Fix-OTel-1.19-compat-after-silent-breaking-c.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
-    git_rev: 4d209492d514c2d3cb2d392681b9aa00e6d8da1c
+    git_rev: d2a13712303498963395318a4eb42872e66aead7
     folder: testing
   - git_url: https://github.com/apache/parquet-testing.git
-    git_rev: c7cf1374cf284c0c73024cd1437becea75558bf8
+    git_rev: 18d17540097fca7c40be3d42c167e6bfad90763c
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 8
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
