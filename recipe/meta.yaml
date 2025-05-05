@@ -34,7 +34,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 0
+  number: 1
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -650,6 +650,46 @@ outputs:
       license_file:
         - LICENSE.txt
       summary: C++ libraries for Apache Parquet
+
+  - name: parquet-utils
+    script: install-libarrow.sh  # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+    requirements:
+      build:
+        - cmake <4
+        - ninja
+        # for strong run-exports
+        - {{ stdlib("c") }}
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+      host:
+        - {{ pin_subpackage("libparquet", exact=True) }}
+      run:
+        - {{ pin_subpackage("libparquet", exact=True) }}
+
+    test:
+      commands:
+        # bin
+        - test -f $PREFIX/bin/parquet-dump-arrow-statistics                # [unix]
+        - test -f $PREFIX/bin/parquet-dump-footer                          # [unix]
+        - test -f $PREFIX/bin/parquet-dump-schema                          # [unix]
+        - test -f $PREFIX/bin/parquet-reader                               # [unix]
+        - test -f $PREFIX/bin/parquet-scan                                 # [unix]
+        - if not exist %LIBRARY_BIN%\parquet-dump-arrow-statistics exit 1  # [win]
+        - if not exist %LIBRARY_BIN%\parquet-dump-footer exit 1            # [win]
+        - if not exist %LIBRARY_BIN%\parquet-dump-schema exit 1            # [win]
+        - if not exist %LIBRARY_BIN%\parquet-reader exit 1                 # [win]
+        - if not exist %LIBRARY_BIN%\parquet-scan exit 1                   # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ executables for inspecting Apache Parquet files
 
 about:
   home: http://github.com/apache/arrow
