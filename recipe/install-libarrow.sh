@@ -71,6 +71,8 @@ elif [[ "${PKG_NAME}" == "libparquet" ]]; then
     cp -R ./temp_prefix/include/parquet/. $PREFIX/include/parquet
 elif [[ "${PKG_NAME}" == "parquet-utils" ]]; then
     cp ./temp_prefix/bin/parquet-* $PREFIX/bin
+elif [[ "${PKG_NAME}" == "arrow-utils" ]]; then
+    cp ./temp_prefix/bin/arrow-* $PREFIX/bin
 elif [[ "${PKG_NAME}" == "libarrow-all" ]]; then
     # libarrow-all: install everything else (whatever ends up in this output
     # should generally be installed into the appropriate libarrow-<flavour>).

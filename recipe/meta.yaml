@@ -691,6 +691,40 @@ outputs:
         - LICENSE.txt
       summary: C++ executables for inspecting Apache Parquet files
 
+  - name: arrow-utils
+    script: install-libarrow.sh  # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+    requirements:
+      build:
+        - cmake <4
+        - ninja
+        # for strong run-exports
+        - {{ stdlib("c") }}
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+      host:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+
+    test:
+      commands:
+        # bin
+        - test -f $PREFIX/bin/arrow-file-to-stream                    # [unix]
+        - test -f $PREFIX/bin/arrow-stream-to-file                    # [unix]
+        - if not exist %LIBRARY_BIN%\arrow-file-to-stream.exe exit 1  # [win]
+        - if not exist %LIBRARY_BIN%\arrow-stream-to-file.exe exit 1  # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ executables for inspecting manipulating Apache arrow files
+
 about:
   home: http://github.com/apache/arrow
   license: Apache-2.0
