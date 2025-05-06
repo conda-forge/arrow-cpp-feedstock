@@ -691,7 +691,7 @@ outputs:
       license: Apache-2.0
       license_file:
         - LICENSE.txt
-      summary: C++ executables for inspecting Apache Parquet files
+      summary: Executables for inspecting Apache Parquet files
 
   - name: arrow-utils
     script: install-libarrow.sh  # [unix]
@@ -727,7 +727,7 @@ outputs:
       license: Apache-2.0
       license_file:
         - LICENSE.txt
-      summary: C++ executables for inspecting manipulating Apache arrow files
+      summary: Executables for manipulating Apache arrow files
 
 about:
   home: http://github.com/apache/arrow
