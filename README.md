@@ -40,33 +40,6 @@ Package license: Apache-2.0
 
 Summary: C++ libraries for Apache Arrow Acero
 
-About libarrow-flight
----------------------
-
-Home: http://github.com/apache/arrow
-
-Package license: Apache-2.0
-
-Summary: C++ libraries for Apache Arrow Flight
-
-About libarrow-gandiva
-----------------------
-
-Home: http://github.com/apache/arrow
-
-Package license: Apache-2.0
-
-Summary: C++ libraries for Apache Arrow Gandiva
-
-About libparquet
-----------------
-
-Home: http://github.com/apache/arrow
-
-Package license: Apache-2.0
-
-Summary: C++ libraries for Apache Parquet
-
 About libarrow-dataset
 ----------------------
 
@@ -75,6 +48,15 @@ Home: http://github.com/apache/arrow
 Package license: Apache-2.0
 
 Summary: C++ libraries for Apache Arrow Dataset
+
+About libarrow-flight
+---------------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: C++ libraries for Apache Arrow Flight
 
 About libarrow-flight-sql
 -------------------------
@@ -85,6 +67,15 @@ Package license: Apache-2.0
 
 Summary: C++ libraries for Apache Arrow Flight SQL
 
+About libarrow-gandiva
+----------------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: C++ libraries for Apache Arrow Gandiva
+
 About libarrow-substrait
 ------------------------
 
@@ -93,6 +84,15 @@ Home: http://github.com/apache/arrow
 Package license: Apache-2.0
 
 Summary: C++ libraries for Apache Arrow Substrait
+
+About libparquet
+----------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: C++ libraries for Apache Parquet
 
 Current build status
 ====================
@@ -168,17 +168,17 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compilerNonecuda_compiler_versionNone</td>
+              <td>win_64_cuda_compiler_version11.8</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compilerNonecuda_compiler_versionNone" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compiler_version11.8" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cuda_compilernvcccuda_compiler_version11.8</td>
+              <td>win_64_cuda_compiler_versionNone</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compilernvcccuda_compiler_version11.8" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cuda_compiler_versionNone" alt="variant">
                 </a>
               </td>
             </tr>

@@ -13,9 +13,9 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- None
+- nvcc
 cuda_compiler_version:
-- None
+- '11.8'
 cuda_compiler_version_min:
 - '11.8'
 cxx_compiler:
@@ -49,7 +49,7 @@ lz4_c:
 openssl:
 - '3'
 orc:
-- 2.1.1
+- 2.1.2
 re2:
 - 2024.07.02
 snappy:
