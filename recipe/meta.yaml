@@ -678,7 +678,7 @@ outputs:
         - test -f $PREFIX/bin/parquet-dump-schema                               # [unix]
         - test -f $PREFIX/bin/parquet-reader                                    # [unix]
         - test -f $PREFIX/bin/parquet-scan                                      # [unix]
-        - '(parquet-reader 2>&1 || true) | grep -i "Usage: parquet-reader"'     # [unix]
+        - parquet-reader                                                        # [unix]
         - if not exist %LIBRARY_BIN%\parquet-dump-arrow-statistics.exe exit 1   # [win]
         - if not exist %LIBRARY_BIN%\parquet-dump-footer.exe exit 1             # [win]
         - if not exist %LIBRARY_BIN%\parquet-dump-schema.exe exit 1             # [win]
@@ -717,10 +717,10 @@ outputs:
         # bin
         - test -f $PREFIX/bin/arrow-file-to-stream                                          # [unix]
         - test -f $PREFIX/bin/arrow-stream-to-file                                          # [unix]
-        - '(arrow-file-to-stream 2>&1 || true) | grep -i "Usage: arrow-file-to-stream"'     # [unix and build_platform == target_platform and cuda_compiler_version == "None"]
+        - arrow-file-to-stream                                                              # [unix]
         - if not exist %LIBRARY_BIN%\arrow-file-to-stream.exe exit 1                        # [win]
         - if not exist %LIBRARY_BIN%\arrow-stream-to-file.exe exit 1                        # [win]
-        - 'arrow-file-to-stream 2>&1 | findstr /I "Usage: arrow-file-to-stream" || exit 1'  # [win and build_platform == target_platform and cuda_compiler_version == "None"]
+        - 'arrow-file-to-stream 2>&1 | findstr /I "Usage: arrow-file-to-stream" || exit 1'  # [win]
 
     about:
       home: http://github.com/apache/arrow
