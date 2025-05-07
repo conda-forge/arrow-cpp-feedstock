@@ -81,6 +81,9 @@ elif [[ "${PKG_NAME}" == "libarrow-all" ]]; then
     rm -f $PREFIX/lib/{libarrow_testing,libarrow_flight_testing}.*
     rm -f $PREFIX/lib/pkgconfig/{arrow-testing,arrow-flight-testing}.pc
     rm -rf $PREFIX/lib/cmake/{ArrowTesting,ArrowFlightTesting}
+    # Remove executables
+    rm -f $PREFIX/bin/parquet-*
+    rm -f $PREFIX/bin/arrow-*
 else
     # shouldn't happen
     exit 1
