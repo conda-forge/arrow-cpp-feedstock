@@ -92,9 +92,6 @@ if [%PKG_NAME%] == [libarrow] (
     for %%F in (arrow-testing arrow-flight-testing) do (
         del /s /q "%LIBRARY_LIB%\pkgconfig\%%F.pc"
     )
-    REM remove executables
-    del /s /q "%LIBRARY_BIN%\arrow-*.exe"
-    del /s /q "%LIBRARY_BIN%\parquet-*.exe"
 ) else (
     REM shouldn't happen
     exit 1
