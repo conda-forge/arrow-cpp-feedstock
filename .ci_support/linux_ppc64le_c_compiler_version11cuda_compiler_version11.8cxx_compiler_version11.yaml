@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.32.4
+- 0.32.5
 aws_sdk_cpp:
 - 1.11.510
 azure_core_cpp:
@@ -65,7 +65,7 @@ lz4_c:
 openssl:
 - '3'
 orc:
-- 2.1.1
+- 2.1.2
 re2:
 - 2024.07.02
 snappy:
