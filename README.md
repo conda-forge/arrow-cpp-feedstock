@@ -29,7 +29,7 @@ Home: http://github.com/apache/arrow
 
 Package license: Apache-2.0
 
-Summary: C++ executables for inspecting manipulating Apache arrow files
+Summary: Executables for manipulating Apache arrow files
 
 About libarrow
 --------------
@@ -110,7 +110,7 @@ Home: http://github.com/apache/arrow
 
 Package license: Apache-2.0
 
-Summary: C++ executables for inspecting Apache Parquet files
+Summary: Executables for inspecting Apache Parquet files
 
 Current build status
 ====================
