@@ -156,6 +156,8 @@ outputs:
         - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
         - {{ pin_subpackage("libarrow-substrait", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
+        - {{ pin_subpackage("arrow-utils", exact=True) }}
+        - {{ pin_subpackage("parquet-utils", exact=True) }}
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
