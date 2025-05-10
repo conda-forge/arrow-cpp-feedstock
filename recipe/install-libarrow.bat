@@ -73,6 +73,10 @@ if [%PKG_NAME%] == [libarrow] (
     move .\temp_prefix\lib\cmake\Parquet\* %LIBRARY_LIB%\cmake\Parquet
     mkdir %LIBRARY_PREFIX%\include\parquet
     xcopy /s /y .\temp_prefix\include\parquet %LIBRARY_PREFIX%\include\parquet
+) else if [%PKG_NAME%] == [parquet-utils] (
+    copy .\temp_prefix\bin\parquet-*.exe %LIBRARY_BIN%
+) else if [%PKG_NAME%] == [arrow-utils] (
+    copy .\temp_prefix\bin\arrow-*.exe %LIBRARY_BIN%
 ) else if [%PKG_NAME%] == [libarrow-all] (
     REM libarrow-all: install everything else (whatever ends up in this output
     REM should generally be installed into the appropriate libarrow-<flavour>).
