@@ -38,7 +38,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 23
+  number: 24
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -160,6 +160,8 @@ outputs:
         - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
         - {{ pin_subpackage("libarrow-substrait", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
+        - {{ pin_subpackage("arrow-utils", exact=True) }}
+        - {{ pin_subpackage("parquet-utils", exact=True) }}
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
@@ -169,6 +171,8 @@ outputs:
         - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
         - {{ pin_subpackage("libarrow-substrait", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
+        - {{ pin_subpackage("arrow-utils", exact=True) }}
+        - {{ pin_subpackage("parquet-utils", exact=True) }}
     test:
       commands:
         # absence of test bits
@@ -657,6 +661,78 @@ outputs:
       license_file:
         - LICENSE.txt
       summary: C++ libraries for Apache Parquet
+
+  - name: parquet-utils
+    script: install-libarrow.sh  # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+    requirements:
+      build:
+        - cmake <4
+        - ninja
+        # for strong run-exports
+        - {{ stdlib("c") }}
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+      host:
+        - {{ pin_subpackage("libparquet", exact=True) }}
+      run:
+        - {{ pin_subpackage("libparquet", exact=True) }}
+
+    test:
+      commands:
+        # bin
+        - test -f $PREFIX/bin/parquet-dump-footer                               # [unix]
+        - test -f $PREFIX/bin/parquet-dump-schema                               # [unix]
+        - test -f $PREFIX/bin/parquet-reader                                    # [unix]
+        - test -f $PREFIX/bin/parquet-scan                                      # [unix]
+        - if not exist %LIBRARY_BIN%\parquet-dump-footer.exe exit 1             # [win]
+        - if not exist %LIBRARY_BIN%\parquet-dump-schema.exe exit 1             # [win]
+        - if not exist %LIBRARY_BIN%\parquet-reader.exe exit 1                  # [win]
+        - if not exist %LIBRARY_BIN%\parquet-scan.exe exit 1                    # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: Executables for inspecting Apache Parquet files
+
+  - name: arrow-utils
+    script: install-libarrow.sh  # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+    requirements:
+      build:
+        - cmake <4
+        - ninja
+        # for strong run-exports
+        - {{ stdlib("c") }}
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+      host:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+
+    test:
+      commands:
+        # bin
+        - test -f $PREFIX/bin/arrow-file-to-stream                                          # [unix]
+        - test -f $PREFIX/bin/arrow-stream-to-file                                          # [unix]
+        - if not exist %LIBRARY_BIN%\arrow-file-to-stream.exe exit 1                        # [win]
+        - if not exist %LIBRARY_BIN%\arrow-stream-to-file.exe exit 1                        # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: Executables for manipulating Apache arrow files
 
 about:
   home: http://github.com/apache/arrow
