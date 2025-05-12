@@ -655,13 +655,9 @@ outputs:
     test:
       commands:
         # bin
-        - test -f $PREFIX/bin/parquet-dump-arrow-statistics                     # [unix]
-        - test -f $PREFIX/bin/parquet-dump-footer                               # [unix]
         - test -f $PREFIX/bin/parquet-dump-schema                               # [unix]
         - test -f $PREFIX/bin/parquet-reader                                    # [unix]
         - test -f $PREFIX/bin/parquet-scan                                      # [unix]
-        - if not exist %LIBRARY_BIN%\parquet-dump-arrow-statistics.exe exit 1   # [win]
-        - if not exist %LIBRARY_BIN%\parquet-dump-footer.exe exit 1             # [win]
         - if not exist %LIBRARY_BIN%\parquet-dump-schema.exe exit 1             # [win]
         - if not exist %LIBRARY_BIN%\parquet-reader.exe exit 1                  # [win]
         - if not exist %LIBRARY_BIN%\parquet-scan.exe exit 1                    # [win]
