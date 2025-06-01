@@ -51,7 +51,7 @@ libgoogle_cloud_storage_devel:
 libgrpc:
 - '1.71'
 libopentelemetry_cpp:
-- '1.20'
+- '1.21'
 libprotobuf:
 - 5.29.3
 libutf8proc:
