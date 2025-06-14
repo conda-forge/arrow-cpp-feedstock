@@ -13,7 +13,7 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- None
+- cuda-nvcc
 cuda_compiler_version:
 - None
 cuda_compiler_version_min:
@@ -59,8 +59,8 @@ target_platform:
 thrift_cpp:
 - 0.21.0
 zip_keys:
-- - cuda_compiler
-  - cuda_compiler_version
+- - cuda_compiler_version
+  - cuda_compiler
 zlib:
 - '1'
 zstd:
