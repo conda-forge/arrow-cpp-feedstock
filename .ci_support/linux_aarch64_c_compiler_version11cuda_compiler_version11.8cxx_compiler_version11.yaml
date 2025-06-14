@@ -77,8 +77,8 @@ thrift_cpp:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-  - cuda_compiler
   - cuda_compiler_version
+  - cuda_compiler
   - docker_image
 zlib:
 - '1'
