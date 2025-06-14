@@ -59,8 +59,8 @@ target_platform:
 thrift_cpp:
 - 0.21.0
 zip_keys:
-- - cuda_compiler
-  - cuda_compiler_version
+- - cuda_compiler_version
+  - cuda_compiler
 zlib:
 - '1'
 zstd:
