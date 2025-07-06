@@ -39,7 +39,7 @@ gflags:
 glog:
 - '0.7'
 libabseil:
-- '20250127'
+- '20250512'
 libarrow:
 - '*'
 libboost_headers:
@@ -49,9 +49,9 @@ libgoogle_cloud_devel:
 libgoogle_cloud_storage_devel:
 - '2.36'
 libgrpc:
-- '1.71'
+- '1.73'
 libprotobuf:
-- 5.29.3
+- 6.31.1
 libutf8proc:
 - '2.10'
 lz4_c:
