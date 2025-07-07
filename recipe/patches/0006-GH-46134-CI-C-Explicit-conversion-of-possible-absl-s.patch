@@ -1,0 +1,78 @@
+From b93557cda0b2181fe11dd1f0abda26d1c6a6312c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ra=C3=BAl=20Cumplido?= <raulcumplido@gmail.com>
+Date: Mon, 14 Apr 2025 23:46:23 +0200
+Subject: [PATCH 6/6] GH-46134: [CI][C++] Explicit conversion of possible
+ `absl::string_view` on protobuf  methods to `std::string` (#46136)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+### Rationale for this change
+
+Protobuf v30.2 uses `absl::string_view` instead of `const char*` as seen here:
+https://github.com/protocolbuffers/protobuf/commit/a9ad51f5b6a19eacc934bcb51db6282ec1fabb8c
+This is breaking on our CI.
+
+### What changes are included in this PR?
+
+Explicitly convert `google::protobuf::EnumValueDescriptor::name()` and `google::protobuf::Message::descriptor()->full_name()` from `absl::string_view` to `std::string`
+
+### Are these changes tested?
+
+Via CI, MinGW CI jobs use protobuf v30.2 and those are fixed with this change.
+
+### Are there any user-facing changes?
+
+No
+
+* GitHub Issue: #46134
+
+Authored-by: Raúl Cumplido <raulcumplido@gmail.com>
+Signed-off-by: Sutou Kouhei <kou@clear-code.com>
+---
+ cpp/src/arrow/engine/substrait/expression_internal.cc | 2 +-
+ cpp/src/arrow/engine/substrait/serde.cc               | 4 ++--
+ cpp/src/arrow/engine/substrait/util_internal.cc       | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/cpp/src/arrow/engine/substrait/expression_internal.cc b/cpp/src/arrow/engine/substrait/expression_internal.cc
+index 4cc93589cd..2d15a63e54 100644
+--- a/cpp/src/arrow/engine/substrait/expression_internal.cc
++++ b/cpp/src/arrow/engine/substrait/expression_internal.cc
+@@ -142,7 +142,7 @@ std::string EnumToString(int value, const google::protobuf::EnumDescriptor* desc
+   if (value_desc == nullptr) {
+     return "unknown";
+   }
+-  return value_desc->name();
++  return std::string(value_desc->name());
+ }
+ 
+ Result<compute::Expression> FromProto(const substrait::Expression::ReferenceSegment* ref,
+diff --git a/cpp/src/arrow/engine/substrait/serde.cc b/cpp/src/arrow/engine/substrait/serde.cc
+index 16d2ace4ac..d905770428 100644
+--- a/cpp/src/arrow/engine/substrait/serde.cc
++++ b/cpp/src/arrow/engine/substrait/serde.cc
+@@ -62,8 +62,8 @@ Status ParseFromBufferImpl(const Buffer& buf, const std::string& full_name,
+ template <typename Message>
+ Result<Message> ParseFromBuffer(const Buffer& buf) {
+   Message message;
+-  ARROW_RETURN_NOT_OK(
+-      ParseFromBufferImpl(buf, Message::descriptor()->full_name(), &message));
++  ARROW_RETURN_NOT_OK(ParseFromBufferImpl(
++      buf, std::string(Message::descriptor()->full_name()), &message));
+   return message;
+ }
+ 
+diff --git a/cpp/src/arrow/engine/substrait/util_internal.cc b/cpp/src/arrow/engine/substrait/util_internal.cc
+index 89034784ab..35e3baf94a 100644
+--- a/cpp/src/arrow/engine/substrait/util_internal.cc
++++ b/cpp/src/arrow/engine/substrait/util_internal.cc
+@@ -30,7 +30,7 @@ std::string EnumToString(int value, const google::protobuf::EnumDescriptor& desc
+   if (value_desc == nullptr) {
+     return "unknown";
+   }
+-  return value_desc->name();
++  return std::string(value_desc->name());
+ }
+ 
+ std::unique_ptr<substrait::Version> CreateVersion() {

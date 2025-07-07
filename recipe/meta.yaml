@@ -28,6 +28,8 @@ source:
       - patches/0004-GH-45053-C-Add-support-for-Boost-1.87.0-45057.patch
       # backport https://github.com/apache/arrow/pull/45226
       - patches/0005-GH-45225-C-Upgrade-ORC-to-2.1.0-45226.patch
+      # backport https://github.com/apache/arrow/pull/46136
+      - patches/0006-GH-46134-CI-C-Explicit-conversion-of-possible-absl-s.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
