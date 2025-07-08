@@ -10,7 +10,7 @@ if "%cuda_compiler_version%"=="None" (
     set "EXTRA_CMAKE_ARGS=-DARROW_CUDA=ON"
 )
 
-:: # reusable variable for dependencies we cannot yet enable
+:: reusable variable for dependencies we cannot yet enable
 set "READ_RECIPE_META_YAML_WHY_NOT=OFF"
 
 :: for available switches see
