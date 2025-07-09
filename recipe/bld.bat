@@ -13,6 +13,9 @@ if "%cuda_compiler_version%"=="None" (
 :: # reusable variable for dependencies we cannot yet enable
 set "READ_RECIPE_META_YAML_WHY_NOT=OFF"
 
+:: MSVC's STL 17.14 requires clang 19, which is too new for arrow 17
+set "CXXFLAGS=%CXXFLAGS% -D_ALLOW_COMPILER_AND_STL_VERSION_MISMATCH"
+
 :: for available switches see
 :: https://github.com/apache/arrow/blame/apache-arrow-12.0.0/cpp/cmake_modules/DefineOptions.cmake
 cmake -G "Ninja" ^
@@ -24,6 +27,7 @@ cmake -G "Ninja" ^
       -DARROW_BUILD_UTILITIES:BOOL=ON ^
       -DARROW_COMPUTE:BOOL=ON ^
       -DARROW_CSV:BOOL=ON ^
+      -DARROW_CXXFLAGS="%CXXFLAGS%" ^
       -DARROW_DATASET:BOOL=ON ^
       -DARROW_DEPENDENCY_SOURCE=SYSTEM ^
       -DARROW_FILESYSTEM:BOOL=ON ^
@@ -31,6 +35,7 @@ cmake -G "Ninja" ^
       -DARROW_FLIGHT_REQUIRE_TLSCREDENTIALSOPTIONS:BOOL=ON ^
       -DARROW_FLIGHT_SQL:BOOL=ON ^
       -DARROW_GANDIVA:BOOL=ON ^
+      -DARROW_GANDIVA_PC_CXX_FLAGS="%CXXFLAGS%" ^
       -DARROW_GCS:BOOL=ON ^
       -DARROW_HDFS:BOOL=ON ^
       -DARROW_JSON:BOOL=ON ^
