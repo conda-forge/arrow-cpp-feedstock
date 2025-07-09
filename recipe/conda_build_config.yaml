@@ -6,10 +6,6 @@ libarrow_all:
 
 # on osx, keep this in sync with llvm_version in meta.yaml.
 c_compiler_version:            # [osx]
-  - 18                         # [osx]
+  - 19                         # [osx]
 cxx_compiler_version:          # [osx]
-  - 18                         # [osx]
-c_compiler:            # [win]
-  - vs2022             # [win]
-cxx_compiler:          # [win]
-  - vs2022             # [win]
+  - 19                         # [osx]
