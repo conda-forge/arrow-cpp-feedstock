@@ -21,6 +21,8 @@ source:
       - patches/0001-GH-45225-C-Upgrade-ORC-to-2.1.0-45226.patch
       # backport https://github.com/apache/arrow/pull/46136
       - patches/0002-GH-46134-CI-C-Explicit-conversion-of-possible-absl-s.patch
+      # no idea why they're at the end (much less distinct from ARROW_CXXFLAGS), but it breaks
+      - patches/0003-move-ARROW_GANDIVA_PC_CXX_FLAGS-before-o-BC_FILE.patch
 
   # testing-submodule not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git

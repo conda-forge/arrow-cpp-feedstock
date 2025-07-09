@@ -1,0 +1,29 @@
+From ed550b747610e48a55a29081cc0f94d31c3013b0 Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Wed, 9 Jul 2025 15:27:04 +1100
+Subject: [PATCH 3/3] move ARROW_GANDIVA_PC_CXX_FLAGS before `-o ${BC_FILE}`
+
+---
+ cpp/cmake_modules/GandivaAddBitcode.cmake | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/cpp/cmake_modules/GandivaAddBitcode.cmake b/cpp/cmake_modules/GandivaAddBitcode.cmake
+index 98847f8a18..3b66cfe8bd 100644
+--- a/cpp/cmake_modules/GandivaAddBitcode.cmake
++++ b/cpp/cmake_modules/GandivaAddBitcode.cmake
+@@ -51,13 +51,13 @@ function(gandiva_add_bitcode SOURCE)
+        -DARROW_STATIC # Do not set __declspec(dllimport) on MSVC on Arrow symbols
+        -DGANDIVA_STATIC # Do not set __declspec(dllimport) on MSVC on Gandiva symbols
+        -fno-use-cxa-atexit # Workaround for unresolved __dso_handle
++       ${ARROW_GANDIVA_PC_CXX_FLAGS}
+        -emit-llvm
+        -O3
+        -c
+        ${ABSOLUTE_SOURCE}
+        -o
+-       ${BC_FILE}
+-       ${ARROW_GANDIVA_PC_CXX_FLAGS})
++       ${BC_FILE})
+   if(ARROW_BINARY_DIR)
+     list(APPEND PRECOMPILE_COMMAND -I${ARROW_BINARY_DIR}/src)
+   endif()
