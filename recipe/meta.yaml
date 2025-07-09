@@ -3,7 +3,7 @@
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
 {% set proc_build_number = "0" %}
-{% set llvm_version = "18" %}
+{% set llvm_version = "19" %}
 
 # see https://github.com/apache/arrow/blob/apache-arrow-10.0.1/cpp/CMakeLists.txt#L88-L90
 {% set so_version = (version.split(".")[0] | int * 100 + version.split(".")[1] | int) ~ "." ~ version.split(".")[2] ~ ".0" %}
@@ -28,6 +28,8 @@ source:
       - patches/0004-GH-45225-C-Upgrade-ORC-to-2.1.0-45226.patch
       # backport https://github.com/apache/arrow/pull/45859
       - patches/0005-MINOR-C-Fix-OTel-1.19-compat-after-silent-breaking-c.patch
+      # backport https://github.com/apache/arrow/pull/46136
+      - patches/0006-GH-46134-CI-C-Explicit-conversion-of-possible-absl-s.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
@@ -38,7 +40,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 16
+  number: 17
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]

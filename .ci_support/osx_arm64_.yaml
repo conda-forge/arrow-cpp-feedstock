@@ -19,7 +19,7 @@ bzip2:
 c_compiler:
 - clang
 c_compiler_version:
-- '18'
+- '19'
 c_stdlib:
 - macosx_deployment_target
 c_stdlib_version:
@@ -33,13 +33,13 @@ cuda_compiler_version:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '18'
+- '19'
 gflags:
 - '2.2'
 glog:
 - '0.7'
 libabseil:
-- '20250127'
+- '20250512'
 libarrow:
 - '*'
 libboost_devel:
@@ -49,11 +49,11 @@ libgoogle_cloud_devel:
 libgoogle_cloud_storage_devel:
 - '2.36'
 libgrpc:
-- '1.71'
+- '1.73'
 libopentelemetry_cpp:
 - '1.21'
 libprotobuf:
-- 5.29.3
+- 6.31.1
 libutf8proc:
 - '2.10'
 lz4_c:
