@@ -49,9 +49,9 @@ libarrow:
 libboost_devel:
 - '1.86'
 libgoogle_cloud_devel:
-- '2.36'
+- '2.39'
 libgoogle_cloud_storage_devel:
-- '2.36'
+- '2.39'
 libgrpc:
 - '1.73'
 libopentelemetry_cpp:
