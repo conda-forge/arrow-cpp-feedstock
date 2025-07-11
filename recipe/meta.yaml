@@ -22,8 +22,6 @@ source:
       # upstream problems on with s3 tests on osx, see
       # https://github.com/apache/arrow/issues/35587
       - patches/0002-skip-NonExistentBucket-test-on-osx.patch
-      # backport https://github.com/apache/arrow/pull/45859
-      - patches/0003-MINOR-C-Fix-OTel-1.19-compat-after-silent-breaking-c.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
