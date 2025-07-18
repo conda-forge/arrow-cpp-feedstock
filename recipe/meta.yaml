@@ -42,7 +42,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 35
+  number: 36
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
