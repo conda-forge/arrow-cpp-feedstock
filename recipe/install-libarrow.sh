@@ -11,7 +11,6 @@ if [[ "${PKG_NAME}" == "libarrow" ]]; then
     cp -a ./temp_prefix/lib/libarrow.* $PREFIX/lib
     cp -a ./temp_prefix/lib/libarrow_cuda.* $PREFIX/lib || true
     cp ./temp_prefix/lib/pkgconfig/arrow.pc $PREFIX/lib/pkgconfig
-    cp ./temp_prefix/lib/pkgconfig/arrow-compute.pc $PREFIX/lib/pkgconfig
     cp ./temp_prefix/lib/pkgconfig/arrow-csv.pc $PREFIX/lib/pkgconfig
     cp ./temp_prefix/lib/pkgconfig/arrow-cuda.pc $PREFIX/lib/pkgconfig || true
     cp ./temp_prefix/lib/pkgconfig/arrow-filesystem.pc $PREFIX/lib/pkgconfig
@@ -36,6 +35,11 @@ elif [[ "${PKG_NAME}" == "libarrow-acero" ]]; then
     cp -a ./temp_prefix/lib/libarrow_acero.* $PREFIX/lib
     cp ./temp_prefix/lib/pkgconfig/arrow-acero.pc $PREFIX/lib/pkgconfig
     cp -R ./temp_prefix/lib/cmake/ArrowAcero/. $PREFIX/lib/cmake/ArrowAcero
+elif [[ "${PKG_NAME}" == "libarrow-compute" ]]; then
+    # only libarrow-compute
+    cp -a ./temp_prefix/lib/libarrow_compute.* $PREFIX/lib
+    cp ./temp_prefix/lib/pkgconfig/arrow-compute.pc $PREFIX/lib/pkgconfig
+    cp -R ./temp_prefix/lib/cmake/ArrowCompute/. $PREFIX/lib/cmake/ArrowCompute
 elif [[ "${PKG_NAME}" == "libarrow-dataset" ]]; then
     # only libarrow-dataset
     cp -a ./temp_prefix/lib/libarrow_dataset.* $PREFIX/lib

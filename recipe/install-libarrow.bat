@@ -11,7 +11,6 @@ if [%PKG_NAME%] == [libarrow] (
     move .\temp_prefix\lib\arrow_cuda.lib %LIBRARY_LIB% || true
     move .\temp_prefix\bin\arrow_cuda.dll %LIBRARY_BIN% || true
     copy .\temp_prefix\lib\pkgconfig\arrow.pc %LIBRARY_LIB%\pkgconfig
-    copy .\temp_prefix\lib\pkgconfig\arrow-compute.pc %LIBRARY_LIB%\pkgconfig
     copy .\temp_prefix\lib\pkgconfig\arrow-csv.pc %LIBRARY_LIB%\pkgconfig
     copy .\temp_prefix\lib\pkgconfig\arrow-cuda.pc %LIBRARY_LIB%\pkgconfig || true
     copy .\temp_prefix\lib\pkgconfig\arrow-filesystem.pc %LIBRARY_LIB%\pkgconfig
@@ -33,6 +32,12 @@ if [%PKG_NAME%] == [libarrow] (
     copy .\temp_prefix\lib\pkgconfig\arrow-acero.pc %LIBRARY_LIB%\pkgconfig
     mkdir %LIBRARY_LIB%\cmake\ArrowAcero
     move .\temp_prefix\lib\cmake\ArrowAcero\* %LIBRARY_LIB%\cmake\ArrowAcero
+) else if [%PKG_NAME%] == [libarrow-compute] (
+    move .\temp_prefix\lib\arrow_compute.lib %LIBRARY_LIB%
+    move .\temp_prefix\bin\arrow_compute.dll %LIBRARY_BIN%
+    copy .\temp_prefix\lib\pkgconfig\arrow-compute.pc %LIBRARY_LIB%\pkgconfig
+    mkdir %LIBRARY_LIB%\cmake\ArrowCompute
+    move .\temp_prefix\lib\cmake\ArrowCompute\* %LIBRARY_LIB%\cmake\ArrowCompute
 ) else if [%PKG_NAME%] == [libarrow-dataset] (
     move .\temp_prefix\lib\arrow_dataset.lib %LIBRARY_LIB%
     move .\temp_prefix\bin\arrow_dataset.dll %LIBRARY_BIN%
