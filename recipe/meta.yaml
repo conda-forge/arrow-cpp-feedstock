@@ -147,6 +147,7 @@ outputs:
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-compute", exact=True) }}
         - {{ pin_subpackage("libarrow-dataset", exact=True) }}
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
         - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
@@ -158,6 +159,7 @@ outputs:
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-compute", exact=True) }}
         - {{ pin_subpackage("libarrow-dataset", exact=True) }}
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
         - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
@@ -230,10 +232,8 @@ outputs:
         - libgoogle-cloud-storage-devel
         - libopentelemetry-cpp              # [unix]
         - libprotobuf
-        - libutf8proc
         - lz4-c
         - orc
-        - re2
         - snappy
         - zlib
         - zstd
@@ -322,11 +322,13 @@ outputs:
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-compute", exact=True) }}
         - libabseil             # [osx]
         - libprotobuf           # [osx]
         - libopentelemetry-cpp  # [osx]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-compute", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
 
     test:
@@ -352,6 +354,56 @@ outputs:
         - LICENSE.txt
       summary: C++ libraries for Apache Arrow Acero
 
+  - name: libarrow-compute
+    script: install-libarrow.sh  # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      run_exports:
+        - {{ pin_subpackage("libarrow-compute", max_pin="x.x") }}
+    requirements:
+      build:
+        - cmake <4
+        - ninja
+        # for strong run-exports
+        - {{ stdlib("c") }}
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+      host:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - libabseil             # [osx]
+        - libopentelemetry-cpp  # [osx]
+        - libprotobuf           # [osx]
+        - libutf8proc
+        - re2
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+      # run-constraints handled by libarrow, since we depend on it with exact=True
+
+    test:
+      commands:
+        # headers
+        - test -f $PREFIX/include/arrow/compute/api.h               # [unix]
+        - if not exist %LIBRARY_INC%\arrow\compute\api.h exit 1     # [win]
+
+        # shared libraries
+        - test -f $PREFIX/lib/libarrow_compute.so                   # [linux]
+        - test -f $PREFIX/lib/libarrow_compute.dylib                # [osx]
+        - if not exist %LIBRARY_BIN%\arrow_compute.dll exit 1       # [win]
+        - if not exist %LIBRARY_LIB%\arrow_compute.lib exit 1       # [win]
+
+        # absence of static libraries
+        - test ! -f $PREFIX/lib/libarrow_compute.a                  # [unix]
+        - if exist %LIBRARY_LIB%\arrow_compute_static.lib exit 1    # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ libraries for Apache Arrow Compute
+
   - name: libarrow-dataset
     script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
@@ -371,6 +423,7 @@ outputs:
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-compute", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
         - libabseil             # [osx]
         - libprotobuf           # [osx]
@@ -378,6 +431,7 @@ outputs:
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-compute", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
 
