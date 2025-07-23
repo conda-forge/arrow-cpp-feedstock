@@ -334,6 +334,9 @@ outputs:
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
+        - libabseil             # [osx]
+        - libprotobuf           # [osx]
+        - libopentelemetry-cpp  # [osx]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
@@ -381,6 +384,9 @@ outputs:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
+        - libabseil             # [osx]
+        - libprotobuf           # [osx]
+        - libopentelemetry-cpp  # [osx]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
@@ -434,6 +440,7 @@ outputs:
         - libabseil
         - libgrpc
         - libprotobuf
+        - libopentelemetry-cpp  # [osx]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
@@ -485,6 +492,8 @@ outputs:
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
         - libabseil
         - libprotobuf
+        - libgrpc               # [osx]
+        - libopentelemetry-cpp  # [osx]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
@@ -638,6 +647,9 @@ outputs:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - openssl
         - thrift-cpp
+        - libabseil             # [osx]
+        - libprotobuf           # [osx]
+        - libopentelemetry-cpp  # [osx]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
@@ -680,8 +692,10 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
       host:
+        - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
       run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
 
     test:
