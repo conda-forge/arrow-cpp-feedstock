@@ -43,7 +43,7 @@ libabseil:
 libarrow:
 - '*'
 libboost_headers:
-- '1.86'
+- '1.88'
 libgoogle_cloud_devel:
 - '2.39'
 libgoogle_cloud_storage_devel:
