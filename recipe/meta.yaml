@@ -685,8 +685,10 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
       host:
+        - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
       run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
 
     test:
