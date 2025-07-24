@@ -1,4 +1,4 @@
-{% set version = "20.0.0" %}
+{% set version = "21.0.0" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -15,26 +15,24 @@ package:
 source:
   - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
     fn: apache-arrow-{{ version }}.tar.gz
-    sha256: 89efbbf852f5a1f79e9c99ab4c217e2eb7f991837c005cba2d4a2fbd35fad212
+    sha256: 5d3f8db7e72fb9f65f4785b7a1634522e8d8e9657a445af53d4a34a3849857b5
     patches:
       # skip gcsfs tests due to missing `storage-testbench`
       - patches/0001-disable-gcsfs_test.patch
       # upstream problems on with s3 tests on osx, see
       # https://github.com/apache/arrow/issues/35587
       - patches/0002-skip-NonExistentBucket-test-on-osx.patch
-      # backport https://github.com/apache/arrow/pull/45859
-      - patches/0003-MINOR-C-Fix-OTel-1.19-compat-after-silent-breaking-c.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
-    git_rev: d2a13712303498963395318a4eb42872e66aead7
+    git_rev: fbf6b703dc93d17d75fa3664c5aa2c7873ebaf06
     folder: testing
   - git_url: https://github.com/apache/parquet-testing.git
     git_rev: 18d17540097fca7c40be3d42c167e6bfad90763c
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 18
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -52,7 +50,7 @@ requirements:
     - clangdev {{ llvm_version }}            # [build_platform != target_platform]
     - llvmdev {{ llvm_version }}             # [build_platform != target_platform]
     - gnuconfig                              # [build_platform != target_platform]
-    - cmake <4
+    - cmake
     - ninja
     # necessary for vendored jemalloc
     - autoconf     # [unix]
@@ -144,11 +142,12 @@ outputs:
         - {{ pin_subpackage("libparquet", max_pin="x.x") }}
     requirements:
       build:
-        - cmake <4
+        - cmake
         - ninja
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-compute", exact=True) }}
         - {{ pin_subpackage("libarrow-dataset", exact=True) }}
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
         - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
@@ -160,6 +159,7 @@ outputs:
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-compute", exact=True) }}
         - {{ pin_subpackage("libarrow-dataset", exact=True) }}
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
         - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
@@ -207,7 +207,7 @@ outputs:
         - '*/nvcuda.dll'      # [win]
     requirements:
       build:
-        - cmake <4
+        - cmake
         - ninja
         # for strong run-exports
         - {{ stdlib("c") }}
@@ -232,10 +232,8 @@ outputs:
         - libgoogle-cloud-storage-devel
         - libopentelemetry-cpp              # [unix]
         - libprotobuf
-        - libutf8proc
         - lz4-c
         - orc
-        - re2
         - snappy
         - zlib
         - zstd
@@ -316,7 +314,7 @@ outputs:
         - {{ pin_subpackage("libarrow-acero", max_pin="x.x") }}
     requirements:
       build:
-        - cmake <4
+        - cmake
         - ninja
         # for strong run-exports
         - {{ stdlib("c") }}
@@ -324,11 +322,13 @@ outputs:
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-compute", exact=True) }}
         - libabseil             # [osx]
         - libprotobuf           # [osx]
         - libopentelemetry-cpp  # [osx]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-compute", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
 
     test:
@@ -354,14 +354,14 @@ outputs:
         - LICENSE.txt
       summary: C++ libraries for Apache Arrow Acero
 
-  - name: libarrow-dataset
+  - name: libarrow-compute
     script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
     version: {{ version }}
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
       run_exports:
-        - {{ pin_subpackage("libarrow-dataset", max_pin="x.x") }}
+        - {{ pin_subpackage("libarrow-compute", max_pin="x.x") }}
     requirements:
       build:
         - cmake <4
@@ -372,7 +372,58 @@ outputs:
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
+        - libabseil             # [osx]
+        - libopentelemetry-cpp  # [osx]
+        - libprotobuf           # [osx]
+        - libutf8proc
+        - re2
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+      # run-constraints handled by libarrow, since we depend on it with exact=True
+
+    test:
+      commands:
+        # headers
+        - test -f $PREFIX/include/arrow/compute/api.h               # [unix]
+        - if not exist %LIBRARY_INC%\arrow\compute\api.h exit 1     # [win]
+
+        # shared libraries
+        - test -f $PREFIX/lib/libarrow_compute.so                   # [linux]
+        - test -f $PREFIX/lib/libarrow_compute.dylib                # [osx]
+        - if not exist %LIBRARY_BIN%\arrow_compute.dll exit 1       # [win]
+        - if not exist %LIBRARY_LIB%\arrow_compute.lib exit 1       # [win]
+
+        # absence of static libraries
+        - test ! -f $PREFIX/lib/libarrow_compute.a                  # [unix]
+        - if exist %LIBRARY_LIB%\arrow_compute_static.lib exit 1    # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ libraries for Apache Arrow Compute
+
+  - name: libarrow-dataset
+    script: install-libarrow.sh  # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      run_exports:
+        - {{ pin_subpackage("libarrow-dataset", max_pin="x.x") }}
+    requirements:
+      build:
+        - cmake
+        - ninja
+        # for strong run-exports
+        - {{ stdlib("c") }}
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+      host:
+        - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-compute", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
         - libabseil             # [osx]
         - libprotobuf           # [osx]
@@ -380,6 +431,7 @@ outputs:
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-compute", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
 
@@ -416,7 +468,7 @@ outputs:
         - {{ pin_subpackage("libarrow-flight", max_pin="x.x") }}
     requirements:
       build:
-        - cmake <4
+        - cmake
         - ninja
         # for strong run-exports
         - {{ stdlib("c") }}
@@ -468,7 +520,7 @@ outputs:
         - {{ pin_subpackage("libarrow-flight-sql", max_pin="x.x") }}
     requirements:
       build:
-        - cmake <4
+        - cmake
         - ninja
         # for strong run-exports
         - {{ stdlib("c") }}
@@ -522,7 +574,7 @@ outputs:
         - {{ pin_subpackage("libarrow-gandiva", max_pin="x.x") }}
     requirements:
       build:
-        - cmake <4
+        - cmake
         - ninja
         # for strong run-exports
         - {{ stdlib("c") }}
@@ -575,7 +627,7 @@ outputs:
         - {{ pin_subpackage("libarrow-substrait", max_pin="x.x") }}
     requirements:
       build:
-        - cmake <4
+        - cmake
         - ninja
         # for strong run-exports
         - {{ stdlib("c") }}
@@ -627,7 +679,7 @@ outputs:
         - {{ pin_subpackage("libparquet", max_pin="x.x") }}
     requirements:
       build:
-        - cmake <4
+        - cmake
         - ninja
         # for strong run-exports
         - {{ stdlib("c") }}
