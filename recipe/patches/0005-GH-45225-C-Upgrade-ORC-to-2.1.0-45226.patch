@@ -1,7 +1,7 @@
 From a9ddd7c34a4821fe0fbae6f82c18d44ed2035283 Mon Sep 17 00:00:00 2001
 From: Gang Wu <ustcwg@gmail.com>
 Date: Tue, 14 Jan 2025 10:25:08 +0800
-Subject: [PATCH 5/5] GH-45225: [C++] Upgrade ORC to 2.1.0 (#45226)
+Subject: [PATCH 5/8] GH-45225: [C++] Upgrade ORC to 2.1.0 (#45226)
 
 Apache ORC has just released 2.1.0: https://orc.apache.org/news/2025/01/09/ORC-2.1.0/
 

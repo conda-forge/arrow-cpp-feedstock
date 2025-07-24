@@ -1,7 +1,7 @@
 From b93557cda0b2181fe11dd1f0abda26d1c6a6312c Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ra=C3=BAl=20Cumplido?= <raulcumplido@gmail.com>
 Date: Mon, 14 Apr 2025 23:46:23 +0200
-Subject: [PATCH 6/6] GH-46134: [CI][C++] Explicit conversion of possible
+Subject: [PATCH 6/8] GH-46134: [CI][C++] Explicit conversion of possible
  `absl::string_view` on protobuf  methods to `std::string` (#46136)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8

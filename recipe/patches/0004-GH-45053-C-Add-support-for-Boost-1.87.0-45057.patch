@@ -1,7 +1,7 @@
 From 1b31ab4fcafb0f8acf607d61385c5a012a3e570c Mon Sep 17 00:00:00 2001
 From: Sutou Kouhei <kou@clear-code.com>
 Date: Wed, 18 Dec 2024 14:38:09 +0900
-Subject: [PATCH 4/5] GH-45053: [C++] Add support for Boost 1.87.0 (#45057)
+Subject: [PATCH 4/8] GH-45053: [C++] Add support for Boost 1.87.0 (#45057)
 
 ### Rationale for this change
 

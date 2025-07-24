@@ -29,7 +29,7 @@ libabseil:
 libarrow:
 - '*'
 libboost_devel:
-- '1.86'
+- '1.88'
 libcrc32c:
 - '1.1'
 libcurl:
