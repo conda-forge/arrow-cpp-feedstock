@@ -49,6 +49,15 @@ Package license: Apache-2.0
 
 Summary: C++ libraries for Apache Arrow Acero
 
+About libarrow-compute
+----------------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: C++ libraries for Apache Arrow Compute
+
 About libarrow-dataset
 ----------------------
 
@@ -217,6 +226,7 @@ Current release info
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow-green.svg)](https://anaconda.org/conda-forge/libarrow) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow.svg)](https://anaconda.org/conda-forge/libarrow) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow.svg)](https://anaconda.org/conda-forge/libarrow) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow.svg)](https://anaconda.org/conda-forge/libarrow) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--acero-green.svg)](https://anaconda.org/conda-forge/libarrow-acero) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-acero.svg)](https://anaconda.org/conda-forge/libarrow-acero) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-acero.svg)](https://anaconda.org/conda-forge/libarrow-acero) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-acero.svg)](https://anaconda.org/conda-forge/libarrow-acero) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--all-green.svg)](https://anaconda.org/conda-forge/libarrow-all) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-all.svg)](https://anaconda.org/conda-forge/libarrow-all) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-all.svg)](https://anaconda.org/conda-forge/libarrow-all) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-all.svg)](https://anaconda.org/conda-forge/libarrow-all) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--compute-green.svg)](https://anaconda.org/conda-forge/libarrow-compute) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-compute.svg)](https://anaconda.org/conda-forge/libarrow-compute) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-compute.svg)](https://anaconda.org/conda-forge/libarrow-compute) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-compute.svg)](https://anaconda.org/conda-forge/libarrow-compute) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--dataset-green.svg)](https://anaconda.org/conda-forge/libarrow-dataset) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-dataset.svg)](https://anaconda.org/conda-forge/libarrow-dataset) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-dataset.svg)](https://anaconda.org/conda-forge/libarrow-dataset) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-dataset.svg)](https://anaconda.org/conda-forge/libarrow-dataset) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--flight-green.svg)](https://anaconda.org/conda-forge/libarrow-flight) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-flight.svg)](https://anaconda.org/conda-forge/libarrow-flight) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-flight.svg)](https://anaconda.org/conda-forge/libarrow-flight) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-flight.svg)](https://anaconda.org/conda-forge/libarrow-flight) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--flight--sql-green.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-flight-sql.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-flight-sql.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-flight-sql.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) |
@@ -235,16 +245,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `apache-arrow-proc, arrow-utils, libarrow, libarrow-acero, libarrow-all, libarrow-dataset, libarrow-flight, libarrow-flight-sql, libarrow-gandiva, libarrow-substrait, libparquet, parquet-utils` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `apache-arrow-proc, arrow-utils, libarrow, libarrow-acero, libarrow-all, libarrow-compute, libarrow-dataset, libarrow-flight, libarrow-flight-sql, libarrow-gandiva, libarrow-substrait, libparquet, parquet-utils` can be installed with `conda`:
 
 ```
-conda install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-substrait libparquet parquet-utils
+conda install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-compute libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-substrait libparquet parquet-utils
 ```
 
 or with `mamba`:
 
 ```
-mamba install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-substrait libparquet parquet-utils
+mamba install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-compute libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-substrait libparquet parquet-utils
 ```
 
 It is possible to list all of the versions of `apache-arrow-proc` available on your platform with `conda`:
