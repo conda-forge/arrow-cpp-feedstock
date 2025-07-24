@@ -220,6 +220,7 @@ outputs:
         - azure-core-cpp                    # [unix]
         - azure-identity-cpp                # [unix]
         - azure-storage-blobs-cpp           # [unix]
+        - azure-storage-common-cpp          # [unix]
         - azure-storage-files-datalake-cpp  # [unix]
         - brotli
         - bzip2
