@@ -30,6 +30,10 @@ source:
       - patches/0005-MINOR-C-Fix-OTel-1.19-compat-after-silent-breaking-c.patch
       # backport https://github.com/apache/arrow/pull/46136
       - patches/0006-GH-46134-CI-C-Explicit-conversion-of-possible-absl-s.patch
+      # backport https://github.com/apache/arrow/pull/46113
+      - patches/0007-GH-46111-C-CI-Fix-boost-1.88-on-MinGW-46113.patch
+      # backport https://github.com/apache/arrow/pull/46160
+      - patches/0008-GH-46159-CI-C-Stop-using-possibly-missing-boost-proc.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
@@ -40,7 +44,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 25
+  number: 26
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -330,6 +334,9 @@ outputs:
         - {{ compiler("cxx") }}
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
+        - libabseil             # [osx]
+        - libprotobuf           # [osx]
+        - libopentelemetry-cpp  # [osx]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
@@ -377,6 +384,9 @@ outputs:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
+        - libabseil             # [osx]
+        - libprotobuf           # [osx]
+        - libopentelemetry-cpp  # [osx]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-acero", exact=True) }}
@@ -430,6 +440,7 @@ outputs:
         - libabseil
         - libgrpc
         - libprotobuf
+        - libopentelemetry-cpp  # [osx]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
@@ -481,6 +492,8 @@ outputs:
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
         - libabseil
         - libprotobuf
+        - libgrpc               # [osx]
+        - libopentelemetry-cpp  # [osx]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
@@ -634,6 +647,9 @@ outputs:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - openssl
         - thrift-cpp
+        - libabseil             # [osx]
+        - libprotobuf           # [osx]
+        - libopentelemetry-cpp  # [osx]
       run:
         - {{ pin_subpackage("libarrow", exact=True) }}
       # run-constraints handled by libarrow, since we depend on it with exact=True
@@ -676,8 +692,10 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
       host:
+        - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
       run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
 
     test:
