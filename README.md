@@ -49,6 +49,15 @@ Package license: Apache-2.0
 
 Summary: C++ libraries for Apache Arrow Acero
 
+About libarrow-compute
+----------------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: C++ libraries for Apache Arrow Compute
+
 About libarrow-dataset
 ----------------------
 
@@ -111,6 +120,42 @@ Home: http://github.com/apache/arrow
 Package license: Apache-2.0
 
 Summary: Executables for inspecting Apache Parquet files
+
+About pyarrow
+-------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: Python libraries for Apache Arrow with default capabilities
+
+About pyarrow-all
+-----------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: Python libraries for Apache Arrow with all capabilities
+
+About pyarrow-core
+------------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: Python libraries for Apache Arrow Core
+
+About pyarrow-tests
+-------------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: Python test files for Apache Arrow
 
 Current build status
 ====================
@@ -217,6 +262,7 @@ Current release info
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow-green.svg)](https://anaconda.org/conda-forge/libarrow) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow.svg)](https://anaconda.org/conda-forge/libarrow) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow.svg)](https://anaconda.org/conda-forge/libarrow) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow.svg)](https://anaconda.org/conda-forge/libarrow) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--acero-green.svg)](https://anaconda.org/conda-forge/libarrow-acero) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-acero.svg)](https://anaconda.org/conda-forge/libarrow-acero) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-acero.svg)](https://anaconda.org/conda-forge/libarrow-acero) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-acero.svg)](https://anaconda.org/conda-forge/libarrow-acero) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--all-green.svg)](https://anaconda.org/conda-forge/libarrow-all) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-all.svg)](https://anaconda.org/conda-forge/libarrow-all) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-all.svg)](https://anaconda.org/conda-forge/libarrow-all) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-all.svg)](https://anaconda.org/conda-forge/libarrow-all) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--compute-green.svg)](https://anaconda.org/conda-forge/libarrow-compute) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-compute.svg)](https://anaconda.org/conda-forge/libarrow-compute) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-compute.svg)](https://anaconda.org/conda-forge/libarrow-compute) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-compute.svg)](https://anaconda.org/conda-forge/libarrow-compute) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--dataset-green.svg)](https://anaconda.org/conda-forge/libarrow-dataset) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-dataset.svg)](https://anaconda.org/conda-forge/libarrow-dataset) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-dataset.svg)](https://anaconda.org/conda-forge/libarrow-dataset) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-dataset.svg)](https://anaconda.org/conda-forge/libarrow-dataset) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--flight-green.svg)](https://anaconda.org/conda-forge/libarrow-flight) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-flight.svg)](https://anaconda.org/conda-forge/libarrow-flight) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-flight.svg)](https://anaconda.org/conda-forge/libarrow-flight) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-flight.svg)](https://anaconda.org/conda-forge/libarrow-flight) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--flight--sql-green.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-flight-sql.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-flight-sql.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-flight-sql.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) |
@@ -224,6 +270,10 @@ Current release info
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--substrait-green.svg)](https://anaconda.org/conda-forge/libarrow-substrait) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-substrait.svg)](https://anaconda.org/conda-forge/libarrow-substrait) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-substrait.svg)](https://anaconda.org/conda-forge/libarrow-substrait) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-substrait.svg)](https://anaconda.org/conda-forge/libarrow-substrait) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libparquet-green.svg)](https://anaconda.org/conda-forge/libparquet) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libparquet.svg)](https://anaconda.org/conda-forge/libparquet) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libparquet.svg)](https://anaconda.org/conda-forge/libparquet) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libparquet.svg)](https://anaconda.org/conda-forge/libparquet) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-parquet--utils-green.svg)](https://anaconda.org/conda-forge/parquet-utils) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/parquet-utils.svg)](https://anaconda.org/conda-forge/parquet-utils) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/parquet-utils.svg)](https://anaconda.org/conda-forge/parquet-utils) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/parquet-utils.svg)](https://anaconda.org/conda-forge/parquet-utils) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-pyarrow-green.svg)](https://anaconda.org/conda-forge/pyarrow) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pyarrow.svg)](https://anaconda.org/conda-forge/pyarrow) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/pyarrow.svg)](https://anaconda.org/conda-forge/pyarrow) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/pyarrow.svg)](https://anaconda.org/conda-forge/pyarrow) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-pyarrow--all-green.svg)](https://anaconda.org/conda-forge/pyarrow-all) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pyarrow-all.svg)](https://anaconda.org/conda-forge/pyarrow-all) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/pyarrow-all.svg)](https://anaconda.org/conda-forge/pyarrow-all) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/pyarrow-all.svg)](https://anaconda.org/conda-forge/pyarrow-all) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-pyarrow--core-green.svg)](https://anaconda.org/conda-forge/pyarrow-core) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pyarrow-core.svg)](https://anaconda.org/conda-forge/pyarrow-core) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/pyarrow-core.svg)](https://anaconda.org/conda-forge/pyarrow-core) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/pyarrow-core.svg)](https://anaconda.org/conda-forge/pyarrow-core) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-pyarrow--tests-green.svg)](https://anaconda.org/conda-forge/pyarrow-tests) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pyarrow-tests.svg)](https://anaconda.org/conda-forge/pyarrow-tests) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/pyarrow-tests.svg)](https://anaconda.org/conda-forge/pyarrow-tests) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/pyarrow-tests.svg)](https://anaconda.org/conda-forge/pyarrow-tests) |
 
 Installing arrow-cpp
 ====================
@@ -235,16 +285,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `apache-arrow-proc, arrow-utils, libarrow, libarrow-acero, libarrow-all, libarrow-dataset, libarrow-flight, libarrow-flight-sql, libarrow-gandiva, libarrow-substrait, libparquet, parquet-utils` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `apache-arrow-proc, arrow-utils, libarrow, libarrow-acero, libarrow-all, libarrow-compute, libarrow-dataset, libarrow-flight, libarrow-flight-sql, libarrow-gandiva, libarrow-substrait, libparquet, parquet-utils, pyarrow, pyarrow-all, pyarrow-core, pyarrow-tests` can be installed with `conda`:
 
 ```
-conda install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-substrait libparquet parquet-utils
+conda install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-compute libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-substrait libparquet parquet-utils pyarrow pyarrow-all pyarrow-core pyarrow-tests
 ```
 
 or with `mamba`:
 
 ```
-mamba install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-substrait libparquet parquet-utils
+mamba install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-compute libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-substrait libparquet parquet-utils pyarrow pyarrow-all pyarrow-core pyarrow-tests
 ```
 
 It is possible to list all of the versions of `apache-arrow-proc` available on your platform with `conda`:
