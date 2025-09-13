@@ -63,7 +63,7 @@ libopentelemetry_cpp:
 libprotobuf:
 - 6.31.1
 libutf8proc:
-- '2.10'
+- '2.11'
 lz4_c:
 - '1.10'
 openssl:
