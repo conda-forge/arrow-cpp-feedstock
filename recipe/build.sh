@@ -45,6 +45,13 @@ if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "
     export CMAKE_BUILD_PARALLEL_LEVEL=3
 fi
 
+# IPO produces segfaults in the test suite on macOS x86-64
+if [[ "$target_platform" == "osx-64" ]]; then
+    CMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF
+else
+    CMAKE_INTERPROCEDURAL_OPTIMIZATION=ON
+fi
+
 # reusable variable for dependencies we cannot yet unvendor
 export READ_RECIPE_META_YAML_WHY_NOT=OFF
 
@@ -101,7 +108,7 @@ cmake -GNinja \
     -DCMAKE_CXX_STANDARD=17 \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
-    -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
+    -DCMAKE_INTERPROCEDURAL_OPTIMIZATION:BOOL=${CMAKE_INTERPROCEDURAL_OPTIMIZATION} \
     -DLLVM_TOOLS_BINARY_DIR=$PREFIX/bin \
     -DZSTD_HOME=${PREFIX} \
     -DZSTD_INCLUDE_DIR=${PREFIX}/include \
