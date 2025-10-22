@@ -51,7 +51,7 @@ libutf8proc:
 lz4_c:
 - '1.10'
 openssl:
-- '3'
+- '3.5'
 orc:
 - 2.2.1
 re2:
