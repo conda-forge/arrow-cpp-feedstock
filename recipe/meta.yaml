@@ -22,6 +22,8 @@ source:
       # upstream problems on with s3 tests on osx, see
       # https://github.com/apache/arrow/issues/35587
       - patches/0002-skip-NonExistentBucket-test-on-osx.patch
+      # for correctly including xsimd headers
+      - patches/0003-Change-xsimd-inclusion-criterion.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
