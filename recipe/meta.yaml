@@ -1,4 +1,4 @@
-{% set version = "21.0.0" %}
+{% set version = "22.0.0" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -15,24 +15,26 @@ package:
 source:
   - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
     fn: apache-arrow-{{ version }}.tar.gz
-    sha256: 5d3f8db7e72fb9f65f4785b7a1634522e8d8e9657a445af53d4a34a3849857b5
+    sha256: 131250cd24dec0cddde04e2ad8c9e2bc43edc5e84203a81cf71cf1a33a6e7e0f
     patches:
       # skip gcsfs tests due to missing `storage-testbench`
       - patches/0001-disable-gcsfs_test.patch
       # upstream problems on with s3 tests on osx, see
       # https://github.com/apache/arrow/issues/35587
       - patches/0002-skip-NonExistentBucket-test-on-osx.patch
+      # for correctly including xsimd headers
+      - patches/0003-Change-xsimd-inclusion-criterion.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
-    git_rev: fbf6b703dc93d17d75fa3664c5aa2c7873ebaf06
+    git_rev: 9a02925d1ba80bd493b6d4da6e8a777588d57ac4
     folder: testing
   - git_url: https://github.com/apache/parquet-testing.git
-    git_rev: 18d17540097fca7c40be3d42c167e6bfad90763c
+    git_rev: a3d96a65e11e2bbca7d22a894e8313ede90a33a3
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 9
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
