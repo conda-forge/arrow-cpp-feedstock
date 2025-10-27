@@ -27,10 +27,10 @@ source:
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
-    git_rev: fbf6b703dc93d17d75fa3664c5aa2c7873ebaf06
+    git_rev: 9a02925d1ba80bd493b6d4da6e8a777588d57ac4
     folder: testing
   - git_url: https://github.com/apache/parquet-testing.git
-    git_rev: 18d17540097fca7c40be3d42c167e6bfad90763c
+    git_rev: a3d96a65e11e2bbca7d22a894e8313ede90a33a3
     folder: cpp/submodules/parquet-testing
 
 build:
