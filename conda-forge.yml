@@ -1,6 +1,7 @@
 azure:
   free_disk_space: true
-  max_parallel: 20
+  settings_linux:
+    swapfile_size: 8GiB
   settings_win:
     variables:
       CONDA_BLD_PATH: C:\\bld\\
