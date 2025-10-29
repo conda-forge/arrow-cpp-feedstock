@@ -3,7 +3,7 @@ aws_crt_cpp:
 aws_sdk_cpp:
 - 1.11.606
 brotli:
-- '1.1'
+- '1.2'
 bzip2:
 - '1'
 c_compiler:
@@ -33,7 +33,7 @@ libarrow:
 libboost_devel:
 - '1.88'
 libbrotlicommon:
-- '1.1'
+- '1.2'
 libcrc32c:
 - '1.1'
 libcurl:
