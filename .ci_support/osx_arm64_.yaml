@@ -15,7 +15,7 @@ azure_storage_blobs_cpp:
 azure_storage_files_datalake_cpp:
 - 12.13.0
 brotli:
-- '1.1'
+- '1.2'
 bzip2:
 - '1'
 c_compiler:
@@ -47,7 +47,7 @@ libarrow:
 libboost_devel:
 - '1.88'
 libbrotlicommon:
-- '1.1'
+- '1.2'
 libgoogle_cloud_devel:
 - '2.39'
 libgoogle_cloud_storage_devel:
