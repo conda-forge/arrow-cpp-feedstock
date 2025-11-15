@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.35.0
+- 0.35.2
 aws_sdk_cpp:
 - 1.11.606
 brotli:
