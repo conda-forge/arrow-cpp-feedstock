@@ -1,7 +1,7 @@
-From 22a7d951ebc24c09392fdd11040acbc7faebcfe7 Mon Sep 17 00:00:00 2001
+From a224bc8b7f51eae925ab57f99610e70a650b76f8 Mon Sep 17 00:00:00 2001
 From: David Li <li.davidm96@gmail.com>
 Date: Wed, 19 Mar 2025 09:34:50 +0900
-Subject: [PATCH 3/3] MINOR: [C++] Fix OTel 1.19 compat after silent breaking
+Subject: [PATCH 3/4] MINOR: [C++] Fix OTel 1.19 compat after silent breaking
  change
 
 ---
