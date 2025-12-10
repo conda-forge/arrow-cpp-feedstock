@@ -1,7 +1,7 @@
 From c36208c83c5b1f8513e8cad7ecd0fb7a32ea414c Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ra=C3=BAl=20Cumplido?= <raulcumplido@gmail.com>
 Date: Thu, 17 Apr 2025 12:06:54 +0200
-Subject: [PATCH 8/8] GH-46159: [CI][C++] Stop using possibly missing
+Subject: [PATCH 8/9] GH-46159: [CI][C++] Stop using possibly missing
  boost/process/v2.hpp on boost 1.88 and use individual includes (#46160)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8

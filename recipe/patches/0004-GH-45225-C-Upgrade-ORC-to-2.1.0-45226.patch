@@ -1,7 +1,7 @@
 From c403b19c68babb050b98a0a5203153dd36ab1db3 Mon Sep 17 00:00:00 2001
 From: Gang Wu <ustcwg@gmail.com>
 Date: Tue, 14 Jan 2025 10:25:08 +0800
-Subject: [PATCH 4/8] GH-45225: [C++] Upgrade ORC to 2.1.0 (#45226)
+Subject: [PATCH 4/9] GH-45225: [C++] Upgrade ORC to 2.1.0 (#45226)
 
 ### Rationale for this change
 

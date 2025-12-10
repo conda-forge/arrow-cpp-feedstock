@@ -1,0 +1,407 @@
+From 3ff57840e829f00cd5c00777e2f4623d121e5437 Mon Sep 17 00:00:00 2001
+From: Nic Crane <thisisnic@gmail.com>
+Date: Fri, 28 Nov 2025 10:00:28 +0000
+Subject: [PATCH 9/9] GH-48260: [C++][Python][R] Move S3 bucket references to
+ new bucket as Voltron Data ones will be removed soon (#48261)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+No more VD, no more VD S3 bucket!
+
+Move references to S3 bucket to the new Arrow one, update a few references to regions and things.
+
+Yeah, for the most part.
+
+No
+* GitHub Issue: #48260
+
+Authored-by: Nic Crane <thisisnic@gmail.com>
+Signed-off-by: Raúl Cumplido <raulcumplido@gmail.com>
+---
+ cpp/src/arrow/filesystem/s3fs_test.cc |  2 +-
+ docs/source/python/dataset.rst        |  8 ++++----
+ python/pyarrow/_s3fs.pyx              |  4 ++--
+ python/pyarrow/tests/test_fs.py       | 22 +++++++++++-----------
+ r/R/filesystem.R                      |  6 +++---
+ r/man/gs_bucket.Rd                    |  2 +-
+ r/man/s3_bucket.Rd                    |  4 ++--
+ r/tests/testthat/test-filesystem.R    | 14 +++++++-------
+ r/vignettes/arrow.Rmd                 |  2 +-
+ r/vignettes/dataset.Rmd               |  4 ++--
+ r/vignettes/fs.Rmd                    | 24 ++++++++++++------------
+ r/vignettes/python.Rmd                |  2 +-
+ 12 files changed, 47 insertions(+), 47 deletions(-)
+
+diff --git a/cpp/src/arrow/filesystem/s3fs_test.cc b/cpp/src/arrow/filesystem/s3fs_test.cc
+index 45ed73d420..f98b2295a2 100644
+--- a/cpp/src/arrow/filesystem/s3fs_test.cc
++++ b/cpp/src/arrow/filesystem/s3fs_test.cc
+@@ -413,7 +413,7 @@ TEST_F(S3OptionsTest, FromAssumeRole) {
+ class S3RegionResolutionTest : public AwsTestMixin {};
+ 
+ TEST_F(S3RegionResolutionTest, PublicBucket) {
+-  ASSERT_OK_AND_EQ("us-east-2", ResolveS3BucketRegion("voltrondata-labs-datasets"));
++  ASSERT_OK_AND_EQ("us-east-1", ResolveS3BucketRegion("arrow-datasets"));
+ 
+   // Taken from a registry of open S3-hosted datasets
+   // at https://github.com/awslabs/open-data-registry
+diff --git a/docs/source/python/dataset.rst b/docs/source/python/dataset.rst
+index 00469fd57b..de4ff7be4c 100644
+--- a/docs/source/python/dataset.rst
++++ b/docs/source/python/dataset.rst
+@@ -350,7 +350,7 @@ specifying a S3 path:
+ 
+ .. code-block:: python
+ 
+-    dataset = ds.dataset("s3://voltrondata-labs-datasets/nyc-taxi/")
++    dataset = ds.dataset("s3://arrow-datasets/nyc-taxi/")
+ 
+ Typically, you will want to customize the connection parameters, and then
+ a file system object can be created and passed to the ``filesystem`` keyword:
+@@ -359,8 +359,8 @@ a file system object can be created and passed to the ``filesystem`` keyword:
+ 
+     from pyarrow import fs
+ 
+-    s3  = fs.S3FileSystem(region="us-east-2")
+-    dataset = ds.dataset("voltrondata-labs-datasets/nyc-taxi/", filesystem=s3)
++    s3  = fs.S3FileSystem(region="us-east-1")
++    dataset = ds.dataset("arrow-datasets/nyc-taxi/", filesystem=s3)
+ 
+ The currently available classes are :class:`~pyarrow.fs.S3FileSystem` and
+ :class:`~pyarrow.fs.HadoopFileSystem`. See the :ref:`filesystem` docs for more
+@@ -381,7 +381,7 @@ useful for testing or benchmarking.
+ 
+     # By default, MinIO will listen for unencrypted HTTP traffic.
+     minio = fs.S3FileSystem(scheme="http", endpoint_override="localhost:9000")
+-    dataset = ds.dataset("voltrondata-labs-datasets/nyc-taxi/", filesystem=minio)
++    dataset = ds.dataset("arrow-datasets/nyc-taxi/", filesystem=minio)
+ 
+ 
+ Working with Parquet Datasets
+diff --git a/python/pyarrow/_s3fs.pyx b/python/pyarrow/_s3fs.pyx
+index 038f9109d8..d5122bfb52 100644
+--- a/python/pyarrow/_s3fs.pyx
++++ b/python/pyarrow/_s3fs.pyx
+@@ -93,8 +93,8 @@ def resolve_s3_region(bucket):
+ 
+     Examples
+     --------
+-    >>> fs.resolve_s3_region('voltrondata-labs-datasets')
+-    'us-east-2'
++    >>> fs.resolve_s3_region('arrow-datasets')
++    'us-east-1'
+     """
+     cdef:
+         c_string c_bucket
+diff --git a/python/pyarrow/tests/test_fs.py b/python/pyarrow/tests/test_fs.py
+index 99d82c3cbf..ac4405630e 100644
+--- a/python/pyarrow/tests/test_fs.py
++++ b/python/pyarrow/tests/test_fs.py
+@@ -1424,20 +1424,20 @@ def test_s3fs_wrong_region():
+     # anonymous=True incase CI/etc has invalid credentials
+     fs = S3FileSystem(region='eu-north-1', anonymous=True)
+ 
+-    msg = ("When getting information for bucket 'voltrondata-labs-datasets': "
++    msg = ("When getting information for bucket 'arrow-datasets': "
+            r"AWS Error UNKNOWN \(HTTP status 301\) during HeadBucket "
+            "operation: No response body. Looks like the configured region is "
+-           "'eu-north-1' while the bucket is located in 'us-east-2'."
++           "'eu-north-1' while the bucket is located in 'us-east-1'."
+            "|NETWORK_CONNECTION")
+     with pytest.raises(OSError, match=msg) as exc:
+-        fs.get_file_info("voltrondata-labs-datasets")
++        fs.get_file_info("arrow-datasets")
+ 
+     # Sometimes fails on unrelated network error, so next call would also fail.
+     if 'NETWORK_CONNECTION' in str(exc.value):
+         return
+ 
+-    fs = S3FileSystem(region='us-east-2', anonymous=True)
+-    fs.get_file_info("voltrondata-labs-datasets")
++    fs = S3FileSystem(region='us-east-1', anonymous=True)
++    fs.get_file_info("arrow-datasets")
+ 
+ 
+ @pytest.mark.azure
+@@ -1792,15 +1792,15 @@ def test_s3_real_aws():
+     fs = S3FileSystem(anonymous=True)
+     assert fs.region == default_region
+ 
+-    fs = S3FileSystem(anonymous=True, region='us-east-2')
++    fs = S3FileSystem(anonymous=True, region='us-east-1')
+     entries = fs.get_file_info(FileSelector(
+-        'voltrondata-labs-datasets/nyc-taxi'))
++        'arrow-datasets/nyc-taxi'))
+     assert len(entries) > 0
+-    key = 'voltrondata-labs-datasets/nyc-taxi/year=2019/month=6/part-0.parquet'
++    key = 'arrow-datasets/nyc-taxi/year=2019/month=6/part-0.parquet'
+     with fs.open_input_stream(key) as f:
+         md = f.metadata()
+         assert 'Content-Type' in md
+-        assert md['Last-Modified'] == b'2022-07-12T23:32:00Z'
++        assert md['Last-Modified'] == b'2025-11-26T10:28:55Z'
+         # For some reason, the header value is quoted
+         # (both with AWS and Minio)
+         assert md['ETag'] == b'"4c6a76826a695c6ac61592bc30cda3df-16"'
+@@ -1832,7 +1832,7 @@ def test_s3_real_aws_region_selection():
+ @pytest.mark.s3
+ def test_resolve_s3_region():
+     from pyarrow.fs import resolve_s3_region
+-    assert resolve_s3_region('voltrondata-labs-datasets') == 'us-east-2'
++    assert resolve_s3_region('arrow-datasets') == 'us-east-1'
+     assert resolve_s3_region('mf-nwp-models') == 'eu-west-1'
+ 
+     with pytest.raises(ValueError, match="Not a valid bucket name"):
+@@ -1989,7 +1989,7 @@ def test_s3_finalize_region_resolver():
+         with pytest.raises(ValueError, match="S3 .* finalized"):
+             resolve_s3_region('mf-nwp-models')
+         with pytest.raises(ValueError, match="S3 .* finalized"):
+-            resolve_s3_region('voltrondata-labs-datasets')
++            resolve_s3_region('arrow-datasets')
+         """
+     subprocess.check_call([sys.executable, "-c", code])
+ 
+diff --git a/r/R/filesystem.R b/r/R/filesystem.R
+index 0176cdf846..6388c3ae1b 100644
+--- a/r/R/filesystem.R
++++ b/r/R/filesystem.R
+@@ -482,13 +482,13 @@ default_s3_options <- list(
+ #' relative path. Note that this function's success does not guarantee that you
+ #' are authorized to access the bucket's contents.
+ #' @examplesIf FALSE
+-#' bucket <- s3_bucket("voltrondata-labs-datasets")
++#' bucket <- s3_bucket("arrow-datasets")
+ #'
+ #' @examplesIf FALSE
+ #' # Turn on debug logging. The following line of code should be run in a fresh
+ #' # R session prior to any calls to `s3_bucket()` (or other S3 functions)
+ #' Sys.setenv("ARROW_S3_LOG_LEVEL"="DEBUG")
+-#' bucket <- s3_bucket("voltrondata-labs-datasets")
++#' bucket <- s3_bucket("arrow-datasets")
+ #'
+ #' @export
+ s3_bucket <- function(bucket, ...) {
+@@ -524,7 +524,7 @@ s3_bucket <- function(bucket, ...) {
+ #' relative path. Note that this function's success does not guarantee that you
+ #' are authorized to access the bucket's contents.
+ #' @examplesIf FALSE
+-#' bucket <- gs_bucket("voltrondata-labs-datasets")
++#' bucket <- gs_bucket("arrow-datasets")
+ #' @export
+ gs_bucket <- function(bucket, ...) {
+   assert_that(is.string(bucket))
+diff --git a/r/man/gs_bucket.Rd b/r/man/gs_bucket.Rd
+index 7dc39a42c3..44b2efb7d9 100644
+--- a/r/man/gs_bucket.Rd
++++ b/r/man/gs_bucket.Rd
+@@ -22,6 +22,6 @@ that holds onto its relative path
+ }
+ \examples{
+ \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+-bucket <- gs_bucket("voltrondata-labs-datasets")
++bucket <- gs_bucket("arrow-datasets")
+ \dontshow{\}) # examplesIf}
+ }
+diff --git a/r/man/s3_bucket.Rd b/r/man/s3_bucket.Rd
+index bffcfa5c38..66a552ccbc 100644
+--- a/r/man/s3_bucket.Rd
++++ b/r/man/s3_bucket.Rd
+@@ -30,12 +30,12 @@ be useful to increase the log level. See the Notes section in
+ }
+ \examples{
+ \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+-bucket <- s3_bucket("voltrondata-labs-datasets")
++bucket <- s3_bucket("arrow-datasets")
+ \dontshow{\}) # examplesIf}
+ \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+ # Turn on debug logging. The following line of code should be run in a fresh
+ # R session prior to any calls to `s3_bucket()` (or other S3 functions)
+ Sys.setenv("ARROW_S3_LOG_LEVEL"="DEBUG")
+-bucket <- s3_bucket("voltrondata-labs-datasets")
++bucket <- s3_bucket("arrow-datasets")
+ \dontshow{\}) # examplesIf}
+ }
+diff --git a/r/tests/testthat/test-filesystem.R b/r/tests/testthat/test-filesystem.R
+index 34095acc25..cf17c6b74e 100644
+--- a/r/tests/testthat/test-filesystem.R
++++ b/r/tests/testthat/test-filesystem.R
+@@ -146,20 +146,20 @@ test_that("FileSystem$from_uri", {
+   skip_on_cran()
+   skip_if_not_available("s3")
+   skip_if_offline()
+-  fs_and_path <- FileSystem$from_uri("s3://voltrondata-labs-datasets")
++  fs_and_path <- FileSystem$from_uri("s3://arrow-datasets")
+   expect_r6_class(fs_and_path$fs, "S3FileSystem")
+-  expect_identical(fs_and_path$fs$region, "us-east-2")
++  expect_identical(fs_and_path$fs$region, "us-east-1")
+ })
+ 
+ test_that("SubTreeFileSystem$create() with URI", {
+   skip_on_cran()
+   skip_if_not_available("s3")
+   skip_if_offline()
+-  fs <- SubTreeFileSystem$create("s3://voltrondata-labs-datasets")
++  fs <- SubTreeFileSystem$create("s3://arrow-datasets")
+   expect_r6_class(fs, "SubTreeFileSystem")
+   expect_identical(
+     capture.output(print(fs)),
+-    "SubTreeFileSystem: s3://voltrondata-labs-datasets/"
++    "SubTreeFileSystem: s3://arrow-datasets/"
+   )
+ })
+ 
+@@ -193,12 +193,12 @@ test_that("gs_bucket", {
+   skip_on_cran()
+   skip_if_not_available("gcs")
+   skip_if_offline()
+-  bucket <- gs_bucket("voltrondata-labs-datasets")
++  bucket <- gs_bucket("arrow-datasets")
+   expect_r6_class(bucket, "SubTreeFileSystem")
+   expect_r6_class(bucket$base_fs, "GcsFileSystem")
+   expect_identical(
+     capture.output(print(bucket)),
+-    "SubTreeFileSystem: gs://voltrondata-labs-datasets/"
++    "SubTreeFileSystem: gs://arrow-datasets/"
+   )
+-  expect_identical(bucket$base_path, "voltrondata-labs-datasets/")
++  expect_identical(bucket$base_path, "arrow-datasets/")
+ })
+diff --git a/r/vignettes/arrow.Rmd b/r/vignettes/arrow.Rmd
+index 50329334ce..4695dc2ef0 100644
+--- a/r/vignettes/arrow.Rmd
++++ b/r/vignettes/arrow.Rmd
+@@ -178,7 +178,7 @@ To learn more about analyzing Arrow data, see the [data wrangling article](./dat
+ Another use for the arrow R package is to read, write, and analyze data sets stored remotely on cloud services. The package currently supports both Amazon Simple Storage Service (S3) and Google Cloud Storage (GCS). The example below illustrates how you can use `s3_bucket()` to refer to a an S3 bucket, and use `open_dataset()` to connect to the data set stored there:
+ 
+ ```{r, eval=FALSE}
+-bucket <- s3_bucket("voltrondata-labs-datasets/nyc-taxi")
++bucket <- s3_bucket("arrow-datasets/nyc-taxi")
+ nyc_taxi <- open_dataset(bucket)
+ ```
+ 
+diff --git a/r/vignettes/dataset.Rmd b/r/vignettes/dataset.Rmd
+index 43fecc93c1..1b0d63fb27 100644
+--- a/r/vignettes/dataset.Rmd
++++ b/r/vignettes/dataset.Rmd
+@@ -22,13 +22,13 @@ This multi-file data set is comprised of 158 distinct Parquet files, each corres
+ If you have Amazon S3 support enabled in arrow (true for most users; see links at the end of this article if you need to troubleshoot this), you can connect to a copy of the "tiny taxi data" stored on S3 with this command:
+ 
+ ```r
+-bucket <- s3_bucket("voltrondata-labs-datasets/nyc-taxi-tiny")
++bucket <- s3_bucket("arrow-datasets/nyc-taxi-tiny")
+ ```
+ 
+ Alternatively you could connect to a copy of the data on Google Cloud Storage (GCS) using the following command:
+ 
+ ```r
+-bucket <- gs_bucket("voltrondata-labs-datasets/nyc-taxi-tiny", anonymous = TRUE)
++bucket <- gs_bucket("arrow-datasets/nyc-taxi-tiny", anonymous = TRUE)
+ ```
+ 
+ If you want to use the full data set, replace `nyc-taxi-tiny` with `nyc-taxi` in the code above. Apart from size -- and with it the cost in time, bandwidth usage, and CPU cycles -- there is no difference in the two versions of the data: you can test your code using the tiny taxi data and then check how it scales using the full data set.
+diff --git a/r/vignettes/fs.Rmd b/r/vignettes/fs.Rmd
+index 50278af25b..57cb525818 100644
+--- a/r/vignettes/fs.Rmd
++++ b/r/vignettes/fs.Rmd
+@@ -39,16 +39,16 @@ and pass the result to file readers and writers (`read_parquet()`, `write_feathe
+ 
+ Often the reason users work with cloud storage in real world analysis is to access large data sets. An example of this is discussed in the [datasets article](./dataset.html), but new users may prefer to work with a much smaller data set while learning how the arrow cloud storage interface works. To that end, the examples in this article rely on a multi-file Parquet dataset that stores a copy of the `diamonds` data made available through the [`ggplot2`](https://ggplot2.tidyverse.org/) package, documented in `help("diamonds", package = "ggplot2")`. The cloud storage version of this data set consists of 5 Parquet files totaling less than 1MB in size.
+ 
+-The diamonds data set is hosted on both S3 and GCS, in a bucket named `voltrondata-labs-datasets`. To create an S3FileSystem object that refers to that bucket, use the following command:
++The diamonds data set is hosted on both S3 and GCS, in a bucket named `arrow-datasets`. To create an S3FileSystem object that refers to that bucket, use the following command:
+ 
+ ```r
+-bucket <- s3_bucket("voltrondata-labs-datasets")
++bucket <- s3_bucket("arrow-datasets")
+ ```
+ 
+ To do this for the GCS version of the data, the command is as follows:
+ 
+ ```r
+-bucket <- gs_bucket("voltrondata-labs-datasets", anonymous = TRUE)
++bucket <- gs_bucket("arrow-datasets", anonymous = TRUE)
+ ```
+ 
+ Note that `anonymous = TRUE` is required for GCS if credentials have not been configured. 
+@@ -126,7 +126,7 @@ df <- read_parquet(june2019$path("part-0.parquet"))
+ `SubTreeFileSystem` can also be made from a URI:
+ 
+ ```r
+-june2019 <- SubTreeFileSystem$create("s3://voltrondata-labs-datasets/nyc-taxi/year=2019/month=6")
++june2019 <- SubTreeFileSystem$create("s3://arrow-datasets/nyc-taxi/year=2019/month=6")
+ ```
+ -->
+ 
+@@ -150,8 +150,8 @@ gs://anonymous@bucket/path
+ For example, the Parquet file storing the "good cut" diamonds that we downloaded earlier in the article is available on both S3 and CGS. The relevant URIs are as follows:
+ 
+ ```r
+-uri <- "s3://voltrondata-labs-datasets/diamonds/cut=Good/part-0.parquet"
+-uri <- "gs://anonymous@voltrondata-labs-datasets/diamonds/cut=Good/part-0.parquet"
++uri <- "s3://arrow-datasets/diamonds/cut=Good/part-0.parquet"
++uri <- "gs://anonymous@arrow-datasets/diamonds/cut=Good/part-0.parquet"
+ ```
+ 
+ Note that "anonymous" is required on GCS for public buckets. Regardless of which version you use, you can pass this URI to `read_parquet()` as if the file were stored locally:
+@@ -165,7 +165,7 @@ that are passed down to configure the underlying file system. They are separated
+ by `&`. For example,
+ 
+ ```
+-s3://voltrondata-labs-datasets/?endpoint_override=https%3A%2F%2Fstorage.googleapis.com&allow_bucket_creation=true
++s3://arrow-datasets/?endpoint_override=https%3A%2F%2Fstorage.googleapis.com&allow_bucket_creation=true
+ ```
+ 
+ is equivalent to:
+@@ -175,7 +175,7 @@ bucket <- S3FileSystem$create(
+   endpoint_override="https://storage.googleapis.com",
+   allow_bucket_creation=TRUE
+ )
+-bucket$path("voltrondata-labs-datasets/")
++bucket$path("arrow-datasets/")
+ ```
+ 
+ Both tell the `S3FileSystem` object that it should allow the creation of new buckets 
+@@ -198,7 +198,7 @@ a request may spend retrying before returning an error. The current default is
+ 15 minutes, so in many interactive contexts it's nice to set a lower value:
+ 
+ ```
+-gs://anonymous@voltrondata-labs-datasets/diamonds/?retry_limit_seconds=10
++gs://anonymous@arrow-datasets/diamonds/?retry_limit_seconds=10
+ ```
+ 
+ ## Authentication
+@@ -237,9 +237,9 @@ If you haven't configured credentials, then to access *public* buckets, you
+ must pass `anonymous = TRUE` or `anonymous` as the user in a URI:
+ 
+ ```r
+-bucket <- gs_bucket("voltrondata-labs-datasets", anonymous = TRUE)
++bucket <- gs_bucket("arrow-datasets", anonymous = TRUE)
+ fs <- GcsFileSystem$create(anonymous = TRUE)
+-df <- read_parquet("gs://anonymous@voltrondata-labs-datasets/diamonds/cut=Good/part-0.parquet")
++df <- read_parquet("gs://anonymous@arrow-datasets/diamonds/cut=Good/part-0.parquet")
+ ```
+ 
+ <!-- TODO(ARROW-16880): Describe what credentials to use for particular use cases
+@@ -253,7 +253,7 @@ example, a local proxy server running on port 1316 can be used like this:
+ 
+ ```r
+ bucket <- s3_bucket(
+-  bucket = "voltrondata-labs-datasets", 
++  bucket = "arrow-datasets", 
+   proxy_options = "http://localhost:1316"
+ )
+ ```
+diff --git a/r/vignettes/python.Rmd b/r/vignettes/python.Rmd
+index d0d3f41926..c78b42310e 100644
+--- a/r/vignettes/python.Rmd
++++ b/r/vignettes/python.Rmd
+@@ -191,7 +191,7 @@ Now you have a single Array in R.
+ - To learn more about installing and configuring Python from R,
+ see the [reticulate documentation](https://rstudio.github.io/reticulate/articles/python_packages.html).
+ - To learn PyArrow, see the official [PyArrow Documentation](https://arrow.apache.org/docs/python/) and [Apache Arrow Python Cookbook](https://arrow.apache.org/cookbook/py/).
+-- R/Python integration in Arrow is also discussed in the [PyArrow Integrations Documentation](https://arrow.apache.org/docs/python/integration/python_r.html), in this [blog post about reticulate integration in Arrow](https://voltrondata.com/blog/passing-arrow-data-between-r-and-python-with-reticulate/), and in this [blog post about rpy2 integration in Arrow](https://voltrondata.com/blog/data-transfer-between-python-and-r-with-rpy2-and-apache-arrow/).
++- R/Python integration in Arrow is also discussed in the [PyArrow Integrations Documentation](https://arrow.apache.org/docs/python/integration/python_r.html), and in this [blog post about reticulate integration in Arrow](https://blog.djnavarro.net/posts/2022-09-09_reticulated-arrow/).
+ - The integration between R Arrow and PyArrow is supported through the [Arrow C data interface](https://arrow.apache.org/docs/format/CDataInterface.html#c-data-interface).
+ - To learn more about Arrow data objects, see the [data objects article](./data_objects.html).
+ 
