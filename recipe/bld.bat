@@ -81,6 +81,12 @@ if "%cuda_compiler_version%"=="None" (
     npm install -g azurite
     set ARROW_TEST_DATA=%SRC_DIR%\testing\data
     set PARQUET_TEST_DATA=%SRC_DIR%\cpp\submodules\parquet-testing\data
+    REM enabling `SetLocal EnableDelayedExpansion` means that entering an if-branch (which now gets
+    REM executed at a different==later time), DOES NOT necessarily respect `pushd cpp\build` or even
+    REM `cd cpp\build`, but against all indications, the body of the branch might find itself in the
+    REM original calling context (here: `%SRC_DIR%`) instead, causing ctest to fail to find the tests.
+    REM Remove this failure mode by unconditionally cd'ing into the right directory.
+    cd %SRC_DIR%\cpp\build
     ctest --progress --output-on-failure
     if !ERRORLEVEL! neq 0 exit 1
 )
