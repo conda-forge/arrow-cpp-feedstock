@@ -26,6 +26,8 @@ source:
       - patches/0003-Change-xsimd-inclusion-criterion.patch
       # backport https://github.com/apache/arrow/pull/48261
       - patches/0004-GH-48260-C-Python-R-Move-S3-bucket-references-to-new.patch
+      # avoid setting TZDIR (incorrectly) for orc, which already handles cf's tzdata natively
+      - patches/0005-don-t-set-TZDIR-for-tests-orc-finds-tzdata-in-conda-.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
