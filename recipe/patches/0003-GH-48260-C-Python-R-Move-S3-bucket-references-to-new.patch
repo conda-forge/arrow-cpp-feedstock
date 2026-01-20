@@ -1,7 +1,7 @@
 From 1f65acf586fa70fe77bf3b367c1dea613711c07c Mon Sep 17 00:00:00 2001
 From: Nic Crane <thisisnic@gmail.com>
 Date: Fri, 28 Nov 2025 10:00:28 +0000
-Subject: [PATCH 3/3] GH-48260: [C++][Python][R] Move S3 bucket references to
+Subject: [PATCH 3/4] GH-48260: [C++][Python][R] Move S3 bucket references to
  new bucket as Voltron Data ones will be removed soon (#48261)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
