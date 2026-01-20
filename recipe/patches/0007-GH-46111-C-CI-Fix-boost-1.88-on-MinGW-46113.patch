@@ -1,7 +1,7 @@
 From ff5a5f41d654b840670835b4f28d6ee630b2d12e Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ra=C3=BAl=20Cumplido?= <raulcumplido@gmail.com>
 Date: Mon, 14 Apr 2025 15:04:44 +0200
-Subject: [PATCH 7/9] GH-46111: [C++][CI] Fix boost 1.88 on MinGW (#46113)
+Subject: [PATCH 07/10] GH-46111: [C++][CI] Fix boost 1.88 on MinGW (#46113)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
