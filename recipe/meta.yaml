@@ -26,6 +26,8 @@ source:
       - patches/0003-Change-xsimd-inclusion-criterion.patch
       # backport https://github.com/apache/arrow/pull/48261
       - patches/0004-GH-48260-C-Python-R-Move-S3-bucket-references-to-new.patch
+      # backport https://github.com/apache/arrow/pull/48895
+      - patches/0005-GH-48894-Python-C-Use-base-Azure-Core-RequestFailedE.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
