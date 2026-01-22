@@ -119,7 +119,7 @@ requirements:
     # required by s3fs tests
     - minio-server
     # for npm, to install azurite
-    - nodejs *
+    - nodejs >=22
 
 outputs:
   - name: apache-arrow-proc
