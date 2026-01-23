@@ -24,6 +24,8 @@ source:
       - patches/0002-skip-NonExistentBucket-test-on-osx.patch
       # backport https://github.com/apache/arrow/pull/48261
       - patches/0003-GH-48260-C-Python-R-Move-S3-bucket-references-to-new.patch
+      # backport https://github.com/apache/arrow/pull/48895
+      - patches/0004-GH-48894-Python-C-Use-base-Azure-Core-RequestFailedE.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
@@ -34,7 +36,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 14
+  number: 15
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -99,13 +101,13 @@ requirements:
     - zstd
     # test requirements, c.f.
     # https://github.com/apache/arrow/blob/apache-arrow-12.0.0/cpp/CMakeLists.txt#L842-L846
-    - gtest
+    - gtest         # [build_platform == target_platform]
     # https://github.com/apache/arrow/blob/apache-arrow-12.0.0/cpp/src/arrow/flight/sql/CMakeLists.txt#L86-L87
-    - sqlite *
+    - sqlite *      # [build_platform == target_platform]
     # required by s3fs tests
-    - minio-server
+    - minio-server  # [build_platform == target_platform]
     # for npm, to install azurite
-    - nodejs *
+    - nodejs >=22   # [build_platform == target_platform]
 
 outputs:
   - name: apache-arrow-proc
