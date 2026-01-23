@@ -30,6 +30,8 @@ source:
       - patches/0005-GH-48894-Python-C-Use-base-Azure-Core-RequestFailedE.patch
       # backport https://github.com/apache/arrow/pull/48601
       - patches/0006-GH-48593-C-C-20-use-standard-calendar-timezone-APIs.patch
+      # disable gandiva tests that are failing and "unmaintained"
+      - patches/0007-disable-some-gandiva-tests-related-to-tzdb-handling.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
