@@ -28,10 +28,10 @@ source:
       - patches/0004-GH-48260-C-Python-R-Move-S3-bucket-references-to-new.patch
       # backport https://github.com/apache/arrow/pull/48895
       - patches/0005-GH-48894-Python-C-Use-base-Azure-Core-RequestFailedE.patch
-      # backport https://github.com/apache/arrow/pull/48601
-      - patches/0006-GH-48593-C-C-20-use-standard-calendar-timezone-APIs.patch
-      # disable gandiva tests that are failing and "unmaintained"
-      - patches/0007-disable-some-gandiva-tests-related-to-tzdb-handling.patch
+      # backport https://github.com/apache/arrow/pull/48601; needs C++20
+      - patches/0006-GH-48593-C-C-20-use-standard-calendar-timezone-APIs.patch      # [win]
+      # disable gandiva tests that are "unmaintained" and failing on windows
+      - patches/0007-disable-some-gandiva-tests-related-to-tzdb-handling.patch      # [win]
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
