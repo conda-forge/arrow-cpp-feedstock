@@ -32,6 +32,9 @@ if [[ "${build_platform}" != "${target_platform}" ]]; then
     CMAKE_ARGS="${CMAKE_ARGS} -DLLVM_LINK_EXECUTABLE=${BUILD_PREFIX}/bin/llvm-link"
     CMAKE_ARGS="${CMAKE_ARGS} -DARROW_JEMALLOC_LG_PAGE=16"
     CMAKE_ARGS="${CMAKE_ARGS} -DARROW_GRPC_CPP_PLUGIN=${BUILD_PREFIX}/bin/grpc_cpp_plugin"
+    CMAKE_ARGS="${CMAKE_ARGS} -DARROW_BUILD_TESTS=OFF"
+else
+    CMAKE_ARGS="${CMAKE_ARGS} -DARROW_BUILD_TESTS=ON"
 fi
 
 # disable -fno-plt, which causes problems with GCC on PPC
@@ -64,7 +67,6 @@ cmake -GNinja \
     -DARROW_BOOST_USE_SHARED=ON \
     -DARROW_BUILD_BENCHMARKS=OFF \
     -DARROW_BUILD_STATIC=OFF \
-    -DARROW_BUILD_TESTS=ON \
     -DARROW_BUILD_UTILITIES=ON \
     -DARROW_COMPUTE=ON \
     -DARROW_CSV=ON \
