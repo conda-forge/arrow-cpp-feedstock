@@ -1,7 +1,7 @@
 From 18258d1295a5e95426ec7b52a6412427d17b114d Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sun, 24 Nov 2024 20:22:35 +1100
-Subject: [PATCH 2/4] skip NonExistentBucket test on osx
+Subject: [PATCH 2/7] skip NonExistentBucket test on osx
 
 ---
  cpp/src/arrow/filesystem/s3fs_test.cc | 4 ++++

@@ -26,6 +26,12 @@ source:
       - patches/0003-Change-xsimd-inclusion-criterion.patch
       # backport https://github.com/apache/arrow/pull/48261
       - patches/0004-GH-48260-C-Python-R-Move-S3-bucket-references-to-new.patch
+      # backport https://github.com/apache/arrow/pull/48895
+      - patches/0005-GH-48894-Python-C-Use-base-Azure-Core-RequestFailedE.patch
+      # backport https://github.com/apache/arrow/pull/48601; needs C++20
+      - patches/0006-GH-48593-C-C-20-use-standard-calendar-timezone-APIs.patch      # [win]
+      # disable gandiva tests that are "unmaintained" and failing on windows
+      - patches/0007-disable-some-gandiva-tests-related-to-tzdb-handling.patch      # [win]
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
@@ -100,14 +106,14 @@ requirements:
     - zlib
     - zstd
     # test requirements, c.f.
-    # https://github.com/apache/arrow/blob/apache-arrow-12.0.0/cpp/CMakeLists.txt#L842-L846
-    - gtest
-    # https://github.com/apache/arrow/blob/apache-arrow-12.0.0/cpp/src/arrow/flight/sql/CMakeLists.txt#L86-L87
-    - sqlite *
+    # https://github.com/apache/arrow/blob/apache-arrow-22.0.0/cpp/CMakeLists.txt#L689
+    - gtest         # [build_platform == target_platform]
+    # https://github.com/apache/arrow/blob/apache-arrow-22.0.0/cpp/src/arrow/flight/sql/CMakeLists.txt#L112-L113
+    - sqlite *      # [build_platform == target_platform]
     # required by s3fs tests
-    - minio-server
+    - minio-server  # [build_platform == target_platform]
     # for npm, to install azurite
-    - nodejs *
+    - nodejs >=22   # [build_platform == target_platform]
 
 outputs:
   - name: apache-arrow-proc

@@ -1,7 +1,7 @@
 From 37f86532af653cb230ff3b6c8040d6a8577fd3a4 Mon Sep 17 00:00:00 2001
 From: AntoinePrv <AntoinePrv@users.noreply.github.com>
 Date: Mon, 27 Oct 2025 10:25:58 +0100
-Subject: [PATCH 3/4] Change xsimd inclusion criterion
+Subject: [PATCH 3/7] Change xsimd inclusion criterion
 
 ---
  cpp/src/arrow/util/byte_stream_split_internal.h | 4 +++-

@@ -56,7 +56,7 @@ cmake -G "Ninja" ^
       -DBUILD_SHARED_LIBS=ON ^
       -DBoost_NO_BOOST_CMAKE=ON ^
       -DCMAKE_BUILD_TYPE=release ^
-      -DCMAKE_CXX_STANDARD=17 ^
+      -DCMAKE_CXX_STANDARD=20 ^
       -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
       -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON ^
       -DCMAKE_UNITY_BUILD=OFF ^
@@ -80,8 +80,7 @@ if "%cuda_compiler_version%"=="None" (
     npm install -g azurite
     set ARROW_TEST_DATA=%SRC_DIR%\testing\data
     set PARQUET_TEST_DATA=%SRC_DIR%\cpp\submodules\parquet-testing\data
-    ctest --progress --output-on-failure
-    if %ERRORLEVEL% neq 0 exit 1
+    ctest --progress --output-on-failure || exit 1
 )
 
 popd
