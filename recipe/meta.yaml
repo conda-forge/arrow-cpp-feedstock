@@ -28,8 +28,6 @@ source:
       - patches/0004-GH-48593-C-C-20-use-standard-calendar-timezone-APIs.patch
       # disable gandiva tests that are "unmaintained" and failing on windows
       # - patches/0007-disable-some-gandiva-tests-related-to-tzdb-handling.patch      # [win]
-      # avoid setting TZDIR (incorrectly) for orc, which already handles cf's tzdata natively
-      - patches/0001-don-t-set-TZDIR-for-tests-orc-finds-tzdata-in-conda-.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
