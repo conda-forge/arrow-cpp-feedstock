@@ -9,3 +9,9 @@ c_compiler_version:            # [osx]
   - 21                         # [osx]
 cxx_compiler_version:          # [osx]
   - 21                         # [osx]
+
+# DEBUG
+python:
+  - 3.14.* *_cp314
+is_python_min:
+  - false
