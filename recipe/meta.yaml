@@ -24,8 +24,8 @@ source:
       - patches/0002-skip-NonExistentBucket-test-on-osx.patch
       # backport https://github.com/apache/arrow/pull/48895
       - patches/0003-GH-48894-Python-C-Use-base-Azure-Core-RequestFailedE.patch
-      # backport https://github.com/apache/arrow/pull/48601; needs C++20
-      - patches/0004-GH-48593-C-C-20-use-standard-calendar-timezone-APIs.patch      # [win]
+      # backport https://github.com/apache/arrow/pull/48601
+      - patches/0004-GH-48593-C-C-20-use-standard-calendar-timezone-APIs.patch
       # disable gandiva tests that are "unmaintained" and failing on windows
       - patches/0005-disable-some-gandiva-tests-related-to-tzdb-handling.patch      # [win]
 
