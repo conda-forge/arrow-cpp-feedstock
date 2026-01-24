@@ -1,6 +1,7 @@
 azure:
   free_disk_space: true
-  max_parallel: 20
+  settings_linux:
+    swapfile_size: 8GiB
   settings_win:
     variables:
       CONDA_BLD_PATH: C:\\bld\\
@@ -16,7 +17,8 @@ build_platform:
   osx_arm64: osx_64
 conda_build:
   pkg_format: '2'
-conda_forge_output_validation: true
+# DO NOT MERGE
+conda_forge_output_validation: false
 github:
   branch_name: main
   tooling_branch_name: main

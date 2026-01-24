@@ -64,10 +64,18 @@ libutf8proc:
 - '2.11'
 lz4_c:
 - '1.10'
+numpy:
+- '2'
 openssl:
 - '3.5'
 orc:
 - 2.2.2
+pin_run_as_build:
+  python:
+    min_pin: x.x
+    max_pin: x.x
+python:
+- 3.14.* *_cp314
 re2:
 - 2025.08.12
 snappy:

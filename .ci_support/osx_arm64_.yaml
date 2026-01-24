@@ -21,7 +21,7 @@ bzip2:
 c_compiler:
 - clang
 c_compiler_version:
-- '19'
+- '21'
 c_stdlib:
 - macosx_deployment_target
 c_stdlib_version:
@@ -35,7 +35,7 @@ cuda_compiler_version:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '19'
+- '21'
 gflags:
 - '2.2'
 glog:
@@ -64,10 +64,18 @@ lz4_c:
 - '1.10'
 macos_machine:
 - arm64-apple-darwin20.0.0
+numpy:
+- '2'
 openssl:
 - '3.5'
 orc:
 - 2.2.2
+pin_run_as_build:
+  python:
+    min_pin: x.x
+    max_pin: x.x
+python:
+- 3.14.* *_cp314
 re2:
 - 2025.08.12
 snappy:

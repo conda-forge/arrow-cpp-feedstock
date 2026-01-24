@@ -6,6 +6,12 @@ libarrow_all:
 
 # on osx, keep this in sync with llvm_version in meta.yaml.
 c_compiler_version:            # [osx]
-  - 19                         # [osx]
+  - 21                         # [osx]
 cxx_compiler_version:          # [osx]
-  - 19                         # [osx]
+  - 21                         # [osx]
+
+# DEBUG
+python:
+  - 3.14.* *_cp314
+is_python_min:
+  - false
