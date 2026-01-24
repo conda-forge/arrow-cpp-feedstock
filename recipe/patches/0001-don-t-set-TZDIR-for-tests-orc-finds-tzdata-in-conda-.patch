@@ -1,0 +1,36 @@
+From a49a8f1dec6e3e102865aff729ba95011a788f3e Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Fri, 16 Jan 2026 12:53:03 +1100
+Subject: [PATCH] don't set TZDIR for tests; orc finds tzdata in conda prefix
+
+---
+ python/pyarrow/tests/conftest.py | 16 ----------------
+ 1 file changed, 16 deletions(-)
+
+diff --git a/python/pyarrow/tests/conftest.py b/python/pyarrow/tests/conftest.py
+index 575444c1cf..85cb20bc4a 100644
+--- a/python/pyarrow/tests/conftest.py
++++ b/python/pyarrow/tests/conftest.py
+@@ -55,22 +55,6 @@ if sys.platform == 'win32':
+         set_timezone_db_path(tzdata_set_path)
+ 
+ 
+-# GH-45295: For ORC, try to populate TZDIR env var from tzdata package resource
+-# path.
+-#
+-# Note this is a different kind of database than what we allow to be set by
+-# `PYARROW_TZDATA_PATH` and passed to set_timezone_db_path.
+-if sys.platform == 'win32':
+-    if os.environ.get('TZDIR', None) is None:
+-        from importlib import resources
+-        try:
+-            os.environ['TZDIR'] = os.path.join(resources.files('tzdata'), 'zoneinfo')
+-        except ModuleNotFoundError:
+-            print(
+-                'Package "tzdata" not found. Not setting TZDIR environment variable.'
+-            )
+-
+-
+ def pytest_addoption(parser):
+     # Create options to selectively enable test groups
+     def bool_env(name, default=None):

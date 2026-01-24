@@ -1,20 +1,20 @@
-From b7b6283fd8a9905d959a0f25f97293750aa7669c Mon Sep 17 00:00:00 2001
+From 8e54e12c2954360c1552509c712c1a392708564d Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sat, 2 Nov 2024 15:41:34 +1100
-Subject: [PATCH 1/7] disable gcsfs_test
+Subject: [PATCH 1/4] disable gcsfs_test
 
 it cannot work unless we package https://github.com/googleapis/storage-testbench,
 which however has extremely tight dependencies on protobuf etc., making it very
 hard to fit this into our migration patterns
 ---
- cpp/src/arrow/filesystem/CMakeLists.txt | 8 --------
- 1 file changed, 8 deletions(-)
+ cpp/src/arrow/filesystem/CMakeLists.txt | 14 --------------
+ 1 file changed, 14 deletions(-)
 
 diff --git a/cpp/src/arrow/filesystem/CMakeLists.txt b/cpp/src/arrow/filesystem/CMakeLists.txt
-index 5250ed2a88..ba053bd501 100644
+index e6330df426..68f95b8b42 100644
 --- a/cpp/src/arrow/filesystem/CMakeLists.txt
 +++ b/cpp/src/arrow/filesystem/CMakeLists.txt
-@@ -42,14 +42,6 @@ if(ARROW_BUILD_BENCHMARKS)
+@@ -42,20 +42,6 @@ if(ARROW_BUILD_BENCHMARKS)
                        ${ARROW_BENCHMARK_LINK_LIBS})
  endif()
  
@@ -24,6 +24,12 @@ index 5250ed2a88..ba053bd501 100644
 -                 filesystem
 -                 EXTRA_LINK_LIBS
 -                 google-cloud-cpp::storage)
+-  if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang")
+-    if(TARGET arrow-gcsfs-test)
+-      target_compile_options(arrow-gcsfs-test PRIVATE -Wno-documentation
+-                                                      -Wno-documentation-deprecated-sync)
+-    endif()
+-  endif()
 -endif()
 -
  if(ARROW_AZURE)
