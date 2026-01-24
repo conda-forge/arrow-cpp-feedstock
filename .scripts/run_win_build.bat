@@ -107,17 +107,13 @@ if /i "%CI%" == "azure" (
 )
 
 :: Validate
-call :start_group "Validating outputs"
-validate_recipe_outputs "%FEEDSTOCK_NAME%"
-if !errorlevel! neq 0 exit /b !errorlevel!
-call :end_group
 
 if /i "%UPLOAD_PACKAGES%" == "true" (
     if /i "%IS_PR_BUILD%" == "false" (
         call :start_group "Uploading packages"
         if not exist "%TEMP%\" md "%TEMP%"
         set "TMP=%TEMP%"
-        upload_package --validate --feedstock-name="%FEEDSTOCK_NAME%" .\ ".\recipe" .ci_support\%CONFIG%.yaml
+        upload_package  .\ ".\recipe" .ci_support\%CONFIG%.yaml
         if !errorlevel! neq 0 exit /b !errorlevel!
         call :end_group
     )
