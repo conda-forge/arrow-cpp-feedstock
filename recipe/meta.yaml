@@ -38,7 +38,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 0
+  number: 1
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -370,7 +370,7 @@ outputs:
         - {{ pin_subpackage("libarrow-compute", max_pin="x.x") }}
     requirements:
       build:
-        - cmake <4
+        - cmake
         - ninja
         # for strong run-exports
         - {{ stdlib("c") }}
@@ -733,7 +733,7 @@ outputs:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
     requirements:
       build:
-        - cmake <4
+        - cmake
         - ninja
         # for strong run-exports
         - {{ stdlib("c") }}
@@ -775,7 +775,7 @@ outputs:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
     requirements:
       build:
-        - cmake <4
+        - cmake
         - ninja
         # for strong run-exports
         - {{ stdlib("c") }}
