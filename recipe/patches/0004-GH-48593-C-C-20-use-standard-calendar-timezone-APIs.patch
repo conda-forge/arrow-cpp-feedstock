@@ -1,7 +1,7 @@
 From c245279a11d81506bbea12233f4415405dcda478 Mon Sep 17 00:00:00 2001
 From: Rok Mihevc <rok@mihevc.org>
 Date: Fri, 19 Dec 2025 23:49:22 +0100
-Subject: [PATCH 4/5] GH-48593: [C++] C++20: use standard calendar / timezone
+Subject: [PATCH 4/6] GH-48593: [C++] C++20: use standard calendar / timezone
  APIs
 
 ---

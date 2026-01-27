@@ -1,0 +1,156 @@
+From 7d3ec3c772d02159eba2d6e934e5dd47da40310b Mon Sep 17 00:00:00 2001
+From: Nate Prewitt <nateprewitt@microsoft.com>
+Date: Thu, 22 Jan 2026 13:22:28 -0700
+Subject: [PATCH 6/6] Fix MSVC build for Azure
+
+- Change kMaxBlockSizeBytes to Long Long for cross platform compatibility
+---
+ .github/workflows/cpp_windows.yml           |  2 ++
+ cpp/cmake_modules/ThirdpartyToolchain.cmake | 22 +++++++++++++++++++++
+ cpp/src/arrow/filesystem/azurefs.cc         |  8 +++++---
+ cpp/src/arrow/filesystem/azurefs.h          |  2 +-
+ cpp/thirdparty/versions.txt                 |  5 +++++
+ 5 files changed, 35 insertions(+), 4 deletions(-)
+
+diff --git a/.github/workflows/cpp_windows.yml b/.github/workflows/cpp_windows.yml
+index 3f13097a6e..3bbf814626 100644
+--- a/.github/workflows/cpp_windows.yml
++++ b/.github/workflows/cpp_windows.yml
+@@ -41,12 +41,14 @@ jobs:
+     runs-on: ${{ inputs.os }}
+     timeout-minutes: 60
+     env:
++      ARROW_AZURE: ON
+       ARROW_BOOST_USE_SHARED: OFF
+       ARROW_BUILD_BENCHMARKS: ON
+       ARROW_BUILD_SHARED: ON
+       ARROW_BUILD_STATIC: OFF
+       ARROW_BUILD_TESTS: ON
+       ARROW_DATASET: ON
++      ARROW_FILESYSTEM: ON
+       ARROW_FLIGHT: OFF
+       ARROW_HDFS: ON
+       ARROW_HOME: /usr
+diff --git a/cpp/cmake_modules/ThirdpartyToolchain.cmake b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+index b95d649145..eb3c94e89d 100644
+--- a/cpp/cmake_modules/ThirdpartyToolchain.cmake
++++ b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+@@ -595,6 +595,13 @@ else()
+   )
+ endif()
+ 
++if(DEFINED ENV{ARROW_WIL_URL})
++  set(ARROW_WIL_URL "$ENV{ARROW_WIL_URL}")
++else()
++  set_urls(ARROW_WIL_URL
++           "https://github.com/microsoft/wil/archive/${ARROW_WIL_BUILD_VERSION}.tar.gz")
++endif()
++
+ if(DEFINED ENV{ARROW_BOOST_URL})
+   set(BOOST_SOURCE_URL "$ENV{ARROW_BOOST_URL}")
+ else()
+@@ -4054,6 +4061,21 @@ endif()
+ 
+ function(build_azure_sdk)
+   message(STATUS "Building Azure SDK for C++ from source")
++
++  # On Windows, Azure SDK's WinHTTP transport requires WIL (Windows Implementation Libraries).
++  # Fetch WIL before Azure SDK so the WIL::WIL target is available.
++  if(WIN32)
++    message(STATUS "Fetching WIL (Windows Implementation Libraries) for Azure SDK")
++    fetchcontent_declare(wil
++                         ${FC_DECLARE_COMMON_OPTIONS} OVERRIDE_FIND_PACKAGE
++                         URL ${ARROW_WIL_URL}
++                         URL_HASH "SHA256=${ARROW_WIL_BUILD_SHA256_CHECKSUM}")
++    prepare_fetchcontent()
++    set(WIL_BUILD_PACKAGING OFF)
++    set(WIL_BUILD_TESTS OFF)
++    fetchcontent_makeavailable(wil)
++  endif()
++
+   fetchcontent_declare(azure_sdk
+                        ${FC_DECLARE_COMMON_OPTIONS}
+                        URL ${ARROW_AZURE_SDK_URL}
+diff --git a/cpp/src/arrow/filesystem/azurefs.cc b/cpp/src/arrow/filesystem/azurefs.cc
+index 6580476d38..5500d1845b 100644
+--- a/cpp/src/arrow/filesystem/azurefs.cc
++++ b/cpp/src/arrow/filesystem/azurefs.cc
+@@ -970,7 +970,7 @@ Status StageBlock(Blobs::BlockBlobClient* block_blob_client, const std::string&
+ /// Writes will be buffered up to this size (in bytes) before actually uploading them.
+ static constexpr int64_t kBlockUploadSizeBytes = 10 * 1024 * 1024;
+ /// The maximum size of a block in Azure Blob (as per docs).
+-static constexpr int64_t kMaxBlockSizeBytes = 4UL * 1024 * 1024 * 1024;
++static constexpr int64_t kMaxBlockSizeBytes = 4LL * 1024 * 1024 * 1024;
+ 
+ /// This output stream, similar to other arrow OutputStreams, is not thread-safe.
+ class ObjectAppendStream final : public io::OutputStream {
+@@ -1362,7 +1362,7 @@ Result<HNSSupport> CheckIfHierarchicalNamespaceIsEnabled(
+     // without hierarchical namespace enabled.
+     directory_client.GetAccessControlList();
+     return HNSSupport::kEnabled;
+-  } catch (std::out_of_range& exception) {
++  } catch (const std::out_of_range&) {
+     // Azurite issue detected.
+     DCHECK(IsDfsEmulator(options));
+     return HNSSupport::kDisabled;
+@@ -2499,7 +2499,7 @@ class AzureFileSystem::Impl {
+           try {
+             auto delete_result = deferred_response.GetResponse();
+             success = delete_result.Value.Deleted;
+-          } catch (const Core::RequestFailedException& exception) {
++          } catch (const Core::RequestFailedException&) {
+             success = false;
+           }
+           if (!success) {
+@@ -3218,6 +3218,8 @@ class AzureFileSystem::Impl {
+ std::atomic<LeaseGuard::SteadyClock::time_point> LeaseGuard::latest_known_expiry_time_ =
+     SteadyClock::time_point{SteadyClock::duration::zero()};
+ 
++AzureFileSystem::~AzureFileSystem() = default;
++
+ AzureFileSystem::AzureFileSystem(std::unique_ptr<Impl>&& impl)
+     : FileSystem(impl->io_context()), impl_(std::move(impl)) {
+   default_async_is_sync_ = false;
+diff --git a/cpp/src/arrow/filesystem/azurefs.h b/cpp/src/arrow/filesystem/azurefs.h
+index ee0956afdd..ae374d487b 100644
+--- a/cpp/src/arrow/filesystem/azurefs.h
++++ b/cpp/src/arrow/filesystem/azurefs.h
+@@ -251,7 +251,7 @@ class ARROW_EXPORT AzureFileSystem : public FileSystem {
+   void ForceCachedHierarchicalNamespaceSupport(int hns_support);
+ 
+  public:
+-  ~AzureFileSystem() override = default;
++  ~AzureFileSystem() override;
+ 
+   static Result<std::shared_ptr<AzureFileSystem>> Make(
+       const AzureOptions& options, const io::IOContext& = io::default_io_context());
+diff --git a/cpp/thirdparty/versions.txt b/cpp/thirdparty/versions.txt
+index 51edbe2b99..178c1949de 100644
+--- a/cpp/thirdparty/versions.txt
++++ b/cpp/thirdparty/versions.txt
+@@ -114,6 +114,9 @@ ARROW_THRIFT_BUILD_VERSION=0.22.0
+ ARROW_THRIFT_BUILD_SHA256_CHECKSUM=794a0e455787960d9f27ab92c38e34da27e8deeda7a5db0e59dc64a00df8a1e5
+ ARROW_UTF8PROC_BUILD_VERSION=v2.10.0
+ ARROW_UTF8PROC_BUILD_SHA256_CHECKSUM=6f4f1b639daa6dca9f80bc5db1233e9cbaa31a67790887106160b33ef743f136
++# WIL (Windows Implementation Libraries) is required by Azure SDK on Windows for WinHTTP transport
++ARROW_WIL_BUILD_VERSION=v1.0.250325.1
++ARROW_WIL_BUILD_SHA256_CHECKSUM=c9e667d5f86ded43d17b5669d243e95ca7b437e3a167c170805ffd4aa8a9a786
+ ARROW_XSIMD_BUILD_VERSION=14.0.0
+ ARROW_XSIMD_BUILD_SHA256_CHECKSUM=17de0236954955c10c09d6938d4c5f3a3b92d31be5dadd1d5d09fc1b15490dce
+ ARROW_ZLIB_BUILD_VERSION=1.3.1
+@@ -142,6 +145,7 @@ DEPENDENCIES=(
+   "ARROW_AWS_CRT_CPP_URL aws-crt-cpp-${ARROW_AWS_CRT_CPP_BUILD_VERSION}.tar.gz https://github.com/awslabs/aws-crt-cpp/archive/${ARROW_AWS_CRT_CPP_BUILD_VERSION}.tar.gz"
+   "ARROW_AWS_LC_URL aws-lc-${ARROW_AWS_LC_BUILD_VERSION}.tar.gz https://github.com/awslabs/aws-lc/archive/${ARROW_AWS_LC_BUILD_VERSION}.tar.gz"
+   "ARROW_AWSSDK_URL aws-sdk-cpp-${ARROW_AWSSDK_BUILD_VERSION}.tar.gz https://github.com/aws/aws-sdk-cpp/archive/${ARROW_AWSSDK_BUILD_VERSION}.tar.gz"
++  "ARROW_AZURE_SDK_URL azure-sdk-for-cpp-${ARROW_AZURE_SDK_BUILD_VERSION}.tar.gz https://github.com/Azure/azure-sdk-for-cpp/archive/${ARROW_AZURE_SDK_BUILD_VERSION}.tar.gz"
+   "ARROW_BOOST_URL boost-${ARROW_BOOST_BUILD_VERSION}-cmake.tar.gz https://github.com/boostorg/boost/releases/download/boost-${ARROW_BOOST_BUILD_VERSION}/boost-${ARROW_BOOST_BUILD_VERSION}-cmake.tar.gz"
+   "ARROW_BROTLI_URL brotli-${ARROW_BROTLI_BUILD_VERSION}.tar.gz https://github.com/google/brotli/archive/${ARROW_BROTLI_BUILD_VERSION}.tar.gz"
+   "ARROW_BZIP2_URL bzip2-${ARROW_BZIP2_BUILD_VERSION}.tar.gz https://sourceware.org/pub/bzip2/bzip2-${ARROW_BZIP2_BUILD_VERSION}.tar.gz"
+@@ -168,6 +172,7 @@ DEPENDENCIES=(
+   "ARROW_SUBSTRAIT_URL substrait-${ARROW_SUBSTRAIT_BUILD_VERSION}.tar.gz https://github.com/substrait-io/substrait/archive/${ARROW_SUBSTRAIT_BUILD_VERSION}.tar.gz"
+   "ARROW_THRIFT_URL thrift-${ARROW_THRIFT_BUILD_VERSION}.tar.gz https://www.apache.org/dyn/closer.lua/thrift/${ARROW_THRIFT_BUILD_VERSION}/thrift-${ARROW_THRIFT_BUILD_VERSION}.tar.gz?action=download"
+   "ARROW_UTF8PROC_URL utf8proc-${ARROW_UTF8PROC_BUILD_VERSION}.tar.gz https://github.com/JuliaStrings/utf8proc/archive/${ARROW_UTF8PROC_BUILD_VERSION}.tar.gz"
++  "ARROW_WIL_URL wil-${ARROW_WIL_BUILD_VERSION}.tar.gz https://github.com/microsoft/wil/archive/refs/tags/${ARROW_WIL_BUILD_VERSION}.tar.gz"
+   "ARROW_XSIMD_URL xsimd-${ARROW_XSIMD_BUILD_VERSION}.tar.gz https://github.com/xtensor-stack/xsimd/archive/${ARROW_XSIMD_BUILD_VERSION}.tar.gz"
+   "ARROW_ZLIB_URL zlib-${ARROW_ZLIB_BUILD_VERSION}.tar.gz https://zlib.net/fossils/zlib-${ARROW_ZLIB_BUILD_VERSION}.tar.gz"
+   "ARROW_ZSTD_URL zstd-${ARROW_ZSTD_BUILD_VERSION}.tar.gz https://github.com/facebook/zstd/releases/download/v${ARROW_ZSTD_BUILD_VERSION}/zstd-${ARROW_ZSTD_BUILD_VERSION}.tar.gz"
