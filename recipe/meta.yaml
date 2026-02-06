@@ -8,6 +8,9 @@
 # see https://github.com/apache/arrow/blob/apache-arrow-10.0.1/cpp/CMakeLists.txt#L88-L90
 {% set so_version = (version.split(".")[0] | int * 100 + version.split(".")[1] | int) ~ "." ~ version.split(".")[2] ~ ".0" %}
 
+# fake selector to ensure variable appears as used, so skip below can work
+# [cuda_compiler_version_min]
+
 package:
   name: apache-arrow
   version: {{ version }}
