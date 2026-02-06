@@ -28,6 +28,8 @@ source:
       - patches/0004-GH-48593-C-C-20-use-standard-calendar-timezone-APIs.patch
       # disable gandiva tests that are "unmaintained" and failing on windows
       - patches/0005-disable-some-gandiva-tests-related-to-tzdb-handling.patch      # [win]
+      # backport https://github.com/apache/arrow/pull/48971
+      - patches/0006-GH-41990-C-Fix-AzureFileSystem-compilation-on-Window.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
