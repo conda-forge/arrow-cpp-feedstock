@@ -2,6 +2,14 @@ aws_crt_cpp:
 - 0.35.4
 aws_sdk_cpp:
 - 1.11.606
+azure_core_cpp:
+- 1.16.2
+azure_identity_cpp:
+- 1.13.3
+azure_storage_blobs_cpp:
+- 12.16.0
+azure_storage_files_datalake_cpp:
+- 12.14.0
 brotli:
 - '1.2'
 bzip2:
@@ -19,7 +27,7 @@ cuda_compiler:
 cuda_compiler_version:
 - None
 cuda_compiler_version_min:
-- '11.8'
+- '12.9'
 cxx_compiler:
 - vs2022
 gflags:
@@ -62,9 +70,6 @@ target_platform:
 - win-64
 thrift_cpp:
 - 0.22.0
-zip_keys:
-- - cuda_compiler_version
-  - cuda_compiler
 zlib:
 - '1'
 zstd:
