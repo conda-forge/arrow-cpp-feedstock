@@ -243,7 +243,7 @@ outputs:
         - snappy
         - zlib
         - zstd
-        - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
+        - __cuda     # [cuda_compiler_version != "None"]
         # since libgoogle-cloud{,-storage} is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
         # its host deps (which aren't yet covered above) leak into the build here
