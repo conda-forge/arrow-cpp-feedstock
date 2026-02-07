@@ -1,7 +1,7 @@
 From 22b926d891f61ac62f3593ca006c9fdf3b63c37b Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ra=C3=BAl=20Cumplido?= <raulcumplido@gmail.com>
 Date: Tue, 20 Jan 2026 15:32:01 +0100
-Subject: [PATCH 4/4] GH-48894: [Python][C++] Use base
+Subject: [PATCH 4/5] GH-48894: [Python][C++] Use base
  Azure::Core::RequestFailedException instead of final
  Azure::Storage::StorageException and set minimum nodejs on conda env to 16
  for Azurite to work (#48895)
