@@ -19,7 +19,7 @@ cuda_compiler:
 cuda_compiler_version:
 - None
 cuda_compiler_version_min:
-- '11.8'
+- '12.9'
 cxx_compiler:
 - vs2022
 gflags:
@@ -62,9 +62,6 @@ target_platform:
 - win-64
 thrift_cpp:
 - 0.22.0
-zip_keys:
-- - cuda_compiler_version
-  - cuda_compiler
 zlib:
 - '1'
 zstd:

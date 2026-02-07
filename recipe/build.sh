@@ -15,9 +15,9 @@ else
 fi
 
 # Enable CUDA support
-if [[ ! -z "${cuda_compiler_version+x}" && "${cuda_compiler_version}" != "None" ]]
-then
-    CMAKE_ARGS="${CMAKE_ARGS} -DARROW_CUDA=ON -DCUDAToolkit_ROOT=${CUDA_HOME} -DCMAKE_LIBRARY_PATH=${CONDA_BUILD_SYSROOT}/lib"
+if [[ ! -z "${cuda_compiler_version+x}" && "${cuda_compiler_version}" != "None" ]]; then
+    export CUDA_TOOLKIT_ROOT_DIR="${PREFIX}"
+    CMAKE_ARGS="${CMAKE_ARGS} -DARROW_CUDA=ON -DCMAKE_LIBRARY_PATH=${CONDA_BUILD_SYSROOT}/lib"
 else
     CMAKE_ARGS="${CMAKE_ARGS} -DARROW_CUDA=OFF"
 fi
@@ -32,6 +32,10 @@ if [[ "${build_platform}" != "${target_platform}" ]]; then
     CMAKE_ARGS="${CMAKE_ARGS} -DLLVM_LINK_EXECUTABLE=${BUILD_PREFIX}/bin/llvm-link"
     CMAKE_ARGS="${CMAKE_ARGS} -DARROW_JEMALLOC_LG_PAGE=16"
     CMAKE_ARGS="${CMAKE_ARGS} -DARROW_GRPC_CPP_PLUGIN=${BUILD_PREFIX}/bin/grpc_cpp_plugin"
+fi
+
+# only build tests where we run them
+if [[ "${build_platform}" != "${target_platform}" || "${cuda_compiler_version}" != "None" ]]; then
     CMAKE_ARGS="${CMAKE_ARGS} -DARROW_BUILD_TESTS=OFF"
 else
     CMAKE_ARGS="${CMAKE_ARGS} -DARROW_BUILD_TESTS=ON"

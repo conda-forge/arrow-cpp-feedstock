@@ -3,9 +3,9 @@ aws_crt_cpp:
 aws_sdk_cpp:
 - 1.11.606
 azure_core_cpp:
-- 1.16.1
+- 1.16.2
 azure_identity_cpp:
-- 1.13.2
+- 1.13.3
 azure_storage_blobs_cpp:
 - 12.16.0
 azure_storage_files_datalake_cpp:
@@ -17,7 +17,7 @@ bzip2:
 c_compiler:
 - gcc
 c_compiler_version:
-- '11'
+- '14'
 c_stdlib:
 - sysroot
 c_stdlib_version:
@@ -27,17 +27,17 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- nvcc
+- cuda-nvcc
 cuda_compiler_version:
-- '11.8'
+- None
 cuda_compiler_version_min:
-- '11.8'
+- '12.9'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '11'
+- '14'
 docker_image:
-- quay.io/condaforge/linux-anvil-x86_64-cuda11.8:ubi8
+- quay.io/condaforge/linux-anvil-x86_64:alma9
 gflags:
 - '2.2'
 glog:
@@ -73,7 +73,7 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- linux-aarch64
+- linux-64
 thrift_cpp:
 - 0.22.0
 zip_keys:
@@ -81,8 +81,6 @@ zip_keys:
   - cxx_compiler_version
   - c_stdlib_version
   - cuda_compiler_version
-  - cuda_compiler
-  - docker_image
 zlib:
 - '1'
 zstd:
