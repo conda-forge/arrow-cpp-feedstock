@@ -90,8 +90,7 @@ requirements:
     - libgoogle-cloud-devel
     - libgoogle-cloud-storage-devel
     - libgrpc
-    # see https://github.com/apache/arrow/issues/45033
-    - libopentelemetry-cpp          # [unix]
+    - libopentelemetry-cpp
     - libprotobuf
     - libutf8proc
     - lz4-c
@@ -239,7 +238,7 @@ outputs:
         - libabseil
         - libgoogle-cloud-devel
         - libgoogle-cloud-storage-devel
-        - libopentelemetry-cpp              # [unix]
+        - libopentelemetry-cpp
         - libprotobuf
         - lz4-c
         - orc
