@@ -1,0 +1,159 @@
+From fe4fe21e61bf4b4963a16e11467442dcc6e12fe9 Mon Sep 17 00:00:00 2001
+From: Nate Prewitt <nate.prewitt@gmail.com>
+Date: Wed, 4 Feb 2026 18:10:28 -0700
+Subject: [PATCH 8/8] GH-41990: [C++] Fix AzureFileSystem compilation on
+ Windows (#48971)
+
+Let me preface this pull request that I have not worked in C++ in quite a while. Apologies if this is missing modern idioms or is an obtuse fix.
+
+I encountered an issue trying to compile the AzureFileSystem backend in C++ on Windows. Searching the issue tracker, it appears this is already a [known](https://github.com/apache/arrow/issues/41990) but unresolved problem. This is an attempt to either address the issue or move the conversation forward for someone more experienced.
+
+AzureFileSystem uses `unique_ptr` while the other cloud file system implementations rely on `shared_ptr`. Since this is a forward-declared Impl in the headers file but the destructor was defined inline (via `= default`), we're getting compilation issues with MSVC due to it requiring the complete type earlier than GCC/Clang.
+
+This change removes the defaulted definition from the header file and moves it into the .cc file where we have a complete type.
+
+Unrelated, I've also wrapped 2 exception variables in `ARROW_UNUSED`. These are warnings treated as errors by MSVC at compile time. This was revealed in CI after resolving the issue above.
+
+I've enabled building and running the test suite in GHA in 8dd62d62a9af022813e9c8662956740340a9473f. I believe a large portion of those tests may be skipped though since Azurite isn't present from what I can see. I'm not tied to the GHA updates being included in the PR, it's currently here for demonstration purposes. I noticed the other FS implementations are also not built and tested on Windows.
+
+One quirk of this PR is getting WIL in place to compile the Azure C++ SDK was not intuitive for me. I've placed a dummy `wilConfig.cmake` to get the Azure SDK to build, but I'd assume there's a better way to do this. I'm happy to refine the build setup if we choose to keep it.
+
+Nothing here should affect user-facing code beyond fixing the compilation issues. If there are concerns for things I'm missing, I'm happy to discuss those.
+
+* GitHub Issue: #41990
+
+Lead-authored-by: Nate Prewitt <nateprewitt@microsoft.com>
+Co-authored-by: Nate Prewitt <nate.prewitt@gmail.com>
+Co-authored-by: Sutou Kouhei <kou@cozmixng.org>
+Co-authored-by: Antoine Pitrou <pitrou@free.fr>
+Signed-off-by: Sutou Kouhei <kou@clear-code.com>
+---
+ cpp/cmake_modules/ThirdpartyToolchain.cmake | 22 +++++++++++++++++++++
+ cpp/src/arrow/filesystem/azurefs.cc         |  8 +++++---
+ cpp/src/arrow/filesystem/azurefs.h          |  2 +-
+ cpp/thirdparty/versions.txt                 |  5 +++++
+ 4 files changed, 33 insertions(+), 4 deletions(-)
+
+diff --git a/cpp/cmake_modules/ThirdpartyToolchain.cmake b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+index 7b8cef5fb5..dc0591654f 100644
+--- a/cpp/cmake_modules/ThirdpartyToolchain.cmake
++++ b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+@@ -813,6 +813,13 @@ else()
+   )
+ endif()
+ 
++if(DEFINED ENV{ARROW_WIL_URL})
++  set(ARROW_WIL_URL "$ENV{ARROW_WIL_URL}")
++else()
++  set_urls(ARROW_WIL_URL
++           "https://github.com/microsoft/wil/archive/${ARROW_WIL_BUILD_VERSION}.tar.gz")
++endif()
++
+ if(DEFINED ENV{ARROW_XSIMD_URL})
+   set(XSIMD_SOURCE_URL "$ENV{ARROW_XSIMD_URL}")
+ else()
+@@ -5304,6 +5311,21 @@ endif()
+ 
+ function(build_azure_sdk)
+   message(STATUS "Building Azure SDK for C++ from source")
++
++  # On Windows, Azure SDK's WinHTTP transport requires WIL (Windows Implementation Libraries).
++  # Fetch WIL before Azure SDK so the WIL::WIL target is available.
++  if(WIN32)
++    message(STATUS "Fetching WIL (Windows Implementation Libraries) for Azure SDK")
++    fetchcontent_declare(wil
++                         ${FC_DECLARE_COMMON_OPTIONS} OVERRIDE_FIND_PACKAGE
++                         URL ${ARROW_WIL_URL}
++                         URL_HASH "SHA256=${ARROW_WIL_BUILD_SHA256_CHECKSUM}")
++    prepare_fetchcontent()
++    set(WIL_BUILD_PACKAGING OFF)
++    set(WIL_BUILD_TESTS OFF)
++    fetchcontent_makeavailable(wil)
++  endif()
++
+   fetchcontent_declare(azure_sdk
+                        ${FC_DECLARE_COMMON_OPTIONS}
+                        URL ${ARROW_AZURE_SDK_URL}
+diff --git a/cpp/src/arrow/filesystem/azurefs.cc b/cpp/src/arrow/filesystem/azurefs.cc
+index 047247b651..e14addda26 100644
+--- a/cpp/src/arrow/filesystem/azurefs.cc
++++ b/cpp/src/arrow/filesystem/azurefs.cc
+@@ -970,7 +970,7 @@ Status StageBlock(Blobs::BlockBlobClient* block_blob_client, const std::string&
+ /// Writes will be buffered up to this size (in bytes) before actually uploading them.
+ static constexpr int64_t kBlockUploadSizeBytes = 10 * 1024 * 1024;
+ /// The maximum size of a block in Azure Blob (as per docs).
+-static constexpr int64_t kMaxBlockSizeBytes = 4UL * 1024 * 1024 * 1024;
++static constexpr int64_t kMaxBlockSizeBytes = 4LL * 1024 * 1024 * 1024;
+ 
+ /// This output stream, similar to other arrow OutputStreams, is not thread-safe.
+ class ObjectAppendStream final : public io::OutputStream {
+@@ -1362,7 +1362,7 @@ Result<HNSSupport> CheckIfHierarchicalNamespaceIsEnabled(
+     // without hierarchical namespace enabled.
+     directory_client.GetAccessControlList();
+     return HNSSupport::kEnabled;
+-  } catch (std::out_of_range& exception) {
++  } catch (const std::out_of_range&) {
+     // Azurite issue detected.
+     DCHECK(IsDfsEmulator(options));
+     return HNSSupport::kDisabled;
+@@ -2499,7 +2499,7 @@ class AzureFileSystem::Impl {
+           try {
+             auto delete_result = deferred_response.GetResponse();
+             success = delete_result.Value.Deleted;
+-          } catch (const Core::RequestFailedException& exception) {
++          } catch (const Core::RequestFailedException&) {
+             success = false;
+           }
+           if (!success) {
+@@ -3218,6 +3218,8 @@ class AzureFileSystem::Impl {
+ std::atomic<LeaseGuard::SteadyClock::time_point> LeaseGuard::latest_known_expiry_time_ =
+     SteadyClock::time_point{SteadyClock::duration::zero()};
+ 
++AzureFileSystem::~AzureFileSystem() = default;
++
+ AzureFileSystem::AzureFileSystem(std::unique_ptr<Impl>&& impl)
+     : FileSystem(impl->io_context()), impl_(std::move(impl)) {
+   default_async_is_sync_ = false;
+diff --git a/cpp/src/arrow/filesystem/azurefs.h b/cpp/src/arrow/filesystem/azurefs.h
+index ee0956afdd..ae374d487b 100644
+--- a/cpp/src/arrow/filesystem/azurefs.h
++++ b/cpp/src/arrow/filesystem/azurefs.h
+@@ -251,7 +251,7 @@ class ARROW_EXPORT AzureFileSystem : public FileSystem {
+   void ForceCachedHierarchicalNamespaceSupport(int hns_support);
+ 
+  public:
+-  ~AzureFileSystem() override = default;
++  ~AzureFileSystem() override;
+ 
+   static Result<std::shared_ptr<AzureFileSystem>> Make(
+       const AzureOptions& options, const io::IOContext& = io::default_io_context());
+diff --git a/cpp/thirdparty/versions.txt b/cpp/thirdparty/versions.txt
+index 10aad92785..bad3645312 100644
+--- a/cpp/thirdparty/versions.txt
++++ b/cpp/thirdparty/versions.txt
+@@ -111,6 +111,9 @@ ARROW_THRIFT_BUILD_VERSION=0.22.0
+ ARROW_THRIFT_BUILD_SHA256_CHECKSUM=794a0e455787960d9f27ab92c38e34da27e8deeda7a5db0e59dc64a00df8a1e5
+ ARROW_UTF8PROC_BUILD_VERSION=v2.10.0
+ ARROW_UTF8PROC_BUILD_SHA256_CHECKSUM=6f4f1b639daa6dca9f80bc5db1233e9cbaa31a67790887106160b33ef743f136
++# WIL (Windows Implementation Libraries) is required by Azure SDK on Windows for WinHTTP transport
++ARROW_WIL_BUILD_VERSION=v1.0.250325.1
++ARROW_WIL_BUILD_SHA256_CHECKSUM=c9e667d5f86ded43d17b5669d243e95ca7b437e3a167c170805ffd4aa8a9a786
+ ARROW_XSIMD_BUILD_VERSION=13.0.0
+ ARROW_XSIMD_BUILD_SHA256_CHECKSUM=8bdbbad0c3e7afa38d88d0d484d70a1671a1d8aefff03f4223ab2eb6a41110a3
+ ARROW_ZLIB_BUILD_VERSION=1.3.1
+@@ -139,6 +142,7 @@ DEPENDENCIES=(
+   "ARROW_AWS_CRT_CPP_URL aws-crt-cpp-${ARROW_AWS_CRT_CPP_BUILD_VERSION}.tar.gz https://github.com/awslabs/aws-crt-cpp/archive/${ARROW_AWS_CRT_CPP_BUILD_VERSION}.tar.gz"
+   "ARROW_AWS_LC_URL aws-lc-${ARROW_AWS_LC_BUILD_VERSION}.tar.gz https://github.com/awslabs/aws-lc/archive/${ARROW_AWS_LC_BUILD_VERSION}.tar.gz"
+   "ARROW_AWSSDK_URL aws-sdk-cpp-${ARROW_AWSSDK_BUILD_VERSION}.tar.gz https://github.com/aws/aws-sdk-cpp/archive/${ARROW_AWSSDK_BUILD_VERSION}.tar.gz"
++  "ARROW_AZURE_SDK_URL azure-sdk-for-cpp-${ARROW_AZURE_SDK_BUILD_VERSION}.tar.gz https://github.com/Azure/azure-sdk-for-cpp/archive/${ARROW_AZURE_SDK_BUILD_VERSION}.tar.gz"
+   "ARROW_BOOST_URL boost-${ARROW_BOOST_BUILD_VERSION}-cmake.tar.gz https://github.com/boostorg/boost/releases/download/boost-${ARROW_BOOST_BUILD_VERSION}/boost-${ARROW_BOOST_BUILD_VERSION}-cmake.tar.gz"
+   "ARROW_BROTLI_URL brotli-${ARROW_BROTLI_BUILD_VERSION}.tar.gz https://github.com/google/brotli/archive/${ARROW_BROTLI_BUILD_VERSION}.tar.gz"
+   "ARROW_BZIP2_URL bzip2-${ARROW_BZIP2_BUILD_VERSION}.tar.gz https://sourceware.org/pub/bzip2/bzip2-${ARROW_BZIP2_BUILD_VERSION}.tar.gz"
+@@ -165,6 +169,7 @@ DEPENDENCIES=(
+   "ARROW_SUBSTRAIT_URL substrait-${ARROW_SUBSTRAIT_BUILD_VERSION}.tar.gz https://github.com/substrait-io/substrait/archive/${ARROW_SUBSTRAIT_BUILD_VERSION}.tar.gz"
+   "ARROW_THRIFT_URL thrift-${ARROW_THRIFT_BUILD_VERSION}.tar.gz https://www.apache.org/dyn/closer.lua/thrift/${ARROW_THRIFT_BUILD_VERSION}/thrift-${ARROW_THRIFT_BUILD_VERSION}.tar.gz?action=download"
+   "ARROW_UTF8PROC_URL utf8proc-${ARROW_UTF8PROC_BUILD_VERSION}.tar.gz https://github.com/JuliaStrings/utf8proc/archive/${ARROW_UTF8PROC_BUILD_VERSION}.tar.gz"
++  "ARROW_WIL_URL wil-${ARROW_WIL_BUILD_VERSION}.tar.gz https://github.com/microsoft/wil/archive/refs/tags/${ARROW_WIL_BUILD_VERSION}.tar.gz"
+   "ARROW_XSIMD_URL xsimd-${ARROW_XSIMD_BUILD_VERSION}.tar.gz https://github.com/xtensor-stack/xsimd/archive/${ARROW_XSIMD_BUILD_VERSION}.tar.gz"
+   "ARROW_ZLIB_URL zlib-${ARROW_ZLIB_BUILD_VERSION}.tar.gz https://zlib.net/fossils/zlib-${ARROW_ZLIB_BUILD_VERSION}.tar.gz"
+   "ARROW_ZSTD_URL zstd-${ARROW_ZSTD_BUILD_VERSION}.tar.gz https://github.com/facebook/zstd/releases/download/v${ARROW_ZSTD_BUILD_VERSION}/zstd-${ARROW_ZSTD_BUILD_VERSION}.tar.gz"

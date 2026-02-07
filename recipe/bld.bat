@@ -5,9 +5,9 @@ pushd cpp\build
 
 :: Enable CUDA support
 if "%cuda_compiler_version%"=="None" (
-    set "EXTRA_CMAKE_ARGS=-DARROW_CUDA=OFF"
+    set "EXTRA_CMAKE_ARGS=-DARROW_CUDA=OFF -DARROW_BUILD_TESTS=ON"
 ) else (
-    set "EXTRA_CMAKE_ARGS=-DARROW_CUDA=ON"
+    set "EXTRA_CMAKE_ARGS=-DARROW_CUDA=ON -DARROW_BUILD_TESTS=OFF"
 )
 
 :: # reusable variable for dependencies we cannot yet enable
@@ -17,10 +17,9 @@ set "READ_RECIPE_META_YAML_WHY_NOT=OFF"
 :: https://github.com/apache/arrow/blame/apache-arrow-12.0.0/cpp/cmake_modules/DefineOptions.cmake
 cmake -G "Ninja" ^
       -DARROW_ACERO=ON ^
-      -DARROW_AZURE=%READ_RECIPE_META_YAML_WHY_NOT% ^
+      -DARROW_AZURE=ON ^
       -DARROW_BOOST_USE_SHARED:BOOL=ON ^
       -DARROW_BUILD_STATIC:BOOL=OFF ^
-      -DARROW_BUILD_TESTS:BOOL=ON ^
       -DARROW_BUILD_UTILITIES:BOOL=ON ^
       -DARROW_COMPUTE:BOOL=ON ^
       -DARROW_CSV:BOOL=ON ^
