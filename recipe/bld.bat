@@ -13,6 +13,8 @@ if "%cuda_compiler_version%"=="None" (
 :: # reusable variable for dependencies we cannot yet enable
 set "READ_RECIPE_META_YAML_WHY_NOT=OFF"
 
+set "CXXFLAGS=%CXXFLAGS% -DNOMINMAX"
+
 :: for available switches see
 :: https://github.com/apache/arrow/blame/apache-arrow-12.0.0/cpp/cmake_modules/DefineOptions.cmake
 cmake -G "Ninja" ^
