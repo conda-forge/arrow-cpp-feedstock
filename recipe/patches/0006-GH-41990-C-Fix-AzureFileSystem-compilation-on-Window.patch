@@ -1,7 +1,7 @@
 From ca3eb981fa0c018b4986f09e1ebb882ae4a14edf Mon Sep 17 00:00:00 2001
 From: Nate Prewitt <nate.prewitt@gmail.com>
 Date: Wed, 4 Feb 2026 18:10:28 -0700
-Subject: [PATCH 6/6] GH-41990: [C++] Fix AzureFileSystem compilation on
+Subject: [PATCH 6/7] GH-41990: [C++] Fix AzureFileSystem compilation on
  Windows (#48971)
 
 Let me preface this pull request that I have not worked in C++ in quite a while. Apologies if this is missing modern idioms or is an obtuse fix.
