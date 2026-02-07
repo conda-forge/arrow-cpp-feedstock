@@ -22,8 +22,6 @@ channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
-cuda_compiler:
-- cuda-nvcc
 cuda_compiler_version:
 - None
 cuda_compiler_version_min:
@@ -52,6 +50,8 @@ libgoogle_cloud_storage_devel:
 - '2.39'
 libgrpc:
 - '1.73'
+libopentelemetry_cpp:
+- '1.21'
 libprotobuf:
 - 6.31.1
 libutf8proc:

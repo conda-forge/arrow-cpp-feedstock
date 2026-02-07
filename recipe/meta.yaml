@@ -33,6 +33,8 @@ source:
       - patches/0005-disable-some-gandiva-tests-related-to-tzdb-handling.patch      # [win]
       # backport https://github.com/apache/arrow/pull/48971
       - patches/0006-GH-41990-C-Fix-AzureFileSystem-compilation-on-Window.patch
+      # necessary for building with opentelemetry support on windows
+      - patches/0007-set-ARROW_EXPORT-for-arrow-internal-tracing-Re-Un-wr.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
@@ -47,6 +49,8 @@ build:
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
+  # debug
+  skip: true  # [not (win and cuda_compiler_version == "None")]
 
 requirements:
   build:
@@ -90,8 +94,7 @@ requirements:
     - libgoogle-cloud-devel
     - libgoogle-cloud-storage-devel
     - libgrpc
-    # see https://github.com/apache/arrow/issues/45033
-    - libopentelemetry-cpp          # [unix]
+    - libopentelemetry-cpp
     - libprotobuf
     - libutf8proc
     - lz4-c
@@ -239,7 +242,7 @@ outputs:
         - libabseil
         - libgoogle-cloud-devel
         - libgoogle-cloud-storage-devel
-        - libopentelemetry-cpp              # [unix]
+        - libopentelemetry-cpp
         - libprotobuf
         - lz4-c
         - orc
