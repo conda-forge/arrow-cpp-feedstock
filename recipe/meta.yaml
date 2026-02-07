@@ -8,6 +8,9 @@
 # see https://github.com/apache/arrow/blob/apache-arrow-10.0.1/cpp/CMakeLists.txt#L88-L90
 {% set so_version = (version.split(".")[0] | int * 100 + version.split(".")[1] | int) ~ "." ~ version.split(".")[2] ~ ".0" %}
 
+# fake selector to ensure variable appears as used, so skip below can work
+# [cuda_compiler_version_min]
+
 package:
   name: apache-arrow
   version: {{ version }}
@@ -48,7 +51,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 41
+  number: 42
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -253,7 +256,7 @@ outputs:
         - snappy
         - zlib
         - zstd
-        - __cuda >={{ cuda_compiler_version_min }}  # [cuda_compiler_version != "None"]
+        - __cuda     # [cuda_compiler_version != "None"]
         # since libgoogle-cloud{,-storage} is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
         # its host deps (which aren't yet covered above) leak into the build here
