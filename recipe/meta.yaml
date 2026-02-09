@@ -41,7 +41,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 17
+  number: 18
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -244,12 +244,13 @@ outputs:
         - snappy
         - zlib
         - zstd
-        - __cuda     # [cuda_compiler_version != "None"]
         # since libgoogle-cloud{,-storage} is static on windows, see
         # https://github.com/conda-forge/google-cloud-cpp-feedstock/pull/108,
         # its host deps (which aren't yet covered above) leak into the build here
         - libcrc32c  # [win]
         - libcurl    # [win]
+      run:
+        - __cuda     # [cuda_compiler_version != "None"]
       run_constrained:
         - apache-arrow-proc =*={{ build_ext }}
         # avoid installation with old naming of lib package

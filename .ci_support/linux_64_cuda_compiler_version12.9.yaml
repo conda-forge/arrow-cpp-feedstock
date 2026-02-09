@@ -43,7 +43,7 @@ gflags:
 glog:
 - '0.7'
 libabseil:
-- '20250512'
+- '20260107'
 libarrow:
 - '*'
 libboost_devel:
@@ -55,11 +55,11 @@ libgoogle_cloud_devel:
 libgoogle_cloud_storage_devel:
 - '2.39'
 libgrpc:
-- '1.73'
+- '1.78'
 libopentelemetry_cpp:
 - '1.21'
 libprotobuf:
-- 6.31.1
+- 6.33.5
 libutf8proc:
 - '2.11'
 lz4_c:
@@ -69,7 +69,7 @@ openssl:
 orc:
 - 2.2.2
 re2:
-- 2025.08.12
+- 2025.11.05
 snappy:
 - '1.2'
 target_platform:
