@@ -1,0 +1,1490 @@
+From 49c208cb025f5a435c37e704d28a4f87b944d7da Mon Sep 17 00:00:00 2001
+From: Rok Mihevc <rok@mihevc.org>
+Date: Fri, 19 Dec 2025 23:49:22 +0100
+Subject: [PATCH 3/5] GH-48593: [C++] C++20: use standard calendar / timezone
+ APIs
+
+---
+ .github/workflows/cpp.yml                     |   7 +-
+ .github/workflows/cpp_windows.yml             |   3 -
+ .github/workflows/matlab.yml                  |   3 -
+ .github/workflows/r.yml                       |   6 +
+ cpp/src/arrow/compute/function_test.cc        |   2 -
+ .../arrow/compute/kernels/scalar_cast_test.cc |  15 +-
+ .../compute/kernels/scalar_temporal_binary.cc |  43 +--
+ .../compute/kernels/scalar_temporal_test.cc   |  34 ++-
+ .../compute/kernels/scalar_temporal_unary.cc  |  74 +++--
+ .../arrow/compute/kernels/temporal_internal.h |  31 +-
+ cpp/src/arrow/config.cc                       |   4 +
+ cpp/src/arrow/config.h                        |  23 +-
+ cpp/src/arrow/public_api_test.cc              |   6 +-
+ cpp/src/arrow/testing/util.cc                 |   7 +-
+ cpp/src/arrow/testing/util.h                  |   8 +-
+ cpp/src/arrow/util/chrono_internal.h          | 288 ++++++++++++++++++
+ cpp/src/arrow/util/date_internal.h            |  39 ++-
+ dev/tasks/vcpkg-tests/github.windows.yml      |   3 -
+ docs/source/cpp/build_system.rst              |  11 +-
+ docs/source/developers/cpp/windows.rst        |  15 +-
+ docs/source/python/install.rst                |  37 +--
+ python/pyarrow/config.pxi                     |  15 +
+ python/pyarrow/conftest.py                    |   5 +-
+ python/pyarrow/tests/conftest.py              |  24 --
+ python/pyarrow/tests/test_compute.py          |  32 +-
+ python/pyarrow/tests/util.py                  |  15 -
+ python/pyarrow/util.py                        |  14 +
+ r/DESCRIPTION                                 |   1 -
+ r/R/arrow-package.R                           |  17 --
+ r/R/arrowExports.R                            |   4 -
+ r/src/arrowExports.cpp                        |  14 +-
+ r/src/config.cpp                              |  14 -
+ 32 files changed, 572 insertions(+), 242 deletions(-)
+ create mode 100644 cpp/src/arrow/util/chrono_internal.h
+
+diff --git a/.github/workflows/cpp.yml b/.github/workflows/cpp.yml
+index 45a9c3ba77..02bc98a1cc 100644
+--- a/.github/workflows/cpp.yml
++++ b/.github/workflows/cpp.yml
+@@ -367,8 +367,13 @@ jobs:
+           export CMAKE_BUILD_PARALLEL_LEVEL=$NUMBER_OF_PROCESSORS
+           ci/scripts/cpp_build.sh "$(pwd)" "$(pwd)/build"
+       - name: Download Timezone Database
++        if: matrix.msystem_upper == 'CLANG64'
+         shell: bash
+-        run: ci/scripts/download_tz_database.sh
++        run: |
++          # TODO(GH-48593): msys2 clang64 uses libc++ and vendored date.h library
++          # which needs tzdata database to build Arrow with time zone support.
++          # https://github.com/apache/arrow/issues/48593
++          ci/scripts/download_tz_database.sh
+       - name: Download MinIO
+         shell: msys2 {0}
+         run: |
+diff --git a/.github/workflows/cpp_windows.yml b/.github/workflows/cpp_windows.yml
+index 69bbfee28b..3f13097a6e 100644
+--- a/.github/workflows/cpp_windows.yml
++++ b/.github/workflows/cpp_windows.yml
+@@ -84,9 +84,6 @@ jobs:
+         with:
+           fetch-depth: 0
+           submodules: recursive
+-      - name: Download Timezone Database
+-        shell: bash
+-        run: ci/scripts/download_tz_database.sh
+       - name: Install msys2 (for tzdata for ORC tests)
+         uses: msys2/setup-msys2@v2
+         id: setup-msys2
+diff --git a/.github/workflows/matlab.yml b/.github/workflows/matlab.yml
+index 8485e62b6f..b3f538d0ca 100644
+--- a/.github/workflows/matlab.yml
++++ b/.github/workflows/matlab.yml
+@@ -147,9 +147,6 @@ jobs:
+         uses: matlab-actions/setup-matlab@v2
+         with:
+           release: R2025b
+-      - name: Download Timezone Database
+-        shell: bash
+-        run: ci/scripts/download_tz_database.sh
+       - name: Install ccache
+         shell: bash
+         run: ci/scripts/install_ccache.sh 4.6.3 /usr
+diff --git a/.github/workflows/r.yml b/.github/workflows/r.yml
+index 38bccb1f4d..adfee08e60 100644
+--- a/.github/workflows/r.yml
++++ b/.github/workflows/r.yml
+@@ -277,6 +277,12 @@ jobs:
+           mkdir -p "$HOME/.local/bin"
+           ci/scripts/install_minio.sh latest "$HOME/.local"
+           echo "$HOME/.local/bin" >> $GITHUB_PATH
++      - name: Download Timezone Database
++        shell: bash
++        run: |
++          # RTools 40's MinGW GCC may not support C++20 chrono timezones,
++          # so Arrow uses the vendored date library which requires tzdata
++          ci/scripts/download_tz_database.sh
+       - run: mkdir r/windows
+       - name: Download artifacts
+         uses: actions/download-artifact@v7
+diff --git a/cpp/src/arrow/compute/function_test.cc b/cpp/src/arrow/compute/function_test.cc
+index b7d017d482..7371b0ab86 100644
+--- a/cpp/src/arrow/compute/function_test.cc
++++ b/cpp/src/arrow/compute/function_test.cc
+@@ -95,11 +95,9 @@ TEST(FunctionOptions, Equality) {
+   options.emplace_back(new StrptimeOptions("%Y", TimeUnit::type::MILLI, true));
+   options.emplace_back(new StrptimeOptions("%Y", TimeUnit::type::NANO));
+   options.emplace_back(new StrftimeOptions("%Y-%m-%dT%H:%M:%SZ", "C"));
+-#ifndef _WIN32
+   options.emplace_back(new AssumeTimezoneOptions(
+       "Europe/Amsterdam", AssumeTimezoneOptions::Ambiguous::AMBIGUOUS_RAISE,
+       AssumeTimezoneOptions::Nonexistent::NONEXISTENT_RAISE));
+-#endif
+   options.emplace_back(new PadOptions(5, " "));
+   options.emplace_back(new PadOptions(10, "A"));
+   options.emplace_back(new PadOptions(10, "A", false));
+diff --git a/cpp/src/arrow/compute/kernels/scalar_cast_test.cc b/cpp/src/arrow/compute/kernels/scalar_cast_test.cc
+index 2589756a07..4ff58040e0 100644
+--- a/cpp/src/arrow/compute/kernels/scalar_cast_test.cc
++++ b/cpp/src/arrow/compute/kernels/scalar_cast_test.cc
+@@ -2358,15 +2358,7 @@ constexpr char kTimestampSecondsJson[] =
+ constexpr char kTimestampExtremeJson[] =
+     R"(["1677-09-20T00:00:59.123456", "2262-04-13T23:23:23.999999"])";
+ 
+-class CastTimezone : public ::testing::Test {
+- protected:
+-  void SetUp() override {
+-#ifdef _WIN32
+-    // Initialize timezone database on Windows
+-    ASSERT_OK(InitTestTimezoneDatabase());
+-#endif
+-  }
+-};
++class CastTimezone : public ::testing::Test {};
+ 
+ TEST(Cast, TimestampToDate) {
+   // See scalar_temporal_test.cc
+@@ -2595,6 +2587,11 @@ TEST(Cast, TimestampToTime) {
+ }
+ 
+ TEST_F(CastTimezone, ZonedTimestampToTime) {
++  // TODO(GH-48743): GCC libstdc++ has a bug with DST transitions
++  // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=116110
++#if defined(_WIN32) && defined(__GNUC__) && !defined(__clang__)
++  GTEST_SKIP() << "Test triggers GCC libstdc++ bug (GH-48743).";
++#endif
+   CheckCast(ArrayFromJSON(timestamp(TimeUnit::NANO, "Pacific/Marquesas"), kTimestampJson),
+             ArrayFromJSON(time64(TimeUnit::NANO), R"([
+           52259123456789, 50003999999999, 56480001001001, 65000000000000,
+diff --git a/cpp/src/arrow/compute/kernels/scalar_temporal_binary.cc b/cpp/src/arrow/compute/kernels/scalar_temporal_binary.cc
+index 4437b8fe1d..6d975d74e2 100644
+--- a/cpp/src/arrow/compute/kernels/scalar_temporal_binary.cc
++++ b/cpp/src/arrow/compute/kernels/scalar_temporal_binary.cc
+@@ -27,7 +27,6 @@
+ #include "arrow/util/checked_cast.h"
+ #include "arrow/util/logging_internal.h"
+ #include "arrow/util/time.h"
+-#include "arrow/vendored/datetime.h"
+ 
+ namespace arrow {
+ 
+@@ -37,28 +36,30 @@ using internal::checked_pointer_cast;
+ namespace compute {
+ namespace internal {
+ 
++namespace chrono = arrow::internal::chrono;
++
+ namespace {
+ 
+-using arrow_vendored::date::days;
+-using arrow_vendored::date::floor;
+-using arrow_vendored::date::hh_mm_ss;
+-using arrow_vendored::date::local_days;
+-using arrow_vendored::date::local_time;
+-using arrow_vendored::date::sys_days;
+-using arrow_vendored::date::sys_time;
+-using arrow_vendored::date::trunc;
+-using arrow_vendored::date::weekday;
+-using arrow_vendored::date::weeks;
+-using arrow_vendored::date::year_month_day;
+-using arrow_vendored::date::year_month_weekday;
+-using arrow_vendored::date::years;
+-using arrow_vendored::date::literals::dec;
+-using arrow_vendored::date::literals::jan;
+-using arrow_vendored::date::literals::last;
+-using arrow_vendored::date::literals::mon;
+-using arrow_vendored::date::literals::sun;
+-using arrow_vendored::date::literals::thu;
+-using arrow_vendored::date::literals::wed;
++using chrono::days;
++using chrono::dec;
++using chrono::floor;
++using chrono::hh_mm_ss;
++using chrono::jan;
++using chrono::last;
++using chrono::local_days;
++using chrono::local_time;
++using chrono::mon;
++using chrono::sun;
++using chrono::sys_days;
++using chrono::sys_time;
++using chrono::thu;
++using chrono::trunc;
++using chrono::wed;
++using chrono::weekday;
++using chrono::weeks;
++using chrono::year_month_day;
++using chrono::year_month_weekday;
++using chrono::years;
+ using internal::applicator::ScalarBinaryNotNullStatefulEqualTypes;
+ 
+ using DayOfWeekState = OptionsWrapper<DayOfWeekOptions>;
+diff --git a/cpp/src/arrow/compute/kernels/scalar_temporal_test.cc b/cpp/src/arrow/compute/kernels/scalar_temporal_test.cc
+index 3350fb805c..49ea35621e 100644
+--- a/cpp/src/arrow/compute/kernels/scalar_temporal_test.cc
++++ b/cpp/src/arrow/compute/kernels/scalar_temporal_test.cc
+@@ -29,6 +29,7 @@
+ #include "arrow/type_fwd.h"
+ #include "arrow/type_traits.h"
+ #include "arrow/util/checked_cast.h"
++#include "arrow/util/chrono_internal.h"  // for ARROW_USE_STD_CHRONO
+ #include "arrow/util/formatting.h"
+ #include "arrow/util/logging_internal.h"
+ 
+@@ -411,14 +412,6 @@ class ScalarTemporalTest : public ::testing::Test {
+   RoundTemporalOptions round_to_15_quarters =
+       RoundTemporalOptions(15, CalendarUnit::QUARTER);
+   RoundTemporalOptions round_to_15_years = RoundTemporalOptions(15, CalendarUnit::YEAR);
+-
+- protected:
+-  void SetUp() override {
+-#ifdef _WIN32
+-    // Initialize timezone database on Windows
+-    ASSERT_OK(InitTestTimezoneDatabase());
+-#endif
+-  }
+ };
+ 
+ class ScalarTemporalTestStrictCeil : public ScalarTemporalTest {
+@@ -716,6 +709,11 @@ TEST_F(ScalarTemporalTest, TestIsLeapYear) {
+ }
+ 
+ TEST_F(ScalarTemporalTest, TestZoned1) {
++  // TODO(GH-48743): GCC libstdc++ has a bug with DST transitions
++  // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=116110
++#if defined(_WIN32) && defined(__GNUC__) && !defined(__clang__)
++  GTEST_SKIP() << "Test triggers GCC libstdc++ bug (GH-48743).";
++#endif
+   std::vector<std::string> timezones = {"Pacific/Marquesas", "-09:30"};
+   for (const auto& timezone : timezones) {
+     auto unit = timestamp(TimeUnit::NANO, timezone);
+@@ -814,6 +812,11 @@ TEST_F(ScalarTemporalTest, TestZoned1) {
+ }
+ 
+ TEST_F(ScalarTemporalTest, TestZoned2) {
++  // TODO(GH-48743): GCC libstdc++ has a bug with DST transitions
++  // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=116110
++#if defined(_WIN32) && defined(__GNUC__) && !defined(__clang__)
++  GTEST_SKIP() << "Test triggers GCC libstdc++ bug (GH-48743).";
++#endif
+   for (auto u : TimeUnit::values()) {
+     auto unit = timestamp(u, "Australia/Broken_Hill");
+     auto month = "[1, 3, 1, 5, 1, 12, 12, 12, 1, 1, 1, 1, 12, 12, 12, 1, null]";
+@@ -2775,6 +2778,11 @@ TEST_F(ScalarTemporalTestMultipleSinceGreaterUnit, CeilUTC) {
+ }
+ 
+ TEST_F(ScalarTemporalTestMultipleSinceGreaterUnit, CeilZoned) {
++  // TODO(GH-48743): GCC libstdc++ has a bug with DST transitions
++  // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=116110
++#if defined(_WIN32) && defined(__GNUC__) && !defined(__clang__)
++  GTEST_SKIP() << "Test triggers GCC libstdc++ bug (GH-48743).";
++#endif
+   std::string op = "ceil_temporal";
+ 
+   // Data for tests below was generated via lubridate with the exception
+@@ -3165,6 +3173,11 @@ TEST_F(ScalarTemporalTestMultipleSinceGreaterUnit, FloorUTC) {
+ }
+ 
+ TEST_F(ScalarTemporalTestMultipleSinceGreaterUnit, FloorZoned) {
++  // TODO(GH-48743): GCC libstdc++ has a bug with DST transitions
++  // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=116110
++#if defined(_WIN32) && defined(__GNUC__) && !defined(__clang__)
++  GTEST_SKIP() << "Test triggers GCC libstdc++ bug (GH-48743).";
++#endif
+   std::string op = "floor_temporal";
+ 
+   // Data for tests below was generated via lubridate with the exception
+@@ -3598,6 +3611,11 @@ TEST_F(ScalarTemporalTestMultipleSinceGreaterUnit, RoundUTC) {
+ }
+ 
+ TEST_F(ScalarTemporalTestMultipleSinceGreaterUnit, RoundZoned) {
++  // TODO(GH-48743): GCC libstdc++ has a bug with DST transitions
++  // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=116110
++#if defined(_WIN32) && defined(__GNUC__) && !defined(__clang__)
++  GTEST_SKIP() << "Test triggers GCC libstdc++ bug (GH-48743).";
++#endif
+   std::string op = "round_temporal";
+ 
+   // Data for tests below was generated via lubridate with the exception
+diff --git a/cpp/src/arrow/compute/kernels/scalar_temporal_unary.cc b/cpp/src/arrow/compute/kernels/scalar_temporal_unary.cc
+index 8c7bdceb22..1bad2d0a11 100644
+--- a/cpp/src/arrow/compute/kernels/scalar_temporal_unary.cc
++++ b/cpp/src/arrow/compute/kernels/scalar_temporal_unary.cc
+@@ -29,7 +29,6 @@
+ #include "arrow/util/logging_internal.h"
+ #include "arrow/util/time.h"
+ #include "arrow/util/value_parsing.h"
+-#include "arrow/vendored/datetime.h"
+ 
+ namespace arrow {
+ 
+@@ -38,34 +37,36 @@ using internal::checked_pointer_cast;
+ 
+ namespace compute::internal {
+ 
++namespace chrono = arrow::internal::chrono;
++
+ namespace {
+ 
+-using arrow_vendored::date::ceil;
+-using arrow_vendored::date::days;
+-using arrow_vendored::date::floor;
+-using arrow_vendored::date::hh_mm_ss;
+-using arrow_vendored::date::local_days;
+-using arrow_vendored::date::local_time;
+-using arrow_vendored::date::locate_zone;
+-using arrow_vendored::date::Monday;
+-using arrow_vendored::date::months;
+-using arrow_vendored::date::round;
+-using arrow_vendored::date::Sunday;
+-using arrow_vendored::date::sys_time;
+-using arrow_vendored::date::trunc;
+-using arrow_vendored::date::weekday;
+-using arrow_vendored::date::weeks;
+-using arrow_vendored::date::year;
+-using arrow_vendored::date::year_month_day;
+-using arrow_vendored::date::year_month_weekday;
+-using arrow_vendored::date::years;
+-using arrow_vendored::date::literals::dec;
+-using arrow_vendored::date::literals::jan;
+-using arrow_vendored::date::literals::last;
+-using arrow_vendored::date::literals::mon;
+-using arrow_vendored::date::literals::sun;
+-using arrow_vendored::date::literals::thu;
+-using arrow_vendored::date::literals::wed;
++using chrono::ceil;
++using chrono::days;
++using chrono::dec;
++using chrono::floor;
++using chrono::hh_mm_ss;
++using chrono::jan;
++using chrono::last;
++using chrono::local_days;
++using chrono::local_time;
++using chrono::locate_zone;
++using chrono::mon;
++using chrono::Monday;
++using chrono::months;
++using chrono::round;
++using chrono::sun;
++using chrono::Sunday;
++using chrono::sys_time;
++using chrono::thu;
++using chrono::trunc;
++using chrono::wed;
++using chrono::weekday;
++using chrono::weeks;
++using chrono::year;
++using chrono::year_month_day;
++using chrono::year_month_weekday;
++using chrono::years;
+ using std::chrono::duration_cast;
+ using std::chrono::hours;
+ using std::chrono::minutes;
+@@ -525,8 +526,8 @@ struct Week {
+   }
+ 
+   Localizer localizer_;
+-  arrow_vendored::date::weekday wd_;
+-  arrow_vendored::date::days days_offset_;
++  chrono::weekday wd_;
++  chrono::days days_offset_;
+   const bool count_from_zero_;
+   const bool first_week_is_fully_in_year_;
+ };
+@@ -1379,7 +1380,7 @@ struct AssumeTimezone {
+   T Call(KernelContext*, Arg0 arg, Status* st) const {
+     try {
+       return get_local_time<T, Arg0>(arg, &tz_);
+-    } catch (const arrow_vendored::date::nonexistent_local_time& e) {
++    } catch (const chrono::nonexistent_local_time& e) {
+       switch (options.nonexistent) {
+         case AssumeTimezoneOptions::Nonexistent::NONEXISTENT_RAISE: {
+           *st = Status::Invalid("Timestamp doesn't exist in timezone '", options.timezone,
+@@ -1387,15 +1388,13 @@ struct AssumeTimezone {
+           return arg;
+         }
+         case AssumeTimezoneOptions::Nonexistent::NONEXISTENT_EARLIEST: {
+-          return get_local_time<T, Arg0>(arg, arrow_vendored::date::choose::latest,
+-                                         &tz_) -
+-                 1;
++          return get_local_time<T, Arg0>(arg, chrono::choose::latest, &tz_) - 1;
+         }
+         case AssumeTimezoneOptions::Nonexistent::NONEXISTENT_LATEST: {
+-          return get_local_time<T, Arg0>(arg, arrow_vendored::date::choose::latest, &tz_);
++          return get_local_time<T, Arg0>(arg, chrono::choose::latest, &tz_);
+         }
+       }
+-    } catch (const arrow_vendored::date::ambiguous_local_time& e) {
++    } catch (const chrono::ambiguous_local_time& e) {
+       switch (options.ambiguous) {
+         case AssumeTimezoneOptions::Ambiguous::AMBIGUOUS_RAISE: {
+           *st = Status::Invalid("Timestamp is ambiguous in timezone '", options.timezone,
+@@ -1403,11 +1402,10 @@ struct AssumeTimezone {
+           return arg;
+         }
+         case AssumeTimezoneOptions::Ambiguous::AMBIGUOUS_EARLIEST: {
+-          return get_local_time<T, Arg0>(arg, arrow_vendored::date::choose::earliest,
+-                                         &tz_);
++          return get_local_time<T, Arg0>(arg, chrono::choose::earliest, &tz_);
+         }
+         case AssumeTimezoneOptions::Ambiguous::AMBIGUOUS_LATEST: {
+-          return get_local_time<T, Arg0>(arg, arrow_vendored::date::choose::latest, &tz_);
++          return get_local_time<T, Arg0>(arg, chrono::choose::latest, &tz_);
+         }
+       }
+     }
+diff --git a/cpp/src/arrow/compute/kernels/temporal_internal.h b/cpp/src/arrow/compute/kernels/temporal_internal.h
+index 3674c233dc..4da91c5a22 100644
+--- a/cpp/src/arrow/compute/kernels/temporal_internal.h
++++ b/cpp/src/arrow/compute/kernels/temporal_internal.h
+@@ -26,19 +26,22 @@
+ #include "arrow/util/value_parsing.h"
+ 
+ namespace arrow::compute::internal {
++
++namespace chrono = arrow::internal::chrono;
++
+ using arrow::internal::checked_cast;
+ using arrow::internal::OffsetZone;
+-using arrow_vendored::date::choose;
+-using arrow_vendored::date::days;
+-using arrow_vendored::date::floor;
+-using arrow_vendored::date::local_days;
+-using arrow_vendored::date::local_time;
+-using arrow_vendored::date::locate_zone;
+-using arrow_vendored::date::sys_days;
+-using arrow_vendored::date::sys_time;
+-using arrow_vendored::date::time_zone;
+-using arrow_vendored::date::year_month_day;
+-using arrow_vendored::date::zoned_time;
++using chrono::choose;
++using chrono::days;
++using chrono::floor;
++using chrono::local_days;
++using chrono::local_time;
++using chrono::locate_zone;
++using chrono::sys_days;
++using chrono::sys_time;
++using chrono::time_zone;
++using chrono::year_month_day;
++using chrono::zoned_time;
+ using std::chrono::duration_cast;
+ 
+ // https://howardhinnant.github.io/date/tz.html#Examples
+@@ -148,10 +151,10 @@ struct ZonedLocalizer {
+ 
+     try {
+       return ApplyTimeZone(tz_, lt, std::nullopt, local_to_sys_time);
+-    } catch (const arrow_vendored::date::nonexistent_local_time& e) {
++    } catch (const chrono::nonexistent_local_time& e) {
+       *st = Status::Invalid("Local time does not exist: ", e.what());
+       return Duration{0};
+-    } catch (const arrow_vendored::date::ambiguous_local_time& e) {
++    } catch (const chrono::ambiguous_local_time& e) {
+       *st = Status::Invalid("Local time is ambiguous: ", e.what());
+       return Duration{0};
+     }
+@@ -179,7 +182,7 @@ struct TimestampFormatter {
+     const auto timepoint = sys_time<Duration>(Duration{arg});
+     auto format_zoned_time = [&](auto&& zt) {
+       try {
+-        arrow_vendored::date::to_stream(bufstream, format, zt);
++        chrono::to_stream(bufstream, format, zt);
+         return Status::OK();
+       } catch (const std::runtime_error& ex) {
+         bufstream.clear();
+diff --git a/cpp/src/arrow/config.cc b/cpp/src/arrow/config.cc
+index a0e3a079b3..41cc6decc6 100644
+--- a/cpp/src/arrow/config.cc
++++ b/cpp/src/arrow/config.cc
+@@ -86,7 +86,10 @@ RuntimeInfo GetRuntimeInfo() {
+   return info;
+ }
+ 
++// TODO(GH-48593): Remove when libc++ supports std::chrono timezone
++// https://github.com/apache/arrow/issues/48593
+ Status Initialize(const GlobalOptions& options) noexcept {
++  ARROW_SUPPRESS_DEPRECATION_WARNING
+   if (options.timezone_db_path.has_value()) {
+ #if !USE_OS_TZDB
+     try {
+@@ -102,6 +105,7 @@ Status Initialize(const GlobalOptions& options) noexcept {
+         "so a downloaded database cannot be provided at runtime.");
+ #endif  // !USE_OS_TZDB
+   }
++  ARROW_UNSUPPRESS_DEPRECATION_WARNING
+   return Status::OK();
+ }
+ 
+diff --git a/cpp/src/arrow/config.h b/cpp/src/arrow/config.h
+index 617d6c268b..cbb29c84ae 100644
+--- a/cpp/src/arrow/config.h
++++ b/cpp/src/arrow/config.h
+@@ -22,6 +22,7 @@
+ 
+ #include "arrow/status.h"
+ #include "arrow/util/config.h"  // IWYU pragma: export
++#include "arrow/util/macros.h"
+ #include "arrow/util/visibility.h"
+ 
+ namespace arrow {
+@@ -86,10 +87,28 @@ const BuildInfo& GetBuildInfo();
+ ARROW_EXPORT
+ RuntimeInfo GetRuntimeInfo();
+ 
++/// \brief Configuration options for Arrow initialization.
++///
++/// This struct allows configuring Arrow's runtime behavior. Currently
++/// used for timezone database configuration on Windows builds with Clang/libc++.
++/// Can be extended for other options in the future.
+ struct GlobalOptions {
+-  /// Path to text timezone database. This is only configurable on Windows,
+-  /// which does not have a compatible OS timezone database.
++  /// \deprecated Deprecated in 24.0.0. This member is only needed for
++  /// Windows builds with Clang/libc++ and will be removed once libc++
++  /// supports std::chrono timezones.
++  /// Path to text timezone database. This is only configurable on Windows
++  /// builds using Clang/libc++ which require the vendored date library.
++  ARROW_DEPRECATED("Deprecated in 24.0.0. Only needed for Clang/libc++ on Windows.")
+   std::optional<std::string> timezone_db_path;
++
++  ARROW_SUPPRESS_DEPRECATION_WARNING
++  GlobalOptions() = default;
++  ~GlobalOptions() = default;
++  GlobalOptions(const GlobalOptions&) = default;
++  GlobalOptions(GlobalOptions&&) = default;
++  GlobalOptions& operator=(const GlobalOptions&) = default;
++  GlobalOptions& operator=(GlobalOptions&&) = default;
++  ARROW_UNSUPPRESS_DEPRECATION_WARNING
+ };
+ 
+ ARROW_EXPORT
+diff --git a/cpp/src/arrow/public_api_test.cc b/cpp/src/arrow/public_api_test.cc
+index ccc80dc93a..12c703f120 100644
+--- a/cpp/src/arrow/public_api_test.cc
++++ b/cpp/src/arrow/public_api_test.cc
+@@ -122,6 +122,8 @@ TEST(Misc, BuildInfo) {
+   ASSERT_THAT(info.full_so_version, ::testing::HasSubstr(info.so_version));
+ }
+ 
++// TODO(GH-48593): Remove when libc++ supports std::chrono timezones.
++ARROW_SUPPRESS_DEPRECATION_WARNING
+ TEST(Misc, SetTimezoneConfig) {
+ #ifndef _WIN32
+   GTEST_SKIP() << "Can only set the Timezone database on Windows";
+@@ -150,7 +152,8 @@ TEST(Misc, SetTimezoneConfig) {
+   ASSERT_OK_AND_ASSIGN(auto tempdir, arrow::internal::TemporaryDir::Make("tzdata"));
+ 
+   // Validate that setting tzdb to that dir fails
+-  arrow::GlobalOptions options = {std::make_optional(tempdir->path().ToString())};
++  arrow::GlobalOptions options;
++  options.timezone_db_path = std::make_optional(tempdir->path().ToString());
+   ASSERT_NOT_OK(arrow::Initialize(options));
+ 
+   // Copy tzdb data from ~/Downloads
+@@ -163,5 +166,6 @@ TEST(Misc, SetTimezoneConfig) {
+   ASSERT_OK(arrow::Initialize(options));
+ #endif
+ }
++ARROW_UNSUPPRESS_DEPRECATION_WARNING
+ 
+ }  // namespace arrow
+diff --git a/cpp/src/arrow/testing/util.cc b/cpp/src/arrow/testing/util.cc
+index b0c8deae36..062028481f 100644
+--- a/cpp/src/arrow/testing/util.cc
++++ b/cpp/src/arrow/testing/util.cc
+@@ -122,6 +122,7 @@ Status GetTestResourceRoot(std::string* out) {
+   return Status::OK();
+ }
+ 
++// TODO(GH-48593): Remove when libc++ supports std::chrono timezones.
+ std::optional<std::string> GetTestTimezoneDatabaseRoot() {
+   const char* c_root = std::getenv("ARROW_TIMEZONE_DATABASE");
+   if (!c_root) {
+@@ -130,16 +131,20 @@ std::optional<std::string> GetTestTimezoneDatabaseRoot() {
+   return std::make_optional(std::string(c_root));
+ }
+ 
++// TODO(GH-48593): Remove when libc++ supports std::chrono timezones.
++ARROW_SUPPRESS_DEPRECATION_WARNING
+ Status InitTestTimezoneDatabase() {
+   auto maybe_tzdata = GetTestTimezoneDatabaseRoot();
+   // If missing, timezone database will default to %USERPROFILE%\Downloads\tzdata
+   if (!maybe_tzdata.has_value()) return Status::OK();
+ 
+   auto tzdata_path = std::string(maybe_tzdata.value());
+-  arrow::GlobalOptions options = {std::make_optional(tzdata_path)};
++  arrow::GlobalOptions options;
++  options.timezone_db_path = std::make_optional(tzdata_path);
+   ARROW_RETURN_NOT_OK(arrow::Initialize(options));
+   return Status::OK();
+ }
++ARROW_UNSUPPRESS_DEPRECATION_WARNING
+ 
+ int GetListenPort() {
+   // Get a new available port number by binding a socket to an ephemeral port
+diff --git a/cpp/src/arrow/testing/util.h b/cpp/src/arrow/testing/util.h
+index c2d6ca4d15..aa948e0e3e 100644
+--- a/cpp/src/arrow/testing/util.h
++++ b/cpp/src/arrow/testing/util.h
+@@ -112,11 +112,17 @@ UnionTypeFactories() {
+ // Status
+ ARROW_TESTING_EXPORT Status GetTestResourceRoot(std::string*);
+ 
++/// \deprecated Deprecated in 24.0.0. Only needed for Clang/libc++ on Windows.
++// TODO(GH-48593): Remove when libc++ supports std::chrono timezones.
+ // Return the value of the ARROW_TIMEZONE_DATABASE environment variable
++ARROW_DEPRECATED("Deprecated in 24.0.0. Only needed for Clang/libc++ on Windows.")
+ ARROW_TESTING_EXPORT std::optional<std::string> GetTestTimezoneDatabaseRoot();
+ 
++/// \deprecated Deprecated in 24.0.0. Only needed for Clang/libc++ on Windows.
++// TODO(GH-48593): Remove when libc++ supports std::chrono timezones.
+ // Set the Timezone database based on the ARROW_TIMEZONE_DATABASE env variable
+-// This is only relevant on Windows, since other OSs have compatible databases built-in
++// Only relevant for Windows builds with Clang/libc++ which use vendored date library
++ARROW_DEPRECATED("Deprecated in 24.0.0. Only needed for Clang/libc++ on Windows.")
+ ARROW_TESTING_EXPORT Status InitTestTimezoneDatabase();
+ 
+ // Get a TCP port number to listen on.  This is a different number every time,
+diff --git a/cpp/src/arrow/util/chrono_internal.h b/cpp/src/arrow/util/chrono_internal.h
+new file mode 100644
+index 0000000000..3a27b7ce64
+--- /dev/null
++++ b/cpp/src/arrow/util/chrono_internal.h
+@@ -0,0 +1,288 @@
++// Licensed to the Apache Software Foundation (ASF) under one
++// or more contributor license agreements.  See the NOTICE file
++// distributed with this work for additional information
++// regarding copyright ownership.  The ASF licenses this file
++// to you under the Apache License, Version 2.0 (the
++// "License"); you may not use this file except in compliance
++// with the License.  You may obtain a copy of the License at
++//
++//   http://www.apache.org/licenses/LICENSE-2.0
++//
++// Unless required by applicable law or agreed to in writing,
++// software distributed under the License is distributed on an
++// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
++// KIND, either express or implied.  See the License for the
++// specific language governing permissions and limitations
++// under the License.
++
++#pragma once
++
++/// \file chrono_internal.h
++/// \brief Abstraction layer for C++20 chrono calendar/timezone APIs
++///
++/// This header provides a unified interface for chrono calendar and timezone
++/// functionality. On compilers with full C++20 chrono support, it uses
++/// std::chrono. On other compilers, it falls back to the vendored Howard Hinnant
++/// date library.
++///
++/// The main benefit is on Windows where std::chrono uses the system timezone
++/// database, eliminating the need for users to install IANA tzdata separately.
++
++#include <chrono>
++#include <string>
++#include <string_view>
++
++// Feature detection for C++20 chrono timezone support
++// https://en.cppreference.com/w/cpp/compiler_support/20.html#cpp_lib_chrono_201907L
++//
++// On Windows with MSVC: std::chrono uses Windows' internal timezone database,
++// eliminating the need for users to install IANA tzdata separately.
++//
++// On Windows with MinGW/GCC: libstdc++ reads tzdata files via TZDIR env var.
++// Set TZDIR=/usr/share/zoneinfo to use the system tzdata.
++//
++// On non-Windows: GCC libstdc++ has a bug where DST state is incorrectly reset when
++// a timezone transitions between rule sets (e.g., Australia/Broken_Hill around
++// 2000-02-29). Until this is fixed, we use the vendored date.h library.
++// See: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=116110
++
++#if defined(_WIN32)
++// On Windows, try to use std::chrono if C++20 is available
++// Note: Clang with libc++ on Windows does not support C++20 chrono timezones
++#  if defined(__cpp_lib_chrono) && __cpp_lib_chrono >= 201907L
++// Feature test macro indicates full C++20 chrono timezone support
++#    define ARROW_USE_STD_CHRONO 1
++#  elif defined(__clang__) && defined(_LIBCPP_VERSION)
++// Clang with libc++ on Windows does not support C++20 chrono timezones
++// Use vendored date library
++#    define ARROW_USE_STD_CHRONO 0
++#  elif defined(_MSC_VER) && __cplusplus >= 202002L
++// MSVC with C++20 supports chrono timezones
++// Use Windows' internal timezone database
++#    define ARROW_USE_STD_CHRONO 1
++#  elif defined(__GNUC__) && __cplusplus >= 202002L
++// GCC with C++20 - attempt to use std::chrono
++// Note: Full timezone support requires GCC 11+ and libstdc++ with timezone support
++// For older GCC versions, this may fail at compile time if timezone APIs are missing
++// Requires TZDIR environment variable to be set for libstdc++
++#    define ARROW_USE_STD_CHRONO 1
++#  else
++// Use vendored date library (no C++20 or unknown compiler)
++#    define ARROW_USE_STD_CHRONO 0
++#  endif
++#else
++// Use vendored date library (non-Windows, or libc++/older libraries without timezone
++// support)
++#  define ARROW_USE_STD_CHRONO 0
++#endif
++
++#if ARROW_USE_STD_CHRONO
++// Use C++20 standard library chrono
++#  include <format>
++#  include <iterator>
++#  include <ostream>
++#else
++// Use vendored Howard Hinnant date library
++#  include "arrow/vendored/datetime.h"
++#endif
++
++namespace arrow::internal::chrono {
++
++#if ARROW_USE_STD_CHRONO
++
++// ============================================================================
++// C++20 std::chrono backend
++// ============================================================================
++
++// Duration types
++using days = std::chrono::days;
++using weeks = std::chrono::weeks;
++using months = std::chrono::months;
++using years = std::chrono::years;
++
++// Time point types
++template <typename Duration>
++using sys_time = std::chrono::sys_time<Duration>;
++using sys_days = std::chrono::sys_days;
++using sys_seconds = std::chrono::sys_seconds;
++
++template <typename Duration>
++using local_time = std::chrono::local_time<Duration>;
++using local_days = std::chrono::local_days;
++using local_seconds = std::chrono::local_seconds;
++
++// Calendar types
++using year = std::chrono::year;
++using month = std::chrono::month;
++using day = std::chrono::day;
++using weekday = std::chrono::weekday;
++using year_month_day = std::chrono::year_month_day;
++using year_month_weekday = std::chrono::year_month_weekday;
++
++template <typename Duration>
++using hh_mm_ss = std::chrono::hh_mm_ss<Duration>;
++
++// Timezone types
++using time_zone = std::chrono::time_zone;
++using sys_info = std::chrono::sys_info;
++using local_info = std::chrono::local_info;
++using choose = std::chrono::choose;
++
++template <typename Duration, typename TimeZonePtr = const time_zone*>
++using zoned_time = std::chrono::zoned_time<Duration, TimeZonePtr>;
++
++template <typename TimeZonePtr>
++using zoned_traits = std::chrono::zoned_traits<TimeZonePtr>;
++
++// Exceptions
++using nonexistent_local_time = std::chrono::nonexistent_local_time;
++using ambiguous_local_time = std::chrono::ambiguous_local_time;
++
++// Weekday constants
++using std::chrono::Monday;
++using std::chrono::Sunday;
++
++// Rounding functions
++using std::chrono::ceil;
++using std::chrono::floor;
++using std::chrono::round;
++
++// trunc (truncation toward zero) is not in std::chrono, only floor/ceil/round
++template <typename ToDuration, typename Rep, typename Period>
++constexpr ToDuration trunc(const std::chrono::duration<Rep, Period>& d) {
++  auto floored = std::chrono::floor<ToDuration>(d);
++  // floor rounds toward -infinity; for negative values with remainder, add 1 to get
++  // toward zero
++  if (d.count() < 0 && (d - floored).count() != 0) {
++    return floored + ToDuration{1};
++  }
++  return floored;
++}
++
++// Timezone lookup
++inline const time_zone* locate_zone(std::string_view tz_name) {
++  return std::chrono::locate_zone(tz_name);
++}
++
++inline const time_zone* current_zone() { return std::chrono::current_zone(); }
++
++// Formatting support - streams directly using C++20 std::vformat_to
++// Provides: direct streaming, stream state preservation, chaining, rich format specifiers
++template <typename CharT, typename Traits, typename Duration, typename TimeZonePtr>
++std::basic_ostream<CharT, Traits>& to_stream(
++    std::basic_ostream<CharT, Traits>& os, const CharT* fmt,
++    const std::chrono::zoned_time<Duration, TimeZonePtr>& zt) {
++  std::vformat_to(std::ostreambuf_iterator<CharT>(os), std::string("{:") + fmt + "}",
++                  std::make_format_args(zt));
++  return os;
++}
++
++// Format a duration using strftime-like format specifiers
++// Converts "%H%M" style to C++20's "{:%H%M}" style and uses std::vformat
++template <typename Duration>
++std::string format(const char* fmt, const Duration& d) {
++  return std::vformat(std::string("{:") + fmt + "}", std::make_format_args(d));
++}
++
++inline constexpr std::chrono::month jan = std::chrono::January;
++inline constexpr std::chrono::month dec = std::chrono::December;
++
++inline constexpr std::chrono::weekday sun = std::chrono::Sunday;
++inline constexpr std::chrono::weekday mon = std::chrono::Monday;
++inline constexpr std::chrono::weekday wed = std::chrono::Wednesday;
++inline constexpr std::chrono::weekday thu = std::chrono::Thursday;
++
++inline constexpr std::chrono::last_spec last = std::chrono::last;
++
++#else  // !ARROW_USE_STD_CHRONO
++
++// ============================================================================
++// Vendored Howard Hinnant date library backend
++// ============================================================================
++
++namespace vendored = arrow_vendored::date;
++
++// Duration types
++using days = vendored::days;
++using weeks = vendored::weeks;
++using months = vendored::months;
++using years = vendored::years;
++
++// Time point types
++template <typename Duration>
++using sys_time = vendored::sys_time<Duration>;
++using sys_days = vendored::sys_days;
++using sys_seconds = vendored::sys_seconds;
++
++template <typename Duration>
++using local_time = vendored::local_time<Duration>;
++using local_days = vendored::local_days;
++using local_seconds = vendored::local_seconds;
++
++// Calendar types
++using year = vendored::year;
++using month = vendored::month;
++using day = vendored::day;
++using weekday = vendored::weekday;
++using year_month_day = vendored::year_month_day;
++using year_month_weekday = vendored::year_month_weekday;
++
++template <typename Duration>
++using hh_mm_ss = vendored::hh_mm_ss<Duration>;
++
++// Timezone types
++using time_zone = vendored::time_zone;
++using sys_info = vendored::sys_info;
++using local_info = vendored::local_info;
++using choose = vendored::choose;
++
++template <typename Duration, typename TimeZonePtr = const time_zone*>
++using zoned_time = vendored::zoned_time<Duration, TimeZonePtr>;
++
++template <typename TimeZonePtr>
++using zoned_traits = vendored::zoned_traits<TimeZonePtr>;
++
++// Exceptions
++using nonexistent_local_time = vendored::nonexistent_local_time;
++using ambiguous_local_time = vendored::ambiguous_local_time;
++
++// Weekday constants
++inline constexpr vendored::weekday Monday = vendored::Monday;
++inline constexpr vendored::weekday Sunday = vendored::Sunday;
++
++// Rounding functions
++using vendored::ceil;
++using vendored::floor;
++using vendored::round;
++using vendored::trunc;
++
++// Timezone lookup
++inline const time_zone* locate_zone(std::string_view tz_name) {
++  return vendored::locate_zone(std::string(tz_name));
++}
++
++inline const time_zone* current_zone() { return vendored::current_zone(); }
++
++// Formatting support
++using vendored::format;
++
++template <typename CharT, typename Traits, typename Duration, typename TimeZonePtr>
++std::basic_ostream<CharT, Traits>& to_stream(
++    std::basic_ostream<CharT, Traits>& os, const CharT* fmt,
++    const vendored::zoned_time<Duration, TimeZonePtr>& zt) {
++  return vendored::to_stream(os, fmt, zt);
++}
++
++inline constexpr vendored::month jan = vendored::jan;
++inline constexpr vendored::month dec = vendored::dec;
++
++inline constexpr vendored::weekday sun = vendored::sun;
++inline constexpr vendored::weekday mon = vendored::mon;
++inline constexpr vendored::weekday wed = vendored::wed;
++inline constexpr vendored::weekday thu = vendored::thu;
++
++inline constexpr vendored::last_spec last = vendored::last;
++
++#endif  // ARROW_USE_STD_CHRONO
++
++}  // namespace arrow::internal::chrono
+diff --git a/cpp/src/arrow/util/date_internal.h b/cpp/src/arrow/util/date_internal.h
+index 32f1cae966..1e280627f1 100644
+--- a/cpp/src/arrow/util/date_internal.h
++++ b/cpp/src/arrow/util/date_internal.h
+@@ -17,12 +17,10 @@
+ 
+ #pragma once
+ 
+-#include "arrow/vendored/datetime.h"
++#include "arrow/util/chrono_internal.h"
+ 
+ namespace arrow::internal {
+ 
+-namespace date = arrow_vendored::date;
+-
+ // OffsetZone object is inspired by an example from date.h documentation:
+ // https://howardhinnant.github.io/date/tz.html#Examples
+ 
+@@ -33,23 +31,23 @@ class OffsetZone {
+   explicit OffsetZone(std::chrono::minutes offset) : offset_{offset} {}
+ 
+   template <class Duration>
+-  date::local_time<Duration> to_local(date::sys_time<Duration> tp) const {
+-    return date::local_time<Duration>{(tp + offset_).time_since_epoch()};
++  chrono::local_time<Duration> to_local(chrono::sys_time<Duration> tp) const {
++    return chrono::local_time<Duration>{(tp + offset_).time_since_epoch()};
+   }
+ 
+   template <class Duration>
+-  date::sys_time<Duration> to_sys(
+-      date::local_time<Duration> tp,
+-      [[maybe_unused]] date::choose = date::choose::earliest) const {
+-    return date::sys_time<Duration>{(tp - offset_).time_since_epoch()};
++  chrono::sys_time<Duration> to_sys(
++      chrono::local_time<Duration> tp,
++      [[maybe_unused]] chrono::choose = chrono::choose::earliest) const {
++    return chrono::sys_time<Duration>{(tp - offset_).time_since_epoch()};
+   }
+ 
+   template <class Duration>
+-  date::sys_info get_info(date::sys_time<Duration> st) const {
+-    return {date::sys_seconds::min(), date::sys_seconds::max(), offset_,
++  chrono::sys_info get_info(chrono::sys_time<Duration> st) const {
++    return {chrono::sys_seconds::min(), chrono::sys_seconds::max(), offset_,
+             std::chrono::minutes(0),
+-            offset_ >= std::chrono::minutes(0) ? "+" + date::format("%H%M", offset_)
+-                                               : "-" + date::format("%H%M", -offset_)};
++            offset_ >= std::chrono::minutes(0) ? "+" + chrono::format("%H%M", offset_)
++                                               : "-" + chrono::format("%H%M", -offset_)};
+   }
+ 
+   const OffsetZone* operator->() const { return this; }
+@@ -57,7 +55,15 @@ class OffsetZone {
+ 
+ }  // namespace arrow::internal
+ 
++// zoned_traits specialization for OffsetZone
++// This needs to be in the correct namespace depending on the backend
++
++#if ARROW_USE_STD_CHRONO
++namespace std::chrono {
++#else
+ namespace arrow_vendored::date {
++#endif
++
+ using arrow::internal::OffsetZone;
+ 
+ template <>
+@@ -68,4 +74,9 @@ struct zoned_traits<OffsetZone> {
+     throw std::runtime_error{"OffsetZone can't parse " + name};
+   }
+ };
+-}  // namespace arrow_vendored::date
++
++#if ARROW_USE_STD_CHRONO
++}  // namespace std::chrono
++#else
++}  // namespace arrow_vendored::date  // NOLINT(readability/namespace)
++#endif
+diff --git a/dev/tasks/vcpkg-tests/github.windows.yml b/dev/tasks/vcpkg-tests/github.windows.yml
+index 818bd77118..124482b855 100644
+--- a/dev/tasks/vcpkg-tests/github.windows.yml
++++ b/dev/tasks/vcpkg-tests/github.windows.yml
+@@ -35,9 +35,6 @@ jobs:
+         run: |
+           arrow/ci/scripts/install_cmake.sh 3.29.0 /c/cmake
+           echo "c:\\cmake\\bin" >> $GITHUB_PATH
+-      - name: Download Timezone Database
+-        shell: bash
+-        run: arrow/ci/scripts/download_tz_database.sh
+       - name: Remove and Reinstall vcpkg
+         # When running vcpkg in GitHub Actions on Windows, remove the
+         # preinstalled vcpkg and install the newest version from source.
+diff --git a/docs/source/cpp/build_system.rst b/docs/source/cpp/build_system.rst
+index 01dbe5e45f..743c8ba08a 100644
+--- a/docs/source/cpp/build_system.rst
++++ b/docs/source/cpp/build_system.rst
+@@ -235,10 +235,13 @@ will manage consistent versions of Arrow and its dependencies.
+ Runtime Dependencies
+ ====================
+ 
+-While Arrow uses the OS-provided timezone database on Linux and macOS, it
+-requires a user-provided database on Windows. You must download and extract the
+-text version of the IANA timezone database and add the Windows timezone mapping
+-XML. To download, you can use the following batch script:
++On most platforms, Arrow uses the OS-provided timezone database. However,
++when built with Clang/libc++ on Windows, Arrow requires a user-provided IANA
++timezone database.
++
++To download the timezone database for libc++ builds, you must download and
++extract the text version of the IANA timezone database and add the Windows
++timezone mapping XML. To download, you can use the following batch script:
+ 
+ .. literalinclude:: ../../../ci/appveyor-cpp-setup.bat
+    :language: batch
+diff --git a/docs/source/developers/cpp/windows.rst b/docs/source/developers/cpp/windows.rst
+index 21bde92d0b..26e00194d2 100644
+--- a/docs/source/developers/cpp/windows.rst
++++ b/docs/source/developers/cpp/windows.rst
+@@ -384,11 +384,16 @@ be defined, and similarly for ``-DARROW_FLIGHT_SQL=ON``.
+ Downloading the Timezone Database
+ =================================
+ 
+-To run some of the compute unit tests on Windows, the IANA timezone database
+-and the Windows timezone mapping need to be downloaded first. See
+-:ref:`download-timezone-database` for download instructions. To set a non-default
+-path for the timezone database while running the unit tests, set the
+-``ARROW_TIMEZONE_DATABASE`` environment variable.
++When building with MSVC or recent MinGW GCC (version 13+), Arrow uses the
++Windows timezone database or the system-provided tzdata respectively, and
++no additional setup is needed.
++
++When building with Clang/libc++ (e.g., MSYS2 Clang64), the IANA timezone
++database and the Windows timezone mapping need to be downloaded first to run
++some of the compute unit tests. See :ref:`download-timezone-database` for
++download instructions. To set a non-default path for the timezone database
++while running the unit tests, set the ``ARROW_TIMEZONE_DATABASE`` environment
++variable.
+ 
+ Replicating Appveyor Builds
+ ===========================
+diff --git a/docs/source/python/install.rst b/docs/source/python/install.rst
+index c6f098ee20..6c2a4d4214 100644
+--- a/docs/source/python/install.rst
++++ b/docs/source/python/install.rst
+@@ -83,35 +83,36 @@ and **pytz**, **dateutil** or **tzdata** package for timezones.
+ tzdata on Windows
+ ^^^^^^^^^^^^^^^^^
+ 
+-While Arrow uses the OS-provided timezone database on Linux and macOS, it requires a
+-user-provided database on Windows. To download and extract the text version of
++On Linux and macOS, Arrow uses the OS-provided timezone database. On Windows,
++Arrow uses the Windows timezone database when built with MSVC or recent MinGW GCC
++(version 13+), which covers most pre-built packages. No additional setup is needed
++for these builds.
++
++However, when PyArrow is built with Clang/libc++ on Windows, a user-provided
++IANA timezone database is required. To download and extract the text version of
+ the IANA timezone database follow the instructions in the C++
+-:ref:`download-timezone-database` or use pyarrow utility function
+-``pyarrow.util.download_tzdata_on_windows()`` that does the same.
++:ref:`download-timezone-database` or use the (deprecated) pyarrow utility function
++``pyarrow.util.download_tzdata_on_windows()``.
+ 
+ By default, the timezone database will be detected at ``%USERPROFILE%\Downloads\tzdata``.
+ If the database has been downloaded in a different location, you will need to set
+-a custom path to the database from Python:
++a custom path to the database from Python using the (deprecated)
++``pa.set_timezone_db_path("custom_path")`` function.
+ 
+-.. code-block:: python
+-
+-   >>> import pyarrow as pa
+-   >>> pa.set_timezone_db_path("custom_path")
+-
+-You may encounter problems writing datetime data to an ORC file if you install
+-pyarrow with pip. One possible solution to fix this problem:
++.. note::
++   You may encounter problems writing datetime data to an ORC file if you install
++   pyarrow with pip. One possible solution to fix this problem:
+ 
+    1. Install tzdata with ``pip install tzdata``
+    2. Set the environment variable ``TZDIR = path\to\.venv\Lib\site-packages\tzdata\``
+ 
+-You can find where ``tzdata`` is installed with the following python
+-command:
++   You can find where ``tzdata`` is installed with the following python command:
+ 
+-.. code-block:: python
++   .. code-block:: python
+ 
+-   >>> import tzdata
+-   >>> print(tzdata.__file__)
+-   path\to\.venv\Lib\site-packages\tzdata\__init__.py
++      >>> import tzdata
++      >>> print(tzdata.__file__)
++      path\to\.venv\Lib\site-packages\tzdata\__init__.py
+ 
+ 
+ .. _python-conda-differences:
+diff --git a/python/pyarrow/config.pxi b/python/pyarrow/config.pxi
+index 1f8047d1bd..3af14f6c14 100644
+--- a/python/pyarrow/config.pxi
++++ b/python/pyarrow/config.pxi
+@@ -98,15 +98,30 @@ cpp_version = build_info.cpp_build_info.version
+ cpp_version_info = build_info.cpp_build_info.version_info
+ 
+ 
++# TODO(GH-48593): Remove when libc++ supports std::chrono timezone
++# https://github.com/apache/arrow/issues/48593
+ def set_timezone_db_path(path):
+     """
+     Configure the path to text timezone database on Windows.
+ 
++    .. deprecated:: 24.0.0
++       This function is deprecated and will be removed in a future version.
++       PyArrow now uses the operating system's timezone database on Windows.
++
+     Parameters
+     ----------
+     path : str
+         Path to text timezone database.
+     """
++
++    warnings.warn(
++        "pyarrow.set_timezone_db_path is deprecated as of 24.0.0 "
++        "and will be removed in a future version. PyArrow now uses the "
++        "operating system's timezone database on Windows.",
++        FutureWarning,
++        stacklevel=2
++    )
++
+     cdef:
+         CGlobalOptions options
+ 
+diff --git a/python/pyarrow/conftest.py b/python/pyarrow/conftest.py
+index 41beaa1404..87c6bf91c8 100644
+--- a/python/pyarrow/conftest.py
++++ b/python/pyarrow/conftest.py
+@@ -22,7 +22,6 @@ import pyarrow as pa
+ from pyarrow import Codec
+ from pyarrow import fs
+ from pyarrow.lib import is_threading_enabled
+-from pyarrow.tests.util import windows_has_tzdata
+ import sys
+ 
+ 
+@@ -108,9 +107,7 @@ if sys.platform == "emscripten":
+     defaults['processes'] = False
+     defaults['sockets'] = False
+ 
+-if sys.platform == "win32":
+-    defaults['timezone_data'] = windows_has_tzdata()
+-elif sys.platform == "emscripten":
++if sys.platform == "emscripten":
+     defaults['timezone_data'] = os.path.exists("/usr/share/zoneinfo")
+ 
+ try:
+diff --git a/python/pyarrow/tests/conftest.py b/python/pyarrow/tests/conftest.py
+index 575444c1cf..50c194694c 100644
+--- a/python/pyarrow/tests/conftest.py
++++ b/python/pyarrow/tests/conftest.py
+@@ -19,7 +19,6 @@ import functools
+ import os
+ import pathlib
+ import subprocess
+-import sys
+ import time
+ import urllib.request
+ 
+@@ -28,7 +27,6 @@ import hypothesis as h
+ 
+ from ..conftest import groups, defaults
+ 
+-from pyarrow import set_timezone_db_path
+ from pyarrow.util import find_free_port
+ 
+ 
+@@ -49,28 +47,6 @@ h.settings.load_profile(os.environ.get('HYPOTHESIS_PROFILE', 'dev'))
+ os.environ['AWS_CONFIG_FILE'] = "/dev/null"
+ 
+ 
+-if sys.platform == 'win32':
+-    tzdata_set_path = os.environ.get('PYARROW_TZDATA_PATH', None)
+-    if tzdata_set_path:
+-        set_timezone_db_path(tzdata_set_path)
+-
+-
+-# GH-45295: For ORC, try to populate TZDIR env var from tzdata package resource
+-# path.
+-#
+-# Note this is a different kind of database than what we allow to be set by
+-# `PYARROW_TZDATA_PATH` and passed to set_timezone_db_path.
+-if sys.platform == 'win32':
+-    if os.environ.get('TZDIR', None) is None:
+-        from importlib import resources
+-        try:
+-            os.environ['TZDIR'] = os.path.join(resources.files('tzdata'), 'zoneinfo')
+-        except ModuleNotFoundError:
+-            print(
+-                'Package "tzdata" not found. Not setting TZDIR environment variable.'
+-            )
+-
+-
+ def pytest_addoption(parser):
+     # Create options to selectively enable test groups
+     def bool_env(name, default=None):
+diff --git a/python/pyarrow/tests/test_compute.py b/python/pyarrow/tests/test_compute.py
+index d8a1c4d093..2d917f1e44 100644
+--- a/python/pyarrow/tests/test_compute.py
++++ b/python/pyarrow/tests/test_compute.py
+@@ -2383,7 +2383,17 @@ def test_strftime():
+                 result = pc.strftime(tsa, options=options)
+                 # cast to the same type as result to ignore string vs large_string
+                 expected = pa.array(ts.strftime(fmt)).cast(result.type)
+-                assert result.equals(expected)
++                if sys.platform == "win32" and fmt == "%Z":
++                    # TODO(GH-48767): On Windows, std::chrono returns GMT offset
++                    # instead of timezone abbreviations (e.g. "CET")
++                    # https://github.com/apache/arrow/issues/48767
++                    is_valid = pc.or_kleene(pc.match_substring_regex(
++                        result, "^(UTC|GMT[+-][0-9]+)$"), pc.is_null(result))
++                    assert not pc.any(pc.invert(is_valid)).as_py(), \
++                        "All timezone values should be GMT offset format or UTC" \
++                        f"\nActual: {result}"
++                else:
++                    assert result.equals(expected)
+ 
+         fmt = "%Y-%m-%dT%H:%M:%S"
+ 
+@@ -2397,7 +2407,17 @@ def test_strftime():
+         tsa = pa.array(ts, type=pa.timestamp("s", timezone))
+         result = pc.strftime(tsa, options=pc.StrftimeOptions(fmt + "%Z"))
+         expected = pa.array(ts.strftime(fmt + "%Z")).cast(result.type)
+-        assert result.equals(expected)
++        if sys.platform == "win32":
++            # TODO(GH-48767): On Windows, std::chrono returns GMT offset
++            # instead of timezone abbreviations (e.g. "CET")
++            # https://github.com/apache/arrow/issues/48767
++            is_valid = pc.or_kleene(pc.match_substring_regex(
++                result, "(UTC|GMT[+-][0-9]+)$"), pc.is_null(result))
++            assert not pc.any(pc.invert(is_valid)).as_py(), \
++                "All timezone values should be GMT offset format or UTC" \
++                f"\nActual: {result}"
++        else:
++            assert result.equals(expected)
+ 
+         # Pandas %S is equivalent to %S in arrow for unit="s"
+         tsa = pa.array(ts, type=pa.timestamp("s", timezone))
+@@ -2614,7 +2634,9 @@ def test_assume_timezone():
+             pc.assume_timezone(ta_zoned, options=options)
+ 
+     invalid_options = pc.AssumeTimezoneOptions("Europe/Brusselsss")
+-    with pytest.raises(ValueError, match="not found in timezone database"):
++    with pytest.raises(ValueError,
++                       match="not found in timezone database|"
++                             "unable to locate time_zone"):
+         pc.assume_timezone(ta, options=invalid_options)
+ 
+     timezone = "Europe/Brussels"
+@@ -2769,6 +2791,10 @@ def _check_temporal_rounding(ts, values, unit):
+         np.testing.assert_array_equal(result, expected)
+ 
+ 
++# TODO(GH-48743): Re-enable when Windows timezone issues are resolved
++# https://github.com/apache/arrow/issues/48743
++@pytest.mark.skipif(sys.platform == "win32",
++                    reason="Skipping temporal rounding tests on Windows")
+ @pytest.mark.timezone_data
+ @pytest.mark.parametrize('unit', ("nanosecond", "microsecond", "millisecond",
+                                   "second", "minute", "hour", "day"))
+diff --git a/python/pyarrow/tests/util.py b/python/pyarrow/tests/util.py
+index 7e3dd4324e..cf48ac807b 100644
+--- a/python/pyarrow/tests/util.py
++++ b/python/pyarrow/tests/util.py
+@@ -427,21 +427,6 @@ def _configure_s3_limited_user(s3_server, policy, username, password):
+         pytest.skip("Configuring limited s3 user failed")
+ 
+ 
+-def windows_has_tzdata():
+-    """
+-    This is the default location where tz.cpp will look for (until we make
+-    this configurable at run-time)
+-    """
+-    tzdata_bool = False
+-    if "PYARROW_TZDATA_PATH" in os.environ:
+-        tzdata_bool = os.path.exists(os.environ['PYARROW_TZDATA_PATH'])
+-    if not tzdata_bool:
+-        tzdata_path = os.path.expandvars(r"%USERPROFILE%\Downloads\tzdata")
+-        tzdata_bool = os.path.exists(tzdata_path)
+-
+-    return tzdata_bool
+-
+-
+ def running_on_musllinux():
+     """
+     Checks whether it's running on musl systems or not.
+diff --git a/python/pyarrow/util.py b/python/pyarrow/util.py
+index a95826e1c0..123e226946 100644
+--- a/python/pyarrow/util.py
++++ b/python/pyarrow/util.py
+@@ -245,11 +245,25 @@ def _download_requests(url, out_path):
+             f.write(response.content)
+ 
+ 
++# TODO(GH-48593): Remove when libc++ supports std::chrono timezone
++# https://github.com/apache/arrow/issues/48593
+ def download_tzdata_on_windows():
+     r"""
+     Download and extract latest IANA timezone database into the
+     location expected by Arrow which is %USERPROFILE%\Downloads\tzdata.
++
++    .. deprecated:: 24.0.0
++       This function is deprecated and will be removed in a future version.
++       PyArrow now uses the operating system's timezone database on Windows.
+     """
++
++    warnings.warn(
++        "pyarrow.util.download_tzdata_on_windows is deprecated as of 24.0.0 "
++        "and will be removed in a future version. PyArrow now uses the "
++        "operating system's timezone database on Windows.",
++        FutureWarning,
++        stacklevel=2
++    )
+     if sys.platform != 'win32':
+         raise TypeError(f"Timezone database is already provided by {sys.platform}")
+ 
+diff --git a/r/DESCRIPTION b/r/DESCRIPTION
+index a21d2daacd..b775525a42 100644
+--- a/r/DESCRIPTION
++++ b/r/DESCRIPTION
+@@ -70,7 +70,6 @@ Suggests:
+     sys,
+     testthat (>= 3.1.0),
+     tibble,
+-    tzdb,
+     withr
+ LinkingTo: cpp11 (>= 0.4.2)
+ Collate:
+diff --git a/r/R/arrow-package.R b/r/R/arrow-package.R
+index a1167433c9..9e0bfe7797 100644
+--- a/r/R/arrow-package.R
++++ b/r/R/arrow-package.R
+@@ -152,9 +152,6 @@ s3_finalizer <- new.env(parent = emptyenv())
+     # Disable multithreading on Windows
+     # See https://issues.apache.org/jira/browse/ARROW-8379
+     options(arrow.use_threads = FALSE)
+-
+-    # Try to set timezone database
+-    configure_tzdb()
+   }
+ 
+   # Set interrupt handlers
+@@ -171,20 +168,6 @@ s3_finalizer <- new.env(parent = emptyenv())
+   invisible()
+ }
+ 
+-configure_tzdb <- function() {
+-  # This is needed on Windows to support timezone-aware calculations
+-  if (requireNamespace("tzdb", quietly = TRUE)) {
+-    tzdb::tzdb_initialize()
+-    set_timezone_database(tzdb::tzdb_path("text"))
+-  } else {
+-    msg <- paste(
+-      "The tzdb package is not installed.",
+-      "Timezones will not be available to Arrow compute functions."
+-    )
+-    packageStartupMessage(msg)
+-  }
+-}
+-
+ .onAttach <- function(libname, pkgname) {
+   # Just to be extra safe, let's wrap this in a try();
+   # we don't want a failed startup message to prevent the package from loading
+diff --git a/r/R/arrowExports.R b/r/R/arrowExports.R
+index a8387526b2..3f4d9aa4a8 100644
+--- a/r/R/arrowExports.R
++++ b/r/R/arrowExports.R
+@@ -552,10 +552,6 @@ runtime_info <- function() {
+   .Call(`_arrow_runtime_info`)
+ }
+ 
+-set_timezone_database <- function(path) {
+-  invisible(.Call(`_arrow_set_timezone_database`, path))
+-}
+-
+ csv___WriteOptions__initialize <- function(options) {
+   .Call(`_arrow_csv___WriteOptions__initialize`, options)
+ }
+diff --git a/r/src/arrowExports.cpp b/r/src/arrowExports.cpp
+index 73bf81f83b..bcf351c120 100644
+--- a/r/src/arrowExports.cpp
++++ b/r/src/arrowExports.cpp
+@@ -1382,15 +1382,6 @@ BEGIN_CPP11
+ 	return cpp11::as_sexp(runtime_info());
+ END_CPP11
+ }
+-// config.cpp
+-void set_timezone_database(cpp11::strings path);
+-extern "C" SEXP _arrow_set_timezone_database(SEXP path_sexp){
+-BEGIN_CPP11
+-	arrow::r::Input<cpp11::strings>::type path(path_sexp);
+-	set_timezone_database(path);
+-	return R_NilValue;
+-END_CPP11
+-}
+ // csv.cpp
+ std::shared_ptr<arrow::csv::WriteOptions> csv___WriteOptions__initialize(cpp11::list options);
+ extern "C" SEXP _arrow_csv___WriteOptions__initialize(SEXP options_sexp){
+@@ -5843,9 +5834,8 @@ static const R_CallMethodDef CallEntries[] = {
+ 		{ "_arrow_compute__GetFunctionNames", (DL_FUNC) &_arrow_compute__GetFunctionNames, 0}, 
+ 		{ "_arrow_compute__Initialize", (DL_FUNC) &_arrow_compute__Initialize, 0}, 
+ 		{ "_arrow_RegisterScalarUDF", (DL_FUNC) &_arrow_RegisterScalarUDF, 2}, 
+-		{ "_arrow_build_info", (DL_FUNC) &_arrow_build_info, 0}, 
+-		{ "_arrow_runtime_info", (DL_FUNC) &_arrow_runtime_info, 0}, 
+-		{ "_arrow_set_timezone_database", (DL_FUNC) &_arrow_set_timezone_database, 1}, 
++		{ "_arrow_build_info", (DL_FUNC) &_arrow_build_info, 0},
++		{ "_arrow_runtime_info", (DL_FUNC) &_arrow_runtime_info, 0},
+ 		{ "_arrow_csv___WriteOptions__initialize", (DL_FUNC) &_arrow_csv___WriteOptions__initialize, 1}, 
+ 		{ "_arrow_csv___ReadOptions__initialize", (DL_FUNC) &_arrow_csv___ReadOptions__initialize, 1}, 
+ 		{ "_arrow_csv___ParseOptions__initialize", (DL_FUNC) &_arrow_csv___ParseOptions__initialize, 1}, 
+diff --git a/r/src/config.cpp b/r/src/config.cpp
+index a45df73a64..1855f96ac6 100644
+--- a/r/src/config.cpp
++++ b/r/src/config.cpp
+@@ -17,8 +17,6 @@
+ 
+ #include "./arrow_types.h"
+ 
+-#include <optional>
+-
+ #include <arrow/config.h>
+ 
+ // [[arrow::export]]
+@@ -33,15 +31,3 @@ std::vector<std::string> runtime_info() {
+   auto info = arrow::GetRuntimeInfo();
+   return {info.simd_level, info.detected_simd_level};
+ }
+-
+-// [[arrow::export]]
+-void set_timezone_database(cpp11::strings path) {
+-  auto paths = cpp11::as_cpp<std::vector<std::string>>(path);
+-  if (path.size() != 1) {
+-    cpp11::stop("Must provide a single path to the timezone database.");
+-  }
+-
+-  arrow::GlobalOptions options;
+-  options.timezone_db_path = std::make_optional(paths[0]);
+-  arrow::StopIfNotOk(arrow::Initialize(options));
+-}

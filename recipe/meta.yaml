@@ -25,14 +25,12 @@ source:
       # upstream problems on with s3 tests on osx, see
       # https://github.com/apache/arrow/issues/35587
       - patches/0002-skip-NonExistentBucket-test-on-osx.patch
-      # backport https://github.com/apache/arrow/pull/48895
-      - patches/0003-GH-48894-Python-C-Use-base-Azure-Core-RequestFailedE.patch
       # backport https://github.com/apache/arrow/pull/48601
-      - patches/0004-GH-48593-C-C-20-use-standard-calendar-timezone-APIs.patch
+      - patches/0003-GH-48593-C-C-20-use-standard-calendar-timezone-APIs.patch
       # disable gandiva tests that are "unmaintained" and failing on windows
-      - patches/0005-disable-some-gandiva-tests-related-to-tzdb-handling.patch      # [win]
+      - patches/0004-disable-some-gandiva-tests-related-to-tzdb-handling.patch      # [win]
       # backport https://github.com/apache/arrow/pull/48971
-      - patches/0006-GH-41990-C-Fix-AzureFileSystem-compilation-on-Window.patch
+      - patches/0005-GH-41990-C-Fix-AzureFileSystem-compilation-on-Window.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
