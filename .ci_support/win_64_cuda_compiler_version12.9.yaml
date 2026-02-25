@@ -1,7 +1,7 @@
 aws_crt_cpp:
-- 0.37.2
+- 0.37.3
 aws_sdk_cpp:
-- 1.11.606
+- 1.11.747
 brotli:
 - '1.2'
 bzip2:
