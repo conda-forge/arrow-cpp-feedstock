@@ -69,7 +69,7 @@ macos_machine:
 openssl:
 - '3.5'
 orc:
-- 2.2.2
+- 2.3.0
 re2:
 - 2025.11.05
 snappy:
