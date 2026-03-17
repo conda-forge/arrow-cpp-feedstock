@@ -47,9 +47,9 @@ libcrc32c:
 libcurl:
 - '8'
 libgoogle_cloud_devel:
-- '2.39'
+- '2.43'
 libgoogle_cloud_storage_devel:
-- '2.39'
+- '2.43'
 libgrpc:
 - '1.78'
 libprotobuf:
