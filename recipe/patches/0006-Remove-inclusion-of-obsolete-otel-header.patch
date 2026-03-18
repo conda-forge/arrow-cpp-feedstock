@@ -1,0 +1,22 @@
+From 7a81ea2bead740fde0a479bc1b95491215fe5fce Mon Sep 17 00:00:00 2001
+From: Antoine Pitrou <antoine@python.org>
+Date: Thu, 18 Dec 2025 17:17:13 +0100
+Subject: [PATCH 6/6] Remove inclusion of obsolete otel header
+
+Very, very partial backport of https://github.com/apache/arrow/commit/30809c6f48a1a74b40dafd6bb27ac4b9aeded93e
+---
+ cpp/src/arrow/flight/server_tracing_middleware.cc | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/cpp/src/arrow/flight/server_tracing_middleware.cc b/cpp/src/arrow/flight/server_tracing_middleware.cc
+index 6884308c7f..22f39ff5bf 100644
+--- a/cpp/src/arrow/flight/server_tracing_middleware.cc
++++ b/cpp/src/arrow/flight/server_tracing_middleware.cc
+@@ -31,7 +31,6 @@
+ #  include <opentelemetry/context/propagation/text_map_propagator.h>
+ #  include <opentelemetry/trace/context.h>
+ #  include <opentelemetry/trace/propagation/http_trace_context.h>
+-#  include <opentelemetry/trace/semantic_conventions.h>
+ #endif
+ 
+ namespace arrow {
