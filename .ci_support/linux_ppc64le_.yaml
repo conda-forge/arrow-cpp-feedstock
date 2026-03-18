@@ -49,9 +49,9 @@ libboost_devel:
 libbrotlicommon:
 - '1.2'
 libgoogle_cloud_devel:
-- '2.43'
+- '3.3'
 libgoogle_cloud_storage_devel:
-- '2.43'
+- '3.3'
 libgrpc:
 - '1.78'
 libopentelemetry_cpp:
