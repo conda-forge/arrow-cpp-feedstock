@@ -37,6 +37,7 @@ source:
       - patches/0007-disable-some-gandiva-tests-related-to-tzdb-handling.patch      # [win]
       # backport https://github.com/apache/arrow/pull/48971
       - patches/0008-GH-41990-C-Fix-AzureFileSystem-compilation-on-Window.patch
+      - patches/0009-Remove-inclusion-of-obsolete-otel-header.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
