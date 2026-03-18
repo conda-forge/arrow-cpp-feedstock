@@ -37,6 +37,7 @@ source:
       - patches/0007-disable-some-gandiva-tests-related-to-tzdb-handling.patch      # [win]
       # backport https://github.com/apache/arrow/pull/48971
       - patches/0008-GH-41990-C-Fix-AzureFileSystem-compilation-on-Window.patch
+      - patches/0009-Remove-inclusion-of-obsolete-otel-header.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
@@ -47,7 +48,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 17
+  number: 18
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
