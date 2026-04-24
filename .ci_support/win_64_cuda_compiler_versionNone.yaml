@@ -31,7 +31,7 @@ libabseil:
 libarrow:
 - '*'
 libboost_devel:
-- '1.88'
+- '1.90'
 libbrotlicommon:
 - '1.2'
 libcrc32c:
