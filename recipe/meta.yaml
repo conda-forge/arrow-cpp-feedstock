@@ -31,6 +31,8 @@ source:
       - patches/0004-disable-some-gandiva-tests-related-to-tzdb-handling.patch      # [win]
       # backport https://github.com/apache/arrow/pull/48971
       - patches/0005-GH-41990-C-Fix-AzureFileSystem-compilation-on-Window.patch
+      # backport https://github.com/apache/arrow/pull/49714
+      - patches/0006-GH-40886-R-Cryptic-error-when-creating-Arrow-array-f.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
@@ -41,7 +43,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 9
+  number: 10
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
