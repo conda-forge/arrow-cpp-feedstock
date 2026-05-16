@@ -1,7 +1,7 @@
 From ccc055baaef4661f4482109a69ca55383dd9487e Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Fri, 23 Jan 2026 23:51:29 +1100
-Subject: [PATCH 4/5] disable some gandiva tests related to tzdb handling
+Subject: [PATCH 4/6] disable some gandiva tests related to tzdb handling
 
 from upstream: "Gandiva is unmaintained, feel free to disable those tests."
 see https://github.com/apache/arrow/issues/48874
