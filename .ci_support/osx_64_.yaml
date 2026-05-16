@@ -11,9 +11,9 @@ azure_core_cpp:
 azure_identity_cpp:
 - 1.13.3
 azure_storage_blobs_cpp:
-- 12.16.0
+- 12.17.0
 azure_storage_files_datalake_cpp:
-- 12.14.0
+- 12.15.0
 brotli:
 - '1.2'
 bzip2:
@@ -21,7 +21,7 @@ bzip2:
 c_compiler:
 - clang
 c_compiler_version:
-- '21'
+- '22'
 c_stdlib:
 - macosx_deployment_target
 c_stdlib_version:
@@ -37,7 +37,7 @@ cuda_compiler_version_min:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '21'
+- '22'
 gflags:
 - '2.2'
 glog:
