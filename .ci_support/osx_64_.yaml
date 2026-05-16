@@ -21,7 +21,7 @@ bzip2:
 c_compiler:
 - clang
 c_compiler_version:
-- '21'
+- '22'
 c_stdlib:
 - macosx_deployment_target
 c_stdlib_version:
@@ -37,7 +37,7 @@ cuda_compiler_version_min:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '21'
+- '22'
 gflags:
 - '2.2'
 glog:
