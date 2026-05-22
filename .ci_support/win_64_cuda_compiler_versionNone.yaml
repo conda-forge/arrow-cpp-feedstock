@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.37.4
+- 0.38.3
 aws_sdk_cpp:
 - 1.11.747
 azure_core_cpp:
@@ -47,9 +47,9 @@ libcrc32c:
 libcurl:
 - '8'
 libgoogle_cloud_devel:
-- '3.3'
+- '3.5'
 libgoogle_cloud_storage_devel:
-- '3.3'
+- '3.5'
 libgrpc:
 - '1.78'
 libprotobuf:
