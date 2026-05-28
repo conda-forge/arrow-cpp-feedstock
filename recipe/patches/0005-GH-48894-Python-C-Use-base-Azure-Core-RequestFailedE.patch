@@ -1,7 +1,7 @@
-From 407552a97befc16add72c08c05c439d2ddfada06 Mon Sep 17 00:00:00 2001
+From f33cb1caa62af9b6dfbcd348e6bbbfc595b5f7b5 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ra=C3=BAl=20Cumplido?= <raulcumplido@gmail.com>
 Date: Tue, 20 Jan 2026 15:32:01 +0100
-Subject: [PATCH 5/9] GH-48894: [Python][C++] Use base
+Subject: [PATCH 05/10] GH-48894: [Python][C++] Use base
  Azure::Core::RequestFailedException instead of final
  Azure::Storage::StorageException and set minimum nodejs on conda env to 16
  for Azurite to work (#48895)
@@ -60,7 +60,7 @@ Signed-off-by: Raúl Cumplido <raulcumplido@gmail.com>
  2 files changed, 43 insertions(+), 42 deletions(-)
 
 diff --git a/ci/conda_env_cpp.txt b/ci/conda_env_cpp.txt
-index 6e23e920a4..afb9447d5e 100644
+index 6e23e92..afb9447 100644
 --- a/ci/conda_env_cpp.txt
 +++ b/ci/conda_env_cpp.txt
 @@ -39,7 +39,7 @@ lz4-c
@@ -73,7 +73,7 @@ index 6e23e920a4..afb9447d5e 100644
  pkg-config
  python
 diff --git a/cpp/src/arrow/filesystem/azurefs.cc b/cpp/src/arrow/filesystem/azurefs.cc
-index 0ca18eed51..047247b651 100644
+index 0ca18ee..047247b 100644
 --- a/cpp/src/arrow/filesystem/azurefs.cc
 +++ b/cpp/src/arrow/filesystem/azurefs.cc
 @@ -558,7 +558,7 @@ Status CrossContainerMoveNotImplemented(const AzureLocation& src,

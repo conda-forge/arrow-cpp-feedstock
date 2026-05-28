@@ -1,7 +1,7 @@
-From 25d6eee35694bcd9954580d3dd3920c991da27b1 Mon Sep 17 00:00:00 2001
+From d8767aadbd30a6e9b22ac4230f4639881dd0834c Mon Sep 17 00:00:00 2001
 From: Antoine Pitrou <antoine@python.org>
 Date: Thu, 18 Dec 2025 17:17:13 +0100
-Subject: [PATCH 9/9] Remove inclusion of obsolete otel header
+Subject: [PATCH 09/10] Remove inclusion of obsolete otel header
 
 Very, very partial backport of https://github.com/apache/arrow/commit/30809c6f48a1a74b40dafd6bb27ac4b9aeded93e
 ---
@@ -9,7 +9,7 @@ Very, very partial backport of https://github.com/apache/arrow/commit/30809c6f48
  1 file changed, 1 deletion(-)
 
 diff --git a/cpp/src/arrow/flight/server_tracing_middleware.cc b/cpp/src/arrow/flight/server_tracing_middleware.cc
-index f300116200..0cdf59308d 100644
+index f300116..0cdf593 100644
 --- a/cpp/src/arrow/flight/server_tracing_middleware.cc
 +++ b/cpp/src/arrow/flight/server_tracing_middleware.cc
 @@ -31,7 +31,6 @@

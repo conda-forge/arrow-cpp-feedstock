@@ -38,6 +38,7 @@ source:
       # backport https://github.com/apache/arrow/pull/48971
       - patches/0008-GH-41990-C-Fix-AzureFileSystem-compilation-on-Window.patch
       - patches/0009-Remove-inclusion-of-obsolete-otel-header.patch
+      - patches/0010-Boost-1.90-no-longer-has-a-system-CMake-target.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
@@ -48,7 +49,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 20
+  number: 21
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
