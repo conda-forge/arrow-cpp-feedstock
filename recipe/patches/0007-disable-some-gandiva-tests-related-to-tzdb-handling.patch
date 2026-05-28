@@ -1,7 +1,7 @@
-From 80afc6daf3485e3d7b0e7a44339c50a3a3cbfbdc Mon Sep 17 00:00:00 2001
+From 97e8d92613b4aad803f313995d09d28deba29e7f Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Fri, 23 Jan 2026 23:51:29 +1100
-Subject: [PATCH 7/9] disable some gandiva tests related to tzdb handling
+Subject: [PATCH 07/10] disable some gandiva tests related to tzdb handling
 
 from upstream: "Gandiva is unmaintained, feel free to disable those tests."
 see https://github.com/apache/arrow/issues/48874
@@ -11,7 +11,7 @@ see https://github.com/apache/arrow/issues/48874
  2 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/cpp/src/gandiva/gdv_function_stubs_test.cc b/cpp/src/gandiva/gdv_function_stubs_test.cc
-index cbe24b7423..98b9ec6372 100644
+index cbe24b7..98b9ec6 100644
 --- a/cpp/src/gandiva/gdv_function_stubs_test.cc
 +++ b/cpp/src/gandiva/gdv_function_stubs_test.cc
 @@ -1068,7 +1068,7 @@ TEST(TestGdvFnStubs, TestTranslate) {
@@ -33,7 +33,7 @@ index cbe24b7423..98b9ec6372 100644
    auto context_ptr = reinterpret_cast<int64_t>(&context);
    auto len_ist = static_cast<gdv_int32>(strlen("Asia/Kolkata"));
 diff --git a/cpp/src/gandiva/tests/date_time_test.cc b/cpp/src/gandiva/tests/date_time_test.cc
-index 6208f1ecba..52717d90f7 100644
+index 6208f1e..52717d9 100644
 --- a/cpp/src/gandiva/tests/date_time_test.cc
 +++ b/cpp/src/gandiva/tests/date_time_test.cc
 @@ -721,7 +721,7 @@ TEST_F(DateTimeTestProjector, TestToTimestampFromInt) {

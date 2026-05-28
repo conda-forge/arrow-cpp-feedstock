@@ -1,7 +1,7 @@
-From fe4fe21e61bf4b4963a16e11467442dcc6e12fe9 Mon Sep 17 00:00:00 2001
+From 16a8e90629e77285449b9f85e6c9548474eb12f8 Mon Sep 17 00:00:00 2001
 From: Nate Prewitt <nate.prewitt@gmail.com>
 Date: Wed, 4 Feb 2026 18:10:28 -0700
-Subject: [PATCH 8/9] GH-41990: [C++] Fix AzureFileSystem compilation on
+Subject: [PATCH 08/10] GH-41990: [C++] Fix AzureFileSystem compilation on
  Windows (#48971)
 
 Let me preface this pull request that I have not worked in C++ in quite a while. Apologies if this is missing modern idioms or is an obtuse fix.
@@ -35,7 +35,7 @@ Signed-off-by: Sutou Kouhei <kou@clear-code.com>
  4 files changed, 33 insertions(+), 4 deletions(-)
 
 diff --git a/cpp/cmake_modules/ThirdpartyToolchain.cmake b/cpp/cmake_modules/ThirdpartyToolchain.cmake
-index 7b8cef5fb5..dc0591654f 100644
+index 7b8cef5..dc05916 100644
 --- a/cpp/cmake_modules/ThirdpartyToolchain.cmake
 +++ b/cpp/cmake_modules/ThirdpartyToolchain.cmake
 @@ -813,6 +813,13 @@ else()
@@ -75,7 +75,7 @@ index 7b8cef5fb5..dc0591654f 100644
                         ${FC_DECLARE_COMMON_OPTIONS}
                         URL ${ARROW_AZURE_SDK_URL}
 diff --git a/cpp/src/arrow/filesystem/azurefs.cc b/cpp/src/arrow/filesystem/azurefs.cc
-index 047247b651..e14addda26 100644
+index 047247b..e14addd 100644
 --- a/cpp/src/arrow/filesystem/azurefs.cc
 +++ b/cpp/src/arrow/filesystem/azurefs.cc
 @@ -970,7 +970,7 @@ Status StageBlock(Blobs::BlockBlobClient* block_blob_client, const std::string&
@@ -115,7 +115,7 @@ index 047247b651..e14addda26 100644
      : FileSystem(impl->io_context()), impl_(std::move(impl)) {
    default_async_is_sync_ = false;
 diff --git a/cpp/src/arrow/filesystem/azurefs.h b/cpp/src/arrow/filesystem/azurefs.h
-index ee0956afdd..ae374d487b 100644
+index ee0956a..ae374d4 100644
 --- a/cpp/src/arrow/filesystem/azurefs.h
 +++ b/cpp/src/arrow/filesystem/azurefs.h
 @@ -251,7 +251,7 @@ class ARROW_EXPORT AzureFileSystem : public FileSystem {
@@ -128,7 +128,7 @@ index ee0956afdd..ae374d487b 100644
    static Result<std::shared_ptr<AzureFileSystem>> Make(
        const AzureOptions& options, const io::IOContext& = io::default_io_context());
 diff --git a/cpp/thirdparty/versions.txt b/cpp/thirdparty/versions.txt
-index 10aad92785..bad3645312 100644
+index 10aad92..bad3645 100644
 --- a/cpp/thirdparty/versions.txt
 +++ b/cpp/thirdparty/versions.txt
 @@ -111,6 +111,9 @@ ARROW_THRIFT_BUILD_VERSION=0.22.0

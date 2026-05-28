@@ -1,14 +1,14 @@
-From 37f86532af653cb230ff3b6c8040d6a8577fd3a4 Mon Sep 17 00:00:00 2001
+From 9ac90a9fcf6b45cd3900a6521fd526acd367d718 Mon Sep 17 00:00:00 2001
 From: AntoinePrv <AntoinePrv@users.noreply.github.com>
 Date: Mon, 27 Oct 2025 10:25:58 +0100
-Subject: [PATCH 3/9] Change xsimd inclusion criterion
+Subject: [PATCH 03/10] Change xsimd inclusion criterion
 
 ---
  cpp/src/arrow/util/byte_stream_split_internal.h | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/cpp/src/arrow/util/byte_stream_split_internal.h b/cpp/src/arrow/util/byte_stream_split_internal.h
-index 70f9b87d6c..1ba2d5335b 100644
+index 70f9b87..1ba2d53 100644
 --- a/cpp/src/arrow/util/byte_stream_split_internal.h
 +++ b/cpp/src/arrow/util/byte_stream_split_internal.h
 @@ -29,7 +29,9 @@

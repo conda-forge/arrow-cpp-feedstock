@@ -38,6 +38,7 @@ source:
       # backport https://github.com/apache/arrow/pull/48971
       - patches/0008-GH-41990-C-Fix-AzureFileSystem-compilation-on-Window.patch
       - patches/0009-Remove-inclusion-of-obsolete-otel-header.patch
+      - patches/0010-Boost-1.90-no-longer-has-a-system-CMake-target.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
