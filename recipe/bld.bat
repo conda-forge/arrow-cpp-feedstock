@@ -78,6 +78,8 @@ if "%cuda_compiler_version%"=="None" (
     npm install -g azurite
     set ARROW_TEST_DATA=%SRC_DIR%\testing\data
     set PARQUET_TEST_DATA=%SRC_DIR%\cpp\submodules\parquet-testing\data
+    @rem This test uses RequesterPays bucket, thus is not available from some CI hosts
+    set "GTEST_FILTER=-S3RegionResolutionTest.RestrictedBucket"
     ctest --progress --output-on-failure || exit 1
 )
 

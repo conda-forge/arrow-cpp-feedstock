@@ -1,7 +1,7 @@
-From 1f65acf586fa70fe77bf3b367c1dea613711c07c Mon Sep 17 00:00:00 2001
+From 6a12997ca36a03c4ab1c0d118bc36d0764e1023b Mon Sep 17 00:00:00 2001
 From: Nic Crane <thisisnic@gmail.com>
 Date: Fri, 28 Nov 2025 10:00:28 +0000
-Subject: [PATCH 3/6] GH-48260: [C++][Python][R] Move S3 bucket references to
+Subject: [PATCH 3/7] GH-48260: [C++][Python][R] Move S3 bucket references to
  new bucket as Voltron Data ones will be removed soon (#48261)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -34,7 +34,7 @@ Signed-off-by: Raúl Cumplido <raulcumplido@gmail.com>
  12 files changed, 47 insertions(+), 47 deletions(-)
 
 diff --git a/cpp/src/arrow/filesystem/s3fs_test.cc b/cpp/src/arrow/filesystem/s3fs_test.cc
-index b5578b4f74..3eb898ea71 100644
+index b5578b4..3eb898e 100644
 --- a/cpp/src/arrow/filesystem/s3fs_test.cc
 +++ b/cpp/src/arrow/filesystem/s3fs_test.cc
 @@ -420,7 +420,7 @@ TEST_F(S3OptionsTest, FromAssumeRole) {
@@ -47,7 +47,7 @@ index b5578b4f74..3eb898ea71 100644
    // Taken from a registry of open S3-hosted datasets
    // at https://github.com/awslabs/open-data-registry
 diff --git a/docs/source/python/dataset.rst b/docs/source/python/dataset.rst
-index 00469fd57b..de4ff7be4c 100644
+index 00469fd..de4ff7b 100644
 --- a/docs/source/python/dataset.rst
 +++ b/docs/source/python/dataset.rst
 @@ -350,7 +350,7 @@ specifying a S3 path:
@@ -80,7 +80,7 @@ index 00469fd57b..de4ff7be4c 100644
  
  Working with Parquet Datasets
 diff --git a/python/pyarrow/_s3fs.pyx b/python/pyarrow/_s3fs.pyx
-index b01e0b6ae4..6317bd3785 100644
+index b01e0b6..6317bd3 100644
 --- a/python/pyarrow/_s3fs.pyx
 +++ b/python/pyarrow/_s3fs.pyx
 @@ -91,8 +91,8 @@ def resolve_s3_region(bucket):
@@ -95,7 +95,7 @@ index b01e0b6ae4..6317bd3785 100644
      cdef:
          c_string c_bucket
 diff --git a/python/pyarrow/tests/test_fs.py b/python/pyarrow/tests/test_fs.py
-index 775738a5a1..2948d20288 100644
+index 775738a..2948d20 100644
 --- a/python/pyarrow/tests/test_fs.py
 +++ b/python/pyarrow/tests/test_fs.py
 @@ -1436,20 +1436,20 @@ def test_s3fs_wrong_region():
@@ -163,7 +163,7 @@ index 775738a5a1..2948d20288 100644
      subprocess.check_call([sys.executable, "-c", code])
  
 diff --git a/r/R/filesystem.R b/r/R/filesystem.R
-index 233e1981aa..ca219611a8 100644
+index 233e198..ca21961 100644
 --- a/r/R/filesystem.R
 +++ b/r/R/filesystem.R
 @@ -488,13 +488,13 @@ default_s3_options <- list(
@@ -192,7 +192,7 @@ index 233e1981aa..ca219611a8 100644
  gs_bucket <- function(bucket, ...) {
    assert_that(is.string(bucket))
 diff --git a/r/man/gs_bucket.Rd b/r/man/gs_bucket.Rd
-index 7dc39a42c3..44b2efb7d9 100644
+index 7dc39a4..44b2efb 100644
 --- a/r/man/gs_bucket.Rd
 +++ b/r/man/gs_bucket.Rd
 @@ -22,6 +22,6 @@ that holds onto its relative path
@@ -204,7 +204,7 @@ index 7dc39a42c3..44b2efb7d9 100644
  \dontshow{\}) # examplesIf}
  }
 diff --git a/r/man/s3_bucket.Rd b/r/man/s3_bucket.Rd
-index bffcfa5c38..66a552ccbc 100644
+index bffcfa5..66a552c 100644
 --- a/r/man/s3_bucket.Rd
 +++ b/r/man/s3_bucket.Rd
 @@ -30,12 +30,12 @@ be useful to increase the log level. See the Notes section in
@@ -223,7 +223,7 @@ index bffcfa5c38..66a552ccbc 100644
  \dontshow{\}) # examplesIf}
  }
 diff --git a/r/tests/testthat/test-filesystem.R b/r/tests/testthat/test-filesystem.R
-index 34095acc25..cf17c6b74e 100644
+index 34095ac..cf17c6b 100644
 --- a/r/tests/testthat/test-filesystem.R
 +++ b/r/tests/testthat/test-filesystem.R
 @@ -146,20 +146,20 @@ test_that("FileSystem$from_uri", {
@@ -268,7 +268,7 @@ index 34095acc25..cf17c6b74e 100644
 +  expect_identical(bucket$base_path, "arrow-datasets/")
  })
 diff --git a/r/vignettes/arrow.Rmd b/r/vignettes/arrow.Rmd
-index 50329334ce..4695dc2ef0 100644
+index 5032933..4695dc2 100644
 --- a/r/vignettes/arrow.Rmd
 +++ b/r/vignettes/arrow.Rmd
 @@ -178,7 +178,7 @@ To learn more about analyzing Arrow data, see the [data wrangling article](./dat
@@ -281,7 +281,7 @@ index 50329334ce..4695dc2ef0 100644
  ```
  
 diff --git a/r/vignettes/dataset.Rmd b/r/vignettes/dataset.Rmd
-index 43fecc93c1..1b0d63fb27 100644
+index 43fecc9..1b0d63f 100644
 --- a/r/vignettes/dataset.Rmd
 +++ b/r/vignettes/dataset.Rmd
 @@ -22,13 +22,13 @@ This multi-file data set is comprised of 158 distinct Parquet files, each corres
@@ -301,7 +301,7 @@ index 43fecc93c1..1b0d63fb27 100644
  
  If you want to use the full data set, replace `nyc-taxi-tiny` with `nyc-taxi` in the code above. Apart from size -- and with it the cost in time, bandwidth usage, and CPU cycles -- there is no difference in the two versions of the data: you can test your code using the tiny taxi data and then check how it scales using the full data set.
 diff --git a/r/vignettes/fs.Rmd b/r/vignettes/fs.Rmd
-index 07476877c5..ed3b1bddb0 100644
+index 0747687..ed3b1bd 100644
 --- a/r/vignettes/fs.Rmd
 +++ b/r/vignettes/fs.Rmd
 @@ -39,16 +39,16 @@ and pass the result to file readers and writers (`read_parquet()`, `write_feathe
@@ -393,7 +393,7 @@ index 07476877c5..ed3b1bddb0 100644
  )
  ```
 diff --git a/r/vignettes/python.Rmd b/r/vignettes/python.Rmd
-index d0d3f41926..c78b42310e 100644
+index d0d3f41..c78b423 100644
 --- a/r/vignettes/python.Rmd
 +++ b/r/vignettes/python.Rmd
 @@ -191,7 +191,7 @@ Now you have a single Array in R.

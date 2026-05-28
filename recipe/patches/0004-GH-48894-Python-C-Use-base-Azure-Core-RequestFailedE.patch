@@ -1,7 +1,7 @@
-From 22b926d891f61ac62f3593ca006c9fdf3b63c37b Mon Sep 17 00:00:00 2001
+From d05866f6c79df2ad9d309bd756568320de3d9721 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ra=C3=BAl=20Cumplido?= <raulcumplido@gmail.com>
 Date: Tue, 20 Jan 2026 15:32:01 +0100
-Subject: [PATCH 4/6] GH-48894: [Python][C++] Use base
+Subject: [PATCH 4/7] GH-48894: [Python][C++] Use base
  Azure::Core::RequestFailedException instead of final
  Azure::Storage::StorageException and set minimum nodejs on conda env to 16
  for Azurite to work (#48895)
@@ -51,7 +51,7 @@ Signed-off-by: Raúl Cumplido <raulcumplido@gmail.com>
  1 file changed, 42 insertions(+), 41 deletions(-)
 
 diff --git a/cpp/src/arrow/filesystem/azurefs.cc b/cpp/src/arrow/filesystem/azurefs.cc
-index 0ca18eed51..047247b651 100644
+index 0ca18ee..047247b 100644
 --- a/cpp/src/arrow/filesystem/azurefs.cc
 +++ b/cpp/src/arrow/filesystem/azurefs.cc
 @@ -558,7 +558,7 @@ Status CrossContainerMoveNotImplemented(const AzureLocation& src,

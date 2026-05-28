@@ -131,6 +131,8 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" != 1 && "$cuda_compiler_version" == "None
     npm install -g azurite
     export ARROW_TEST_DATA=$SRC_DIR/testing/data
     export PARQUET_TEST_DATA=$SRC_DIR/cpp/submodules/parquet-testing/data
+    # This test uses RequesterPays bucket, thus is not available from some CI hosts
+    export GTEST_FILTER=-S3RegionResolutionTest.RestrictedBucket
     ctest --progress --output-on-failure
 fi
 

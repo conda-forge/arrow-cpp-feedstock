@@ -1,7 +1,7 @@
-From c5d8f11d43881c3886c6dcecc33a9fe99347fc1d Mon Sep 17 00:00:00 2001
+From 3b22b949db5d9eb53d9f8905fdb77bc69a73506f Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Sat, 2 Nov 2024 15:41:34 +1100
-Subject: [PATCH 1/6] disable gcsfs_test
+Subject: [PATCH 1/7] disable gcsfs_test
 
 it cannot work unless we package https://github.com/googleapis/storage-testbench,
 which however has extremely tight dependencies on protobuf etc., making it very
@@ -11,7 +11,7 @@ hard to fit this into our migration patterns
  1 file changed, 8 deletions(-)
 
 diff --git a/cpp/src/arrow/filesystem/CMakeLists.txt b/cpp/src/arrow/filesystem/CMakeLists.txt
-index 5250ed2a88..ba053bd501 100644
+index 5250ed2..ba053bd 100644
 --- a/cpp/src/arrow/filesystem/CMakeLists.txt
 +++ b/cpp/src/arrow/filesystem/CMakeLists.txt
 @@ -42,14 +42,6 @@ if(ARROW_BUILD_BENCHMARKS)
