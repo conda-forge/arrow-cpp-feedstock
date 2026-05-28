@@ -1,0 +1,57 @@
+From 2e8cac91a51ebc43bfbffa86c41c583818d9a5ff Mon Sep 17 00:00:00 2001
+From: "Uwe L. Korn" <uwe.korn@quantco.com>
+Date: Thu, 28 May 2026 08:56:45 +0200
+Subject: [PATCH 7/7] Boost 1.90 no longer has a system CMake target
+
+---
+ cpp/cmake_modules/ThirdpartyToolchain.cmake | 2 +-
+ cpp/src/arrow/filesystem/CMakeLists.txt     | 5 ++---
+ cpp/src/arrow/io/CMakeLists.txt             | 3 +--
+ 3 files changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/cpp/cmake_modules/ThirdpartyToolchain.cmake b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+index b8dd5af..98bf616 100644
+--- a/cpp/cmake_modules/ThirdpartyToolchain.cmake
++++ b/cpp/cmake_modules/ThirdpartyToolchain.cmake
+@@ -1266,7 +1266,7 @@ if(ARROW_USE_BOOST)
+     set(Boost_USE_STATIC_LIBS ON)
+   endif()
+   if(ARROW_BOOST_REQUIRE_LIBRARY)
+-    set(ARROW_BOOST_COMPONENTS filesystem system)
++    set(ARROW_BOOST_COMPONENTS filesystem)
+     if(ARROW_FLIGHT_SQL_ODBC AND MSVC)
+       list(APPEND ARROW_BOOST_COMPONENTS locale)
+     endif()
+diff --git a/cpp/src/arrow/filesystem/CMakeLists.txt b/cpp/src/arrow/filesystem/CMakeLists.txt
+index ba053bd..68f95b8 100644
+--- a/cpp/src/arrow/filesystem/CMakeLists.txt
++++ b/cpp/src/arrow/filesystem/CMakeLists.txt
+@@ -124,12 +124,11 @@ if(ARROW_S3)
+                    DEFINITIONS
+                    ARROW_S3_LIBPATH="$<TARGET_FILE:arrow_s3fs>"
+                    EXTRA_LINK_LIBS
+-                   Boost::filesystem
+-                   Boost::system)
++                   Boost::filesystem)
+     target_compile_definitions(arrow-filesystem-test
+                                PUBLIC ARROW_S3_LIBPATH="$<TARGET_FILE:arrow_s3fs>")
+     target_sources(arrow-filesystem-test PUBLIC s3fs_module_test.cc s3_test_util.cc)
+-    target_link_libraries(arrow-filesystem-test PUBLIC Boost::filesystem Boost::system)
++    target_link_libraries(arrow-filesystem-test PUBLIC Boost::filesystem)
+   endif()
+ endif()
+ 
+diff --git a/cpp/src/arrow/io/CMakeLists.txt b/cpp/src/arrow/io/CMakeLists.txt
+index f7afbca..9a3d277 100644
+--- a/cpp/src/arrow/io/CMakeLists.txt
++++ b/cpp/src/arrow/io/CMakeLists.txt
+@@ -29,8 +29,7 @@ if(ARROW_HDFS)
+                  "arrow-io"
+                  EXTRA_LINK_LIBS
+                  arrow::hadoop
+-                 Boost::filesystem
+-                 Boost::system)
++                 Boost::filesystem)
+ endif()
+ 
+ add_arrow_test(memory_test PREFIX "arrow-io")
