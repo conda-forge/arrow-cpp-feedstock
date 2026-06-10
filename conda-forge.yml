@@ -1,10 +1,3 @@
-azure:
-  free_disk_space: true
-  max_parallel: 20
-  settings_win:
-    variables:
-      CONDA_BLD_PATH: C:\\bld\\
-      MINIFORGE_HOME: C:\\Miniforge
 bot:
   abi_migration_branches:
   - 23.x
@@ -25,3 +18,13 @@ provider:
   linux_aarch64: azure
   linux_ppc64le: azure
 test: native_and_emulated
+workflow_settings:
+  build_workspace_dir:
+    - value: C:\bld
+      os: win
+  free_disk_space:
+    - value: quick
+      os: linux
+  tools_install_dir:
+    - value: C:\Miniforge
+      os: win
