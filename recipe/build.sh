@@ -128,6 +128,11 @@ cmake -GNinja \
 # Do not install arrow, only build.
 cmake --build . --config Release
 
+if [[ "$target_platform" == "osx-arm64" ]]; then
+    sudo sysctl -w kern.corefile=/tmp/core.%N.%P || true
+    sudo ulimit -c unlimited || true
+fi
+
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" != 1 && "$cuda_compiler_version" == "None" ]]; then
     npm install -g azurite
     export ARROW_TEST_DATA=$SRC_DIR/testing/data
