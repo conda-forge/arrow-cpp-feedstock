@@ -129,8 +129,8 @@ cmake -GNinja \
 cmake --build . --config Release
 
 if [[ "$target_platform" == "osx-arm64" ]]; then
-    sudo sysctl -w kern.corefile=/tmp/core.%N.%P || true
-    sudo ulimit -c unlimited || true
+    sudo sysctl -w kern.corefile=/tmp/core.%N.%P
+    sudo ulimit -c unlimited
 fi
 
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" != 1 && "$cuda_compiler_version" == "None" ]]; then
