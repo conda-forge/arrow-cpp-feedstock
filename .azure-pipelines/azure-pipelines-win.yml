@@ -12,37 +12,36 @@ jobs:
         CONFIG: win_64_cuda_compiler_version12.9
         UPLOAD_PACKAGES: 'True'
         build_workspace_dir: C:\bld
-        free_disk_space: skip
-        pagefile_size: 0
         store_build_artifacts: false
         tools_install_dir: C:\Miniforge
+        free_disk_space: null
       win_64_cuda_compiler_versionNone:
         CONFIG: win_64_cuda_compiler_versionNone
         UPLOAD_PACKAGES: 'True'
         build_workspace_dir: C:\bld
-        free_disk_space: skip
-        pagefile_size: 0
         store_build_artifacts: false
         tools_install_dir: C:\Miniforge
+        free_disk_space: null
   timeoutInMinutes: 360
   variables:
     UPLOAD_TEMP: D:\\tmp
 
   steps:
+
     - script: |
         call ".scripts\run_win_build.bat"
       displayName: Run Windows build
       env:
-        CI: azure
-        CONFIG: $(CONFIG)
-        CONDA_BLD_PATH: $(build_workspace_dir)
         MINIFORGE_HOME: $(tools_install_dir)
+        CONDA_BLD_PATH: $(build_workspace_dir)
         PYTHONUNBUFFERED: 1
-        UPLOAD_PACKAGES: $(UPLOAD_PACKAGES)
-        UPLOAD_TEMP: $(UPLOAD_TEMP)
+        CONFIG: $(CONFIG)
+        CI: azure
         flow_run_id: azure_$(Build.BuildNumber).$(System.JobAttempt)
         remote_url: $(Build.Repository.Uri)
         sha: $(Build.SourceVersion)
+        UPLOAD_PACKAGES: $(UPLOAD_PACKAGES)
+        UPLOAD_TEMP: $(UPLOAD_TEMP)
         BINSTAR_TOKEN: $(BINSTAR_TOKEN)
         FEEDSTOCK_TOKEN: $(FEEDSTOCK_TOKEN)
         STAGING_BINSTAR_TOKEN: $(STAGING_BINSTAR_TOKEN)
