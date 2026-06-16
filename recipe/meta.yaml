@@ -4,25 +4,21 @@
 # hashes should match.
 {% set name = "arrow-cpp" %}
 {% set version = "23.0.1" %}
-{% set filename = "apache-arrow-" + version + ".tar.gz" %}
-{% set build_number = 4 %}
+{% set build_number = 5 %}
 {% set cuda_enabled = (gpu_variant or "").startswith("cuda") %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/{{ filename }}
-  sha256: bd09adb4feac11fe49d1604f296618866702be610c86e2d513b561d877de6b18
+  - url: https://archive.apache.org/dist/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz
+    sha256: bd09adb4feac11fe49d1604f296618866702be610c86e2d513b561d877de6b18
 
 build:
   number: {{ build_number + 100 if cuda_enabled else build_number }}
-  {% if cuda_enabled %}
-  string: cuda{{ cuda_compiler_version | replace('.', '') }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
-  {% else %}
-  string: cpu_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
-  {% endif %}
+  string: cuda{{ cuda_compiler_version | replace('.', '') }}_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }} # [cuda_enabled]
+  string: cpu_h{{ PKG_HASH }}_{{ PKG_BUILDNUM }} # [not cuda_enabled]
   run_exports:
     - {{ pin_subpackage("arrow-cpp", max_pin="x.x.x") }}
   missing_dso_whitelist:
@@ -31,8 +27,8 @@ build:
     - '$RPATH/libdl.so.*'       # [linux]
     - '$RPATH/libm.so.*'        # [linux]
     - '$RPATH/ld64.so.*'        # [linux]
-    - "**/libcuda.so*"          # [(gpu_variant or "").startswith("cuda")]
-    - "**/nvcuda.dll"           # [(gpu_variant or "").startswith("cuda")]
+    - "**/libcuda.so*"          # [cuda_enabled]
+    - "**/nvcuda.dll"           # [cuda_enabled]
   ignore_run_exports:
     - libbrotlicommon  # need only headers
     - cuda-cudart-dev  # needed for CMake discovery only; Arrow links cuda_driver not cudart
@@ -44,7 +40,7 @@ requirements:
     - {{ compiler('cxx') }}
     # Arrow does not compile .cu files; cuda-nvcc is included so CMake's
     # find_package(CUDAToolkit) can locate the toolkit reliably.
-    - {{ compiler('cuda') }}    # [(gpu_variant or "").startswith("cuda")]
+    - {{ compiler('cuda') }}    # [cuda_enabled]
     - autoconf  # [unix]
     - cmake
     # Needed when compiling jemalloc_ep
@@ -52,37 +48,37 @@ requirements:
     - gnuconfig
     - ninja-base
   host:
-    - libabseil {{ libabseil }}
-    - aws-sdk-cpp 1.11.774
-    - aws-crt-cpp 0.37.4
+    - libabseil 20260107.0
+    - aws-sdk-cpp 1.11.826
+    - aws-crt-cpp 0.40.1
     - boost-cpp
-    - brotli {{ brotli }}
-    - bzip2 {{ bzip2 }}
+    - brotli 1.2.0
+    - bzip2 1.0.8
     # Only required and used on Windows.
-    - c-ares {{ c_ares }}  # [win]
-    - glog {{ glog }}
-    - libgrpc {{ libgrpc }}
-    - lz4-c {{ lz4_c }}
-    - openssl {{ openssl }}
-    - orc {{ orc }}
-    - libprotobuf {{ libprotobuf }}
+    - c-ares 1.34.6  # [win]
+    - glog 0.7.1
+    - libgrpc 1.78.0
+    - lz4-c 1.9.4
+    - openssl 3.5.7
+    - orc 2.2.0
+    - libprotobuf 6.33.5
     - rapidjson 1.1.0
-    - libre2-11 {{ libre2_11 }}
-    - snappy {{ snappy }}
-    - thrift-cpp {{ libthrift }}
-    - utf8proc {{ libutf8proc }}
-    - zlib {{ zlib }}
-    - zstd {{ zstd }}
+    - libre2-11 2025.11.05
+    - snappy 1.2.2
+    - thrift-cpp 0.22.0
+    - utf8proc 2.11.3
+    - zlib 1.3.2
+    - zstd 1.5.7
     - xsimd 13.0.0
-    - libbrotlidec {{ libbrotlidec }}
-    - libbrotlienc {{ libbrotlienc }}
-    - libthrift {{ libthrift }}
+    - libbrotlidec 1.2.0
+    - libbrotlienc 1.2.0
+    - libthrift 0.22.0
     # CUDA dependencies
-    - cuda-version {{ cuda_compiler_version }}    # [(gpu_variant or "").startswith("cuda")]
-    - cuda-cudart-dev {{ cuda_compiler_version }}  # [(gpu_variant or "").startswith("cuda")]
+    - cuda-version 13.3    # [cuda_enabled]
+    - cuda-cudart-dev 13.3.29  # [cuda_enabled]
     # cuda-driver-dev only exists for linux on pkgs/main; on Windows, cuda.lib stub
     # ships inside cuda-cudart-dev_win-64 (matches conda-forge libarrow pattern).
-    - cuda-driver-dev {{ cuda_compiler_version }}  # [linux and (gpu_variant or "").startswith("cuda")]
+    - cuda-driver-dev 13.3.29 # [linux and cuda_enabled]
   run:
     - {{ pin_compatible('utf8proc', max_pin='x') }}
     # Through run_exports
@@ -105,13 +101,13 @@ requirements:
     - zstd
     - c-ares  # [win]
     # CUDA runtime dependencies
-    - {{ pin_compatible('cuda-version', max_pin='x.x') }}  # [(gpu_variant or "").startswith("cuda")]
+    - {{ pin_compatible('cuda-version', max_pin='x.x') }}  # [cuda_enabled]
   run_constrained:
     # __cuda in run would block downstream packages (e.g. pyarrow) from installing
     # arrow-cpp CUDA as a host dep in build environments without a GPU.
     # Use run_constrained so the solver doesn't require __cuda at build time.
     # Downstream packages (pyarrow) add __cuda to their own run deps.
-    - __cuda  # [(gpu_variant or "").startswith("cuda")]
+    - __cuda  # [cuda_enabled]
 
 test:
   requires:
@@ -147,11 +143,11 @@ test:
     - if exist %PREFIX%\\Library\\lib\\parquet_static.lib exit 1       # [win]
 
     # CUDA shared libraries and headers
-    - test -f $PREFIX/lib/libarrow_cuda${SHLIB_EXT}                                # [unix and (gpu_variant or "").startswith("cuda")]
-    - test -f $PREFIX/include/arrow/gpu/cuda_api.h                                 # [unix and (gpu_variant or "").startswith("cuda")]
-    - if not exist %PREFIX%\\Library\\bin\\arrow_cuda.dll exit 1                   # [win and (gpu_variant or "").startswith("cuda")]
-    - if not exist %PREFIX%\\Library\\lib\\arrow_cuda.lib exit 1                   # [win and (gpu_variant or "").startswith("cuda")]
-    - if not exist %PREFIX%\\Library\\include\\arrow\\gpu\\cuda_api.h exit 1       # [win and (gpu_variant or "").startswith("cuda")]
+    - test -f $PREFIX/lib/libarrow_cuda${SHLIB_EXT}                                # [unix and cuda_enabled]
+    - test -f $PREFIX/include/arrow/gpu/cuda_api.h                                 # [unix and cuda_enabled]
+    - if not exist %PREFIX%\\Library\\bin\\arrow_cuda.dll exit 1                   # [win and cuda_enabled]
+    - if not exist %PREFIX%\\Library\\lib\\arrow_cuda.lib exit 1                   # [win and cuda_enabled]
+    - if not exist %PREFIX%\\Library\\include\\arrow\\gpu\\cuda_api.h exit 1       # [win and cuda_enabled]
 
     # conda tools
     - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
