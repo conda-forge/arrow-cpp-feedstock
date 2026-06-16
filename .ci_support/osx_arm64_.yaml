@@ -7,13 +7,13 @@ aws_crt_cpp:
 aws_sdk_cpp:
 - 1.11.747
 azure_core_cpp:
-- 1.16.2
+- 1.16.3
 azure_identity_cpp:
 - 1.13.3
 azure_storage_blobs_cpp:
-- 12.17.0
+- 12.18.0
 azure_storage_files_datalake_cpp:
-- 12.15.0
+- 12.16.0
 brotli:
 - '1.2'
 bzip2:
