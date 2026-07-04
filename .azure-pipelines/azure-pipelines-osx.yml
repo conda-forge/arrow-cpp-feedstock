@@ -14,7 +14,7 @@ jobs:
         VMIMAGE: macOS-15
         build_workspace_dir: ~/miniforge3/conda-bld
         free_disk_space: skip
-        pagefile_size: 0
+        pagefile_size: 16
         resize_partitions: false
         store_build_artifacts: false
         tools_install_dir: ~/miniforge3
@@ -24,7 +24,7 @@ jobs:
         VMIMAGE: macOS-15
         build_workspace_dir: ~/miniforge3/conda-bld
         free_disk_space: skip
-        pagefile_size: 0
+        pagefile_size: 16
         resize_partitions: false
         store_build_artifacts: false
         tools_install_dir: ~/miniforge3
