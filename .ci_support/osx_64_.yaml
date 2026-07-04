@@ -42,6 +42,8 @@ gflags:
 - '2.2'
 glog:
 - '0.7'
+is_freethreading:
+- false
 libabseil:
 - '20260107'
 libarrow:
@@ -66,10 +68,18 @@ lz4_c:
 - '1.10'
 macos_machine:
 - x86_64-apple-darwin13.4.0
+numpy:
+- '2'
 openssl:
 - '3.5'
 orc:
 - 2.3.0
+pin_run_as_build:
+  python:
+    min_pin: x.x
+    max_pin: x.x
+python:
+- 3.14.* *_cp314
 re2:
 - 2025.11.05
 snappy:

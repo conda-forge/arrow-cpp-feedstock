@@ -9,7 +9,8 @@ build_platform:
   osx_arm64: osx_64
 conda_build:
   pkg_format: '2'
-conda_forge_output_validation: true
+# DO NOT MERGE
+conda_forge_output_validation: false
 github:
   branch_name: main
   tooling_branch_name: main
@@ -24,6 +25,8 @@ workflow_settings:
   free_disk_space:
   - os: linux
     value: quick
+  pagefile_size:
+  - value: 16
   tools_install_dir:
   - os: win
     value: C:\Miniforge

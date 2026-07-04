@@ -1,0 +1,40 @@
+@echo on
+
+pushd "%SRC_DIR%"\python
+
+SET ARROW_HOME=%LIBRARY_PREFIX%
+SET SETUPTOOLS_SCM_PRETEND_VERSION=%PKG_VERSION%
+SET PYARROW_WITH_ACERO=1
+set PYARROW_WITH_AZURE=1
+SET PYARROW_WITH_DATASET=1
+SET PYARROW_WITH_FLIGHT=1
+SET PYARROW_WITH_GANDIVA=1
+SET PYARROW_WITH_GCS=1
+SET PYARROW_WITH_HDFS=1
+SET PYARROW_WITH_ORC=1
+SET PYARROW_WITH_PARQUET=1
+SET PYARROW_WITH_PARQUET_ENCRYPTION=1
+SET PYARROW_WITH_S3=1
+SET PYARROW_WITH_SUBSTRAIT=1
+SET CMAKE_GENERATOR=Ninja
+:: Ninja expects no generator platform or toolset
+SET CMAKE_GENERATOR_PLATFORM=
+SET CMAKE_GENERATOR_TOOLSET=
+
+:: Enable CUDA support
+if "%cuda_compiler_version%"=="None" (
+    set "PYARROW_WITH_CUDA=0"
+) else (
+    set "PYARROW_WITH_CUDA=1"
+)
+
+python -m pip install . -vv ^
+    -C build.verbose=true ^
+    -C cmake.build-type=release
+
+if %ERRORLEVEL% neq 0 exit 1
+popd
+
+if [%PKG_NAME%] NEQ [pyarrow-tests] (
+    rd /s /q %SP_DIR%\pyarrow\tests
+)
