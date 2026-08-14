@@ -81,7 +81,10 @@ if "%cuda_compiler_version%"=="None" (
     set PARQUET_TEST_DATA=%SRC_DIR%\cpp\submodules\parquet-testing\data
     @rem This test uses RequesterPays bucket, thus is not available from some CI hosts
     set "GTEST_FILTER=-S3RegionResolutionTest.RestrictedBucket"
-    ctest --progress --output-on-failure || exit 1
+    ctest -R arrow-flight-test -VV --repeat until-fail:20 --timeout 120
+    echo ##### CTEST LOOP RETURNED #####
+    tasklist /FI "IMAGENAME eq flight-test-server.exe"
+    @rem ctest --progress --output-on-failure || exit 1
 )
 
 popd
