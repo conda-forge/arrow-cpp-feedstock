@@ -146,17 +146,17 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>linux_aarch64_cuda_compiler_version12.9</td>
+              <td>linux_aarch64_c_compiler_version14c_stdlib_version2.17cuda_compiler_version12.9cxx_compiler_version14</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_version12.9" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_compiler_version14c_stdlib_version2.17cuda_compiler_version12.9cxx_compiler_version14" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_cuda_compiler_versionNone</td>
+              <td>linux_aarch64_c_compiler_version15c_stdlib_version2.17cuda_compiler_versionNonecxx_compiler_version15</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_versionNone" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_compiler_version15c_stdlib_version2.17cuda_compiler_versionNonecxx_compiler_version15" alt="variant">
                 </a>
               </td>
             </tr><tr>
