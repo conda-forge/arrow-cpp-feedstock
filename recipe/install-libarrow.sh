@@ -8,8 +8,8 @@ cmake --install ./cpp/build --prefix=./temp_prefix
 
 if [[ "${PKG_NAME}" == "libarrow" ]]; then
     # only libarrow (+ activation scripts)
-    cp -a ./temp_prefix/lib/libarrow.* $PREFIX/lib
-    cp -a ./temp_prefix/lib/libarrow_cuda.* $PREFIX/lib || true
+    cp -a ./temp_prefix/lib/libarrow${SHLIB_EXT}* $PREFIX/lib
+    cp -a ./temp_prefix/lib/libarrow_cuda${SHLIB_EXT}* $PREFIX/lib || true
     cp ./temp_prefix/lib/pkgconfig/arrow.pc $PREFIX/lib/pkgconfig
     cp ./temp_prefix/lib/pkgconfig/arrow-csv.pc $PREFIX/lib/pkgconfig
     cp ./temp_prefix/lib/pkgconfig/arrow-cuda.pc $PREFIX/lib/pkgconfig || true
@@ -32,44 +32,44 @@ if [[ "${PKG_NAME}" == "libarrow" ]]; then
     done
 elif [[ "${PKG_NAME}" == "libarrow-acero" ]]; then
     # only libarrow-acero
-    cp -a ./temp_prefix/lib/libarrow_acero.* $PREFIX/lib
+    cp -a ./temp_prefix/lib/libarrow_acero${SHLIB_EXT}* $PREFIX/lib
     cp ./temp_prefix/lib/pkgconfig/arrow-acero.pc $PREFIX/lib/pkgconfig
     cp -R ./temp_prefix/lib/cmake/ArrowAcero/. $PREFIX/lib/cmake/ArrowAcero
 elif [[ "${PKG_NAME}" == "libarrow-compute" ]]; then
     # only libarrow-compute
-    cp -a ./temp_prefix/lib/libarrow_compute.* $PREFIX/lib
+    cp -a ./temp_prefix/lib/libarrow_compute${SHLIB_EXT}* $PREFIX/lib
     cp ./temp_prefix/lib/pkgconfig/arrow-compute.pc $PREFIX/lib/pkgconfig
     cp -R ./temp_prefix/lib/cmake/ArrowCompute/. $PREFIX/lib/cmake/ArrowCompute
 elif [[ "${PKG_NAME}" == "libarrow-dataset" ]]; then
     # only libarrow-dataset
-    cp -a ./temp_prefix/lib/libarrow_dataset.* $PREFIX/lib
+    cp -a ./temp_prefix/lib/libarrow_dataset${SHLIB_EXT}* $PREFIX/lib
     cp ./temp_prefix/lib/pkgconfig/arrow-dataset.pc $PREFIX/lib/pkgconfig
     cp -R ./temp_prefix/lib/cmake/ArrowDataset/. $PREFIX/lib/cmake/ArrowDataset
 elif [[ "${PKG_NAME}" == "libarrow-flight" ]]; then
     # only libarrow-flight
-    cp -a ./temp_prefix/lib/libarrow_flight.* $PREFIX/lib
-    cp ./temp_prefix/lib/libarrow_flight_transport_ucx.* $PREFIX/lib || true
+    cp -a ./temp_prefix/lib/libarrow_flight${SHLIB_EXT}* $PREFIX/lib
+    cp ./temp_prefix/lib/libarrow_flight_transport_ucx${SHLIB_EXT}* $PREFIX/lib || true
     cp ./temp_prefix/lib/pkgconfig/arrow-flight.pc $PREFIX/lib/pkgconfig
     cp -R ./temp_prefix/lib/cmake/ArrowFlight/. $PREFIX/lib/cmake/ArrowFlight
 elif [[ "${PKG_NAME}" == "libarrow-flight-sql" ]]; then
     # only libarrow-flight-sql
-    cp -a ./temp_prefix/lib/libarrow_flight_sql.* $PREFIX/lib
+    cp -a ./temp_prefix/lib/libarrow_flight_sql${SHLIB_EXT}* $PREFIX/lib
     cp ./temp_prefix/lib/pkgconfig/arrow-flight-sql.pc $PREFIX/lib/pkgconfig
     cp -R ./temp_prefix/lib/cmake/ArrowFlightSql/. $PREFIX/lib/cmake/ArrowFlightSql
 elif [[ "${PKG_NAME}" == "libarrow-gandiva" ]]; then
     # only libarrow-gandiva
-    cp -a ./temp_prefix/lib/libgandiva.* $PREFIX/lib
+    cp -a ./temp_prefix/lib/libgandiva${SHLIB_EXT}* $PREFIX/lib
     cp ./temp_prefix/lib/pkgconfig/gandiva.pc $PREFIX/lib/pkgconfig
     cp -R ./temp_prefix/lib/cmake/Gandiva/. $PREFIX/lib/cmake/Gandiva
     cp -R ./temp_prefix/include/gandiva/. $PREFIX/include/gandiva
 elif [[ "${PKG_NAME}" == "libarrow-substrait" ]]; then
     # only libarrow-substrait
-    cp -a ./temp_prefix/lib/libarrow_substrait.* $PREFIX/lib
+    cp -a ./temp_prefix/lib/libarrow_substrait${SHLIB_EXT}* $PREFIX/lib
     cp ./temp_prefix/lib/pkgconfig/arrow-substrait.pc $PREFIX/lib/pkgconfig
     cp -R ./temp_prefix/lib/cmake/ArrowSubstrait/. $PREFIX/lib/cmake/ArrowSubstrait
 elif [[ "${PKG_NAME}" == "libparquet" ]]; then
     # only parquet
-    cp -a ./temp_prefix/lib/libparquet.* $PREFIX/lib
+    cp -a ./temp_prefix/lib/libparquet${SHLIB_EXT}* $PREFIX/lib
     cp ./temp_prefix/lib/pkgconfig/parquet.pc $PREFIX/lib/pkgconfig
     cp -R ./temp_prefix/lib/cmake/Parquet/. $PREFIX/lib/cmake/Parquet
     cp -R ./temp_prefix/include/parquet/. $PREFIX/include/parquet
@@ -81,10 +81,15 @@ elif [[ "${PKG_NAME}" == "libarrow-all" ]]; then
     # libarrow-all: install everything else (whatever ends up in this output
     # should generally be installed into the appropriate libarrow-<flavour>).
     cmake --install ./cpp/build --prefix=$PREFIX
+    # Static archives are packaged separately in libarrow-static.
+    rm -f $PREFIX/lib/*.a
     # remove testing bits, c.f. https://github.com/apache/arrow/issues/44993
     rm -f $PREFIX/lib/{libarrow_testing,libarrow_flight_testing}.*
     rm -f $PREFIX/lib/pkgconfig/{arrow-testing,arrow-flight-testing}.pc
     rm -rf $PREFIX/lib/cmake/{ArrowTesting,ArrowFlightTesting}
+elif [[ "${PKG_NAME}" == "libarrow-static" ]]; then
+    # Bundle the static archives for every Arrow component.
+    cp -a ./temp_prefix/lib/*.a $PREFIX/lib
 else
     # shouldn't happen
     exit 1
