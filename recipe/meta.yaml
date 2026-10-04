@@ -37,7 +37,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 4
+  number: 5
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -188,6 +188,37 @@ outputs:
       license_file:
         - LICENSE.txt
       summary: C++ libraries for Apache Arrow
+
+  - name: libarrow-static
+    script: install-libarrow.sh  # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      run_exports:
+        - {{ pin_subpackage("libarrow-static", max_pin="x.x") }}
+    requirements:
+      build:
+        - cmake
+        - ninja
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - {{ pin_subpackage("libarrow-acero", exact=True) }}
+        - {{ pin_subpackage("libarrow-compute", exact=True) }}
+        - {{ pin_subpackage("libarrow-dataset", exact=True) }}
+        - {{ pin_subpackage("libarrow-flight", exact=True) }}
+        - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
+        - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
+        - {{ pin_subpackage("libarrow-substrait", exact=True) }}
+        - {{ pin_subpackage("libparquet", exact=True) }}
+      run_constrained:
+        - apache-arrow-proc =*={{ build_ext }}
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: Static C++ libraries for Apache Arrow
 
   - name: libarrow
     script: install-libarrow.sh  # [unix]

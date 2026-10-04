@@ -86,6 +86,9 @@ if [%PKG_NAME%] == [libarrow] (
     REM libarrow-all: install everything else (whatever ends up in this output
     REM should generally be installed into the appropriate libarrow-<flavour>).
     cmake --install .\cpp\build --prefix=%LIBRARY_PREFIX%
+    REM Static archives are packaged separately in libarrow-static.
+    del /q "%LIBRARY_LIB%\*_static.lib"
+    del /q "%LIBRARY_LIB%\arrow_bundled_dependencies.lib"
     REM remove testing bits, c.f. https://github.com/apache/arrow/issues/44993
     for %%F in (arrow_testing arrow_flight_testing) do (
         del /s /q "%LIBRARY_LIB%\%%F.lib"
@@ -97,6 +100,9 @@ if [%PKG_NAME%] == [libarrow] (
     for %%F in (arrow-testing arrow-flight-testing) do (
         del /s /q "%LIBRARY_LIB%\pkgconfig\%%F.pc"
     )
+) else if [%PKG_NAME%] == [libarrow-static] (
+    copy .\temp_prefix\lib\*_static.lib %LIBRARY_LIB%
+    copy .\temp_prefix\lib\arrow_bundled_dependencies.lib %LIBRARY_LIB% || true
 ) else (
     REM shouldn't happen
     exit 1
