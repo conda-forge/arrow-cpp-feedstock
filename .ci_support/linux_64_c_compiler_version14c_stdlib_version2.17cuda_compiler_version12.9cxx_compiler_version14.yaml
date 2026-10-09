@@ -1,5 +1,5 @@
 aws_crt_cpp:
-- 0.40.1
+- 0.42.3
 aws_sdk_cpp:
 - 1.11.833
 azure_core_cpp:
@@ -29,7 +29,7 @@ channel_targets:
 cuda_compiler:
 - cuda-nvcc
 cuda_compiler_version:
-- None
+- '12.9'
 cuda_compiler_version_min:
 - '12.9'
 cxx_compiler:
@@ -73,7 +73,7 @@ re2:
 snappy:
 - '1.2'
 target_platform:
-- linux-aarch64
+- linux-64
 thrift_cpp:
 - 0.22.0
 zip_keys:
