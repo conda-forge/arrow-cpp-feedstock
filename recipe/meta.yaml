@@ -33,7 +33,7 @@ source:
     git_rev: 9ff285c88565f0f6abc855918c6a342e70e4909c
     folder: testing
   - git_url: https://github.com/apache/parquet-testing.git
-    git_rev: e74785d85a4ecee829e1e405444d6a1b24b8bc9c
+    git_rev: 56653c437c8092f704a092d0d1d4e600124cd49f
     folder: cpp/submodules/parquet-testing
 
 build:
@@ -93,7 +93,10 @@ requirements:
     - orc
     - rapidjson
     - re2
-    - simdjson
+    # simdjson>=5 fails on MSVC due to arrow defining __SSE2__, see
+    # https://github.com/apache/arrow/issues/51690
+    - simdjson      # [not win]
+    - simdjson <5   # [win]
     - snappy
     - thrift-cpp
     - uriparser
@@ -241,7 +244,10 @@ outputs:
         - libprotobuf
         - lz4-c
         - orc
-        - simdjson
+        # simdjson>=5 fails on MSVC due to arrow defining __SSE2__, see
+        # https://github.com/apache/arrow/issues/51690
+        - simdjson      # [not win]
+        - simdjson <5   # [win]
         - snappy
         - uriparser
         - zlib
@@ -748,6 +754,9 @@ outputs:
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - openssl
+        # see https://github.com/apache/arrow/issues/51690
+        - simdjson      # [not win]
+        - simdjson <5   # [win]
         - thrift-cpp
         - libabseil             # [osx]
         - libprotobuf           # [osx]
