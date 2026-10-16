@@ -93,8 +93,10 @@ requirements:
     - orc
     - rapidjson
     - re2
+    - simdjson
     - snappy
     - thrift-cpp
+    - uriparser
     - xsimd
     - zlib
     - zstd
@@ -239,7 +241,9 @@ outputs:
         - libprotobuf
         - lz4-c
         - orc
+        - simdjson
         - snappy
+        - uriparser
         - zlib
         - zstd
         # since libgoogle-cloud{,-storage} is static on windows, see
