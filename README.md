@@ -94,6 +94,15 @@ Package license: Apache-2.0
 
 Summary: C++ libraries for Apache Arrow Gandiva
 
+About libarrow-s3
+-----------------
+
+Home: http://github.com/apache/arrow
+
+Package license: Apache-2.0
+
+Summary: C++ libraries for Apache Arrow S3 filesystem
+
 About libarrow-substrait
 ------------------------
 
@@ -146,20 +155,6 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>linux_aarch64_cuda_compiler_version12.9</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_version12.9" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_aarch64_cuda_compiler_versionNone</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_versionNone" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
               <td>linux_ppc64le</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
@@ -171,6 +166,13 @@ Current build status
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
                   <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=54&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/arrow-cpp-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_" alt="variant">
                 </a>
               </td>
             </tr>
@@ -196,6 +198,7 @@ Current release info
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--flight-green.svg)](https://anaconda.org/conda-forge/libarrow-flight) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-flight.svg)](https://anaconda.org/conda-forge/libarrow-flight) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-flight.svg)](https://anaconda.org/conda-forge/libarrow-flight) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-flight.svg)](https://anaconda.org/conda-forge/libarrow-flight) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--flight--sql-green.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-flight-sql.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-flight-sql.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-flight-sql.svg)](https://anaconda.org/conda-forge/libarrow-flight-sql) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--gandiva-green.svg)](https://anaconda.org/conda-forge/libarrow-gandiva) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-gandiva.svg)](https://anaconda.org/conda-forge/libarrow-gandiva) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-gandiva.svg)](https://anaconda.org/conda-forge/libarrow-gandiva) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-gandiva.svg)](https://anaconda.org/conda-forge/libarrow-gandiva) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--s3-green.svg)](https://anaconda.org/conda-forge/libarrow-s3) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-s3.svg)](https://anaconda.org/conda-forge/libarrow-s3) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-s3.svg)](https://anaconda.org/conda-forge/libarrow-s3) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-s3.svg)](https://anaconda.org/conda-forge/libarrow-s3) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libarrow--substrait-green.svg)](https://anaconda.org/conda-forge/libarrow-substrait) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libarrow-substrait.svg)](https://anaconda.org/conda-forge/libarrow-substrait) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libarrow-substrait.svg)](https://anaconda.org/conda-forge/libarrow-substrait) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libarrow-substrait.svg)](https://anaconda.org/conda-forge/libarrow-substrait) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libparquet-green.svg)](https://anaconda.org/conda-forge/libparquet) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libparquet.svg)](https://anaconda.org/conda-forge/libparquet) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libparquet.svg)](https://anaconda.org/conda-forge/libparquet) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libparquet.svg)](https://anaconda.org/conda-forge/libparquet) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-parquet--utils-green.svg)](https://anaconda.org/conda-forge/parquet-utils) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/parquet-utils.svg)](https://anaconda.org/conda-forge/parquet-utils) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/parquet-utils.svg)](https://anaconda.org/conda-forge/parquet-utils) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/parquet-utils.svg)](https://anaconda.org/conda-forge/parquet-utils) |
@@ -217,7 +220,7 @@ How to use
 <summary>With conda</summary>
 
 ```
-conda install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-compute libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-substrait libparquet parquet-utils
+conda install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-compute libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-s3 libarrow-substrait libparquet parquet-utils
 ```
 
 </details>
@@ -226,7 +229,7 @@ conda install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all
 <summary>With mamba</summary>
 
 ```
-mamba install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-compute libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-substrait libparquet parquet-utils
+mamba install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-compute libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-s3 libarrow-substrait libparquet parquet-utils
 ```
 
 </details>
@@ -236,9 +239,9 @@ mamba install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all
 
 ```
 # for adding to your local project
-pixi add apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-compute libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-substrait libparquet parquet-utils
+pixi add apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-compute libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-s3 libarrow-substrait libparquet parquet-utils
 # for installing globally
-pixi global install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-compute libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-substrait libparquet parquet-utils
+pixi global install apache-arrow-proc arrow-utils libarrow libarrow-acero libarrow-all libarrow-compute libarrow-dataset libarrow-flight libarrow-flight-sql libarrow-gandiva libarrow-s3 libarrow-substrait libparquet parquet-utils
 ```
 
 </details>

@@ -62,6 +62,11 @@ elif [[ "${PKG_NAME}" == "libarrow-gandiva" ]]; then
     cp ./temp_prefix/lib/pkgconfig/gandiva.pc $PREFIX/lib/pkgconfig
     cp -R ./temp_prefix/lib/cmake/Gandiva/. $PREFIX/lib/cmake/Gandiva
     cp -R ./temp_prefix/include/gandiva/. $PREFIX/include/gandiva
+elif [[ "${PKG_NAME}" == "libarrow-s3" ]]; then
+    # only libarrow-s3
+    cp -a ./temp_prefix/lib/libarrow_s3.* $PREFIX/lib
+    cp ./temp_prefix/lib/pkgconfig/arrow-s3.pc $PREFIX/lib/pkgconfig
+    cp -R ./temp_prefix/lib/cmake/ArrowS3/. $PREFIX/lib/cmake/ArrowS3
 elif [[ "${PKG_NAME}" == "libarrow-substrait" ]]; then
     # only libarrow-substrait
     cp -a ./temp_prefix/lib/libarrow_substrait.* $PREFIX/lib

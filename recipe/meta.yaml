@@ -1,4 +1,4 @@
-{% set version = "25.0.0" %}
+{% set version = "26.0.0" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -18,7 +18,7 @@ package:
 source:
   - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
     fn: apache-arrow-{{ version }}.tar.gz
-    sha256: 12afc2dc8137bdd4a68876cec939f664c9d55cfc7b75f55b45163ebb4e344d81
+    sha256: b153ef472dd89ef4cb84867ca238f2a3a9347d8f4a78913d16ca2201606f0425
     patches:
       # skip gcsfs tests due to missing `storage-testbench`
       - patches/0001-disable-gcsfs_test.patch
@@ -33,11 +33,11 @@ source:
     git_rev: 9ff285c88565f0f6abc855918c6a342e70e4909c
     folder: testing
   - git_url: https://github.com/apache/parquet-testing.git
-    git_rev: e74785d85a4ecee829e1e405444d6a1b24b8bc9c
+    git_rev: 56653c437c8092f704a092d0d1d4e600124cd49f
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 4
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -93,8 +93,13 @@ requirements:
     - orc
     - rapidjson
     - re2
+    # simdjson>=5 fails on MSVC due to arrow defining __SSE2__, see
+    # https://github.com/apache/arrow/issues/51690
+    - simdjson      # [not win]
+    - simdjson <5   # [win]
     - snappy
     - thrift-cpp
+    - uriparser
     - xsimd
     - zlib
     - zstd
@@ -141,6 +146,7 @@ outputs:
         - {{ pin_subpackage("libarrow-flight", max_pin="x.x") }}
         - {{ pin_subpackage("libarrow-flight-sql", max_pin="x.x") }}
         - {{ pin_subpackage("libarrow-gandiva", max_pin="x.x") }}
+        - {{ pin_subpackage("libarrow-s3", max_pin="x.x") }}
         - {{ pin_subpackage("libarrow-substrait", max_pin="x.x") }}
         - {{ pin_subpackage("libparquet", max_pin="x.x") }}
     requirements:
@@ -155,6 +161,7 @@ outputs:
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
         - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
         - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
+        - {{ pin_subpackage("libarrow-s3", exact=True) }}
         - {{ pin_subpackage("libarrow-substrait", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
         - {{ pin_subpackage("arrow-utils", exact=True) }}
@@ -167,6 +174,7 @@ outputs:
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
         - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
         - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
+        - {{ pin_subpackage("libarrow-s3", exact=True) }}
         - {{ pin_subpackage("libarrow-substrait", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
         - {{ pin_subpackage("arrow-utils", exact=True) }}
@@ -218,8 +226,7 @@ outputs:
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
       host:
-        - aws-crt-cpp
-        - aws-sdk-cpp
+        # aws-crt-cpp & aws-sdk-cpp are only needed by libarrow-s3
         - azure-core-cpp
         - azure-identity-cpp
         - azure-storage-blobs-cpp
@@ -237,7 +244,12 @@ outputs:
         - libprotobuf
         - lz4-c
         - orc
+        # simdjson>=5 fails on MSVC due to arrow defining __SSE2__, see
+        # https://github.com/apache/arrow/issues/51690
+        - simdjson      # [not win]
+        - simdjson <5   # [win]
         - snappy
+        - uriparser
         - zlib
         - zstd
         # since libgoogle-cloud{,-storage} is static on windows, see
@@ -291,7 +303,7 @@ outputs:
 
         {% set libs = [
             "arrow_acero", "arrow_dataset", "arrow_flight",
-            "arrow_flight_sql", "arrow_substrait", "gandiva", "parquet"
+            "arrow_flight_sql", "arrow_s3", "arrow_substrait", "gandiva", "parquet"
         ] %}
         {% for each_lib in libs %}
         # absence of libraries that belong in other outputs
@@ -621,6 +633,56 @@ outputs:
         - LICENSE.txt
       summary: C++ libraries for Apache Arrow Gandiva
 
+  - name: libarrow-s3
+    script: install-libarrow.sh  # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      run_exports:
+        - {{ pin_subpackage("libarrow-s3", max_pin="x.x") }}
+    requirements:
+      build:
+        - cmake
+        - ninja
+        # for strong run-exports
+        - {{ stdlib("c") }}
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+      host:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - aws-crt-cpp
+        - aws-sdk-cpp
+        - libabseil             # [osx]
+        - libprotobuf           # [osx]
+        - libopentelemetry-cpp  # [osx]
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+      # run-constraints handled by libarrow, since we depend on it with exact=True
+
+    test:
+      commands:
+        # headers (installed as part of libarrow)
+        - test -f $PREFIX/include/arrow/filesystem/s3fs.h               # [unix]
+        - if not exist %LIBRARY_INC%\arrow\filesystem\s3fs.h exit 1      # [win]
+
+        # shared libraries
+        - test -f $PREFIX/lib/libarrow_s3.so                            # [linux]
+        - test -f $PREFIX/lib/libarrow_s3.dylib                         # [osx]
+        - if not exist %LIBRARY_BIN%\arrow_s3.dll exit 1                # [win]
+        - if not exist %LIBRARY_LIB%\arrow_s3.lib exit 1                # [win]
+
+        # absence of static libraries
+        - test ! -f $PREFIX/lib/libarrow_s3.a                           # [unix]
+        - if exist %LIBRARY_LIB%\arrow_s3_static.lib exit 1             # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ libraries for Apache Arrow S3 filesystem
+
   - name: libarrow-substrait
     script: install-libarrow.sh  # [unix]
     script: install-libarrow.bat  # [win]
@@ -692,6 +754,9 @@ outputs:
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - openssl
+        # see https://github.com/apache/arrow/issues/51690
+        - simdjson      # [not win]
+        - simdjson <5   # [win]
         - thrift-cpp
         - libabseil             # [osx]
         - libprotobuf           # [osx]
