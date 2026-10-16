@@ -141,6 +141,7 @@ outputs:
         - {{ pin_subpackage("libarrow-flight", max_pin="x.x") }}
         - {{ pin_subpackage("libarrow-flight-sql", max_pin="x.x") }}
         - {{ pin_subpackage("libarrow-gandiva", max_pin="x.x") }}
+        - {{ pin_subpackage("libarrow-s3", max_pin="x.x") }}
         - {{ pin_subpackage("libarrow-substrait", max_pin="x.x") }}
         - {{ pin_subpackage("libparquet", max_pin="x.x") }}
     requirements:
@@ -155,6 +156,7 @@ outputs:
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
         - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
         - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
+        - {{ pin_subpackage("libarrow-s3", exact=True) }}
         - {{ pin_subpackage("libarrow-substrait", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
         - {{ pin_subpackage("arrow-utils", exact=True) }}
@@ -167,6 +169,7 @@ outputs:
         - {{ pin_subpackage("libarrow-flight", exact=True) }}
         - {{ pin_subpackage("libarrow-flight-sql", exact=True) }}
         - {{ pin_subpackage("libarrow-gandiva", exact=True) }}
+        - {{ pin_subpackage("libarrow-s3", exact=True) }}
         - {{ pin_subpackage("libarrow-substrait", exact=True) }}
         - {{ pin_subpackage("libparquet", exact=True) }}
         - {{ pin_subpackage("arrow-utils", exact=True) }}
@@ -218,8 +221,7 @@ outputs:
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}                 # [cuda_compiler_version != "None"]
       host:
-        - aws-crt-cpp
-        - aws-sdk-cpp
+        # aws-crt-cpp & aws-sdk-cpp are only needed by libarrow-s3
         - azure-core-cpp
         - azure-identity-cpp
         - azure-storage-blobs-cpp
@@ -291,7 +293,7 @@ outputs:
 
         {% set libs = [
             "arrow_acero", "arrow_dataset", "arrow_flight",
-            "arrow_flight_sql", "arrow_substrait", "gandiva", "parquet"
+            "arrow_flight_sql", "arrow_s3", "arrow_substrait", "gandiva", "parquet"
         ] %}
         {% for each_lib in libs %}
         # absence of libraries that belong in other outputs
@@ -620,6 +622,56 @@ outputs:
       license_file:
         - LICENSE.txt
       summary: C++ libraries for Apache Arrow Gandiva
+
+  - name: libarrow-s3
+    script: install-libarrow.sh  # [unix]
+    script: install-libarrow.bat  # [win]
+    version: {{ version }}
+    build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      run_exports:
+        - {{ pin_subpackage("libarrow-s3", max_pin="x.x") }}
+    requirements:
+      build:
+        - cmake
+        - ninja
+        # for strong run-exports
+        - {{ stdlib("c") }}
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+      host:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+        - aws-crt-cpp
+        - aws-sdk-cpp
+        - libabseil             # [osx]
+        - libprotobuf           # [osx]
+        - libopentelemetry-cpp  # [osx]
+      run:
+        - {{ pin_subpackage("libarrow", exact=True) }}
+      # run-constraints handled by libarrow, since we depend on it with exact=True
+
+    test:
+      commands:
+        # headers (installed as part of libarrow)
+        - test -f $PREFIX/include/arrow/filesystem/s3fs.h               # [unix]
+        - if not exist %LIBRARY_INC%\arrow\filesystem\s3fs.h exit 1      # [win]
+
+        # shared libraries
+        - test -f $PREFIX/lib/libarrow_s3.so                            # [linux]
+        - test -f $PREFIX/lib/libarrow_s3.dylib                         # [osx]
+        - if not exist %LIBRARY_BIN%\arrow_s3.dll exit 1                # [win]
+        - if not exist %LIBRARY_LIB%\arrow_s3.lib exit 1                # [win]
+
+        # absence of static libraries
+        - test ! -f $PREFIX/lib/libarrow_s3.a                           # [unix]
+        - if exist %LIBRARY_LIB%\arrow_s3_static.lib exit 1             # [win]
+
+    about:
+      home: http://github.com/apache/arrow
+      license: Apache-2.0
+      license_file:
+        - LICENSE.txt
+      summary: C++ libraries for Apache Arrow S3 filesystem
 
   - name: libarrow-substrait
     script: install-libarrow.sh  # [unix]
