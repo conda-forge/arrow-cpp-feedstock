@@ -1,0 +1,31 @@
+From: Raúl Cumplido <raulcumplido@gmail.com>
+Subject: [PATCH] Link test executables with -export_dynamic on macOS
+
+With LTO enabled, ld64 is allowed to internalize global symbols of main
+executables unless -export_dynamic is passed. This includes the weak
+function-local statics used by the header-only OpenTelemetry API as
+process-wide singletons (TracerProvider, RuntimeContext storage), so the
+test executables end up with a private copy instead of sharing libarrow's.
+This breaks parquet-arrow-reader-writer-tracing-test (no spans recorded)
+and makes arrow-utility-test crash at exit (Tracing.OtLifetime).
+---
+diff --git a/cpp/cmake_modules/BuildUtils.cmake b/cpp/cmake_modules/BuildUtils.cmake
+index 8556273..4767e27 100644
+--- a/cpp/cmake_modules/BuildUtils.cmake
++++ b/cpp/cmake_modules/BuildUtils.cmake
+@@ -766,6 +766,15 @@ function(ADD_TEST_CASE REL_TEST_NAME)
+     target_compile_definitions(${TEST_NAME} PRIVATE ${ARG_DEFINITIONS})
+   endif()
+ 
++  if(APPLE)
++    # With LTO, ld64 may internalize global symbols of executables, including
++    # the weak function-local statics that header-only libraries such as the
++    # OpenTelemetry API use as process-wide singletons. The test would then get
++    # its own copy instead of sharing the one in libarrow. -export_dynamic keeps
++    # them global so they are coalesced at load time.
++    target_link_options(${TEST_NAME} PRIVATE "LINKER:-export_dynamic")
++  endif()
++
+   if(ARROW_TEST_MEMCHECK AND NOT ARG_NO_VALGRIND)
+     add_test(${TEST_NAME}
+              bash

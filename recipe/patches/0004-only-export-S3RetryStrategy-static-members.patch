@@ -1,0 +1,42 @@
+From: Raúl Cumplido <raulcumplido@gmail.com>
+Subject: [PATCH] Don't export S3RetryStrategy class, only its static members
+
+S3RetryStrategy is an interface meant to be subclassed by users. Since
+S3 moved to its own arrow_s3 library, it can also be subclassed by code
+that doesn't link arrow_s3 but loads it at runtime with
+LoadFileSystemFactories(), like arrow-s3fs-module-test. On Windows, the
+class-level ARROW_S3_EXPORT makes its implicit constructor and destructor
+__declspec(dllimport), which fails to link (LNK2001). Only export the
+static factory functions, which are the only members defined in arrow_s3.
+---
+diff --git a/cpp/src/arrow/filesystem/s3fs.h b/cpp/src/arrow/filesystem/s3fs.h
+index 5086b34..888c3ec 100644
+--- a/cpp/src/arrow/filesystem/s3fs.h
++++ b/cpp/src/arrow/filesystem/s3fs.h
+@@ -67,8 +67,12 @@ enum class S3CredentialsKind : int8_t {
+   WebIdentity
+ };
+ 
++// Only the out-of-line members are exported (not the whole class), so that it
++// can be subclassed without linking arrow_s3, e.g. when arrow_s3 is loaded at
++// runtime with LoadFileSystemFactories(). On Windows, exporting the class would
++// make its implicit constructor and destructor dllimport.
+ /// Pure virtual class for describing custom S3 retry strategies
+-class ARROW_S3_EXPORT S3RetryStrategy {
++class S3RetryStrategy {
+  public:
+   virtual ~S3RetryStrategy() = default;
+ 
+@@ -89,10 +93,10 @@ class ARROW_S3_EXPORT S3RetryStrategy {
+   virtual int64_t CalculateDelayBeforeNextRetry(const AWSErrorDetail& error,
+                                                 int64_t attempted_retries) = 0;
+   /// Returns a stock AWS Default retry strategy.
+-  static std::shared_ptr<S3RetryStrategy> GetAwsDefaultRetryStrategy(
++  ARROW_S3_EXPORT static std::shared_ptr<S3RetryStrategy> GetAwsDefaultRetryStrategy(
+       int64_t max_attempts);
+   /// Returns a stock AWS Standard retry strategy.
+-  static std::shared_ptr<S3RetryStrategy> GetAwsStandardRetryStrategy(
++  ARROW_S3_EXPORT static std::shared_ptr<S3RetryStrategy> GetAwsStandardRetryStrategy(
+       int64_t max_attempts);
+ };
+ 

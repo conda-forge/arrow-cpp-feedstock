@@ -64,6 +64,12 @@ if [%PKG_NAME%] == [libarrow] (
     move .\temp_prefix\lib\cmake\Gandiva\* %LIBRARY_LIB%\cmake\Gandiva
     mkdir %LIBRARY_PREFIX%\include\gandiva
     xcopy /s /y .\temp_prefix\include\gandiva %LIBRARY_PREFIX%\include\gandiva
+) else if [%PKG_NAME%] == [libarrow-s3] (
+    move .\temp_prefix\lib\arrow_s3.lib %LIBRARY_LIB%
+    move .\temp_prefix\bin\arrow_s3.dll %LIBRARY_BIN%
+    copy .\temp_prefix\lib\pkgconfig\arrow-s3.pc %LIBRARY_LIB%\pkgconfig
+    mkdir %LIBRARY_LIB%\cmake\ArrowS3
+    move .\temp_prefix\lib\cmake\ArrowS3\* %LIBRARY_LIB%\cmake\ArrowS3
 ) else if [%PKG_NAME%] == [libarrow-substrait] (
     move .\temp_prefix\lib\arrow_substrait.lib %LIBRARY_LIB%
     move .\temp_prefix\bin\arrow_substrait.dll %LIBRARY_BIN%
