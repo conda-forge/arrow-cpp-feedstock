@@ -97,10 +97,7 @@ requirements:
     - orc
     - rapidjson
     - re2
-    # simdjson>=5 fails on MSVC due to arrow defining __SSE2__, see
-    # https://github.com/apache/arrow/issues/51690
-    - simdjson      # [not win]
-    - simdjson <5   # [win]
+    - simdjson
     - snappy
     - thrift-cpp
     - uriparser
@@ -248,10 +245,7 @@ outputs:
         - libprotobuf
         - lz4-c
         - orc
-        # simdjson>=5 fails on MSVC due to arrow defining __SSE2__, see
-        # https://github.com/apache/arrow/issues/51690
-        - simdjson      # [not win]
-        - simdjson <5   # [win]
+        - simdjson
         - snappy
         - uriparser
         - zlib
@@ -758,9 +752,7 @@ outputs:
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - openssl
-        # see https://github.com/apache/arrow/issues/51690
-        - simdjson      # [not win]
-        - simdjson <5   # [win]
+        - simdjson
         - thrift-cpp
         - libabseil             # [osx]
         - libprotobuf           # [osx]
