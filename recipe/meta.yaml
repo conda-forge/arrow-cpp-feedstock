@@ -28,9 +28,11 @@ source:
       # disable gandiva tests that are "unmaintained" and failing on windows
       - patches/0003-disable-some-gandiva-tests-related-to-tzdb-handling.patch      # [win]
       # S3RetryStrategy must be subclassable without linking arrow_s3 (MSVC link error)
-      - patches/0004-only-export-S3RetryStrategy-static-members.patch
+      - patches/0004-Don-t-export-S3RetryStrategy-class-only-its-static-m.patch
       # keep OpenTelemetry singletons shared between tests and libarrow with LTO on macOS
-      - patches/0005-link-tests-with-export_dynamic-on-macos.patch                 # [osx]
+      - patches/0005-Link-test-executables-with-export_dynamic-on-macOS.patch       # [osx]
+      # backport https://github.com/apache/arrow/pull/53952
+      - patches/0006-GH-51690-C-Don-t-define-__SSE2__-globally-with-MSVC-.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
