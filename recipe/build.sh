@@ -133,7 +133,8 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" != 1 && "$cuda_compiler_version" == "None
     export ARROW_TEST_DATA=$SRC_DIR/testing/data
     export PARQUET_TEST_DATA=$SRC_DIR/cpp/submodules/parquet-testing/data
     # This test uses RequesterPays bucket, thus is not available from some CI hosts
-    export GTEST_FILTER=-S3RegionResolutionTest.RestrictedBucket
+    # s3 test skipped due to https://github.com/apache/arrow/issues/55356
+    export GTEST_FILTER="-S3RegionResolutionTest.RestrictedBucket:TestS3FSGeneric.GetFileInfoSelector"
     ctest --progress --output-on-failure
 fi
 
