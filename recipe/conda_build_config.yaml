@@ -9,3 +9,7 @@ c_compiler_version:            # [osx]
   - 21                         # [osx]
 cxx_compiler_version:          # [osx]
   - 21                         # [osx]
+
+# migration closed prematurely
+libopentelemetry_cpp:
+  - "1.27"
