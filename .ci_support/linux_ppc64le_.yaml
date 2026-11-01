@@ -51,13 +51,13 @@ libboost_devel:
 libbrotlicommon:
 - '1.2'
 libgoogle_cloud_devel:
-- '3.8'
+- '3.12'
 libgoogle_cloud_storage_devel:
-- '3.8'
+- '3.12'
 libgrpc:
 - '1.82'
 libopentelemetry_cpp:
-- '1.27'
+- '1.30'
 libprotobuf:
 - 7.35.1
 libutf8proc:
@@ -70,6 +70,8 @@ orc:
 - 2.3.1
 re2:
 - 2025.11.05
+simdjson:
+- '5.1'
 snappy:
 - '1.2'
 target_platform:

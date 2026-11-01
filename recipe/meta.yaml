@@ -28,9 +28,11 @@ source:
       # disable gandiva tests that are "unmaintained" and failing on windows
       - patches/0003-disable-some-gandiva-tests-related-to-tzdb-handling.patch      # [win]
       # S3RetryStrategy must be subclassable without linking arrow_s3 (MSVC link error)
-      - patches/0004-only-export-S3RetryStrategy-static-members.patch
+      - patches/0004-Don-t-export-S3RetryStrategy-class-only-its-static-m.patch
       # keep OpenTelemetry singletons shared between tests and libarrow with LTO on macOS
-      - patches/0005-link-tests-with-export_dynamic-on-macos.patch                 # [osx]
+      - patches/0005-Link-test-executables-with-export_dynamic-on-macOS.patch       # [osx]
+      # backport https://github.com/apache/arrow/pull/53952
+      - patches/0006-GH-51690-C-Don-t-define-__SSE2__-globally-with-MSVC-.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
@@ -41,7 +43,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 1
+  number: 2
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]
@@ -97,10 +99,7 @@ requirements:
     - orc
     - rapidjson
     - re2
-    # simdjson>=5 fails on MSVC due to arrow defining __SSE2__, see
-    # https://github.com/apache/arrow/issues/51690
-    - simdjson      # [not win]
-    - simdjson <5   # [win]
+    - simdjson
     - snappy
     - thrift-cpp
     - uriparser
@@ -248,10 +247,7 @@ outputs:
         - libprotobuf
         - lz4-c
         - orc
-        # simdjson>=5 fails on MSVC due to arrow defining __SSE2__, see
-        # https://github.com/apache/arrow/issues/51690
-        - simdjson      # [not win]
-        - simdjson <5   # [win]
+        - simdjson
         - snappy
         - uriparser
         - zlib
@@ -758,9 +754,7 @@ outputs:
       host:
         - {{ pin_subpackage("libarrow", exact=True) }}
         - openssl
-        # see https://github.com/apache/arrow/issues/51690
-        - simdjson      # [not win]
-        - simdjson <5   # [win]
+        - simdjson
         - thrift-cpp
         - libabseil             # [osx]
         - libprotobuf           # [osx]

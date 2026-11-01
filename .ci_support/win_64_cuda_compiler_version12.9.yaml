@@ -47,9 +47,9 @@ libcrc32c:
 libcurl:
 - '8'
 libgoogle_cloud_devel:
-- '3.8'
+- '3.12'
 libgoogle_cloud_storage_devel:
-- '3.8'
+- '3.12'
 libgrpc:
 - '1.82'
 libprotobuf:
@@ -64,6 +64,8 @@ orc:
 - 2.3.1
 re2:
 - 2025.11.05
+simdjson:
+- '5.1'
 snappy:
 - '1.2'
 target_platform:
