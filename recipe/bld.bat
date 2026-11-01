@@ -81,8 +81,7 @@ if "%cuda_compiler_version%"=="None" (
     set PARQUET_TEST_DATA=%SRC_DIR%\cpp\submodules\parquet-testing\data
     @rem This test uses RequesterPays bucket, thus is not available from some CI hosts
     set "GTEST_FILTER=-S3RegionResolutionTest.RestrictedBucket"
-    @rem BAD BAD BAD! https://github.com/apache/arrow/issues/50845
-    ctest --progress --output-on-failure -E "^arrow-flight-test$" || exit 1
+    ctest --progress --output-on-failure || exit 1
 )
 
 popd
