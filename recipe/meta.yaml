@@ -1,4 +1,4 @@
-{% set version = "26.0.0" %}
+{% set version = "26.0.1" %}
 {% set cuda_enabled = cuda_compiler_version != "None" %}
 {% set build_ext_version = "5.0.0" %}
 {% set build_ext = "cuda" if cuda_enabled else "cpu" %}
@@ -18,7 +18,7 @@ package:
 source:
   - url: https://www.apache.org/dyn/closer.lua/arrow/arrow-{{ version }}/apache-arrow-{{ version }}.tar.gz?action=download
     fn: apache-arrow-{{ version }}.tar.gz
-    sha256: b153ef472dd89ef4cb84867ca238f2a3a9347d8f4a78913d16ca2201606f0425
+    sha256: 1dd1b6701d9de58a4ed82b107539682f46ef6b9e22747e18e03204125c05a987
     patches:
       # skip gcsfs tests due to missing `storage-testbench`
       - patches/0001-disable-gcsfs_test.patch
@@ -31,8 +31,6 @@ source:
       - patches/0004-Don-t-export-S3RetryStrategy-class-only-its-static-m.patch
       # keep OpenTelemetry singletons shared between tests and libarrow with LTO on macOS
       - patches/0005-Link-test-executables-with-export_dynamic-on-macOS.patch       # [osx]
-      # backport https://github.com/apache/arrow/pull/53952
-      - patches/0006-GH-51690-C-Don-t-define-__SSE2__-globally-with-MSVC-.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
@@ -43,7 +41,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 4
+  number: 0
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]

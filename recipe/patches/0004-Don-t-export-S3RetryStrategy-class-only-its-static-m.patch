@@ -1,7 +1,7 @@
-From 2800a71445f0ba52aae0fa729300f21c5e1f5532 Mon Sep 17 00:00:00 2001
+From b0632aceccea3a8fc66973037f0d68d0242a7e2c Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ra=C3=BAl=20Cumplido?= <raulcumplido@gmail.com>
 Date: Mon, 19 Oct 2026 15:41:00 +0200
-Subject: [PATCH 4/6] Don't export S3RetryStrategy class, only its static
+Subject: [PATCH 4/5] Don't export S3RetryStrategy class, only its static
  members
 
 S3RetryStrategy is an interface meant to be subclassed by users. Since
