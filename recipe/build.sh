@@ -52,11 +52,6 @@ if [[ "${target_platform}" == "linux-aarch64" ]] || [[ "${target_platform}" == "
     export CMAKE_BUILD_PARALLEL_LEVEL=3
 fi
 
-# native osx-arm64 runners have Homebrew in /opt/homebrew, which CMake searches by default
-if [[ "${target_platform}" == "osx-arm64" ]]; then
-    CMAKE_ARGS="${CMAKE_ARGS} -DCMAKE_IGNORE_PREFIX_PATH=/opt/homebrew"
-fi
-
 # IPO produces segfaults in the test suite on macOS x86-64
 if [[ "$target_platform" == "osx-64" ]]; then
     CMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF
