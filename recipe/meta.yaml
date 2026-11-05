@@ -31,6 +31,9 @@ source:
       - patches/0004-Don-t-export-S3RetryStrategy-class-only-its-static-m.patch
       # keep OpenTelemetry singletons shared between tests and libarrow with LTO on macOS
       - patches/0005-Link-test-executables-with-export_dynamic-on-macOS.patch       # [osx]
+      # backport https://github.com/apache/arrow/pull/55415
+      # restore CMAKE_MODULE_PATH clobbered by orcConfig.cmake on failure
+      - patches/0006-Restore-CMAKE_MODULE_PATH-after-finding-ORC.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
