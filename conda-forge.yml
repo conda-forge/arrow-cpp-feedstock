@@ -3,7 +3,6 @@ bot:
     - 25.x
     - 24.x
     - 23.x
-    - 22.x
 build_platform:
   linux_ppc64le: linux_64
   osx_arm64: osx_64
