@@ -1,7 +1,7 @@
 From 30bbcfd1876cc8bcbbda2f5b60d1d8507baa5e4a Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ra=C3=BAl=20Cumplido?= <raulcumplido@gmail.com>
 Date: Mon, 19 Oct 2026 15:41:00 +0200
-Subject: [PATCH 5/5] Link test executables with -export_dynamic on macOS
+Subject: [PATCH 5/6] Link test executables with -export_dynamic on macOS
 
 With LTO enabled, ld64 is allowed to internalize global symbols of main
 executables unless -export_dynamic is passed. This includes the weak
