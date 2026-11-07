@@ -55,7 +55,7 @@ libgrpc:
 libprotobuf:
 - 7.35.1
 libutf8proc:
-- '2.11'
+- '2.12'
 lz4_c:
 - '1.10'
 openssl:
