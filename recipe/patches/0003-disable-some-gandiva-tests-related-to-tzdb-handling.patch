@@ -1,7 +1,7 @@
-From ccc055baaef4661f4482109a69ca55383dd9487e Mon Sep 17 00:00:00 2001
+From fc8e70d443e4e63e0b0b288324abacb72aca628e Mon Sep 17 00:00:00 2001
 From: "H. Vetinari" <h.vetinari@gmx.com>
 Date: Fri, 23 Jan 2026 23:51:29 +1100
-Subject: [PATCH 4/5] disable some gandiva tests related to tzdb handling
+Subject: [PATCH 3/4] disable some gandiva tests related to tzdb handling
 
 from upstream: "Gandiva is unmaintained, feel free to disable those tests."
 see https://github.com/apache/arrow/issues/48874
@@ -11,11 +11,11 @@ see https://github.com/apache/arrow/issues/48874
  2 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/cpp/src/gandiva/gdv_function_stubs_test.cc b/cpp/src/gandiva/gdv_function_stubs_test.cc
-index cbe24b7423..98b9ec6372 100644
+index 3067a5f275..51252e5e0b 100644
 --- a/cpp/src/gandiva/gdv_function_stubs_test.cc
 +++ b/cpp/src/gandiva/gdv_function_stubs_test.cc
-@@ -1068,7 +1068,7 @@ TEST(TestGdvFnStubs, TestTranslate) {
-   EXPECT_EQ(expected, std::string(result, out_len));
+@@ -1204,7 +1204,7 @@ TEST(TestGdvFnStubs, TestTranslate) {
+               ::testing::HasSubstr("Would overflow maximum output size"));
  }
  
 -TEST(TestGdvFnStubs, TestToUtcTimezone) {
@@ -23,7 +23,7 @@ index cbe24b7423..98b9ec6372 100644
    gandiva::ExecutionContext context;
    auto context_ptr = reinterpret_cast<int64_t>(&context);
    auto len_ist = static_cast<gdv_int32>(strlen("Asia/Kolkata"));
-@@ -1104,7 +1104,7 @@ TEST(TestGdvFnStubs, TestToUtcTimezone) {
+@@ -1240,7 +1240,7 @@ TEST(TestGdvFnStubs, TestToUtcTimezone) {
    EXPECT_THAT(context.get_error(), "America/LA is an invalid time zone name.");
  }
  
@@ -33,10 +33,10 @@ index cbe24b7423..98b9ec6372 100644
    auto context_ptr = reinterpret_cast<int64_t>(&context);
    auto len_ist = static_cast<gdv_int32>(strlen("Asia/Kolkata"));
 diff --git a/cpp/src/gandiva/tests/date_time_test.cc b/cpp/src/gandiva/tests/date_time_test.cc
-index 6208f1ecba..52717d90f7 100644
+index 2f1d876af8..8699133f87 100644
 --- a/cpp/src/gandiva/tests/date_time_test.cc
 +++ b/cpp/src/gandiva/tests/date_time_test.cc
-@@ -721,7 +721,7 @@ TEST_F(DateTimeTestProjector, TestToTimestampFromInt) {
+@@ -724,7 +724,7 @@ TEST_F(DateTimeTestProjector, TestToTimestampFromInt) {
    EXPECT_ARROW_ARRAY_EQUALS(exp_output1, outputs.at(3));
  }
  
@@ -45,7 +45,7 @@ index 6208f1ecba..52717d90f7 100644
    auto f0 = field("f0", timestamp(arrow::TimeUnit::MILLI));
    auto f1 = field("f1", arrow::utf8());
  
-@@ -775,7 +775,7 @@ TEST_F(DateTimeTestProjector, TestToUtcTimestamp) {
+@@ -778,7 +778,7 @@ TEST_F(DateTimeTestProjector, TestToUtcTimestamp) {
    EXPECT_ARROW_ARRAY_EQUALS(exp_output, outputs.at(0));
  }
  
