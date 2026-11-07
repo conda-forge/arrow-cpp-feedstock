@@ -34,6 +34,8 @@ source:
       # backport https://github.com/apache/arrow/pull/55415
       # restore CMAKE_MODULE_PATH clobbered by orcConfig.cmake on failure
       - patches/0006-Restore-CMAKE_MODULE_PATH-after-finding-ORC.patch
+      # backport https://github.com/apache/arrow/pull/55433
+      - patches/0007-Compare-mtimes-at-seconds-in-test-instead-of-truncat.patch
 
   # testing-submodules not part of release tarball
   - git_url: https://github.com/apache/arrow-testing.git
@@ -44,7 +46,7 @@ source:
     folder: cpp/submodules/parquet-testing
 
 build:
-  number: 2
+  number: 3
   # for cuda support, building with one version is enough to be compatible with
   # all later versions, since arrow is only using libcuda, and not libcudart.
   skip: true  # [cuda_compiler_version not in ("None", cuda_compiler_version_min)]

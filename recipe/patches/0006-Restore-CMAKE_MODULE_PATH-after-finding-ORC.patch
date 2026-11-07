@@ -1,7 +1,7 @@
 From 3ae52485fcf8ccb8095270be7d49b0f3404c5eb9 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Ra=C3=BAl=20Cumplido?= <raulcumplido@gmail.com>
 Date: Fri, 6 Nov 2026 12:28:20 +1100
-Subject: [PATCH 6/6] Restore CMAKE_MODULE_PATH after finding ORC
+Subject: [PATCH 6/7] Restore CMAKE_MODULE_PATH after finding ORC
 
 orcConfig.cmake overwrites CMAKE_MODULE_PATH and doesn't restore it when
 one of its dependencies isn't found, because find_dependency() calls
