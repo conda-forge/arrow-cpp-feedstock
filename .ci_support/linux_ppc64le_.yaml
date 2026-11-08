@@ -73,7 +73,7 @@ re2:
 simdjson:
 - '5.1'
 snappy:
-- '1.2'
+- '1.3'
 target_platform:
 - linux-ppc64le
 thrift_cpp:
