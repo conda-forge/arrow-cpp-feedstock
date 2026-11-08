@@ -71,7 +71,7 @@ orc:
 re2:
 - 2025.11.05
 snappy:
-- '1.2'
+- '1.3'
 target_platform:
 - linux-ppc64le
 thrift_cpp:
