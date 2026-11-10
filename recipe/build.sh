@@ -59,6 +59,11 @@ else
     CMAKE_INTERPROCEDURAL_OPTIMIZATION=ON
 fi
 
+# native osx-arm64 runners have Homebrew in /opt/homebrew, which CMake searches by default
+if [[ "${target_platform}" == "osx-arm64" ]]; then
+    CMAKE_ARGS="${CMAKE_ARGS} -DCMAKE_IGNORE_PREFIX_PATH=/opt/homebrew"
+fi
+
 # reusable variable for dependencies we cannot yet unvendor
 export READ_RECIPE_META_YAML_WHY_NOT=OFF
 
