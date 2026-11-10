@@ -6,6 +6,7 @@ bot:
 build_platform:
   linux_ppc64le: linux_64
 conda_build:
+  error_overlinking: true
   pkg_format: '2'
 conda_forge_output_validation: true
 github:
