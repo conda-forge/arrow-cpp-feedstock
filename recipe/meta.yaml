@@ -209,6 +209,9 @@ outputs:
     version: {{ version }}
     build:
       string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}_{{ build_ext }}
+      # catch problems like https://github.com/apache/arrow/issues/55467
+      # enabled for all outputs in conda-forge.yml; repeated here for visibility
+      error_overlinking: true
       run_exports:
         - {{ pin_subpackage("libarrow", max_pin="x.x") }}
       ignore_run_exports_from:
@@ -236,6 +239,7 @@ outputs:
         - azure-core-cpp
         - azure-identity-cpp
         - azure-storage-blobs-cpp
+        - azure-storage-common-cpp
         - azure-storage-files-datalake-cpp
         - brotli
         - bzip2
