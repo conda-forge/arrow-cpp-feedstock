@@ -63,7 +63,7 @@ libprotobuf:
 libutf8proc:
 - '2.12'
 lz4_c:
-- '1.10'
+- '1.11'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 openssl:
